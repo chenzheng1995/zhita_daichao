@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.LoansBusinessesMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.LoansBusinesses">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="intro" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="loanLimit" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="trademark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isStick" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sort" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="applicationNumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="loanLimitSmall" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="loanLimitBig" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="cycle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="interestRate" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="applicationRequirements" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applicationProcess" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="specialInstructions" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="successRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="lendingRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="registerLink" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
+    state, businessClassification, loanLimitSmall, loanLimitBig, cycle, interestRate, 
+    applicationRequirements, applicationProcess, specialInstructions, successRate, lendingRate, 
+    registerLink, prepaidAmount, deleted, applications
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loans_businesses
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loans_businesses
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.LoansBusinesses">
+    insert into loans_businesses (id, businessName, intro, 
+      loanLimit, trademark, isStick, 
+      sort, applicationNumber, state, 
+      businessClassification, loanLimitSmall, 
+      loanLimitBig, cycle, interestRate, 
+      applicationRequirements, applicationProcess, 
+      specialInstructions, successRate, lendingRate, 
+      registerLink, prepaidAmount, deleted, 
+      applications)
+    values (#{id,jdbcType=INTEGER}, #{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
+      #{loanlimit,jdbcType=DECIMAL}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
+      #{businessclassification,jdbcType=VARCHAR}, #{loanlimitsmall,jdbcType=DECIMAL}, 
+      #{loanlimitbig,jdbcType=DECIMAL}, #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, 
+      #{applicationrequirements,jdbcType=VARCHAR}, #{applicationprocess,jdbcType=VARCHAR}, 
+      #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, 
+      #{registerlink,jdbcType=VARCHAR}, #{prepaidamount,jdbcType=DECIMAL}, #{deleted,jdbcType=VARCHAR}, 
+      #{applications,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.LoansBusinesses">
+    insert into loans_businesses
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessname != null">
+        businessName,
+      </if>
+      <if test="intro != null">
+        intro,
+      </if>
+      <if test="loanlimit != null">
+        loanLimit,
+      </if>
+      <if test="trademark != null">
+        trademark,
+      </if>
+      <if test="isstick != null">
+        isStick,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="applicationnumber != null">
+        applicationNumber,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="businessclassification != null">
+        businessClassification,
+      </if>
+      <if test="loanlimitsmall != null">
+        loanLimitSmall,
+      </if>
+      <if test="loanlimitbig != null">
+        loanLimitBig,
+      </if>
+      <if test="cycle != null">
+        cycle,
+      </if>
+      <if test="interestrate != null">
+        interestRate,
+      </if>
+      <if test="applicationrequirements != null">
+        applicationRequirements,
+      </if>
+      <if test="applicationprocess != null">
+        applicationProcess,
+      </if>
+      <if test="specialinstructions != null">
+        specialInstructions,
+      </if>
+      <if test="successrate != null">
+        successRate,
+      </if>
+      <if test="lendingrate != null">
+        lendingRate,
+      </if>
+      <if test="registerlink != null">
+        registerLink,
+      </if>
+      <if test="prepaidamount != null">
+        prepaidAmount,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="applications != null">
+        applications,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessname != null">
+        #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="intro != null">
+        #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="loanlimit != null">
+        #{loanlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="trademark != null">
+        #{trademark,jdbcType=VARCHAR},
+      </if>
+      <if test="isstick != null">
+        #{isstick,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="applicationnumber != null">
+        #{applicationnumber,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="businessclassification != null">
+        #{businessclassification,jdbcType=VARCHAR},
+      </if>
+      <if test="loanlimitsmall != null">
+        #{loanlimitsmall,jdbcType=DECIMAL},
+      </if>
+      <if test="loanlimitbig != null">
+        #{loanlimitbig,jdbcType=DECIMAL},
+      </if>
+      <if test="cycle != null">
+        #{cycle,jdbcType=VARCHAR},
+      </if>
+      <if test="interestrate != null">
+        #{interestrate,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationrequirements != null">
+        #{applicationrequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationprocess != null">
+        #{applicationprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="specialinstructions != null">
+        #{specialinstructions,jdbcType=VARCHAR},
+      </if>
+      <if test="successrate != null">
+        #{successrate,jdbcType=INTEGER},
+      </if>
+      <if test="lendingrate != null">
+        #{lendingrate,jdbcType=INTEGER},
+      </if>
+      <if test="registerlink != null">
+        #{registerlink,jdbcType=VARCHAR},
+      </if>
+      <if test="prepaidamount != null">
+        #{prepaidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="applications != null">
+        #{applications,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.LoansBusinesses">
+    update loans_businesses
+    <set>
+      <if test="businessname != null">
+        businessName = #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="intro != null">
+        intro = #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="loanlimit != null">
+        loanLimit = #{loanlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="trademark != null">
+        trademark = #{trademark,jdbcType=VARCHAR},
+      </if>
+      <if test="isstick != null">
+        isStick = #{isstick,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="applicationnumber != null">
+        applicationNumber = #{applicationnumber,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="businessclassification != null">
+        businessClassification = #{businessclassification,jdbcType=VARCHAR},
+      </if>
+      <if test="loanlimitsmall != null">
+        loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
+      </if>
+      <if test="loanlimitbig != null">
+        loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
+      </if>
+      <if test="cycle != null">
+        cycle = #{cycle,jdbcType=VARCHAR},
+      </if>
+      <if test="interestrate != null">
+        interestRate = #{interestrate,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationrequirements != null">
+        applicationRequirements = #{applicationrequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationprocess != null">
+        applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="specialinstructions != null">
+        specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
+      </if>
+      <if test="successrate != null">
+        successRate = #{successrate,jdbcType=INTEGER},
+      </if>
+      <if test="lendingrate != null">
+        lendingRate = #{lendingrate,jdbcType=INTEGER},
+      </if>
+      <if test="registerlink != null">
+        registerLink = #{registerlink,jdbcType=VARCHAR},
+      </if>
+      <if test="prepaidamount != null">
+        prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="applications != null">
+        applications = #{applications,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoansBusinesses">
+    update loans_businesses
+    set businessName = #{businessname,jdbcType=VARCHAR},
+      intro = #{intro,jdbcType=VARCHAR},
+      loanLimit = #{loanlimit,jdbcType=DECIMAL},
+      trademark = #{trademark,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      applicationNumber = #{applicationnumber,jdbcType=INTEGER},
+      state = #{state,jdbcType=VARCHAR},
+      businessClassification = #{businessclassification,jdbcType=VARCHAR},
+      loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
+      loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
+      cycle = #{cycle,jdbcType=VARCHAR},
+      interestRate = #{interestrate,jdbcType=DECIMAL},
+      applicationRequirements = #{applicationrequirements,jdbcType=VARCHAR},
+      applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
+      specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
+      successRate = #{successrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=INTEGER},
+      registerLink = #{registerlink,jdbcType=VARCHAR},
+      prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
+      deleted = #{deleted,jdbcType=VARCHAR},
+      applications = #{applications,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
