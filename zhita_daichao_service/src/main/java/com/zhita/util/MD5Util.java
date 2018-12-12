@@ -3,8 +3,9 @@ package com.zhita.util;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.apache.commons.codec.binary.Base64;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+
 
 
 public class MD5Util {
