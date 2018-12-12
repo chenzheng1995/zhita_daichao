@@ -2,12 +2,13 @@ package com.zhita.model.manage;
 
 import java.math.BigDecimal;
 
+//贷款分类表
 public class LoanClassification {
-    private Integer id;
+    private Integer id;//贷款分类id
 
-    private String businessclassification;
+    private String businessclassification;//贷款分类
 
-    private BigDecimal amount;
+    private BigDecimal amount;//金额
 
     public LoanClassification(Integer id, String businessclassification, BigDecimal amount) {
         this.id = id;

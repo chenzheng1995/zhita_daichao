@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>zhita_daichao_admin</artifactId>
 	<packaging>war</packaging>
-
+	
 	<properties>
 		<spring.version>4.0.5.RELEASE</spring.version>
 		<mybatis.version>3.2.1</mybatis.version>
@@ -17,7 +17,8 @@
 		<log4j.version>1.2.12</log4j.version>
 		<mysql.version>5.1.35</mysql.version>
 	</properties>
-
+	
+	<!--jar包 依赖 -->
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -25,6 +26,7 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- spring jar包依赖 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>

@@ -1,4 +1,4 @@
-package com.zhita.controller.manage;
+package com.zhita.controller.login;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.ManageLogin;
-import com.zhita.service.manage.LoginService;
+import com.zhita.service.login.LoginServiceImp;
 import com.zhita.util.MD5Util;
 
 
@@ -21,7 +21,7 @@ import com.zhita.util.MD5Util;
 @RequestMapping("/admin_login")
 public class LoginController {
 	@Autowired
-	LoginService loginService;
+	LoginServiceImp loginService;
 
 	@RequestMapping("/login")
 	@ResponseBody

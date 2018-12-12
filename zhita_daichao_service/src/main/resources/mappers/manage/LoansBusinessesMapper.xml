@@ -307,4 +307,17 @@
       applications = #{applications,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 查询贷款商家所有信息 -->
+  <select id="queryAll" resultType="com.zhita.model.manage.LoansBusinesses">
+  	select 
+    <include refid="Base_Column_List" />
+    from loans_businesses
+  </select>
+  <!-- 通过商家分类查询出商家信息 -->
+  <select id="queryByLoansClass" resultType="com.zhita.model.manage.LoansBusinesses" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from loans_businesses
+    where businessClassification = #{id,jdbcType=STRING}
+  </select>
 </mapper>

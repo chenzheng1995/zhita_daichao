@@ -1,21 +1,22 @@
 package com.zhita.model.manage;
 
+//信用卡表
 public class CreditCard {
-    private Integer id;
+    private Integer id;//信用卡id
 
-    private String title;
+    private String title;//标题
 
-    private String cover;
+    private String cover;//封面
 
-    private String intro;
+    private String intro;//简介
 
-    private String isstick;
+    private String isstick;//是否置顶
 
-    private String state;
+    private String state;//状态
 
-    private String url;
+    private String url;//"url"
 
-    private String deleted;
+    private String deleted;//假删除
 
     public CreditCard(Integer id, String title, String cover, String intro, String isstick, String state, String url, String deleted) {
         this.id = id;

@@ -1,9 +1,7 @@
-package com.zhita.service.manage;
+package com.zhita.service.login;
 
 import com.zhita.model.manage.ManageLogin;
 
-public interface LoginService {
-
+public interface IntLoginService {
 	ManageLogin findFormatByLoginName(String userName);
-
 }

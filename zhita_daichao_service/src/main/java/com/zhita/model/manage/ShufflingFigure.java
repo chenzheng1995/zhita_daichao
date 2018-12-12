@@ -1,17 +1,18 @@
 package com.zhita.model.manage;
 
+//轮播图表
 public class ShufflingFigure {
-    private Integer id;
+    private Integer id;//轮播图id
 
-    private String title;
+    private String title;//标题
 
-    private String cover;
+    private String cover;//封面
 
-    private String link;
+    private String link;//链接
 
-    private String state;
+    private String state;//状态
 
-    private String deleted;
+    private String deleted;//假删除
 
     public ShufflingFigure(Integer id, String title, String cover, String link, String state, String deleted) {
         this.id = id;

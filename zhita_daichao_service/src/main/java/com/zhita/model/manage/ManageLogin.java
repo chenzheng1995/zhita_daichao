@@ -1,11 +1,12 @@
 package com.zhita.model.manage;
 
+//管理登录表
 public class ManageLogin {
     private Integer id;
 
-    private String username;
+    private String username;//用户名
 
-    private String md5pwd;
+    private String md5pwd;//密码
 
     public ManageLogin(Integer id, String username, String md5pwd) {
         this.id = id;

@@ -1,23 +1,24 @@
 package com.zhita.model.manage;
 
+//用户表
 public class user {
-    private Integer id;
+    private Integer id;//用户id
 
-    private String source;
+    private String source;//渠道来源
 
-    private String nickname;
+    private String nickname;//昵称
 
-    private String phone;
+    private String phone;//手机号
 
-    private Integer dayfen;
+    private Integer dayfen;//当日分布系数
 
-    private String registrationtime;
+    private String registrationtime;//注册时间
 
-    private String name;
+    private String name;//姓名
 
-    private Integer age;
+    private Integer age;//年龄
 
-    private String idcard;
+    private String idcard;//身份证号
 
     public user(Integer id, String source, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard) {
         this.id = id;

@@ -1,19 +1,20 @@
 package com.zhita.model.manage;
 
+//广告表
 public class Advertising {
-    private Integer id;
+    private Integer id;//广告id
 
-    private String title;
+    private String title;//标题
 
-    private String cover;
+    private String cover;//封面
 
-    private String link;
+    private String link;//链接
 
-    private String state;
+    private String state;//状态
 
-    private String advertising;
+    private String advertising;//广告位
 
-    private String deleted;
+    private String deleted;//假删除
 
     public Advertising(Integer id, String title, String cover, String link, String state, String advertising, String deleted) {
         this.id = id;
