@@ -1,15 +1,16 @@
 package com.zhita.model.manage;
 
+//统计表
 public class Statistical {
-    private Integer id;
+    private Integer id;//统计id
 
-    private String time;
+    private String time;//时间
 
-    private Integer uv;
+    private Integer uv;//访问您网站的一台电脑客户端
 
-    private Integer conversionrate;
+    private Integer conversionrate;//转换率
 
-    private Integer businessid;
+    private Integer businessid;//商家id
 
     public Statistical(Integer id, String time, Integer uv, Integer conversionrate, Integer businessid) {
         this.id = id;

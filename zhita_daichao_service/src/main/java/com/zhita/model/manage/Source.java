@@ -1,17 +1,18 @@
 package com.zhita.model.manage;
 
+//渠道表
 public class Source {
-    private Integer id;
+    private Integer id;//渠道id
 
-    private String sourcename;
+    private String sourcename;//渠道名称
 
-    private String account;
+    private String account;//账户
 
-    private String link;
+    private String link;//链接
 
-    private String state;
+    private String state;//状态
 
-    private String deleted;
+    private String deleted;//假删除
 
     public Source(Integer id, String sourcename, String account, String link, String state, String deleted) {
         this.id = id;

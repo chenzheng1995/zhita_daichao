@@ -2,52 +2,53 @@ package com.zhita.model.manage;
 
 import java.math.BigDecimal;
 
+//贷款商家表
 public class LoansBusinesses {
-    private Integer id;
+    private Integer id;//贷款商家id
 
-    private String businessname;
+    private String businessname;//商家名称
 
-    private String intro;
+    private String intro;//简介
 
-    private BigDecimal loanlimit;
+    private BigDecimal loanlimit;//贷款额度
 
-    private String trademark;
+    private String trademark;//商标
 
-    private String isstick;
+    private String isstick;//是否置顶
 
-    private Integer sort;
+    private Integer sort;//排序
 
-    private Integer applicationnumber;
+    private Integer applicationnumber;//被申请次数
 
-    private String state;
+    private String state;//状态
 
-    private String businessclassification;
+    private String businessclassification;//商家分类
 
-    private BigDecimal loanlimitsmall;
+    private BigDecimal loanlimitsmall;//借款额度（小）
 
-    private BigDecimal loanlimitbig;
+    private BigDecimal loanlimitbig;//借款额度（大）
 
-    private String cycle;
+    private String cycle;//周期
 
-    private BigDecimal interestrate;
+    private BigDecimal interestrate;//利率（%）
 
-    private String applicationrequirements;
+    private String applicationrequirements;//申请条件
 
-    private String applicationprocess;
+    private String applicationprocess;//申请流程
 
-    private String specialinstructions;
+    private String specialinstructions;//特别说明
 
-    private Integer successrate;
+    private Integer successrate;//成功率
 
-    private Integer lendingrate;
+    private Integer lendingrate;//放款速度
 
-    private String registerlink;
+    private String registerlink;//注册链接
 
-    private BigDecimal prepaidamount;
+    private BigDecimal prepaidamount;//预付金额
 
-    private String deleted;
+    private String deleted;//假删除
 
-    private Integer applications;
+    private Integer applications;//申请人数
 
     public LoansBusinesses(Integer id, String businessname, String intro, BigDecimal loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, String businessclassification, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications) {
         this.id = id;

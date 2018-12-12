@@ -1,23 +1,24 @@
 package com.zhita.model.manage;
 
+//攻略表
 public class Strategy {
-    private Integer id;
+    private Integer id;//攻略id
 
-    private String title;
+    private String title;//标题
 
-    private String cover;
+    private String cover;//封面
 
-    private String synopsis;
+    private String synopsis;//简介
 
-    private String type;
+    private String type;//类型
 
-    private String isstick;
+    private String isstick;//是否置顶
 
-    private String state;
+    private String state;//状态
 
-    private String content;
+    private String content;//内容
 
-    private String deleted;
+    private String deleted;//假删除
 
     public Strategy(Integer id, String title, String cover, String synopsis, String type, String isstick, String state, String content, String deleted) {
         this.id = id;
