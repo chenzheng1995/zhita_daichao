@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.registe.IntRegisteService;
 
-@RestController("/registe")
+@RestController()
+@RequestMapping("/registe")
 public class RegisteController {
 	@Resource(name="registeServiceImp")
 	 private IntRegisteService intRegisteService;

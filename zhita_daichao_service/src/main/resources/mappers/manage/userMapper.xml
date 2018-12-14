@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhita.dao.manage.userMapper">
-  <resultMap id="BaseResultMap" type="com.zhita.model.manage.user">
+<mapper namespace="com.zhita.dao.manage.UserMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.User">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="source" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhita.model.manage.user">
+  <insert id="insert" parameterType="com.zhita.model.manage.User">
     insert into user (id, source, nickname, 
       phone, dayFen, registrationTime, 
       name, age, idCard)
@@ -35,7 +35,7 @@
       #{phone,jdbcType=VARCHAR}, #{dayfen,jdbcType=INTEGER}, #{registrationtime,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{idcard,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhita.model.manage.user">
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -96,7 +96,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.user">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.User">
     update user
     <set>
       <if test="source != null">
@@ -126,7 +126,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.user">
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.User">
     update user
     set source = #{source,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
@@ -138,4 +138,7 @@
       idCard = #{idcard,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getregistered" resultMap="java.lang.Integer">
+    select count(name) from user
+  </select>
 </mapper>

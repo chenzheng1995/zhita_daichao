@@ -1,7 +1,7 @@
 package com.zhita.model.manage;
 
 //用户表
-public class user {
+public class User {
     private Integer id;//用户id
 
     private String source;//渠道来源
@@ -20,7 +20,7 @@ public class user {
 
     private String idcard;//身份证号
 
-    public user(Integer id, String source, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard) {
+    public User(Integer id, String source, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard) {
         this.id = id;
         this.source = source;
         this.nickname = nickname;
@@ -32,7 +32,7 @@ public class user {
         this.idcard = idcard;
     }
 
-    public user() {
+    public User() {
         super();
     }
 

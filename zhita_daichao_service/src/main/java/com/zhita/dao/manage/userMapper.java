@@ -1,17 +1,19 @@
 package com.zhita.dao.manage;
 
-import com.zhita.model.manage.user;
+import com.zhita.model.manage.User;
 
-public interface userMapper {
+public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(user record);
+    int insert(User record);
 
-    int insertSelective(user record);
+    int insertSelective(User record);
 
-    user selectByPrimaryKey(Integer id);
+    User selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(user record);
+    int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(user record);
+    int updateByPrimaryKey(User record);
+
+    Integer getregistered();
 }
