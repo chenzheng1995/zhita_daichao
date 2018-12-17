@@ -1,7 +1,9 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
+
 //广告表
-public class Advertising {
+public class Advertising implements Serializable{
     private Integer id;//广告id
 
     private String title;//标题

@@ -1,7 +1,9 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
+
 //渠道表
-public class Source {
+public class Source implements Serializable{
     private Integer id;//渠道id
 
     private String sourcename;//渠道名称

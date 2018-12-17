@@ -1,7 +1,9 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
+
 //轮播图表
-public class ShufflingFigure {
+public class ShufflingFigure implements Serializable{
     private Integer id;//轮播图id
 
     private String title;//标题

@@ -3,11 +3,13 @@ package com.zhita.controller.daichao;
 
 import javax.annotation.Resource;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zhita.service.type.IntTypeService;
 
-@RestController("type")
+@Controller
+@RequestMapping(value="/type")
 public class TypeController {
 	@Resource(name="typeServiceImp")
 	private IntTypeService intTypeService;

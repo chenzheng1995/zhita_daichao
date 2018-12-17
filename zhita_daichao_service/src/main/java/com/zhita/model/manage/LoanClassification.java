@@ -1,9 +1,10 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 //贷款分类表
-public class LoanClassification {
+public class LoanClassification implements Serializable{
     private Integer id;//贷款分类id
 
     private String businessclassification;//贷款分类

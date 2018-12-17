@@ -1,7 +1,9 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
+
 //信用卡表
-public class CreditCard {
+public class CreditCard implements Serializable{
     private Integer id;//信用卡id
 
     private String title;//标题

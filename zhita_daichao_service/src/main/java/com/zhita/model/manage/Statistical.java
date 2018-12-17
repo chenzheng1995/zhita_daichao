@@ -1,7 +1,9 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
+
 //统计表
-public class Statistical {
+public class Statistical implements Serializable{
     private Integer id;//统计id
 
     private String time;//时间
