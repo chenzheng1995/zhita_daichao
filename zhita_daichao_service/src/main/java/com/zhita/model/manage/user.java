@@ -1,7 +1,9 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
+
 //用户表
-public class user {
+public class user implements Serializable{
     private Integer id;//用户id
 
     private String source;//渠道来源

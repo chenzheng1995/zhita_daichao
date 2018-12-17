@@ -6,7 +6,6 @@
 <generatorConfiguration>
     <!--导入属性配置-->
     <properties resource="jdbc.properties"/>
-
     <!--指定特定数据库的jdbc驱动jar包的位置-->
     <classPathEntry location="E:\repo\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar"/>
 

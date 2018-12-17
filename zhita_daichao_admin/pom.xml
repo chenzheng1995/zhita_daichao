@@ -196,11 +196,9 @@
 			<artifactId>zhita_daichao_service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
 	</dependencies>
 	
 	<build>
-		<finalName>test-maven-web</finalName>
 		<plugins>
 			<!-- Mybatis-Generator插件，自动生成代码 -->
 			<plugin>

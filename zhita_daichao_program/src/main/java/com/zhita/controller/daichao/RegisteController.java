@@ -5,14 +5,15 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.registe.IntRegisteService;
 
-@RestController("/registe")
+@Controller
+@RequestMapping(value="/registe")
 public class RegisteController {
 	@Resource(name="registeServiceImp")
 	 private IntRegisteService intRegisteService;
@@ -37,7 +38,7 @@ public class RegisteController {
     }
 	//根据贷款分类查询出贷款商家信息
     @ResponseBody
-    @RequestMapping(value="/queryByLoansClass.action")
+    @RequestMapping(value="/queryByLoansClass")
     public List<LoansBusinesses> queryByLoansClass(String businessClassification){
     	List<LoansBusinesses> list=intRegisteService.queryByLoansClass(businessClassification);
     	return list;

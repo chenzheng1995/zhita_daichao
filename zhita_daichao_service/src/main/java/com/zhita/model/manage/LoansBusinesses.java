@@ -1,9 +1,10 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 //贷款商家表
-public class LoansBusinesses {
+public class LoansBusinesses implements Serializable{
     private Integer id;//贷款商家id
 
     private String businessname;//商家名称

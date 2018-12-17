@@ -1,7 +1,9 @@
 package com.zhita.model.manage;
 
+import java.io.Serializable;
+
 //攻略表
-public class Strategy {
+public class Strategy implements Serializable{
     private Integer id;//攻略id
 
     private String title;//标题
