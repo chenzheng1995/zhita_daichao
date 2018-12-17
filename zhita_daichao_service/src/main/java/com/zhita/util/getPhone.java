@@ -13,7 +13,7 @@ import org.bouncycastle.util.encoders.Base64;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class getPhone {
+public class GetPhone {
 	public Object getPhoneNumber(String encryptedData, String iv, String session_key) {
 		// 被加密的数据
 		byte[] dataByte = Base64.decode(encryptedData);

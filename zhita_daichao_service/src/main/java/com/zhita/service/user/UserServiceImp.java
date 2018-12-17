@@ -11,9 +11,21 @@ public class UserServiceImp implements UserService {
 	@Autowired
 	UserMapper userMapper;
 
-	public Integer getregistered() {
-		Integer registered = userMapper.getregistered();
+	public Long getregistered() {
+		Long registered = userMapper.getregistered();
 		return registered;
+	}
+
+	@Override
+	public Long getdailyUsers(long todayZeroTimestamps, long tomorrowZeroTimestamps) {
+		Long dailyUsers = userMapper.getdailyUsers(todayZeroTimestamps, tomorrowZeroTimestamps);
+		return dailyUsers;
+	}
+
+	@Override
+	public Long getmonthlyUsers(long monthlyZeroTimestamps, long nextMonthlyZeroTimestamps) {
+		Long monthlyUsers = userMapper.getmonthlyUsers(monthlyZeroTimestamps, nextMonthlyZeroTimestamps);
+		return monthlyUsers;
 	}
 
 }
