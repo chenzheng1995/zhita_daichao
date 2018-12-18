@@ -35,6 +35,7 @@
     applicationRequirements, applicationProcess, specialInstructions, successRate, lendingRate, 
     registerLink, prepaidAmount, deleted, applications
   </sql>
+  <!--后台管理  通过主键id查询出贷款商家信息  -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -45,6 +46,7 @@
     delete from loans_businesses
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <!-- 后台管理   添加贷款商家信息 -->
   <insert id="insert" parameterType="com.zhita.model.manage.LoansBusinesses">
     insert into loans_businesses (businessName, intro, 
       loanLimit, trademark, isStick,
@@ -308,13 +310,13 @@
       applications = #{applications,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <!-- 查询贷款商家所有信息 -->
+  <!-- 小程序   查询贷款商家所有信息 -->
   <select id="queryAll" resultType="com.zhita.model.manage.LoansBusinesses">
   	select 
     <include refid="Base_Column_List" />
     from loans_businesses
   </select>
-  <!-- 通过商家分类查询出商家信息 -->
+  <!-- 小程序  通过商家分类查询出商家信息 -->
   <select id="queryByLoansClass" resultType="com.zhita.model.manage.LoansBusinesses" parameterType="java.lang.String">
   	select 
     <include refid="Base_Column_List" />
@@ -323,10 +325,18 @@
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses limit #{page},2
+  	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses limit #{page},2
   </select>
-  <!-- 用于获取总页数 -->
+  <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
    select count(*) from loans_businesses
-</select>
+ </select>
+ <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
+ <select id="queryByNameLike" resultType="com.zhita.model.manage.LoansBusinesses">
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where businessName like "%"#{0}"%" limit #{1},2
+ </select>
+ <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
+ <update id="upaFalseDel" parameterType="java.lang.Integer">
+ 	update loans_businesses set deleted='1' where id=#{id}
+ </update>
 </mapper>

@@ -33,6 +33,14 @@ public class RegisteController {
     public List<LoansBusinesses> queryAll(HttpServletRequest request,Integer page){
     	int totalCount=intRegisteService.pageCount();
     	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	if(page==0) {
+    		page=1;
+    	}
+    	int pages=(page-1)*pageUtil.getPageSize();
+    	pageUtil=new PageUtil(pages, totalCount);
+    	
+    	System.out.println(page+"===="+pageUtil.getPage()+"==="+pageUtil.getPage());
+    	System.out.println(pageUtil.getPage()+"===="+pageUtil.getPage());
     	List<LoansBusinesses> list=intRegisteService.queryAllAdmain(pageUtil.getPage());
     	return list;
     }
@@ -42,5 +50,33 @@ public class RegisteController {
     public Integer insertAll(LoansBusinesses loansBusinesses){
     	Integer selnum=intRegisteService.insert(loansBusinesses);
     	return selnum;
+    }
+	//后台管理---通过商家名称模糊查询，并且有分页功能
+    @ResponseBody
+    @RequestMapping("/queryByNameLike")
+    public List<LoansBusinesses> queryByNameLike(HttpServletRequest request,Integer page,String businessName){
+       	int totalCount=intRegisteService.pageCount();
+    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	if(page==0) {
+    		page=1;
+    	}
+    	int pages=(page-1)*pageUtil.getPageSize();
+    	pageUtil=new PageUtil(pages, totalCount);
+    	List<LoansBusinesses> list=intRegisteService.queryByNameLike(businessName,pageUtil.getPage());
+		return list;
+    }
+	//后台管理---根据主键id删除商家  假删除,只修改假删除状态
+    @ResponseBody
+    @RequestMapping("/falsedeleteByPrimaryKey")
+    public Integer falsedeleteByPrimaryKey(Integer id){
+    	int selnum=intRegisteService.upaFalseDel(id);
+    	return selnum;
+    }
+    //后台管理---通过主键id查询出贷款商家信息
+    @ResponseBody
+    @RequestMapping("/selectByPrimaryKey")
+    public LoansBusinesses selectByPrimaryKey(Integer id){
+    	LoansBusinesses loansBusinesses=intRegisteService.selectByPrimaryKey(id);
+    	return loansBusinesses;
     }
 }
