@@ -45,7 +45,7 @@ public class FootprintController {
 			}
 			if (footprintType.equals("2")) {
 				int number = lcFootprintService.insertfootprint(footprintName, userId, currentTimestamp);
-				if (number == 2) {
+				if (number == 1) {
 					map.put("msg", "插入成功");
 				} else {
 					map.put("msg", "插入失败");
@@ -53,7 +53,7 @@ public class FootprintController {
 			}
 			if (footprintType.equals("3")) {
 				int number = buttonFootprintService.insertfootprint(footprintName, userId, currentTimestamp);
-				if (number == 2) {
+				if (number == 1) {
 					map.put("msg", "插入成功");
 				} else {
 					map.put("msg", "插入失败");
