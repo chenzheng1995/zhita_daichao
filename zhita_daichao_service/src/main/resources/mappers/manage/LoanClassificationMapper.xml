@@ -11,6 +11,7 @@
   <sql id="Base_Column_List">
     id, businessClassification, amount
   </sql>
+  <!-- 后台管理  通过主键id查询出贷款分类信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -21,6 +22,7 @@
     delete from loan_classification
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <!-- 后台管理  添加贷款分类信息 -->
   <insert id="insert" parameterType="com.zhita.model.manage.LoanClassification">
     insert into loan_classification (id, businessClassification, amount
       )
@@ -70,4 +72,20 @@
       amount = #{amount,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--后台管理  查询贷款分类所有信息，含分页 -->
+  <select id="queryAllPage" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoanClassification">
+  	select 
+   	 <include refid="Base_Column_List" />
+     from loan_classification limit #{page},2
+  </select>
+    <!-- 后台管理 用于获取总页数 -->
+ <select id="pageCount" resultType="java.lang.Integer">
+   select count(*) from loan_classification
+ </select>
+ <!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
+ <select id="queryByLike" resultType="com.zhita.model.manage.LoanClassification">
+ 	select 
+   	 <include refid="Base_Column_List" />
+    from loan_classification where businessClassification like "%"#{0}"%" limit #{1},2
+ </select>
 </mapper>

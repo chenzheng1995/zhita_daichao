@@ -25,7 +25,7 @@ public class RegisteServiceImp implements IntRegisteService{
 		this.loansBusinessesMapper = loansBusinessesMapper;
 	}
 	
-	//查询出所有贷款商家信息
+	//小程序---查询出所有贷款商家信息
 	@Cacheable(key="'mytest'", value="test")
 	@Override
 	public List<LoansBusinesses> queryAll() {
@@ -33,7 +33,7 @@ public class RegisteServiceImp implements IntRegisteService{
 		System.out.println("打印则没有走缓存");
 		return list;
 	}
-	//通过商家分类查询出商家信息
+	//小程序---通过商家分类查询出商家信息
 	@Override
 	public List<LoansBusinesses> queryByLoansClass(String businessClassification) {
 		List<LoansBusinesses> list=loansBusinessesMapper.queryByLoansClass(businessClassification);
@@ -54,4 +54,21 @@ public class RegisteServiceImp implements IntRegisteService{
     	int selnum=loansBusinessesMapper.insert(record);
     	return selnum;
     }
+  	//后台管理---通过商家名称模糊查询，并且有分页功能
+  	public List<LoansBusinesses> queryByNameLike(String businessName,Integer page){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryByNameLike(businessName,page);
+  		return list;
+  	}
+  	//后台管理---通过商家主键id修改假删除字段的值
+	@Override
+	public int upaFalseDel(Integer id) {
+		int selnum=loansBusinessesMapper.upaFalseDel(id);
+		return selnum;
+	}
+	//后台管理---通过主键id查询出贷款商家信息
+	@Override
+	public LoansBusinesses selectByPrimaryKey(Integer id) {
+		LoansBusinesses loansBusinesses=loansBusinessesMapper.selectByPrimaryKey(id);
+		return loansBusinesses;
+	}
 }

@@ -1,15 +1,16 @@
 package com.zhita.model.manage;
 
+//按钮足迹表
 public class ButtonFootprint {
-    private Integer id;
+    private Integer id;//id
 
-    private Integer userid;
+    private Integer userid;//用户id
 
-    private String footprint;
+    private String footprint;//足迹
 
-    private String footprinttime;
+    private String footprinttime;//足迹时间
 
-    private String deleted;
+    private String deleted;//假删除（删除：1没删除：0）
 
     public ButtonFootprint(Integer id, Integer userid, String footprint, String footprinttime, String deleted) {
         this.id = id;

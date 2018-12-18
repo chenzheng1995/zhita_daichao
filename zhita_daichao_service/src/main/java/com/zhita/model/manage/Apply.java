@@ -1,17 +1,18 @@
 package com.zhita.model.manage;
 
+//申请表
 public class Apply {
-    private Integer id;
+    private Integer id;//申请id
 
-    private Integer userid;
+    private Integer userid;//用户id
 
-    private Integer dailyapplications;
+    private Integer dailyapplications;//日申请次数
 
-    private Integer dailyusers;
+    private Integer dailyusers;//日申请用户
 
-    private Integer monthlyapplications;
+    private Integer monthlyapplications;//月申请次数
 
-    private Integer monthlyusers;
+    private Integer monthlyusers;//月申请用户
 
     public Apply(Integer id, Integer userid, Integer dailyapplications, Integer dailyusers, Integer monthlyapplications, Integer monthlyusers) {
         this.id = id;
