@@ -9,11 +9,11 @@ import java.net.URLConnection;
 
 public class PostAndGet {
 
-	public static void main(String[] args) {	
-		System.out.println(sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxf3af82730448fb6b&secret=72b44f0d762922a4dfac7c7946d3c0f3"));
-		System.out.println(sendPost("https://api.weixin.qq.com/wxa/getwxacodeunlimit?","access_token=16_5Qf3nUY9UASFhvjl-RZiyDmSOvpwOfXlfm_qEm68Tndar1Y3BFq5S3fE_DwM7ho_o02v2UtyDN7tN5CAJmHexpEBwkJVL0DaqyOsPyfr_KynTqdRDnCF-ourw5X3MfmyKb0XeetYIUVxlkNmSLKeACACVU&scene=o61Hi5C85t2S9StieLalnuwGuSLM"));
-	}
-	public static String sendPost(String url, String param) {
+//	public static void main(String[] args) {	
+//		System.out.println(sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxf3af82730448fb6b&secret=72b44f0d762922a4dfac7c7946d3c0f3"));
+//		System.out.println(sendPost("https://api.weixin.qq.com/wxa/getwxacodeunlimit?","access_token=16_5Qf3nUY9UASFhvjl-RZiyDmSOvpwOfXlfm_qEm68Tndar1Y3BFq5S3fE_DwM7ho_o02v2UtyDN7tN5CAJmHexpEBwkJVL0DaqyOsPyfr_KynTqdRDnCF-ourw5X3MfmyKb0XeetYIUVxlkNmSLKeACACVU&scene=o61Hi5C85t2S9StieLalnuwGuSLM"));
+//	}
+	public  String sendPost(String url, String param) {
 		PrintWriter out = null;
 		BufferedReader in = null;
 		String result = "";
@@ -57,7 +57,7 @@ public class PostAndGet {
 		return result;
 	}
 
-	public static String sendGet(String url) {
+	public  String sendGet(String url) {
 		String result = "";
 		BufferedReader in = null;
 		try {

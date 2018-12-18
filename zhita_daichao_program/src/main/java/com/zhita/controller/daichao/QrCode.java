@@ -23,7 +23,7 @@ public class QrCode {
 		accessTokenMap = JSON.parseObject(postAndGet.sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type="+grant_type+"&appid="+appid+"&secret="+secret)); //获取access_token
 		String accessToken = (String) accessTokenMap.get("access_token");
 		if(accessToken!=null) {
-			map.put("msg", postAndGet.sendPost("https://api.weixin.qq.com/wxa/getwxacodeunlimit?",("access_token="+accessToken+"&scene="+scene))); //获取errcode
+			map.put("msg", postAndGet.sendPost("https://api.weixin.qq.com/wxa/getwxacodeunlimit?",("access_token="+accessToken+"&scene="+scene))); //获取二维码二进制图片
 		}else {
 			map.put("msg", "accessToken获取失败");
 		}
