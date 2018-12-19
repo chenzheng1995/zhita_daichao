@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zhita.dao.manage.LoansBusinessesMapper;
 import com.zhita.model.manage.LoansBusinesses;
-import com.zhita.util.PageUtil;
+
 @Transactional
 @Service(value ="registeServiceImp")
 public class RegisteServiceImp implements IntRegisteService{
