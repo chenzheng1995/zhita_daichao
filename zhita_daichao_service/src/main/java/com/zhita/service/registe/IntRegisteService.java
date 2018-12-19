@@ -3,7 +3,7 @@ package com.zhita.service.registe;
 import java.util.List;
 
 import com.zhita.model.manage.LoansBusinesses;
-import com.zhita.util.PageUtil;
+
 
 public interface IntRegisteService{
 	//小程序---查询出所有贷款商家的信息
