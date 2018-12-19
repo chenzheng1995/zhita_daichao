@@ -1,6 +1,10 @@
 package com.zhita.util;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +13,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostAndGet {
 
@@ -81,16 +87,31 @@ public class PostAndGet {
 			out.print(param);
 			// flush输出流的缓冲
 			out.flush();
-			// 定义BufferedReader输入流来读取URL的响应
-		    InputStream is = conn.getInputStream();
-		    FileOutputStream fos = new FileOutputStream(new File("d:/2.jpg"));
-		    byte[] buf = new byte[1024];
-		    int len = -1;
-		    while((len=is.read(buf)) != -1) {
-		    	fos.write(buf, 0, len);
-		    }
-		    fos.flush();
-		    fos.close();
+
+			InputStream is = conn.getInputStream();
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buf = new byte[10 * 1024];
+			int len = -1;
+			while((len = is.read(buf)) != -1) {
+				baos.write(buf, 0, len);
+			}
+
+			String s = new String(baos.toByteArray(), "UTF-8");
+
+			try {
+				new Gson().fromJson(s, new TypeToken<Map<String, Object>>(){}.getRawType());
+				result = s;
+			} catch (Exception e) {
+				FileOutputStream fos = new FileOutputStream(new File("d:/2.jpg"));
+				fos.write(baos.toByteArray());
+				fos.flush();
+				fos.close();
+				Map<String, Object> map = new HashMap<>();
+				map.put("errcode", "0");
+				map.put("errmsg", "success");
+				result = new Gson().toJson(map);
+			}
 		} catch (Exception e) {
 			System.out.println("[POST请求]向地址：" + url + " 发送数据：" + param + " 发生错误!");
 		} finally {// 使用finally块来关闭输出流、输入流
@@ -101,8 +122,9 @@ public class PostAndGet {
 				if (in != null) {
 					in.close();
 				}
-			} catch (IOException ex) {
+			} catch (IOException e) {
 				System.out.println("关闭流异常");
+				e.printStackTrace();
 			}
 		}
 		return result;
@@ -132,8 +154,9 @@ public class PostAndGet {
 				if (in != null) {
 					in.close();
 				}
-			} catch (IOException ex) {
+			} catch (IOException e) {
 				System.out.println("关闭流异常");
+				e.printStackTrace();
 			}
 		}
 		return result;
