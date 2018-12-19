@@ -9,13 +9,15 @@
       <arg column="intro" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="isStick" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="url" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, cover, intro, isStick, state, url, deleted
+    id, title, cover, intro, isStick, state,content, url, deleted
   </sql>
+  <!-- 通过信用卡id，查询出信用卡信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -28,11 +30,11 @@
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.CreditCard">
     insert into credit_card (id, title, cover, 
-      intro, isStick, state, 
+      intro, isStick, state,content, 
       url, deleted)
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
       #{intro,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
-      #{url,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR})
+      #{content,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.CreditCard">
     insert into credit_card
@@ -54,6 +56,9 @@
       </if>
       <if test="state != null">
         state,
+      </if>
+      <if test="content != null">
+        content,
       </if>
       <if test="url != null">
         url,
@@ -81,6 +86,9 @@
       <if test="state != null">
         #{state,jdbcType=VARCHAR},
       </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
       </if>
@@ -107,6 +115,9 @@
       <if test="state != null">
         state = #{state,jdbcType=VARCHAR},
       </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
       </if>
@@ -123,8 +134,29 @@
       intro = #{intro,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理  查询所有信用卡信息 含分页-->
+  <select id="queryAllCard" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.CreditCard">
+  	select id,title,cover,intro,isStick,state from credit_card limit #{page},2
+  </select>
+    <!-- 后台管理 用于获取总页数 -->
+ <select id="pageCount" resultType="java.lang.Integer">
+   select count(*) from loan_classification
+ </select>
+ <!--后台管理  模糊查询信用卡信息,并且有分页功能 -->
+  <select id="queryByLike" resultType="com.zhita.model.manage.CreditCard">
+ 	select id,title,cover,intro,isStick,state from credit_card where title like "%"#{0}"%" limit #{1},2
+ </select>
+ <!--后台管理 添加信用卡信息 -->
+ <insert id="addAll" parameterType="com.zhita.model.manage.CreditCard" >
+ 	insert into credit_card(cover,title,intro,url,content) values(#{cover},#{title},#{intro},#{url},#{content})
+ </insert>
+ <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
+ <update id="upaFalseDel" parameterType="java.lang.Integer">
+ 	update credit_card set deleted ='1' where id=#{id}
+ </update>
 </mapper>

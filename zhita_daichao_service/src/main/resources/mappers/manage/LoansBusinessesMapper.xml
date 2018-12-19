@@ -13,7 +13,7 @@
       <arg column="sort" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="applicationNumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="busClaId" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="loanLimitSmall" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="loanLimitBig" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="cycle" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -31,7 +31,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
-    state, businessClassification, loanLimitSmall, loanLimitBig, cycle, interestRate, 
+    state, busClaId, loanLimitSmall, loanLimitBig, cycle, interestRate, 
     applicationRequirements, applicationProcess, specialInstructions, successRate, lendingRate, 
     registerLink, prepaidAmount, deleted, applications
   </sql>
@@ -51,7 +51,7 @@
     insert into loans_businesses (businessName, intro, 
       loanLimit, trademark, isStick,
       sort, applicationNumber, state, 
-      businessClassification, loanLimitSmall, 
+      busClaId, loanLimitSmall, 
       loanLimitBig, cycle, interestRate, 
       applicationRequirements, applicationProcess, 
       specialInstructions, successRate, lendingRate, 
@@ -60,7 +60,7 @@
     values (#{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
       #{loanlimit,jdbcType=DECIMAL}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
-      #{businessclassification,jdbcType=VARCHAR}, #{loanlimitsmall,jdbcType=DECIMAL}, 
+      #{busClaId,jdbcType=INTEGER}, #{loanlimitsmall,jdbcType=DECIMAL}, 
       #{loanlimitbig,jdbcType=DECIMAL}, #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, 
       #{applicationrequirements,jdbcType=VARCHAR}, #{applicationprocess,jdbcType=VARCHAR}, 
       #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, 
@@ -97,8 +97,8 @@
       <if test="state != null">
         state,
       </if>
-      <if test="businessclassification != null">
-        businessClassification,
+      <if test="busClaId != null">
+        busClaId,
       </if>
       <if test="loanlimitsmall != null">
         loanLimitSmall,
@@ -168,8 +168,8 @@
       <if test="state != null">
         #{state,jdbcType=VARCHAR},
       </if>
-      <if test="businessclassification != null">
-        #{businessclassification,jdbcType=VARCHAR},
+      <if test="busClaId != null">
+        #{busClaId,jdbcType=INTEGER},
       </if>
       <if test="loanlimitsmall != null">
         #{loanlimitsmall,jdbcType=DECIMAL},
@@ -239,8 +239,8 @@
       <if test="state != null">
         state = #{state,jdbcType=VARCHAR},
       </if>
-      <if test="businessclassification != null">
-        businessClassification = #{businessclassification,jdbcType=VARCHAR},
+      <if test="busClaId != null">
+        busClaId = #{busClaId,jdbcType=INTEGER},
       </if>
       <if test="loanlimitsmall != null">
         loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
@@ -294,7 +294,7 @@
       sort = #{sort,jdbcType=INTEGER},
       applicationNumber = #{applicationnumber,jdbcType=INTEGER},
       state = #{state,jdbcType=VARCHAR},
-      businessClassification = #{businessclassification,jdbcType=VARCHAR},
+      busClaId = #{busClaId,jdbcType=INTEGER},
       loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
       loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
       cycle = #{cycle,jdbcType=VARCHAR},
@@ -316,13 +316,7 @@
     <include refid="Base_Column_List" />
     from loans_businesses
   </select>
-  <!-- 小程序  通过商家分类查询出商家信息 -->
-  <select id="queryByLoansClass" resultType="com.zhita.model.manage.LoansBusinesses" parameterType="java.lang.String">
-  	select 
-    <include refid="Base_Column_List" />
-    from loans_businesses
-    where businessClassification = #{id,jdbcType=VARCHAR}
-  </select>
+
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
   	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses limit #{page},2

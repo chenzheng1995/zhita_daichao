@@ -6,8 +6,8 @@
 		<constructor>
 			<idArg column="id" javaType="java.lang.Integer"
 				jdbcType="INTEGER" />
-			<arg column="source" javaType="java.lang.String"
-				jdbcType="VARCHAR" />
+			<arg column="sourceId" javaType="java.lang.Integer"
+				jdbcType="INTEGER" />
 			<arg column="nickname" javaType="java.lang.String"
 				jdbcType="VARCHAR" />
 			<arg column="phone" javaType="java.lang.String"
@@ -23,7 +23,7 @@
 		</constructor>
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, source, nickname, phone, dayFen, registrationTime,
+		id, sourceId, nickname, phone, dayFen, registrationTime,
 		name, age, idCard
 	</sql>	
 	<delete id="deleteByPrimaryKey"
@@ -32,12 +32,12 @@
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.zhita.model.manage.User">
-		insert into user (id, source,
+		insert into user (id, sourceId,
 		nickname,
 		phone, dayFen, registrationTime,
 		name, age, idCard)
 		values
-		(#{id,jdbcType=INTEGER}, #{source,jdbcType=VARCHAR},
+		(#{id,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER},
 		#{nickname,jdbcType=VARCHAR},
 		#{phone,jdbcType=VARCHAR},
 		#{dayfen,jdbcType=INTEGER}, #{registrationtime,jdbcType=VARCHAR},
@@ -51,8 +51,8 @@
 			<if test="id != null">
 				id,
 			</if>
-			<if test="source != null">
-				source,
+			<if test="sourceId != null">
+				sourceId,
 			</if>
 			<if test="nickname != null">
 				nickname,
@@ -80,8 +80,8 @@
 			<if test="id != null">
 				#{id,jdbcType=INTEGER},
 			</if>
-			<if test="source != null">
-				#{source,jdbcType=VARCHAR},
+			<if test="sourceId != null">
+				#{sourceId,jdbcType=INTEGER},
 			</if>
 			<if test="nickname != null">
 				#{nickname,jdbcType=VARCHAR},
@@ -110,8 +110,8 @@
 		parameterType="com.zhita.model.manage.User">
 		update user
 		<set>
-			<if test="source != null">
-				source = #{source,jdbcType=VARCHAR},
+			<if test="sourceId != null">
+				source = #{sourceId,jdbcType=INTEGER},
 			</if>
 			<if test="nickname != null">
 				nickname = #{nickname,jdbcType=VARCHAR},
@@ -140,7 +140,7 @@
 	<update id="updateByPrimaryKey"
 		parameterType="com.zhita.model.manage.User">
 		update user
-		set source = #{source,jdbcType=VARCHAR},
+		set sourceId = #{sourceId,jdbcType=INTEGER},
 		nickname = #{nickname,jdbcType=VARCHAR},
 		phone =
 		#{phone,jdbcType=VARCHAR},

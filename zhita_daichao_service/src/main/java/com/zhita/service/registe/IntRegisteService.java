@@ -8,8 +8,6 @@ import com.zhita.util.PageUtil;
 public interface IntRegisteService{
 	//小程序---查询出所有贷款商家的信息
 	public List<LoansBusinesses> queryAll();
-	//小程序---通过商家分类查询出商家信息
-	public List<LoansBusinesses> queryByLoansClass(String businessClassification);
 	//后台管理---查询贷款商家部分字段信息，含分页
 	public List<LoansBusinesses> queryAllAdmain(Integer page) ;
   	//后台管理---查询贷款商家总条数

@@ -24,7 +24,7 @@ public interface LoansBusinessesMapper {
     //小程序---查询出所有的贷款商家信息
     List<LoansBusinesses> queryAll();
     
-    //小程序---通过商家分类查询出商家信息
+    //小程序---通过商家分类查询出商家信息,关联贷款分类表
   	List<LoansBusinesses> queryByLoansClass(String businessClassification);
   	
   	//后台管理---查询贷款商家部分字段信息，含分页

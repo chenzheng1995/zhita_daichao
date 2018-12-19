@@ -23,7 +23,7 @@ public class LoansBusinesses implements Serializable{
 
     private String state;//状态
 
-    private String businessclassification;//商家分类
+    private Integer busClaId;//商家分类id
 
     private BigDecimal loanlimitsmall;//借款额度（小）
 
@@ -51,7 +51,7 @@ public class LoansBusinesses implements Serializable{
 
     private Integer applications;//申请人数
 
-    public LoansBusinesses(Integer id, String businessname, String intro, BigDecimal loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, String businessclassification, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications) {
+    public LoansBusinesses(Integer id, String businessname, String intro, BigDecimal loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications) {
         this.id = id;
         this.businessname = businessname;
         this.intro = intro;
@@ -61,7 +61,7 @@ public class LoansBusinesses implements Serializable{
         this.sort = sort;
         this.applicationnumber = applicationnumber;
         this.state = state;
-        this.businessclassification = businessclassification;
+        this.busClaId = busClaId;
         this.loanlimitsmall = loanlimitsmall;
         this.loanlimitbig = loanlimitbig;
         this.cycle = cycle;
@@ -153,15 +153,15 @@ public class LoansBusinesses implements Serializable{
         this.state = state == null ? null : state.trim();
     }
 
-    public String getBusinessclassification() {
-        return businessclassification;
-    }
+    public Integer getBusClaId() {
+		return busClaId;
+	}
 
-    public void setBusinessclassification(String businessclassification) {
-        this.businessclassification = businessclassification == null ? null : businessclassification.trim();
-    }
+	public void setBusClaId(Integer busClaId) {
+		this.busClaId = busClaId;
+	}
 
-    public BigDecimal getLoanlimitsmall() {
+	public BigDecimal getLoanlimitsmall() {
         return loanlimitsmall;
     }
 

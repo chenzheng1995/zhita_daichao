@@ -59,7 +59,7 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/insertAllfind")
     public Integer insertAll(LoanClassification loanClassification){
-    	Integer selnum=intTypeService.insert(loanClassification);
+    	Integer selnum=intTypeService.addAll(loanClassification);
     	return selnum;
     }
 	//后台管理---通过主键id查询出贷款分类信息

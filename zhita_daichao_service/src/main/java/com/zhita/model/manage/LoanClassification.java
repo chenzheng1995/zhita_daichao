@@ -2,18 +2,21 @@ package com.zhita.model.manage;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 //贷款分类表
 public class LoanClassification implements Serializable{
     private Integer id;//贷款分类id
 
-    private String businessclassification;//贷款分类
+    private String businessClassification;//贷款分类
 
     private BigDecimal amount;//金额
+    
+    private List<LoansBusinesses> listLoanBusiness;//一个贷款分类下有多个贷款商家----一对多的关系
 
-    public LoanClassification(Integer id, String businessclassification, BigDecimal amount) {
+    public LoanClassification(Integer id, String businessClassification, BigDecimal amount) {
         this.id = id;
-        this.businessclassification = businessclassification;
+        this.businessClassification = businessClassification;
         this.amount = amount;
     }
 
@@ -29,19 +32,29 @@ public class LoanClassification implements Serializable{
         this.id = id;
     }
 
-    public String getBusinessclassification() {
-        return businessclassification;
-    }
 
-    public void setBusinessclassification(String businessclassification) {
-        this.businessclassification = businessclassification == null ? null : businessclassification.trim();
-    }
+    public String getBusinessClassification() {
+		return businessClassification;
+	}
 
-    public BigDecimal getAmount() {
+	public void setBusinessClassification(String businessClassification) {
+		this.businessClassification = businessClassification;
+	}
+
+	public BigDecimal getAmount() {
         return amount;
     }
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
+	public List<LoansBusinesses> getListLoanBusiness() {
+		return listLoanBusiness;
+	}
+
+	public void setListLoanBusiness(List<LoansBusinesses> listLoanBusiness) {
+		this.listLoanBusiness = listLoanBusiness;
+	}
+    
 }

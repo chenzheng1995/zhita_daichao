@@ -33,12 +33,6 @@ public class RegisteServiceImp implements IntRegisteService{
 		System.out.println("打印则没有走缓存");
 		return list;
 	}
-	//小程序---通过商家分类查询出商家信息
-	@Override
-	public List<LoansBusinesses> queryByLoansClass(String businessClassification) {
-		List<LoansBusinesses> list=loansBusinessesMapper.queryByLoansClass(businessClassification);
-		return list;
-	}
 	//后台管理---查询贷款商家部分字段信息，含分页
   	public List<LoansBusinesses> queryAllAdmain(Integer page) {
 		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain(page);

@@ -38,12 +38,5 @@ public class RegisteController {
 		}
     	return list;
     }
-	//根据贷款分类查询出贷款商家信息
-    @ResponseBody
-    @RequestMapping(value="/queryByLoansClass")
-    public List<LoansBusinesses> queryByLoansClass(String businessClassification){
-    	List<LoansBusinesses> list=intRegisteService.queryByLoansClass(businessClassification);
-    	return list;
-    }
 	
 }

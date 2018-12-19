@@ -15,18 +15,21 @@ public class CreditCard implements Serializable{
     private String isstick;//是否置顶
 
     private String state;//状态
+    
+    private String content;//内容
 
     private String url;//"url"
 
     private String deleted;//假删除
 
-    public CreditCard(Integer id, String title, String cover, String intro, String isstick, String state, String url, String deleted) {
+    public CreditCard(Integer id, String title, String cover, String intro, String isstick, String state,String content, String url, String deleted) {
         this.id = id;
         this.title = title;
         this.cover = cover;
         this.intro = intro;
         this.isstick = isstick;
         this.state = state;
+        this.content=content;
         this.url = url;
         this.deleted = deleted;
     }
@@ -82,7 +85,15 @@ public class CreditCard implements Serializable{
     public void setState(String state) {
         this.state = state == null ? null : state.trim();
     }
+    
+    public String getContent() {
+        return content;
+    }
 
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+    
     public String getUrl() {
         return url;
     }

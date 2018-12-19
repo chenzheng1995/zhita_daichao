@@ -9,15 +9,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.registe.IntRegisteService;
+import com.zhita.service.type.IntTypeService;
 import com.zhita.util.PageUtil;
 
 @Controller
 @RequestMapping("/registe")
 public class RegisteController {
 	@Resource(name="registeServiceImp")
-	 private IntRegisteService intRegisteService;
+	private IntRegisteService intRegisteService;
+	@Resource(name="typeServiceImp")
+	private IntTypeService intTypeService;
 
 	public IntRegisteService getIntRegisteService() {
 		return intRegisteService;
@@ -27,6 +31,14 @@ public class RegisteController {
 		this.intRegisteService = intRegisteService;
 	}
 	
+	public IntTypeService getIntTypeService() {
+		return intTypeService;
+	}
+
+	public void setIntTypeService(IntTypeService intTypeService) {
+		this.intTypeService = intTypeService;
+	}
+
 	//后台管理---查询贷款商家部分字段信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllAdmin")
@@ -48,6 +60,7 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/insertAllAdmin")
     public Integer insertAll(LoansBusinesses loansBusinesses){
+    	List<LoanClassification> loanlist=intTypeService.queryAllLoanCla();//添加贷款商家信息时，先查询出贷款分类的所有类型
     	Integer selnum=intRegisteService.insert(loansBusinesses);
     	return selnum;
     }

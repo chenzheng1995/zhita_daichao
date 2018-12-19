@@ -3,11 +3,10 @@ package com.zhita.model.manage;
 import java.io.Serializable;
 
 //用户表
-
 public class User implements Serializable{
     private Integer id;//用户id
 
-    private String source;//渠道来源
+    private Integer sourceId;//渠道来源id
 
     private String nickname;//昵称
 
@@ -23,9 +22,9 @@ public class User implements Serializable{
 
     private String idcard;//身份证号
 
-    public User(Integer id, String source, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard) {
+    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard) {
         this.id = id;
-        this.source = source;
+        this.sourceId = sourceId;
         this.nickname = nickname;
         this.phone = phone;
         this.dayfen = dayfen;
@@ -47,15 +46,15 @@ public class User implements Serializable{
         this.id = id;
     }
 
-    public String getSource() {
-        return source;
-    }
+    public Integer getSourceId() {
+		return sourceId;
+	}
 
-    public void setSource(String source) {
-        this.source = source == null ? null : source.trim();
-    }
+	public void setSourceId(Integer sourceId) {
+		this.sourceId = sourceId;
+	}
 
-    public String getNickname() {
+	public String getNickname() {
         return nickname;
     }
 
