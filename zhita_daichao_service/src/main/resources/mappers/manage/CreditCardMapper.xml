@@ -17,7 +17,7 @@
   <sql id="Base_Column_List">
     id, title, cover, intro, isStick, state,content, url, deleted
   </sql>
-  <!-- 通过信用卡id，查询出信用卡信息 -->
+  <!--后台管理   通过信用卡id，查询出信用卡信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -141,15 +141,19 @@
   </update>
   <!-- 后台管理  查询所有信用卡信息 含分页-->
   <select id="queryAllCard" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.CreditCard">
-  	select id,title,cover,intro,isStick,state from credit_card limit #{page},2
+  	select id,title,cover,intro,isStick,state from credit_card where deleted='0' limit #{page},2
   </select>
-    <!-- 后台管理 用于获取总页数 -->
+  <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
-   select count(*) from loan_classification
+   select count(cover) from credit_card where deleted='0'
+ </select>
+  <!-- 后台管理 用于获取模糊总页数 -->
+ <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select count(cover) from credit_card where deleted='0' and title like "%"#{0}"%" 
  </select>
  <!--后台管理  模糊查询信用卡信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.CreditCard">
- 	select id,title,cover,intro,isStick,state from credit_card where title like "%"#{0}"%" limit #{1},2
+ 	select id,title,cover,intro,isStick,state from credit_card where deleted='0' and title like "%"#{0}"%" limit #{1},2
  </select>
  <!--后台管理 添加信用卡信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.CreditCard" >
@@ -158,5 +162,13 @@
  <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">
  	update credit_card set deleted ='1' where id=#{id}
+ </update>
+ <!-- 后台管理  修改信用卡状态 为开启-->
+ <update id="upaStateOpen" parameterType="java.lang.Integer">
+ 	update credit_card set state ='1' where id=#{id}
+ </update>
+  <!-- 后台管理  修改信用卡状态 为关闭-->
+ <update id="upaStateClose" parameterType="java.lang.Integer">
+ 	update credit_card set state ='2' where id=#{id}
  </update>
 </mapper>

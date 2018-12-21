@@ -18,6 +18,7 @@
   <sql id="Base_Column_List">
     id, title, cover, synopsis, type, url, isStick, state, content, deleted
   </sql>
+  <!-- 后台管理  通过主键id查询出攻略信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -151,4 +152,36 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理   查询攻略表所有信息，含分页 -->
+  <select id="queryAllNews" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Strategy">
+  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' limit #{page},2
+  </select>
+  <!-- 后台管理   查询攻略表总数量-->
+  <select id="pageCount" resultType="java.lang.Integer">
+  	select count(cover) from strategy where deleted='0'
+  </select>
+    <!--后台管理    根据标题字段模糊查询攻略表总数量-->
+  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(cover) from strategy where deleted='0' and title like "%"#{title}"%"
+  </select>
+    <!-- 后台管理   查询攻略表所有信息，含分页 -->
+  <select id="queryNewsByLike" resultType="com.zhita.model.manage.Strategy">
+  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},2
+  </select>
+  <!-- 后台管理 添加攻略信息 -->
+   <insert id="addAll" parameterType="com.zhita.model.manage.Strategy" >
+ 	insert into strategy(cover,title,synopsis,type,isstick,url,content) values(#{cover},#{title},#{synopsis},#{type},#{isstick},#{url},#{content})
+ </insert>
+ <!--后台管理   通过主键id修改其当前对象的假删除状态 -->
+ <update id="upaFalseDelById" parameterType="java.lang.Integer">
+ 	update strategy set deleted ='1' where id=#{id}
+ </update>
+ <!-- 后台管理  修改攻略状态为开启 -->
+ <update id="upaStateOpen" parameterType="java.lang.Integer">
+ 	update strategy set state ='1' where id=#{id}
+ </update>
+  <!-- 后台管理  修改攻略状态 为关闭-->
+ <update id="upaStateClose" parameterType="java.lang.Integer">
+ 	update strategy set state ='2' where id=#{id}
+ </update>
 </mapper>

@@ -1,6 +1,8 @@
 package com.zhita.controller.type;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +31,8 @@ public class TypeController {
 	//后台管理---查询贷款分类所有信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllPage")
-    public List<LoanClassification> queryAllPage(HttpServletRequest request,Integer page){
-    	int totalCount=intTypeService.pageCount();
+    public Map<String,Object> queryAllPage(HttpServletRequest request,Integer page){
+    	int totalCount=intTypeService.pageCount();//该方法是查询贷款分类总数量
     	PageUtil pageUtil=new PageUtil(page, totalCount);
     	if(page==0) {
     		page=1;
@@ -39,13 +41,17 @@ public class TypeController {
     	pageUtil=new PageUtil(pages, totalCount);
     	
     	List<LoanClassification> list=intTypeService.queryAllPage(pages);
-    	return list;
+    	
+    	HashMap<String,Object> map=new HashMap<>();
+    	map.put("listLoanClass", list);
+    	map.put("pageutil",pageUtil);
+    	return map;
     }
     //后台管理---模糊查询贷款分类信息,并且有分页功能
     @ResponseBody
     @RequestMapping("/queryByLike")
-    public List<LoanClassification> queryByLike(HttpServletRequest request,Integer page,String businessClassification){
-       	int totalCount=intTypeService.pageCount();
+    public Map<String,Object> queryByLike(HttpServletRequest request,Integer page,String businessClassification){
+       	int totalCount=intTypeService.pageCountByLike(businessClassification);//该方法是模糊查询的贷款分类总数量
     	PageUtil pageUtil=new PageUtil(page, totalCount);
     	if(page==0) {
     		page=1;
@@ -53,7 +59,12 @@ public class TypeController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil=new PageUtil(pages, totalCount);
     	List<LoanClassification> list=intTypeService.queryByLike(businessClassification, pages);
-		return list;
+    	
+    	
+    	HashMap<String, Object> map=new HashMap<>();
+    	map.put("listLoanClaByLike", list);
+    	map.put("pageutil",pageUtil);
+		return map;
     }
 	//后台管理---添加贷款分类信息
     @ResponseBody

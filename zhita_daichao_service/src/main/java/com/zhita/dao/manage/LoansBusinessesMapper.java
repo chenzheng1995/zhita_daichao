@@ -33,9 +33,18 @@ public interface LoansBusinessesMapper {
   	//后台管理---查询贷款商家总条数
   	int pageCount();
   	
+  	//后台管理---通过模糊查询的条件查询贷款商家总条数
+  	int pageCountByLike(String businessName);
+  	
   	//后台管理---通过商家名称模糊查询，并且有分页功能
   	List<LoansBusinesses> queryByNameLike(String businessName,Integer page);
   	
   	//后台管理---通过商家主键id修改假删除字段的值
   	int upaFalseDel(Integer id);
+  	
+  	//后台管理---修改贷款商家状态为开启
+  	int upaStateOpen(Integer id);
+  	
+  	//后台管理---修改贷款商家状态为关闭
+  	int upaStateClose(Integer id);
 }

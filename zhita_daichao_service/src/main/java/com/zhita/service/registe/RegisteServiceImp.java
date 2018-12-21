@@ -43,6 +43,12 @@ public class RegisteServiceImp implements IntRegisteService{
   		int count=loansBusinessesMapper.pageCount();
   		return count;
   	}
+  	
+  	//后台管理---通过模糊查询的条件查询贷款商家总条数
+  	public int pageCountByLike(String businessName) {
+  		int count=loansBusinessesMapper.pageCountByLike(businessName);
+  		return count;
+  	}
     //后台管理---添加贷款商家信息
     public int insert(LoansBusinesses record) {
     	int selnum=loansBusinessesMapper.insert(record);
@@ -56,8 +62,8 @@ public class RegisteServiceImp implements IntRegisteService{
   	//后台管理---通过商家主键id修改假删除字段的值
 	@Override
 	public int upaFalseDel(Integer id) {
-		int selnum=loansBusinessesMapper.upaFalseDel(id);
-		return selnum;
+		int num=loansBusinessesMapper.upaFalseDel(id);
+		return num;
 	}
 	//后台管理---通过主键id查询出贷款商家信息
 	@Override
@@ -65,4 +71,16 @@ public class RegisteServiceImp implements IntRegisteService{
 		LoansBusinesses loansBusinesses=loansBusinessesMapper.selectByPrimaryKey(id);
 		return loansBusinesses;
 	}
+  	//后台管理---修改贷款商家状态为开启
+  	public int upaStateOpen(Integer id) {
+  		int num=loansBusinessesMapper.upaStateOpen(id);
+  		return num;
+  	}
+  	
+  	//后台管理---修改贷款商家状态为关闭
+  	public int upaStateClose(Integer id) {
+  		int num=loansBusinessesMapper.upaStateClose(id);
+  		return num;
+  	}
+
 }

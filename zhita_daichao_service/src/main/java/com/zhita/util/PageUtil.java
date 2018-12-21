@@ -48,8 +48,12 @@ public class PageUtil{
 
     //获取总页数
     public int getTotalPageCount() {
-        totalPageCount=getTotalCount()/getPageSize();
-        return (totalCount/pageSize==0) ? totalPageCount:totalPageCount+1;
+	     if(this.getTotalCount()%this.getPageSize()==0) {
+	    	 this.totalPageCount=this.getTotalCount()/this.getPageSize();
+	     }else {
+	    	 this.totalPageCount=this.getTotalCount()/this.getPageSize()+1;
+	     }
+	     	return totalPageCount;
     }
 
     public void setTotalPageCount(int totalPageCount) {
