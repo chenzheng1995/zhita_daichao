@@ -36,6 +36,11 @@ public class CardServiceImp implements IntCardService{
 		int count=creditCardMapper.pageCount();
 		return count;
 	}
+    //后台管理---用于获取模糊查询总页数
+    public int pageCountByLike(String title) {
+    	int count=creditCardMapper.pageCountByLike(title);
+    	return count;
+    }
 	//后台管理---模糊查询信用卡信息,并且有分页功能
 	@Override
 	public List<CreditCard> queryByLike(String title, Integer page) {
@@ -55,7 +60,18 @@ public class CardServiceImp implements IntCardService{
     }
     //后台管理---通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除
     public int upaFalseDel(Integer id) {
-    	int selnum=creditCardMapper.upaFalseDel(id);
-    	return selnum;
+    	int num=creditCardMapper.upaFalseDel(id);
+    	return num;
+    }
+    //后台管理---修改信用卡状态为开启
+    public int upaStateOpen(Integer id) {
+    	int num=creditCardMapper.upaStateOpen(id);
+    	return num;
+    }
+    
+    //后台管理---修改信用卡状态为关闭
+    public int upaStateClose(Integer id) {
+    	int num=creditCardMapper.upaStateClose(id);
+    	return num;
     }
 }

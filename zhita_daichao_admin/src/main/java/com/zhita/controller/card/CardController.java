@@ -1,7 +1,9 @@
 package com.zhita.controller.card;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,11 +29,11 @@ public class CardController {
 		this.intCardService = intCardService;
 	}
 	
-	//后台管理---查询贷款商家部分字段信息，含分页
+	//后台管理---查询信用卡部分字段信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllCard")
-    public List<CreditCard> queryAllCard(HttpServletRequest request,Integer page){
-    	int totalCount=intCardService.pageCount();
+    public Map<String,Object> queryAllCard(HttpServletRequest request,Integer page){
+    	int totalCount=intCardService.pageCount();//该方法是查询信用卡总数量
     	PageUtil pageUtil=new PageUtil(page, totalCount);
     	if(page==0) {
     		page=1;
@@ -40,13 +42,17 @@ public class CardController {
     	pageUtil=new PageUtil(pages, totalCount);
     	
     	List<CreditCard> list=intCardService.queryAllCard(pageUtil.getPage());
-    	return list;
+    	
+    	HashMap<String,Object> map=new HashMap<>();
+    	map.put("listCard", list);
+    	map.put("pageutil", pageUtil);
+    	return map;
     }
 	//后台管理---模糊查询所有信用卡信息，含分页
     @ResponseBody
     @RequestMapping("/queryByLike")
-    public List<CreditCard> queryByLike(HttpServletRequest request,String title,Integer page){
-    	int totalCount=intCardService.pageCount();
+    public Map<String,Object> queryByLike(HttpServletRequest request,String title,Integer page){
+    	int totalCount=intCardService.pageCountByLike(title);//该方法是模糊查询的信用卡总数量
     	PageUtil pageUtil=new PageUtil(page, totalCount);
     	if(page==0) {
     		page=1;
@@ -55,7 +61,11 @@ public class CardController {
     	pageUtil=new PageUtil(pages, totalCount);
     	
     	List<CreditCard> list=intCardService.queryByLike(title,pageUtil.getPage());
-    	return list;
+    	
+    	HashMap<String,Object> map=new HashMap<>();
+    	map.put("listCardByLike", list);
+    	map.put("pageutil", pageUtil);
+    	return map;
     }
     //后台管理---添加信用卡信息
     @ResponseBody
@@ -76,7 +86,19 @@ public class CardController {
     @ResponseBody
     @RequestMapping("/upaFalseDel")
     public int upaFalseDel(Integer id) {
-    	int selnum=intCardService.upaFalseDel(id);
-    	return selnum;
+    	int num=intCardService.upaFalseDel(id);
+    	return num;
     }
+    //后台管理---修改信用卡状态
+    @ResponseBody
+    @RequestMapping("/upaState")
+	public int upaState(String state,Integer id) {
+		int num=0;
+		if(state.equals("1")) {
+			num=intCardService.upaStateOpen(id);
+		}else {
+			num=intCardService.upaStateClose(id);
+		}
+		return num;
+	}
 }

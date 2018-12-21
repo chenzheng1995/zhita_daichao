@@ -11,17 +11,17 @@ public class LoansBusinesses implements Serializable{
 
     private String intro;//简介
 
-    private BigDecimal loanlimit;//贷款额度
+    private String loanlimit;//贷款额度
 
     private String trademark;//商标
 
-    private String isstick;//是否置顶
+    private String isstick;//是否置顶 (1置顶，0不置顶)
 
     private Integer sort;//排序
 
     private Integer applicationnumber;//被申请次数
 
-    private String state;//状态
+    private String state;//状态(1开启，2关闭)
 
     private Integer busClaId;//商家分类id
 
@@ -47,11 +47,11 @@ public class LoansBusinesses implements Serializable{
 
     private BigDecimal prepaidamount;//预付金额
 
-    private String deleted;//假删除
+    private String deleted;//假删除（删除：1，没删除：0）
 
     private Integer applications;//申请人数
 
-    public LoansBusinesses(Integer id, String businessname, String intro, BigDecimal loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications) {
+    public LoansBusinesses(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications) {
         this.id = id;
         this.businessname = businessname;
         this.intro = intro;
@@ -105,15 +105,16 @@ public class LoansBusinesses implements Serializable{
         this.intro = intro == null ? null : intro.trim();
     }
 
-    public BigDecimal getLoanlimit() {
-        return loanlimit;
-    }
 
-    public void setLoanlimit(BigDecimal loanlimit) {
-        this.loanlimit = loanlimit;
-    }
+    public String getLoanlimit() {
+		return loanlimit;
+	}
 
-    public String getTrademark() {
+	public void setLoanlimit(String loanlimit) {
+		this.loanlimit = loanlimit;
+	}
+
+	public String getTrademark() {
         return trademark;
     }
 

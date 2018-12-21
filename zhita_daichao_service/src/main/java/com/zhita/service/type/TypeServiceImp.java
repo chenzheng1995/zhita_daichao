@@ -36,6 +36,11 @@ public class TypeServiceImp implements IntTypeService{
 		int count=loanClassificationMapper.pageCount();
 		return count;
 	}
+    //后台管理---用于获取模糊查询总页数
+    public int pageCountByLike(String businessClassification) {
+    	int count=loanClassificationMapper.pageCountByLike(businessClassification);
+    	return count;
+    }
     //后台管理---模糊查询贷款分类信息,并且有分页功能
 	@Override
 	public List<LoanClassification> queryByLike(String businessClassification,Integer page) {

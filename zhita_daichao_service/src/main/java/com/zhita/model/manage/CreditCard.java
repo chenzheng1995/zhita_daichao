@@ -12,15 +12,15 @@ public class CreditCard implements Serializable{
 
     private String intro;//简介
 
-    private String isstick;//是否置顶
+    private String isstick;//是否置顶(1置顶，0不置顶)
 
-    private String state;//状态
+    private String state;//状态(1开启，2关闭)
     
     private String content;//内容
 
     private String url;//"url"
 
-    private String deleted;//假删除
+    private String deleted;//假删除（删除：1，没删除：0）
 
     public CreditCard(Integer id, String title, String cover, String intro, String isstick, String state,String content, String url, String deleted) {
         this.id = id;

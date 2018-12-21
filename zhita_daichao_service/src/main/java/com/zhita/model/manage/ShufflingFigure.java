@@ -12,7 +12,7 @@ public class ShufflingFigure implements Serializable{
 
     private String link;//链接
 
-    private String state;//状态
+    private String state;//状态(1开启，2关闭)
 
     private String deleted;//假删除
 
