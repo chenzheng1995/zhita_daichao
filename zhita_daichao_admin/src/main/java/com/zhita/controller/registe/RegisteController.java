@@ -1,26 +1,34 @@
 package com.zhita.controller.registe;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.registe.IntRegisteService;
 import com.zhita.service.type.IntTypeService;
+import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
 
 @Controller
 @RequestMapping("/registe")
 public class RegisteController {
-	@Resource(name="registeServiceImp")
+	@Resource(name = "registeServiceImp")
 	private IntRegisteService intRegisteService;
-	@Resource(name="typeServiceImp")
+	@Resource(name = "typeServiceImp")
 	private IntTypeService intTypeService;
 
 	public IntRegisteService getIntRegisteService() {
@@ -30,7 +38,7 @@ public class RegisteController {
 	public void setIntRegisteService(IntRegisteService intRegisteService) {
 		this.intRegisteService = intRegisteService;
 	}
-	
+
 	public IntTypeService getIntTypeService() {
 		return intTypeService;
 	}
@@ -39,57 +47,98 @@ public class RegisteController {
 		this.intTypeService = intTypeService;
 	}
 
-	//后台管理---查询贷款商家部分字段信息，含分页
-    @ResponseBody
-    @RequestMapping("/queryAllAdmin")
-    public List<LoansBusinesses> queryAll(HttpServletRequest request,Integer page){
-    	int totalCount=intRegisteService.pageCount();
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
-    		page=1;
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	
-    	System.out.println(page+"===="+pageUtil.getPage()+"==="+pageUtil.getPage());
-    	System.out.println(pageUtil.getPage()+"===="+pageUtil.getPage());
-    	List<LoansBusinesses> list=intRegisteService.queryAllAdmain(pageUtil.getPage());
-    	return list;
-    }
-	//后台管理---添加贷款商家信息
-    @ResponseBody
-    @RequestMapping("/insertAllAdmin")
-    public Integer insertAll(LoansBusinesses loansBusinesses){
-    	List<LoanClassification> loanlist=intTypeService.queryAllLoanCla();//添加贷款商家信息时，先查询出贷款分类的所有类型
-    	Integer selnum=intRegisteService.insert(loansBusinesses);
-    	return selnum;
-    }
-	//后台管理---通过商家名称模糊查询，并且有分页功能
-    @ResponseBody
-    @RequestMapping("/queryByNameLike")
-    public List<LoansBusinesses> queryByNameLike(HttpServletRequest request,Integer page,String businessName){
-       	int totalCount=intRegisteService.pageCount();
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
-    		page=1;
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<LoansBusinesses> list=intRegisteService.queryByNameLike(businessName,pageUtil.getPage());
+	// 后台管理---查询贷款商家部分字段信息，含分页
+	@ResponseBody
+	@RequestMapping("/queryAllAdmin")
+	public List<LoansBusinesses> queryAll(HttpServletRequest request, Integer page) {
+		int totalCount = intRegisteService.pageCount();
+		PageUtil pageUtil = new PageUtil(page, totalCount);
+		if (page == 0) {
+			page = 1;
+		}
+		int pages = (page - 1) * pageUtil.getPageSize();
+		pageUtil = new PageUtil(pages, totalCount);
+
+		System.out.println(page + "====" + pageUtil.getPage() + "===" + pageUtil.getPage());
+		System.out.println(pageUtil.getPage() + "====" + pageUtil.getPage());
+		List<LoansBusinesses> list = intRegisteService.queryAllAdmain(pageUtil.getPage());
 		return list;
-    }
-	//后台管理---根据主键id删除商家  假删除,只修改假删除状态
-    @ResponseBody
-    @RequestMapping("/falsedeleteByPrimaryKey")
-    public Integer falsedeleteByPrimaryKey(Integer id){
-    	int selnum=intRegisteService.upaFalseDel(id);
-    	return selnum;
-    }
-    //后台管理---通过主键id查询出贷款商家信息
-    @ResponseBody
-    @RequestMapping("/selectByPrimaryKey")
-    public LoansBusinesses selectByPrimaryKey(Integer id){
-    	LoansBusinesses loansBusinesses=intRegisteService.selectByPrimaryKey(id);
-    	return loansBusinesses;
-    }
+	}
+
+	// 后台管理---添加贷款商家信息
+	@ResponseBody
+	@RequestMapping("/insertAllAdmin")
+	public Integer insertAll(LoansBusinesses loansBusinesses) {
+		List<LoanClassification> loanlist = intTypeService.queryAllLoanCla();// 添加贷款商家信息时，先查询出贷款分类的所有类型
+		Integer selnum = intRegisteService.insert(loansBusinesses);
+		return selnum;
+	}
+
+	// 后台管理---通过商家名称模糊查询，并且有分页功能
+	@ResponseBody
+	@RequestMapping("/queryByNameLike")
+	public List<LoansBusinesses> queryByNameLike(HttpServletRequest request, Integer page, String businessName) {
+		int totalCount = intRegisteService.pageCount();
+		PageUtil pageUtil = new PageUtil(page, totalCount);
+		if (page == 0) {
+			page = 1;
+		}
+		int pages = (page - 1) * pageUtil.getPageSize();
+		pageUtil = new PageUtil(pages, totalCount);
+		List<LoansBusinesses> list = intRegisteService.queryByNameLike(businessName, pageUtil.getPage());
+		return list;
+	}
+
+	// 后台管理---根据主键id删除商家 假删除,只修改假删除状态
+	@ResponseBody
+	@RequestMapping("/falsedeleteByPrimaryKey")
+	public Integer falsedeleteByPrimaryKey(Integer id) {
+		int selnum = intRegisteService.upaFalseDel(id);
+		return selnum;
+	}
+
+	// 后台管理---通过主键id查询出贷款商家信息
+	@ResponseBody
+	@RequestMapping("/selectByPrimaryKey")
+	public LoansBusinesses selectByPrimaryKey(Integer id) {
+		LoansBusinesses loansBusinesses = intRegisteService.selectByPrimaryKey(id);
+		return loansBusinesses;
+	}
+
+	// 上传贷款商家的商标
+	@ResponseBody
+	@RequestMapping("/uploadtrademark")
+	public Map<String, Object> uploadTrademark(HttpServletRequest request, HttpServletResponse response, MultipartFile file) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+			if (file != null) {// 判断上传的文件是否为空
+				String path = null;// 文件路径
+				String type = null;// 文件类型
+				InputStream iStream = file.getInputStream();
+				String fileName = file.getOriginalFilename();// 文件原名称
+				System.out.println("上传的文件原名称:" + fileName);
+				// 判断文件类型
+				type = fileName.indexOf(".") != -1? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()): null;
+				if (type != null) {// 判断文件类型是否为空
+					if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+						// 自定义的文件名称
+						String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
+						// 设置存放图片文件的路径
+						path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
+						OssUtil ossUtil = new OssUtil();
+						ossUtil.uploadFile(iStream, path);
+						System.out.println("存放图片文件的路径:" + path);
+					} else {
+						map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
+						return map;
+					}
+				} else {
+					map.put("msg", "文件类型为空");
+					return map;
+				}
+			} 
+
+		return map;
+
+	}
+
 }

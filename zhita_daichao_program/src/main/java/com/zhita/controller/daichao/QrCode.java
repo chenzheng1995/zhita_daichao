@@ -32,7 +32,7 @@ public class QrCode {
 				sceneMap.put("scene", scene);
 				String sceneToString = new Gson().toJson(sceneMap);	
 				if(accessToken!=null) {
-					map.put("msg", postAndGet.sendPost2("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken,sceneToString)); //获取二维码二进制图片
+					map.put("msg", postAndGet.sendPost2("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken+1,sceneToString)); //获取二维码二进制图片
 				}else {
 					map.put("msg", "accessToken获取失败");
 				}

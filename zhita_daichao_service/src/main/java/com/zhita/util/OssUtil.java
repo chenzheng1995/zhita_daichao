@@ -14,7 +14,7 @@ public class OssUtil {
 	private static final String ENDPOINT = "oss-cn-hangzhou.aliyuncs.com";
 	
 	// 阿里云API的bucket名称
-	private static final String BUCKET_NAME = "smart-phone";
+	private static final String BUCKET_NAME = "wx-dc";
 	
 	// 阿里云API的密钥Access Key ID
 	private static final String ACCESS_KEY_ID = "LTAIg62DQxOOlA9Y";
@@ -32,8 +32,9 @@ public class OssUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String uploadFile(File file, String key) throws Exception {
-		return uploadFile(new FileInputStream(file), key);
+	public String uploadFile(File file, String key) throws Exception {
+		OssUtil ossUtil = new OssUtil();
+		return ossUtil.uploadFile(new FileInputStream(file), key);
 	}
 	
 	/**
@@ -43,7 +44,7 @@ public class OssUtil {
 	 * @param key
 	 * @return
 	 */
-	public static String uploadFile(InputStream is, String key) throws Exception {
+	public String uploadFile(InputStream is, String key) throws Exception {
 		OSSClient client = null;
 		try {
 			client = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
