@@ -48,20 +48,33 @@ public class CardController {
     	map.put("pageutil", pageUtil);
     	return map;
     }
-	//后台管理---模糊查询所有信用卡信息，含分页
+	//后台管理---根据标题模糊查询所有信用卡信息，含分页
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(HttpServletRequest request,String title,Integer page){
-    	int totalCount=intCardService.pageCountByLike(title);//该方法是模糊查询的信用卡总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
-    		page=1;
+    	List<CreditCard> list=null;
+    	PageUtil pageUtil=null;
+    	if(title==null||"".equals(title)) {
+        	int totalCount=intCardService.pageCount();//该方法是查询信用卡总数量
+        	pageUtil=new PageUtil(page, totalCount);
+        	if(page==0) {
+        		page=1;
+        	}
+        	int pages=(page-1)*pageUtil.getPageSize();
+        	pageUtil=new PageUtil(pages, totalCount);
+        	
+        	list=intCardService.queryAllCard(pageUtil.getPage());
+    	}else {
+        	int totalCount=intCardService.pageCountByLike(title);//该方法是模糊查询的信用卡总数量
+        	pageUtil=new PageUtil(page, totalCount);
+        	if(page==0) {
+        		page=1;
+        	}
+        	int pages=(page-1)*pageUtil.getPageSize();
+        	pageUtil=new PageUtil(pages, totalCount);
+        	
+        	list=intCardService.queryByLike(title,pageUtil.getPage());
     	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	
-    	List<CreditCard> list=intCardService.queryByLike(title,pageUtil.getPage());
-    	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listCardByLike", list);
     	map.put("pageutil", pageUtil);

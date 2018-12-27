@@ -79,11 +79,15 @@
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
-   select count(*) from loan_classification
+   select count(businessClassification) from loan_classification
  </select>
    <!-- 后台管理 用于获取模糊查询总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(*) from loan_classification where businessClassification like "%"#{0}"%"
+   select count(businessClassification) from loan_classification where businessClassification like "%"#{0}"%"
+ </select>
+ <!-- 小程序    用于获取通过贷款分类的名称查询出贷款商家的个数 -->
+ <select id="pageCountByBusinessClassification" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select count(businessClassification) from loans_businesses lb inner join loan_classification lc on lb.busClaId=lc.id where deleted='0' and businessClassification=#{businessClassification}
  </select>
  <!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
  <select id="queryByLike" resultType="com.zhita.model.manage.LoanClassification">
@@ -132,7 +136,7 @@
        </collection>
  </resultMap>
  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
- <select id="queryLoanbusinByLoanClass" parameterType="java.lang.String" resultMap="loanCla">
- 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification}
+ <select id="queryLoanbusinByLoanClass" resultMap="loanCla">
+ 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} limit #{arg1},2
  </select>
 </mapper>

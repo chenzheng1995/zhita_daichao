@@ -127,9 +127,9 @@
   	insert into shuffling_figure(title,cover,link) values(#{title},#{cover},#{link})
   </insert>
   <!-- 后台管理   根据删除按钮，修改轮播图假删除状态 -->
-  <select id="upaFalseDel" parameterType="java.lang.Integer">
+  <update id="upaFalseDel" parameterType="java.lang.Integer">
   	update shuffling_figure set deleted='1' where id=#{id}
-  </select>
+  </update>
   <!-- 后台管理  修改轮播图的状态 为开启-->
   <update id="upaStateOpen" parameterType="java.lang.Integer">
   	update shuffling_figure set state='1' where id=#{id}

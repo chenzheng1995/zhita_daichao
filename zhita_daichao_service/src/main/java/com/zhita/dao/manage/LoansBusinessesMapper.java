@@ -19,14 +19,9 @@ public interface LoansBusinessesMapper {
 
     int updateByPrimaryKeySelective(LoansBusinesses record);
 
+    //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
     int updateByPrimaryKey(LoansBusinesses record);
     
-    //小程序---查询出所有的贷款商家信息
-    List<LoansBusinesses> queryAll();
-    
-    //小程序---通过商家分类查询出商家信息,关联贷款分类表
-  	List<LoansBusinesses> queryByLoansClass(String businessClassification);
-  	
   	//后台管理---查询贷款商家部分字段信息，含分页
   	List<LoansBusinesses> queryAllAdmain(Integer page);
   	
@@ -47,4 +42,13 @@ public interface LoansBusinessesMapper {
   	
   	//后台管理---修改贷款商家状态为关闭
   	int upaStateClose(Integer id);
+  	
+  	//后台管理---查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
+  	List<String> queryAllBusinessName();
+  	
+  	//后台管理---通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中
+  	List<String> queryAllBusinessNameByLike(String businessName);
+  	
+  	//后台管理---根据商家名称更新被申请次数字段
+  	int upaApplicationNumber(Integer num,String businessName);
 }

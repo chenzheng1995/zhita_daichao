@@ -1,5 +1,7 @@
 package com.zhita.dao.manage;
 
+import java.util.List;
+
 import com.zhita.model.manage.Source;
 
 public interface SourceMapper {
@@ -14,4 +16,6 @@ public interface SourceMapper {
     int updateByPrimaryKeySelective(Source record);
 
     int updateByPrimaryKey(Source record);
+    //后台管理---查询出所有渠道表信息，不含分页
+    List<Source> queryAll();
 }

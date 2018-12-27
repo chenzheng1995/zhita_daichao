@@ -28,14 +28,17 @@ public interface LoanClassificationMapper {
     //后台管理---用于获取模糊查询总页数
     int pageCountByLike(String businessClassification);
     
+    //小程序---用于获取通过贷款分类的名称查询出贷款商家的个数
+    int pageCountByBusinessClassification(String businessClassification);
+    
     //后台管理---模糊查询贷款分类信息,并且有分页功能
     List<LoanClassification> queryByLike(String businessClassification,Integer page);
     
     //后台管理---添加贷款分类信息
     int addAll(LoanClassification loanClassification);
     
-    //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
-    List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification);
+    //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
+    List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page);
     
     //后台管理---查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用
     List<LoanClassification> queryAllLoanCla();

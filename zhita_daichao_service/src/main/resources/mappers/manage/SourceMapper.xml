@@ -105,4 +105,8 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--后台管理   查询出所有渠道表信息，不含分页  -->
+  <select id="queryAll" resultType="com.zhita.model.manage.Source">
+  	select id,sourceName from source where deleted="0"
+  </select>
 </mapper>

@@ -26,4 +26,7 @@ public interface CommodityFootprintMapper {
 	long getmonthlyApplicationsUsers(@Param("monthlyZeroTimestamps") long monthlyZeroTimestamps,@Param("nextMonthlyZeroTimestamps")long nextMonthlyZeroTimestamps);
 
 	int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp);
+	
+	//后台管理---根据传过来的足迹名称，查询出足迹的个数
+	int queryCount(String businessName);
 }

@@ -14,7 +14,7 @@ public class Source implements Serializable{
 
     private String state;//状态
 
-    private String deleted;//假删除
+    private String deleted;//假删除（删除：1，没删除：0）
 
     public Source(Integer id, String sourcename, String account, String link, String state, String deleted) {
         this.id = id;

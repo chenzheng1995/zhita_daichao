@@ -11,5 +11,8 @@ public interface CommodityFootprintService {
 	long getmonthlyApplicationsUsers(long monthlyZeroTimestamps, long nextMonthlyZeroTimestamps);
 
 	int insertfootprint(String footprintName, String userId, long currentTimestamp);
+	
+	//后台管理---根据传过来的足迹名称，查询出足迹的个数
+	public int queryCount(String businessName);
 
 }

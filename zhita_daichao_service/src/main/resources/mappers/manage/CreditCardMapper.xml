@@ -141,7 +141,7 @@
   </update>
   <!-- 后台管理  查询所有信用卡信息 含分页-->
   <select id="queryAllCard" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.CreditCard">
-  	select id,title,cover,intro,isStick,state from credit_card where deleted='0' limit #{page},2
+  	select id,title,cover,intro,isStick,state from credit_card where deleted='0' order by isStick desc limit #{page},2
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -151,9 +151,9 @@
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
    select count(cover) from credit_card where deleted='0' and title like "%"#{0}"%" 
  </select>
- <!--后台管理  模糊查询信用卡信息,并且有分页功能 -->
+ <!--后台管理  根据标题字段模糊查询信用卡信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.CreditCard">
- 	select id,title,cover,intro,isStick,state from credit_card where deleted='0' and title like "%"#{0}"%" limit #{1},2
+ 	select id,title,cover,intro,isStick,state from credit_card where deleted='0' and title like "%"#{0}"%" order by isStick desc limit #{1},2
  </select>
  <!--后台管理 添加信用卡信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.CreditCard" >
