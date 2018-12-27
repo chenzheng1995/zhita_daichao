@@ -14,7 +14,9 @@ public class User implements Serializable{
 
     private Integer dayfen;//当日分布系数
 
-    private String registrationtime;//注册时间
+    private String registrationtime;//注册开始时间
+    
+    private String registrationtime1;//注册结束时间
 
     private String name;//姓名
 
@@ -22,7 +24,12 @@ public class User implements Serializable{
 
     private String idcard;//身份证号
     
+
     private String openId;//用户唯一值
+
+    private Source source;//关联渠道表,多个用户属于一个渠道的
+    
+
 
     public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId) {
         this.id = id;
@@ -112,6 +119,7 @@ public class User implements Serializable{
     public void setIdcard(String idcard) {
         this.idcard = idcard == null ? null : idcard.trim();
     }
+
     
     public String getOpenId() {
         return openId;
@@ -120,4 +128,23 @@ public class User implements Serializable{
     public void setOpenId(String openId) {
     	this.openId = openId == null ? null : openId.trim();
     }
+
+
+	public Source getSource() {
+		return source;
+	}
+
+	public void setSource(Source source) {
+		this.source = source;
+	}
+
+	public String getRegistrationtime1() {
+		return registrationtime1;
+	}
+
+	public void setRegistrationtime1(String registrationtime1) {
+		this.registrationtime1 = registrationtime1;
+	}
+    
+
 }

@@ -52,15 +52,29 @@ public class NewsController {
 	@ResponseBody
 	@RequestMapping("/queryNewsByLike")
     public Map<String,Object> queryNewsByLike(String title,Integer page){
-    	int totalCount=intNewsService.pageCountByLike(title);//该方法是模糊查询的攻略总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
-    		page=1;
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<Strategy> list=intNewsService.queryNewsByLike(title, pageUtil.getPage());
-    	
+		List<Strategy> list=null;
+		PageUtil pageUtil=null;
+		if(title==null||"".equals(title)) {
+	    	int totalCount=intNewsService.pageCount();//该方法是查询攻略总数量
+	    	pageUtil=new PageUtil(page, totalCount);
+	    	if(page==0) {
+	    		page=1;
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil=new PageUtil(pages, totalCount);
+	    	list=intNewsService.queryAllNews(pageUtil.getPage());
+		}else {
+	    	int totalCount=intNewsService.pageCountByLike(title);//该方法是模糊查询的攻略总数量
+	    	pageUtil=new PageUtil(page, totalCount);
+	    	if(page==0) {
+	    		page=1;
+	    	}
+	    	
+	    	
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil=new PageUtil(pages, totalCount);
+	    	list=intNewsService.queryNewsByLike(title, pageUtil.getPage());
+		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listnewsByLike",list);
     	map.put("pageutil", pageUtil);

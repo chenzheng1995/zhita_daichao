@@ -31,7 +31,12 @@ public interface CommodityFootprintMapper {
 
 	int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp);
 
+
 	List<String> getbusinessName(@Param("userId")String userId,@Param("pageSize")int pageSize,@Param("startRow") int startRow);
 
 	long getApplications(String businessName);
+	
+	//后台管理---根据传过来的足迹名称，查询出足迹的个数
+	int queryCount(String businessName);
+
 }

@@ -116,4 +116,36 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <!-- 后台管理    查询出广告表总数量 -->
+  <select id="pageCount" resultType="java.lang.Integer">
+  	select count(title) from advertising where deleted='0'
+  </select>
+  <!-- 后台管理   根据标题字段模糊查询出 广告表总数量 -->
+  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(title) from advertising where deleted='0' and title=#{title}
+  </select>
+  <!--后台管理   查询广告表全部信息 含分页 -->
+  <select id="queryAll" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Advertising">
+  	select * from advertising where deleted='0' limit #{page},2
+  </select>
+  <!-- 后台管理   根据标题字段模糊查询广告表信息，含分页 -->
+  <select id="queryAllByLike" resultType="com.zhita.model.manage.Advertising">
+  	select * from advertising where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},2
+  </select>
+  <!-- 后台管理   添加广告表信息 -->
+  <insert id="AddAll" parameterType="com.zhita.model.manage.Advertising">
+  	insert into advertising(title,cover,link,advertising) values(#{title},#{cover},#{link},#{advertising})
+  </insert>
+  <!-- 后台管理   根据删除按钮，修改广告表假删除状态 -->
+  <update id="upaFalseDel" parameterType="java.lang.Integer">
+  	update advertising set deleted='1' where id=#{id}
+  </update>
+  <!-- 后台管理  修改广告表的状态 为开启-->
+  <update id="upaStateOpen" parameterType="java.lang.Integer">
+  	update advertising set state='1' where id=#{id}
+  </update>
+  <!-- 后台管理  修改广告表的状态 为关闭-->
+  <update id="upaStateClose" parameterType="java.lang.Integer">
+  	update advertising set state='2' where id=#{id}
+  </update>
 </mapper>

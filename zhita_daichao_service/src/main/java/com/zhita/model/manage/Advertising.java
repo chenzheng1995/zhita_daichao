@@ -12,11 +12,11 @@ public class Advertising implements Serializable{
 
     private String link;//链接
 
-    private String state;//状态
+    private String state;//状态(1开启，2关闭)
 
     private String advertising;//广告位
 
-    private String deleted;//假删除
+    private String deleted;//假删除（删除：1，没删除：0）
 
     public Advertising(Integer id, String title, String cover, String link, String state, String advertising, String deleted) {
         this.id = id;

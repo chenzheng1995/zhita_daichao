@@ -51,16 +51,28 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(HttpServletRequest request,Integer page,String businessClassification){
-       	int totalCount=intTypeService.pageCountByLike(businessClassification);//该方法是模糊查询的贷款分类总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
-    		page=1;
+    	List<LoanClassification> list=null;
+    	PageUtil pageUtil=null;
+    	if(businessClassification==null||"".equals(businessClassification)) {
+        	int totalCount=intTypeService.pageCount();//该方法是查询贷款分类总数量
+        	pageUtil=new PageUtil(page, totalCount);
+        	if(page==0) {
+        		page=1;
+        	}
+        	int pages=(page-1)*pageUtil.getPageSize();
+        	pageUtil=new PageUtil(pages, totalCount);
+        	
+        	list=intTypeService.queryAllPage(pages);
+    	}else {
+          	int totalCount=intTypeService.pageCountByLike(businessClassification);//该方法是模糊查询的贷款分类总数量
+        	pageUtil=new PageUtil(page, totalCount);
+        	if(page==0) {
+        		page=1;
+        	}
+        	int pages=(page-1)*pageUtil.getPageSize();
+        	pageUtil=new PageUtil(pages, totalCount);
+        	list=intTypeService.queryByLike(businessClassification, pages);
     	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<LoanClassification> list=intTypeService.queryByLike(businessClassification, pages);
-    	
-    	
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listLoanClaByLike", list);
     	map.put("pageutil",pageUtil);

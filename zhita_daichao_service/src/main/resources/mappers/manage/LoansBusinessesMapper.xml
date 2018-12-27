@@ -310,16 +310,10 @@
       applications = #{applications,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <!-- 小程序   查询贷款商家所有信息 -->
-  <select id="queryAll" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select 
-    <include refid="Base_Column_List" />
-    from loans_businesses where deleted='0'
-  </select>
 
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' limit #{page},2
+  	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' order by isStick desc limit #{page},2
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -331,7 +325,7 @@
  </select>
  <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
  <select id="queryByNameLike" resultType="com.zhita.model.manage.LoansBusinesses">
- 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" limit #{arg1},2
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" order by isStick desc limit #{arg1},2
  </select>
  <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">
@@ -355,4 +349,17 @@
  <select id="getLoansBusinesses" resultType="map" parameterType="java.lang.String">
  	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate,cycle,state from loans_businesses where deleted='0' and businessName = #{businessName}
  </select>
+ <!-- 后台管理  查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中 -->
+ <select id="queryAllBusinessName" resultType="java.lang.String">
+ 	select businessName from loans_businesses
+ </select>
+ <!-- 后台管理  通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中 -->
+ <select id="queryAllBusinessNameByLike" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select businessName from loans_businesses where businessName like "%"#{businessName}"%"
+ </select>
+ <!-- 后台管理    根据商家名称更新被申请次数字段 -->
+ <update id="upaApplicationNumber">
+ 	update loans_businesses set applicationNumber=#{arg0} where businessName=#{arg1}
+ </update>
+
 </mapper>

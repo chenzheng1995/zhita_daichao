@@ -27,15 +27,15 @@ public class RegisteServiceImp implements IntRegisteService{
 		this.loansBusinessesMapper = loansBusinessesMapper;
 	}
 	
-	//小程序---查询出所有贷款商家信息
+/*	//小程序---查询出所有贷款商家信息
 	@Cacheable(key="'mytest'", value="test")
 	@Override
-	public List<LoansBusinesses> queryAll() {
-		List<LoansBusinesses> list=loansBusinessesMapper.queryAll();
+	public List<LoansBusinesses> queryAll(Integer page) {
+		List<LoansBusinesses> list=loansBusinessesMapper.queryAll(page);
 		System.out.println("打印则没有走缓存");
 		return list;
 	}
-	//后台管理---查询贷款商家部分字段信息，含分页
+*/	//后台管理---查询贷款商家部分字段信息，含分页
   	public List<LoansBusinesses> queryAllAdmain(Integer page) {
 		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain(page);
 		return list;
@@ -84,6 +84,7 @@ public class RegisteServiceImp implements IntRegisteService{
   		int num=loansBusinessesMapper.upaStateClose(id);
   		return num;
   	}
+
 	@Override
 	public void insertPath(String ossPath) {
 		loansBusinessesMapper.insertPath(ossPath);		
@@ -95,5 +96,26 @@ public class RegisteServiceImp implements IntRegisteService{
 		map = loansBusinessesMapper.getLoansBusinesses(businessName); 
 		return map;
 	}
+
+  	//后台管理---查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
+  	public List<String> queryAllBusinessName(){
+  		List<String> list=loansBusinessesMapper.queryAllBusinessName();
+  		return list;
+  	}
+  	//后台管理---通过商家名称模糊查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
+  	public List<String> queryAllBusinessNameByLike(String businessName){
+  		List<String> list=loansBusinessesMapper.queryAllBusinessNameByLike(businessName);
+  		return list;
+  	}
+  	//后台管理---根据商家名称更新被申请次数字段
+  	public int upaApplicationNumber(Integer num,String businessName) {
+  		int nums=loansBusinessesMapper.upaApplicationNumber(num, businessName);
+  		return nums;
+  	}
+    //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
+    public int updateByPrimaryKey(LoansBusinesses record) {
+    	int num=loansBusinessesMapper.updateByPrimaryKey(record);
+    	return num;
+    }
 
 }
