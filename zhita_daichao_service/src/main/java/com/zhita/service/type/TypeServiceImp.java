@@ -70,4 +70,6 @@ public class TypeServiceImp implements IntTypeService{
     	List<LoanClassification> list=loanClassificationMapper.queryAllLoanCla();
     	return list;
     }
+
+
 }

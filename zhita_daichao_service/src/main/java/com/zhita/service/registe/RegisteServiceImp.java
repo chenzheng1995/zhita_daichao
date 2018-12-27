@@ -1,6 +1,8 @@
 package com.zhita.service.registe;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -82,5 +84,16 @@ public class RegisteServiceImp implements IntRegisteService{
   		int num=loansBusinessesMapper.upaStateClose(id);
   		return num;
   	}
+	@Override
+	public void insertPath(String ossPath) {
+		loansBusinessesMapper.insertPath(ossPath);		
+	}
+
+	@Override
+	public Map<String, Object> getLoansBusinesses(String businessName) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = loansBusinessesMapper.getLoansBusinesses(businessName); 
+		return map;
+	}
 
 }

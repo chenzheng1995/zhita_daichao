@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.LoanInformationMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.LoanInformation">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="userId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="idCard" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="professionalIdentity" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="monthlyIncomeRange" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="educationalBackground" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sesamePoints" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cellPhoneTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isCreditCard" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isAccumulationFund" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isSocialSecurity" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isCar" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isHouse" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, userId, idCard, professionalIdentity, monthlyIncomeRange, educationalBackground, 
+    sesamePoints, cellPhoneTime, isCreditCard, isAccumulationFund, isSocialSecurity, 
+    isCar, isHouse
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loan_information
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loan_information
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.LoanInformation">
+    insert into loan_information (id, name, userId, 
+      idCard, professionalIdentity, monthlyIncomeRange, 
+      educationalBackground, sesamePoints, cellPhoneTime, 
+      isCreditCard, isAccumulationFund, isSocialSecurity, 
+      isCar, isHouse)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{idcard,jdbcType=VARCHAR}, #{professionalidentity,jdbcType=VARCHAR}, #{monthlyincomerange,jdbcType=VARCHAR}, 
+      #{educationalbackground,jdbcType=VARCHAR}, #{sesamepoints,jdbcType=VARCHAR}, #{cellphonetime,jdbcType=VARCHAR}, 
+      #{iscreditcard,jdbcType=VARCHAR}, #{isaccumulationfund,jdbcType=VARCHAR}, #{issocialsecurity,jdbcType=VARCHAR}, 
+      #{iscar,jdbcType=VARCHAR}, #{ishouse,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.LoanInformation">
+    insert into loan_information
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="idcard != null">
+        idCard,
+      </if>
+      <if test="professionalidentity != null">
+        professionalIdentity,
+      </if>
+      <if test="monthlyincomerange != null">
+        monthlyIncomeRange,
+      </if>
+      <if test="educationalbackground != null">
+        educationalBackground,
+      </if>
+      <if test="sesamepoints != null">
+        sesamePoints,
+      </if>
+      <if test="cellphonetime != null">
+        cellPhoneTime,
+      </if>
+      <if test="iscreditcard != null">
+        isCreditCard,
+      </if>
+      <if test="isaccumulationfund != null">
+        isAccumulationFund,
+      </if>
+      <if test="issocialsecurity != null">
+        isSocialSecurity,
+      </if>
+      <if test="iscar != null">
+        isCar,
+      </if>
+      <if test="ishouse != null">
+        isHouse,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalidentity != null">
+        #{professionalidentity,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyincomerange != null">
+        #{monthlyincomerange,jdbcType=VARCHAR},
+      </if>
+      <if test="educationalbackground != null">
+        #{educationalbackground,jdbcType=VARCHAR},
+      </if>
+      <if test="sesamepoints != null">
+        #{sesamepoints,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphonetime != null">
+        #{cellphonetime,jdbcType=VARCHAR},
+      </if>
+      <if test="iscreditcard != null">
+        #{iscreditcard,jdbcType=VARCHAR},
+      </if>
+      <if test="isaccumulationfund != null">
+        #{isaccumulationfund,jdbcType=VARCHAR},
+      </if>
+      <if test="issocialsecurity != null">
+        #{issocialsecurity,jdbcType=VARCHAR},
+      </if>
+      <if test="iscar != null">
+        #{iscar,jdbcType=VARCHAR},
+      </if>
+      <if test="ishouse != null">
+        #{ishouse,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.LoanInformation">
+    update loan_information
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="idcard != null">
+        idCard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalidentity != null">
+        professionalIdentity = #{professionalidentity,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyincomerange != null">
+        monthlyIncomeRange = #{monthlyincomerange,jdbcType=VARCHAR},
+      </if>
+      <if test="educationalbackground != null">
+        educationalBackground = #{educationalbackground,jdbcType=VARCHAR},
+      </if>
+      <if test="sesamepoints != null">
+        sesamePoints = #{sesamepoints,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphonetime != null">
+        cellPhoneTime = #{cellphonetime,jdbcType=VARCHAR},
+      </if>
+      <if test="iscreditcard != null">
+        isCreditCard = #{iscreditcard,jdbcType=VARCHAR},
+      </if>
+      <if test="isaccumulationfund != null">
+        isAccumulationFund = #{isaccumulationfund,jdbcType=VARCHAR},
+      </if>
+      <if test="issocialsecurity != null">
+        isSocialSecurity = #{issocialsecurity,jdbcType=VARCHAR},
+      </if>
+      <if test="iscar != null">
+        isCar = #{iscar,jdbcType=VARCHAR},
+      </if>
+      <if test="ishouse != null">
+        isHouse = #{ishouse,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoanInformation">
+    update loan_information
+    set name = #{name,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=INTEGER},
+      idCard = #{idcard,jdbcType=VARCHAR},
+      professionalIdentity = #{professionalidentity,jdbcType=VARCHAR},
+      monthlyIncomeRange = #{monthlyincomerange,jdbcType=VARCHAR},
+      educationalBackground = #{educationalbackground,jdbcType=VARCHAR},
+      sesamePoints = #{sesamepoints,jdbcType=VARCHAR},
+      cellPhoneTime = #{cellphonetime,jdbcType=VARCHAR},
+      isCreditCard = #{iscreditcard,jdbcType=VARCHAR},
+      isAccumulationFund = #{isaccumulationfund,jdbcType=VARCHAR},
+      isSocialSecurity = #{issocialsecurity,jdbcType=VARCHAR},
+      isCar = #{iscar,jdbcType=VARCHAR},
+      isHouse = #{ishouse,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  	<!-- 插入用户的贷款信息-->
+	<insert id="setloanInformation"
+		parameterType="java.util.Map">
+		insert into loan_information (userId,name,idCard,professionalIdentity,monthlyIncomeRange,
+		educationalBackground,sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse)
+		values (#{userId},#{name},#{idCard},#{professionalIdentity},#{monthlyIncomeRange},
+		#{educationalBackground},#{sesamePoints},#{cellPhoneTime},#{isCreditCard},#{isAccumulationFund},
+		#{isSocialSecurity},#{isCar},#{isHouse})
+	</insert>
+</mapper>

@@ -1,5 +1,9 @@
 package com.zhita.service.commodityfootprint;
 
+
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +45,18 @@ public class CommodityFootprintServiceImp implements CommodityFootprintService{
 	public int insertfootprint(String footprintName, String userId, long currentTimestamp) {
 		int number = commodityFootprintMapper.insertfootprint(footprintName,userId,currentTimestamp);
 		return number;
+	}
+
+	@Override
+	public List<String> getbusinessName(String userId,int pageSize, int startRow) {
+		List<String> list =	(List<String>) commodityFootprintMapper.getbusinessName(userId,pageSize,startRow);
+		return list;
+	}
+
+	@Override
+	public long getApplications(String businessName) {
+		long applications = commodityFootprintMapper.getApplications(businessName);
+		return applications;
 	}
 
 

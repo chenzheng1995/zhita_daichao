@@ -1,138 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhita.dao.manage.LoanClassificationMapper">
-  <resultMap id="BaseResultMap" type="com.zhita.model.manage.LoanClassification">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, businessClassification, amount
-  </sql>
-  <!-- 后台管理  通过主键id查询出贷款分类信息 -->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from loan_classification
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from loan_classification
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.zhita.model.manage.LoanClassification">
-    insert into loan_classification (id, businessClassification, amount
-      )
-    values (#{id,jdbcType=INTEGER}, #{businessclassification,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.zhita.model.manage.LoanClassification">
-    insert into loan_classification
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="businessclassification != null">
-        businessClassification,
-      </if>
-      <if test="amount != null">
-        amount,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="businessclassification != null">
-        #{businessclassification,jdbcType=VARCHAR},
-      </if>
-      <if test="amount != null">
-        #{amount,jdbcType=DECIMAL},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.LoanClassification">
-    update loan_classification
-    <set>
-      <if test="businessclassification != null">
-        businessClassification = #{businessclassification,jdbcType=VARCHAR},
-      </if>
-      <if test="amount != null">
-        amount = #{amount,jdbcType=DECIMAL},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoanClassification">
-    update loan_classification
-    set businessClassification = #{businessclassification,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=DECIMAL}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <!--后台管理  查询贷款分类所有信息，含分页 -->
-  <select id="queryAllPage" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoanClassification">
-  	select 
-   	 <include refid="Base_Column_List" />
-     from loan_classification limit #{page},2
-  </select>
-  <!-- 后台管理 用于获取总页数 -->
- <select id="pageCount" resultType="java.lang.Integer">
-   select count(*) from loan_classification
- </select>
-   <!-- 后台管理 用于获取模糊查询总页数 -->
- <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(*) from loan_classification where businessClassification like "%"#{0}"%"
- </select>
- <!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
- <select id="queryByLike" resultType="com.zhita.model.manage.LoanClassification">
- 	select 
-   	 <include refid="Base_Column_List" />
-    from loan_classification where businessClassification like "%"#{arg0}"%" limit #{arg1},2
- </select>
- <!-- 后台管理   添加贷款分类信息 -->
- <insert id="addAll" parameterType="com.zhita.model.manage.LoanClassification">
- 	insert into loan_classification(businessClassification,amount) values(#{businessClassification},#{amount})
- </insert>
- <!-- 后台管理    查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用-->
-  <select id="queryAllLoanCla" resultType="com.zhita.model.manage.LoanClassification">
-  	select 
-   	 <include refid="Base_Column_List" />
-     from loan_classification
-  </select>
- <resultMap type="com.zhita.model.manage.LoanClassification" id="loanCla">
- 	   <id property="id" column="id"/>
-       <result property="businessClassification" column="businessClassification"/>         
-       <!-- ofType指定listLoanBusiness集合中的对象类型 -->
-       <collection property="listLoanBusiness" ofType="com.zhita.model.manage.LoansBusinesses">
-             <id property="id" column="id"/>
-             <result property="businessname" column="businessName"/>
-             <result property="intro" column="intro"/>
-             <result property="loanlimit" column="loanLimit"/>
-             <result property="trademark" column="trademark"/>
-             <result property="isstick" column="isStick"/>
-             <result property="sort" column="sort"/>
-             <result property="applicationnumber" column="applicationNumber"/>
-             <result property="state" column="state"/>
-             <result property="busClaId" column="busClaId"/>
-             <result property="loanlimitsmall" column="loanLimitSmall"/>
-             <result property="loanlimitbig" column="loanLimitBig"/>
-             <result property="cycle" column="cycle"/>
-             <result property="interestrate" column="interestRate"/>
-             <result property="applicationrequirements" column="applicationRequirements"/>
-             <result property="applicationprocess" column="applicationProcess"/>
-             <result property="specialinstructions" column="specialInstructions"/>
-             <result property="successrate" column="successRate"/>
-             <result property="lendingrate" column="lendingRate"/>
-             <result property="registerlink" column="registerLink"/>
-             <result property="prepaidamount" column="prepaidAmount"/>
-             <result property="deleted" column="deleted"/>
-             <result property="applications" column="applications"/>
-       </collection>
- </resultMap>
- <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
- <select id="queryLoanbusinByLoanClass" parameterType="java.lang.String" resultMap="loanCla">
- 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification}
- </select>
+	<resultMap id="BaseResultMap"
+		type="com.zhita.model.manage.LoanClassification">
+		<constructor>
+			<idArg column="id" javaType="java.lang.Integer"
+				jdbcType="INTEGER" />
+			<arg column="businessClassification" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
+			<arg column="amount" javaType="java.math.BigDecimal"
+				jdbcType="DECIMAL" />
+		</constructor>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, businessClassification, amount
+	</sql>
+	<!-- 后台管理 通过主键id查询出贷款分类信息 -->
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from loan_classification
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from loan_classification
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.zhita.model.manage.LoanClassification">
+		insert into loan_classification (id, businessClassification, amount
+		)
+		values (#{id,jdbcType=INTEGER}, #{businessclassification,jdbcType=VARCHAR},
+		#{amount,jdbcType=DECIMAL}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.zhita.model.manage.LoanClassification">
+		insert into loan_classification
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="businessclassification != null">
+				businessClassification,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="businessclassification != null">
+				#{businessclassification,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.zhita.model.manage.LoanClassification">
+		update loan_classification
+		<set>
+			<if test="businessclassification != null">
+				businessClassification = #{businessclassification,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.zhita.model.manage.LoanClassification">
+		update loan_classification
+		set businessClassification = #{businessclassification,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<!--后台管理 查询贷款分类所有信息，含分页 -->
+	<select id="queryAllPage" parameterType="java.lang.Integer"
+		resultType="com.zhita.model.manage.LoanClassification">
+		select
+		<include refid="Base_Column_List" />
+		from loan_classification limit #{page},2
+	</select>
+	<!-- 后台管理 用于获取总页数 -->
+	<select id="pageCount" resultType="java.lang.Integer">
+		select count(*) from loan_classification
+	</select>
+	<!-- 后台管理 用于获取模糊查询总页数 -->
+	<select id="pageCountByLike" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*) from loan_classification where businessClassification like
+		"%"#{0}"%"
+	</select>
+	<!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
+	<select id="queryByLike"
+		resultType="com.zhita.model.manage.LoanClassification">
+		select
+		<include refid="Base_Column_List" />
+		from loan_classification where businessClassification like
+		"%"#{arg0}"%" limit #{arg1},2
+	</select>
+	<!-- 后台管理 添加贷款分类信息 -->
+	<insert id="addAll"
+		parameterType="com.zhita.model.manage.LoanClassification">
+		insert into loan_classification(businessClassification,amount)
+		values(#{businessClassification},#{amount})
+	</insert>
+	<!-- 后台管理 查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用 -->
+	<select id="queryAllLoanCla"
+		resultType="com.zhita.model.manage.LoanClassification">
+		select
+		<include refid="Base_Column_List" />
+		from loan_classification
+	</select>
+	<resultMap type="com.zhita.model.manage.LoanClassification"
+		id="loanCla">
+		<id property="id" column="id" />
+		<result property="businessClassification"
+			column="businessClassification" />
+		<!-- ofType指定listLoanBusiness集合中的对象类型 -->
+		<collection property="listLoanBusiness"
+			ofType="com.zhita.model.manage.LoansBusinesses">
+			<id property="id" column="id" />
+			<result property="businessname" column="businessName" />
+			<result property="intro" column="intro" />
+			<result property="loanlimit" column="loanLimit" />
+			<result property="trademark" column="trademark" />
+			<result property="isstick" column="isStick" />
+			<result property="sort" column="sort" />
+			<result property="applicationnumber"
+				column="applicationNumber" />
+			<result property="state" column="state" />
+			<result property="busClaId" column="busClaId" />
+			<result property="loanlimitsmall" column="loanLimitSmall" />
+			<result property="loanlimitbig" column="loanLimitBig" />
+			<result property="cycle" column="cycle" />
+			<result property="interestrate" column="interestRate" />
+			<result property="applicationrequirements"
+				column="applicationRequirements" />
+			<result property="applicationprocess"
+				column="applicationProcess" />
+			<result property="specialinstructions"
+				column="specialInstructions" />
+			<result property="successrate" column="successRate" />
+			<result property="lendingrate" column="lendingRate" />
+			<result property="registerlink" column="registerLink" />
+			<result property="prepaidamount" column="prepaidAmount" />
+			<result property="deleted" column="deleted" />
+			<result property="applications" column="applications" />
+		</collection>
+	</resultMap>
+	<!-- 小程序 通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
+	<select id="queryLoanbusinByLoanClass"
+		parameterType="java.lang.String" resultMap="loanCla">
+		select * from loans_businesses lobus inner join loan_classification locla on
+		lobus.busClaId=locla.id where
+		locla.businessClassification=#{businessClassification}
+	</select>
+
 </mapper>

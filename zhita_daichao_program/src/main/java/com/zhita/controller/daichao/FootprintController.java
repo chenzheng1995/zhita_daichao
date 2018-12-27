@@ -26,6 +26,7 @@ public class FootprintController {
 	@Autowired
 	ButtonFootprintService buttonFootprintService;
 
+	//插入足迹
 	@RequestMapping("/insertfootprint")
 	@ResponseBody
 	public Map<String, String> insertFootprint(String footprintName, String footprintType, String userId) { // footprintType = 1为商品， 2为贷款分类 ， 3为按钮

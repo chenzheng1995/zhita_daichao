@@ -1,6 +1,7 @@
 package com.zhita.service.registe;
 
 import java.util.List;
+import java.util.Map;
 
 import com.zhita.model.manage.LoansBusinesses;
 
@@ -26,4 +27,8 @@ public interface IntRegisteService{
   	int upaStateOpen(Integer id);
   	//后台管理---修改贷款商家状态为关闭
   	int upaStateClose(Integer id);
+    //后台管理---插入图片的URL
+	public void insertPath(String ossPath);
+	
+	public Map<String, Object> getLoansBusinesses(String businessName);
 }

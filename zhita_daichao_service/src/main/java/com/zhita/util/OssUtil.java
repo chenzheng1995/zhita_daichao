@@ -11,16 +11,16 @@ public class OssUtil {
 	private static final String HTTP = "https://";
 	
 	// 阿里云API的外网域名
-	private static final String ENDPOINT = "oss-cn-hangzhou.aliyuncs.com";
+	private static final String ENDPOINT = "oss-cn-zhangjiakou.aliyuncs.com";
 	
 	// 阿里云API的bucket名称
 	private static final String BUCKET_NAME = "wx-dc";
 	
 	// 阿里云API的密钥Access Key ID
-	private static final String ACCESS_KEY_ID = "LTAIg62DQxOOlA9Y";
+	private static final String ACCESS_KEY_ID = "LTAISFgfet473EbT";
 	
 	// 阿里云API的密钥Access Key Secret
-	private static final String ACCESS_KEY_SECRET = "EgRAUgP8ajGZkdCuBkMiIO0MAkOGsH";
+	private static final String ACCESS_KEY_SECRET = "PGpTcKhhGL2w9hO4nJ3SXriXGefdL7";
 	
 	private static final String URL = HTTP + BUCKET_NAME + "." + ENDPOINT + "/";
 	

@@ -1,5 +1,6 @@
 package com.zhita.controller.registe;
 
+
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -8,7 +9,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,19 +65,58 @@ public class RegisteController {
     	return map;
     }
 	//后台管理---添加贷款商家信息
+    
     @ResponseBody
     @RequestMapping("/insertAllAdmin")
-    public List<LoanClassification> insertAll(LoansBusinesses loansBusinesses){
+    public Map<String, Object> insertAll(LoansBusinesses loansBusinesses,MultipartFile file) throws Exception{
+		Map<String, Object> map = new HashMap<>();
+		if (file != null) {// 判断上传的文件是否为空
+			String path = null;// 文件路径
+			String type = null;// 文件类型
+			InputStream iStream = file.getInputStream();
+			String fileName = file.getOriginalFilename();// 文件原名称
+			// 判断文件类型
+			type = fileName.indexOf(".") != -1? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()): null;
+			if (type != null) {// 判断文件类型是否为空
+				if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+					// 自定义的文件名称
+					String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
+					// 设置存放图片文件的路径
+					path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
+					OssUtil ossUtil = new OssUtil();
+					String ossPath = ossUtil.uploadFile(iStream, path);
+					if(ossPath.substring(0, 5).equals("https")) {
+						System.out.println("路径为："+ossPath);
+						loansBusinesses.setTrademark(ossPath);
+						map.put("msg", "图片上传成功");
+					}
+					
+					System.out.println("存放图片文件的路径:" + ossPath);
+				} else {
+					map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
+					return map;
+				}
+			} else {
+				map.put("msg", "文件类型为空");
+				return map;
+			}
+		}else {
+			map.put("msg", "请上传图片");
+			return map;
+		} 
     	List<LoanClassification> loanlist=intTypeService.queryAllLoanCla();//添加贷款商家信息时，先查询出贷款分类的所有类型
+    	map.put("loanlist", loanlist);
     	
     	BigDecimal limitsmall=loansBusinesses.getLoanlimitsmall();//得到输入框的借款额度（小）
     	BigDecimal limitbig=loansBusinesses.getLoanlimitbig();//得到输入框的借款额度（大）
-    	String limit=limitsmall+"~"+limitbig;//将两个额度拼接成一个字符串，赋给loansBusinesses的loanlimit的字段
+    	String limit=limitsmall+"~"+limitbig;//将两个额度拼接成一个字符串，赋给loansBusinesses的loanlimit的字段 	
     	loansBusinesses.setLoanlimit(limit);
     	
     	intRegisteService.insert(loansBusinesses);
-    	return loanlist;
+    	
+    	return map;
     }
+    
 	//后台管理---通过商家名称模糊查询，并且有分页功能
     @ResponseBody
     @RequestMapping("/queryByNameLike")
@@ -125,14 +164,13 @@ public class RegisteController {
 	// 上传贷款商家的商标
 	@ResponseBody
 	@RequestMapping("/uploadtrademark")
-	public Map<String, Object> uploadTrademark(HttpServletRequest request, HttpServletResponse response, MultipartFile file) throws Exception {
+	public Map<String, Object> uploadTrademark(MultipartFile file) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 			if (file != null) {// 判断上传的文件是否为空
 				String path = null;// 文件路径
 				String type = null;// 文件类型
 				InputStream iStream = file.getInputStream();
 				String fileName = file.getOriginalFilename();// 文件原名称
-				System.out.println("上传的文件原名称:" + fileName);
 				// 判断文件类型
 				type = fileName.indexOf(".") != -1? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()): null;
 				if (type != null) {// 判断文件类型是否为空
@@ -142,8 +180,15 @@ public class RegisteController {
 						// 设置存放图片文件的路径
 						path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
 						OssUtil ossUtil = new OssUtil();
-						ossUtil.uploadFile(iStream, path);
-						System.out.println("存放图片文件的路径:" + path);
+						String ossPath = ossUtil.uploadFile(iStream, path);
+						if(ossPath.substring(0, 5).equals("https")) {
+							System.out.println("路径为："+ossPath);
+//							intRegisteService.insertPath(ossPath);
+							map.put("msg", "图片上传成功");
+							return map;
+						}
+						
+						System.out.println("存放图片文件的路径:" + ossPath);
 					} else {
 						map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
 						return map;
@@ -152,6 +197,9 @@ public class RegisteController {
 					map.put("msg", "文件类型为空");
 					return map;
 				}
+			}else {
+				map.put("msg", "请上传图片");
+				return map;
 			} 
 
 		return map;

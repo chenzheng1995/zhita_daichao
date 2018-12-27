@@ -148,4 +148,13 @@
 		#{footprintName,jdbcType=VARCHAR},
 		#{currentTimestamp,jdbcType=VARCHAR})
 	</insert>
+	<!-- 查找商品足迹表中的商品名称 -->
+	<select id="getbusinessName" resultType="String" parameterType="map">
+		select footprint from commodity_footprint where userId = #{userId} order by footprintTime desc limit #{startRow},#{pageSize}
+	</select>
+	
+	<!-- 查询出某个商品的申请人数 -->
+	<select id="getApplications" resultType="long" parameterType="java.lang.String">
+		select count(distinct userId) from commodity_footprint where footprint= #{businessName} and deleted = 0
+	</select>
 </mapper>

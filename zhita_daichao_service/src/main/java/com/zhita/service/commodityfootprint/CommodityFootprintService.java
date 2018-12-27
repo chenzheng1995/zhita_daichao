@@ -1,5 +1,7 @@
 package com.zhita.service.commodityfootprint;
 
+import java.util.List;
+
 public interface CommodityFootprintService {
 
 	long getDailyApplications(long todayZeroTimestamps, long tomorrowZeroTimestamps);
@@ -11,5 +13,9 @@ public interface CommodityFootprintService {
 	long getmonthlyApplicationsUsers(long monthlyZeroTimestamps, long nextMonthlyZeroTimestamps);
 
 	int insertfootprint(String footprintName, String userId, long currentTimestamp);
+
+	List<String> getbusinessName(String userId, int pageSize, int startRow);
+
+	long getApplications(String businessName);
 
 }

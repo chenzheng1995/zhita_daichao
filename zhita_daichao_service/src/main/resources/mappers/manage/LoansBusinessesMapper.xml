@@ -50,21 +50,21 @@
   <insert id="insert" parameterType="com.zhita.model.manage.LoansBusinesses">
     insert into loans_businesses (businessName, intro, 
       loanLimit, trademark, isStick,
-      sort, applicationNumber, state, 
+      sort, applicationNumber, 
       busClaId, loanLimitSmall, 
       loanLimitBig, cycle, interestRate, 
       applicationRequirements, applicationProcess, 
       specialInstructions, successRate, lendingRate, 
-      registerLink, prepaidAmount, deleted, 
+      registerLink, prepaidAmount, 
       applications)
     values (#{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
       #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER},
       #{busClaId,jdbcType=INTEGER}, #{loanlimitsmall,jdbcType=DECIMAL}, 
       #{loanlimitbig,jdbcType=DECIMAL}, #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, 
       #{applicationrequirements,jdbcType=VARCHAR}, #{applicationprocess,jdbcType=VARCHAR}, 
       #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, 
-      #{registerlink,jdbcType=VARCHAR}, #{prepaidamount,jdbcType=DECIMAL}, #{deleted,jdbcType=VARCHAR}, 
+      #{registerlink,jdbcType=VARCHAR}, #{prepaidamount,jdbcType=DECIMAL},
       #{applications,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.LoansBusinesses">
@@ -345,4 +345,14 @@
  <update id="upaStateClose" parameterType="java.lang.Integer">
  	update loans_businesses set state='2' where id=#{id}
  </update>
+ 	<!-- 插入商标的URL -->
+	<insert id="insertPath" parameterType="java.lang.String">
+		insert into loans_businesses
+		(trademark)
+		values (#{ossPath})
+	</insert>
+	 <!-- 获取商品的所有信息 -->
+ <select id="getLoansBusinesses" resultType="map" parameterType="java.lang.String">
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate,cycle,state from loans_businesses where deleted='0' and businessName = #{businessName}
+ </select>
 </mapper>

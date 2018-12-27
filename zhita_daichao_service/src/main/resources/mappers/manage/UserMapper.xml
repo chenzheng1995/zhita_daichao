@@ -20,11 +20,13 @@
 			<arg column="age" javaType="java.lang.Integer" jdbcType="INTEGER" />
 			<arg column="idCard" javaType="java.lang.String"
 				jdbcType="VARCHAR" />
+			<arg column="openId" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
 		</constructor>
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, sourceId, nickname, phone, dayFen, registrationTime,
-		name, age, idCard
+		name, age, idCard,openId
 	</sql>	
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">
@@ -35,14 +37,14 @@
 		insert into user (id, sourceId,
 		nickname,
 		phone, dayFen, registrationTime,
-		name, age, idCard)
+		name, age, idCard,openId)
 		values
 		(#{id,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER},
 		#{nickname,jdbcType=VARCHAR},
 		#{phone,jdbcType=VARCHAR},
 		#{dayfen,jdbcType=INTEGER}, #{registrationtime,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
-		#{idcard,jdbcType=VARCHAR})
+		#{idcard,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.zhita.model.manage.User">
@@ -75,6 +77,9 @@
 			<if test="idcard != null">
 				idCard,
 			</if>
+			<if test="openId != null">
+				openId,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -103,6 +108,9 @@
 			</if>
 			<if test="idcard != null">
 				#{idcard,jdbcType=VARCHAR},
+			</if>
+			<if test="openId != null">
+				#{openId,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -134,6 +142,9 @@
 			<if test="idcard != null">
 				idCard = #{idcard,jdbcType=VARCHAR},
 			</if>
+			<if test="openId != null">
+				openId = #{openId,jdbcType=VARCHAR},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -150,18 +161,19 @@
 		#{name,jdbcType=VARCHAR},
 		age = #{age,jdbcType=INTEGER},
 		idCard =
-		#{idcard,jdbcType=VARCHAR}
+		#{idcard,jdbcType=VARCHAR},
+		openId = #{openId,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 查找用户表有多少条记录 -->
 	<select id="getregistered" resultType="java.lang.Long">
-		select count(name) from
+		select count(openId) from
 		user
 	</select>
 	<!-- 查找日新增用户数 -->
 	<select id="getdailyUsers" resultType="java.lang.Long"
 		parameterType="java.lang.Long">
-		select count(name) from user where
+		select count(openId) from user where
 		registrationTime>=#{todayZeroTimestamps}
 		and registrationTime &lt;
 		#{tomorrowZeroTimestamps}
@@ -169,8 +181,26 @@
 	<!-- 查找月新增用户数 -->
 	<select id="getmonthlyUsers" resultType="java.lang.Long"
 		parameterType="java.lang.Long">
-		select count(name) from user where
+		select count(openId) from user where
 		registrationTime>=#{monthlyZeroTimestamps} and registrationTime &lt;
 		#{nextMonthlyZeroTimestamps}
 	</select>
+	  	<!--判断用户名是否存在 -->
+	<select id="findFormatByLoginName" resultMap="BaseResultMap"
+		parameterType="String">
+    	<![CDATA[
+       SELECT a.* FROM user a WHERE 1=1 
+       AND a.phone=#{phone}
+       AND a.openId=#{openId} 
+       ]]>
+	</select>
+	  	<!-- 插入用户信息 -->
+	<insert id="insertfootprint" parameterType="java.util.Map">
+		insert into user (phone, nickname,
+		openId,registrationTime)
+		values (#{phone},
+		#{nickName},
+		#{openId},
+		#{registrationTime})
+	</insert>
 </mapper>

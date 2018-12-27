@@ -21,8 +21,10 @@ public class User implements Serializable{
     private Integer age;//年龄
 
     private String idcard;//身份证号
+    
+    private String openId;//用户唯一值
 
-    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard) {
+    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId) {
         this.id = id;
         this.sourceId = sourceId;
         this.nickname = nickname;
@@ -32,6 +34,7 @@ public class User implements Serializable{
         this.name = name;
         this.age = age;
         this.idcard = idcard;
+        this.openId = openId;
     }
 
     public User() {
@@ -108,5 +111,13 @@ public class User implements Serializable{
 
     public void setIdcard(String idcard) {
         this.idcard = idcard == null ? null : idcard.trim();
+    }
+    
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+    	this.openId = openId == null ? null : openId.trim();
     }
 }

@@ -1,6 +1,7 @@
 package com.zhita.dao.manage;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,4 +48,9 @@ public interface LoansBusinessesMapper {
   	
   	//后台管理---修改贷款商家状态为关闭
   	int upaStateClose(Integer id);
+  	
+    //后台管理---插入图片的RUL
+	void insertPath(String ossPath);
+
+	Map<String, Object> getLoansBusinesses(String businessName);
 }

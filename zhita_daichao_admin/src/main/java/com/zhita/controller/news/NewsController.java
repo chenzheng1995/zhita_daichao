@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zhita.model.manage.Strategy;
 import com.zhita.service.news.IntNewsService;
@@ -68,8 +69,8 @@ public class NewsController {
 	//后台管理---添加攻略信息
 	@ResponseBody
 	@RequestMapping("/AddALL")
-    public Integer AddALL(Strategy strategy){
-		int selnum=intNewsService.addAll(strategy);
+    public Integer AddALL(Strategy strategy,MultipartFile file)throws Exception{
+		int selnum=intNewsService.addAll(strategy);		
 		return selnum;
 	}
     //后台管理---通过主键id查询出攻略信息

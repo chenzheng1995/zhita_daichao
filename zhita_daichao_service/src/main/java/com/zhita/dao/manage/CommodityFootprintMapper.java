@@ -1,5 +1,9 @@
 package com.zhita.dao.manage;
 
+
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.zhita.model.manage.CommodityFootprint;
@@ -26,4 +30,8 @@ public interface CommodityFootprintMapper {
 	long getmonthlyApplicationsUsers(@Param("monthlyZeroTimestamps") long monthlyZeroTimestamps,@Param("nextMonthlyZeroTimestamps")long nextMonthlyZeroTimestamps);
 
 	int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp);
+
+	List<String> getbusinessName(@Param("userId")String userId,@Param("pageSize")int pageSize,@Param("startRow") int startRow);
+
+	long getApplications(String businessName);
 }
