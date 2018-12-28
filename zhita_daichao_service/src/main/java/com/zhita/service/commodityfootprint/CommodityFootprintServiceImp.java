@@ -67,6 +67,12 @@ public class CommodityFootprintServiceImp implements CommodityFootprintService{
 		return count;
 	}
 
+	@Override
+	public long getRecordNumber(String userId) {
+		long recordNumber = commodityFootprintMapper.getRecordNumber(userId);
+		return recordNumber;
+	}
+
 
 
 }

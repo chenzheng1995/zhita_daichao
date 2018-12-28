@@ -108,21 +108,50 @@ public class LoginController {
 				if(redisCode.equals(verificationCode)) {
 					String registrationTime = System.currentTimeMillis()+"";
 					User user = intLoginService.findFormatByLoginName(phone,openId); // 判断用户名是否存在
-					if (user == null) {
-						int number = intLoginService.insertfootprint(phone, nickName, openId,registrationTime);
-						if (number == 1) {
-							String sessionId = phone+openId;
+					String loginStatus = "1";
+					if (user == null) {						
+						int number = intLoginService.insertfootprint(phone, nickName, openId,registrationTime,loginStatus);
+						if (number == 1) {														
 							map.put("msg", "用户登录成功，数据插入成功");
-							map.put("loginStatus","200");
-							map.put("sessionId", sessionId);
+							map.put("loginStatus", loginStatus);
 						} else {
 							map.put("msg", "用户登录失败，用户数据插入失败");
-							map.put("loginStatus","0");
+						}
+					}else {
+						int number = intLoginService.updateloginStatus(loginStatus,openId,phone);
+						if (number == 1) {														
+							map.put("msg", "用户登录成功，登录状态修改成功");
+							map.put("loginStatus", loginStatus);
+						} else {
+							map.put("msg", "用户登录失败，登录状态修改失败");
 						}
 					}
 
 				}else {
 					map.put("msg", "验证码输入错误");
+				}
+			}
+
+		return map;
+
+	}
+	
+	// 退出登录
+	@RequestMapping("/logOut")
+	@ResponseBody
+	public Map<String, String> logOut(String phone,String openId) {//phone是手机号
+		Map<String, String> map = new HashMap<>();
+		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(openId)) {
+			map.put("msg", "phone,openId不能为空");
+			return map;
+			}else {
+				String loginStatus = "0";
+				int number = intLoginService.updateloginStatus(loginStatus,openId,phone);
+				if (number == 1) {														
+					map.put("msg", "用户退出成功，登录状态修改成功");
+					map.put("loginStatus", loginStatus);
+				} else {
+					map.put("msg", "用户退出失败，登录状态修改失败");
 				}
 			}
 

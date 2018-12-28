@@ -125,7 +125,7 @@ public class RegisteController {
 			map.put("msg", "请上传图片");
 			return map;
 		} 
-    	List<LoanClassification> loanlist=intTypeService.queryAllLoanCla();//添加贷款商家信息时，先查询出贷款分类的所有类型
+    	List<LoanClassification> loanlist=intTypeService.queryAllLoanCla();//添加贷款商家信息时，先查询出贷款分类的所有类型,用于下拉框
     	map.put("loanlist", loanlist);
 
     	BigDecimal limitsmall=loansBusinesses.getLoanlimitsmall();//得到输入框的借款额度（小）

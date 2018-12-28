@@ -29,9 +29,11 @@ public class User implements Serializable{
 
     private Source source;//关联渠道表,多个用户属于一个渠道的
     
+    private String loginStatus;//用户登录状态
+    
 
 
-    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId) {
+    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus) {
         this.id = id;
         this.sourceId = sourceId;
         this.nickname = nickname;
@@ -42,6 +44,7 @@ public class User implements Serializable{
         this.age = age;
         this.idcard = idcard;
         this.openId = openId;
+        this.loginStatus = loginStatus;
     }
 
     public User() {
@@ -146,5 +149,11 @@ public class User implements Serializable{
 		this.registrationtime1 = registrationtime1;
 	}
     
+    public String getloginStatus() {
+        return loginStatus;
+    }
 
+    public void setloginStatus(String loginStatus) {
+    	this.loginStatus = loginStatus == null ? null : loginStatus.trim();
+    }
 }

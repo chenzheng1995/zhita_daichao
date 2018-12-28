@@ -21,4 +21,6 @@ public interface CommodityFootprintService {
 
 	long getApplications(String businessName);
 
+	long getRecordNumber(String userId);
+
 }

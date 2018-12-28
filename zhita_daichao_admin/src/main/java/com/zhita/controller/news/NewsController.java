@@ -84,6 +84,7 @@ public class NewsController {
 	@ResponseBody
 	@RequestMapping("/AddALL")
     public Integer AddALL(Strategy strategy,MultipartFile file)throws Exception{
+		
 		int selnum=intNewsService.addAll(strategy);		
 		return selnum;
 	}

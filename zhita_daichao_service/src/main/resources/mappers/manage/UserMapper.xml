@@ -22,11 +22,13 @@
 				jdbcType="VARCHAR" />
 			<arg column="openId" javaType="java.lang.String"
 				jdbcType="VARCHAR" />
+			<arg column="loginStatus" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
 		</constructor>
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, sourceId, nickname, phone, dayFen, registrationTime,
-		name, age, idCard,openId
+		name, age, idCard,openId,loginStatus
 	</sql>	
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">
@@ -37,14 +39,14 @@
 		insert into user (id, sourceId,
 		nickname,
 		phone, dayFen, registrationTime,
-		name, age, idCard,openId)
+		name, age, idCard,openId,loginStatus)
 		values
 		(#{id,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER},
 		#{nickname,jdbcType=VARCHAR},
 		#{phone,jdbcType=VARCHAR},
 		#{dayfen,jdbcType=INTEGER}, #{registrationtime,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
-		#{idcard,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR})
+		#{idcard,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR},#{loginStatus,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.zhita.model.manage.User">
@@ -80,6 +82,9 @@
 			<if test="openId != null">
 				openId,
 			</if>
+			<if test="loginStatus != null">
+				loginStatus,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -111,6 +116,9 @@
 			</if>
 			<if test="openId != null">
 				#{openId,jdbcType=VARCHAR},
+			</if>
+			<if test="loginStatus != null">
+				#{loginStatus,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -145,6 +153,9 @@
 			<if test="openId != null">
 				openId = #{openId,jdbcType=VARCHAR},
 			</if>
+			<if test="loginStatus != null">
+				loginStatus = #{loginStatus,jdbcType=VARCHAR},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -162,7 +173,8 @@
 		age = #{age,jdbcType=INTEGER},
 		idCard =
 		#{idcard,jdbcType=VARCHAR},
-		openId = #{openId,jdbcType=VARCHAR}
+		openId = #{openId,jdbcType=VARCHAR},
+		loginStatus =#{loginStatus,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 查找用户表有多少条记录 -->
@@ -198,11 +210,12 @@
 	  	<!-- 插入用户信息 -->
 	<insert id="insertfootprint" parameterType="java.util.Map">
 		insert into user (phone, nickname,
-		openId,registrationTime)
+		openId,registrationTime,loginStatus)
 		values (#{phone},
 		#{nickName},
 		#{openId},
-		#{registrationTime})
+		#{registrationTime},
+		#{loginStatus})
 	</insert>
 	<!-- 后台管理   查询出用户表总数量 -->
 	<select id="pageCount" resultType="java.lang.Integer">
@@ -298,5 +311,11 @@
 		SELECT * from loan_classification_footprint l where userId=#{arg0} and deleted='0'
 		ORDER BY footprintTime desc limit #{arg1},2
 	</select>
-
+	<!-- 登录状态修改 -->
+	<update id="updateloginStatus" parameterType="java.lang.String" >
+		update user
+		set loginStatus = #{loginStatus}
+		where openId = #{openId}
+		and phone = #{phone}
+	</update>
 </mapper>

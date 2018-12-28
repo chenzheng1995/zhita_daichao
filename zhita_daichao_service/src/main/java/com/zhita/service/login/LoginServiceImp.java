@@ -32,8 +32,14 @@ public class LoginServiceImp implements IntLoginService{
 	}
 
 	@Override
-	public int insertfootprint(String phone, String nickName, String openId,String registrationTime) {
-		int number = userMapper.insertfootprint(phone, nickName, openId,registrationTime);
+	public int insertfootprint(String phone, String nickName, String openId,String registrationTime,String loginStatus) {
+		int number = userMapper.insertfootprint(phone, nickName, openId,registrationTime,loginStatus);
+		return number;
+	}
+
+	@Override
+	public int updateloginStatus(String loginStatus,String openId,String phone) {
+		int number = userMapper.updateloginStatus(loginStatus,openId,phone);
 		return number;
 	}
 }

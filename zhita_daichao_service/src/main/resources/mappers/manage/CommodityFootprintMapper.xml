@@ -163,4 +163,8 @@
 	<select id="queryCount" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(footprint) from commodity_footprint where footprint=#{footprint}
 	</select>
+		<!-- 小程序   查询某个用户有多少条浏览记录 -->
+	<select id="getRecordNumber" parameterType="java.lang.String" resultType="java.lang.Long">
+		select count(userId) from commodity_footprint where userId=#{userId}
+	</select>
 </mapper>

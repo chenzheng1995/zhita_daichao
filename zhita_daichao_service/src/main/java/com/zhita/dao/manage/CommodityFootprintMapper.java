@@ -39,4 +39,6 @@ public interface CommodityFootprintMapper {
 	//后台管理---根据传过来的足迹名称，查询出足迹的个数
 	int queryCount(String businessName);
 
+	long getRecordNumber(String userId);
+
 }

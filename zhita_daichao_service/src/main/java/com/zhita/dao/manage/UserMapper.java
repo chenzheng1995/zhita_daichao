@@ -30,7 +30,7 @@ public interface UserMapper {
 
 	User findFormatByLoginName(@Param("phone")String phone,@Param("openId") String openId);
 
-	int insertfootprint(@Param("phone")String phone,@Param("nickName") String nickName,@Param("openId") String openId,@Param("registrationTime") String registrationTime);
+	int insertfootprint(@Param("phone")String phone,@Param("nickName") String nickName,@Param("openId") String openId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus);
 	
 	//后台管理---查询出用户表总数量
 	int pageCount();
@@ -85,5 +85,7 @@ public interface UserMapper {
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中,含分页
 	List<ButtonFootprint> queryAllButton(Integer id,Integer page);
+
+	int updateloginStatus(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone);
 
 }
