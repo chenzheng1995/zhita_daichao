@@ -34,10 +34,12 @@ public interface IntRegisteService{
   	//后台管理---查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
   	public List<String> queryAllBusinessName();
   	//后台管理---通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中
-  	List<String> queryAllBusinessNameByLike(String businessName);
+  	public List<String> queryAllBusinessNameByLike(String businessName);
   	//后台管理---根据商家名称更新被申请次数字段
   	public int upaApplicationNumber(Integer num,String businessName);
     //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
-    public int updateByPrimaryKey(LoansBusinesses record);
+    public int updateLoansBusinesses(LoansBusinesses loans);
+  	//小程序---查询贷款商家部分字段信息，含分页
+  	public List<LoansBusinesses> queryAllAdmainpro(Integer page);
 
 }

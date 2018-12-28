@@ -18,6 +18,9 @@ public interface ShufflingFigureMapper {
 
     int updateByPrimaryKey(ShufflingFigure record);
     
+    //后台管理---通过传过来的轮播图对象，对当前对象进行修改保存
+    int updateShufflingFigure(ShufflingFigure shufflingFigure);
+    
     //后台管理---查询出轮播图总数量
     int pageCount();
     

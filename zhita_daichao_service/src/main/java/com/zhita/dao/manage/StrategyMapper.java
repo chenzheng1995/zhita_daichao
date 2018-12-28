@@ -18,6 +18,9 @@ public interface StrategyMapper {
 
     int updateByPrimaryKey(Strategy record);
     
+    //后台管理---通过传过来的攻略对象，对当前对象进行修改保存
+    int updateStrategy(Strategy strategy);
+    
     //后台管理---查询攻略表所有信息，含分页
     List<Strategy> queryAllNews(Integer page);
     

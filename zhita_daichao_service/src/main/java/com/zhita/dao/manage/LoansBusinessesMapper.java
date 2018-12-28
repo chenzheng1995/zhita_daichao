@@ -20,8 +20,13 @@ public interface LoansBusinessesMapper {
 
     int updateByPrimaryKeySelective(LoansBusinesses record);
 
-    //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
     int updateByPrimaryKey(LoansBusinesses record);
+    
+    //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
+    int updateLoansBusinesses(LoansBusinesses loans);
+    
+  	//小程序---查询贷款商家部分字段信息，含分页
+  	List<LoansBusinesses> queryAllAdmainpro(Integer page);
     
   	//后台管理---查询贷款商家部分字段信息，含分页
   	List<LoansBusinesses> queryAllAdmain(Integer page);

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhita.dao.manage.LoanClassificationMapper">
-	
   <resultMap id="BaseResultMap" type="com.zhita.model.manage.LoanClassification">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -66,12 +65,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理  通过传过来的贷款分类对象，对当前对象进行修改保存 -->
   <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoanClassification">
     update loan_classification
     set businessClassification = #{businessclassification,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
   <!--后台管理  查询贷款分类所有信息，含分页 -->
   <select id="queryAllPage" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoanClassification">
   	select 
@@ -138,7 +139,7 @@
  </resultMap>
  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClass" resultMap="loanCla">
- 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} limit #{arg1},2
+ 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} order by isStick desc limit #{arg1},10
  </select>
 
 </mapper>

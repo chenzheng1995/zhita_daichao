@@ -34,8 +34,11 @@ public class TypeController {
     public Map<String,Object> queryAllPage(HttpServletRequest request,Integer page){
     	int totalCount=intTypeService.pageCount();//该方法是查询贷款分类总数量
     	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
+    	if(page<1) {
     		page=1;
+    	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil=new PageUtil(pages, totalCount);
@@ -56,8 +59,11 @@ public class TypeController {
     	if(businessClassification==null||"".equals(businessClassification)) {
         	int totalCount=intTypeService.pageCount();//该方法是查询贷款分类总数量
         	pageUtil=new PageUtil(page, totalCount);
-        	if(page==0) {
+        	if(page<1) {
         		page=1;
+        	}
+        	else if(page>pageUtil.getTotalPageCount()) {
+        		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil=new PageUtil(pages, totalCount);
@@ -66,8 +72,11 @@ public class TypeController {
     	}else {
           	int totalCount=intTypeService.pageCountByLike(businessClassification);//该方法是模糊查询的贷款分类总数量
         	pageUtil=new PageUtil(page, totalCount);
-        	if(page==0) {
+        	if(page<1) {
         		page=1;
+        	}
+        	else if(page>pageUtil.getTotalPageCount()) {
+        		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil=new PageUtil(pages, totalCount);
@@ -91,5 +100,12 @@ public class TypeController {
     public LoanClassification selectByPrimaryKey(Integer id){
     	LoanClassification loanClassification=intTypeService.selectByPrimaryKey(id);
     	return loanClassification;
+    }
+    //通过传过来的贷款分类对象，对当前对象进行修改保存
+    @ResponseBody
+    @RequestMapping("/updateByPrimaryKey")
+    public Integer updateByPrimaryKey(LoanClassification loanClassification){
+    	Integer num=intTypeService.updateByPrimaryKey(loanClassification);
+    	return num;
     }
 }

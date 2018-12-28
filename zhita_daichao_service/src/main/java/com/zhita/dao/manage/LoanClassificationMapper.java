@@ -16,7 +16,8 @@ public interface LoanClassificationMapper {
     LoanClassification selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(LoanClassification record);
-
+    
+    //通过传过来的贷款分类对象，对当前对象进行修改保存
     int updateByPrimaryKey(LoanClassification record);
     
     //后台管理---查询贷款分类所有信息，含分页

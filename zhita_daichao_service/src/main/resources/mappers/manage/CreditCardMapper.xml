@@ -139,9 +139,20 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理   通过传过来的信用卡对象，对当前对象进行修改保存 -->
+    <update id="updateCreditCard" parameterType="com.zhita.model.manage.CreditCard">
+    update credit_card
+    set title = #{title,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      intro = #{intro,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
   <!-- 后台管理  查询所有信用卡信息 含分页-->
   <select id="queryAllCard" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.CreditCard">
-  	select id,title,cover,intro,isStick,state from credit_card where deleted='0' order by isStick desc limit #{page},2
+  	select id,title,cover,intro,isStick,state from credit_card where deleted='0' limit #{page},2
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -153,7 +164,7 @@
  </select>
  <!--后台管理  根据标题字段模糊查询信用卡信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.CreditCard">
- 	select id,title,cover,intro,isStick,state from credit_card where deleted='0' and title like "%"#{0}"%" order by isStick desc limit #{1},2
+ 	select id,title,cover,intro,isStick,state from credit_card where deleted='0' and title like "%"#{0}"%" limit #{1},2
  </select>
  <!--后台管理 添加信用卡信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.CreditCard" >

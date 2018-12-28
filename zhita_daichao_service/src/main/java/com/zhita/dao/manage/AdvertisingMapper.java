@@ -18,6 +18,9 @@ public interface AdvertisingMapper {
 
     int updateByPrimaryKey(Advertising record);
     
+    //后台管理---根据传过来的广告对象，对当前对象进行修改保存
+    int updateAdvertising(Advertising advertising);
+    
     //后台管理---查询出广告表总数量
     int pageCount();
     

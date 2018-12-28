@@ -19,6 +19,9 @@ public interface CreditCardMapper {
 
     int updateByPrimaryKey(CreditCard record);
     
+    //后台管理---通过传过来的信用卡对象，对当前对象进行修改保存
+    int updateCreditCard(CreditCard creditCard);
+    
     //后台管理---查询信用卡所有的信息,含分页
     List<CreditCard> queryAllCard(Integer page);
     

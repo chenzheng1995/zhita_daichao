@@ -68,8 +68,11 @@ public class UserServiceImp implements UserService {
 	    	
 	       	int totalCount=userMapper.pageCount();//该方法是查询出用户表总数量
 	    	pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);
@@ -89,8 +92,11 @@ public class UserServiceImp implements UserService {
 	    	
 			int totalCount=userMapper.pageCountByPhone(phone);//该方法是通过手机号模糊查询出用户总数量
 			pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);
@@ -101,8 +107,11 @@ public class UserServiceImp implements UserService {
 			System.out.println("第三个if");
 	 		int totalCount=userMapper.pageCountByPhoneAndSourceName(phone,sourceName);//该方法是通过电话和渠道名称模糊查询出用户总数量
 			pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);
@@ -115,8 +124,11 @@ public class UserServiceImp implements UserService {
 	    	list1=sourceMapper.queryAll();//查询出所有的渠道信息，将渠道名称渲染到下拉框中
 			int totalCount=userMapper.pageCountByPhoneAndRegistrationtime(phone,registrationTimeStart,registrationTimeEnd);//该方法是通过电话和注册时间模糊查询出用户总数量
 			pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);
@@ -127,8 +139,11 @@ public class UserServiceImp implements UserService {
 			System.out.println("第五个if");
 			int totalCount=userMapper.pageCountByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd);//该方法是通过电话、渠道名称和注册时间模糊查询出用户总数量
 			pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);
@@ -140,8 +155,11 @@ public class UserServiceImp implements UserService {
 			System.out.println("第六个if");
 			int totalCount=userMapper.pageCountBySourceName(sourceName);//该方法是通过渠道名称模糊查询出用户总数量
 			pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);
@@ -152,8 +170,11 @@ public class UserServiceImp implements UserService {
 			System.out.println("第七个if");
 			int totalCount=userMapper.pageCountBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd);//该方法是通过渠道名称和注册时间模糊查询出用户总数量
 			pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);
@@ -165,8 +186,11 @@ public class UserServiceImp implements UserService {
 	    	list1=sourceMapper.queryAll();//查询出所有的渠道信息，将渠道名称渲染到下拉框中
 			int totalCount=userMapper.pageCountByRegistrationtime(registrationTimeStart,registrationTimeEnd);//该方法是通过注册时间模糊查询出用户总数量
 			pageUtil=new PageUtil(page, totalCount);
-	    	if(page==0) {
+	    	if(page<1) {
 	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil=new PageUtil(pages, totalCount);

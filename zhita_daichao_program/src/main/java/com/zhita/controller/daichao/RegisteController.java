@@ -36,12 +36,15 @@ public class RegisteController {
     public Map<String,Object> queryAll(Integer page){
     	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
     	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
+    	if(page<1) {
     		page=1;
+    	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil=new PageUtil(pages, totalCount);
-    	List<LoansBusinesses> list=intRegisteService.queryAllAdmain(pageUtil.getPage());
+    	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listLoansBusin",list);

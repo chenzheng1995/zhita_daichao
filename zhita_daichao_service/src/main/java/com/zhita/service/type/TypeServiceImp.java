@@ -75,6 +75,10 @@ public class TypeServiceImp implements IntTypeService{
     	List<LoanClassification> list=loanClassificationMapper.queryAllLoanCla();
     	return list;
     }
-
+    //通过传过来的贷款分类对象，对当前对象进行修改保存
+    public int updateByPrimaryKey(LoanClassification record) {
+    	int num=loanClassificationMapper.updateByPrimaryKey(record);
+    	return num;
+    }
 
 }
