@@ -116,6 +116,15 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理  根据传过来的广告对象，对当前对象进行修改保存 -->
+    <update id="updateAdvertising" parameterType="com.zhita.model.manage.Advertising">
+    update advertising
+    set title = #{title,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      link = #{link,jdbcType=VARCHAR},
+      advertising = #{advertising,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
     <!-- 后台管理    查询出广告表总数量 -->
   <select id="pageCount" resultType="java.lang.Integer">
   	select count(title) from advertising where deleted='0'

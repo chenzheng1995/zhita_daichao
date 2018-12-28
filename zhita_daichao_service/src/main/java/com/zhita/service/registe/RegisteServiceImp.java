@@ -113,9 +113,13 @@ public class RegisteServiceImp implements IntRegisteService{
   		return nums;
   	}
     //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
-    public int updateByPrimaryKey(LoansBusinesses record) {
-    	int num=loansBusinessesMapper.updateByPrimaryKey(record);
+    public int updateLoansBusinesses(LoansBusinesses loans) {
+    	int num=loansBusinessesMapper.updateLoansBusinesses(loans);
     	return num;
     }
-
+  	//小程序---查询贷款商家部分字段信息，含分页
+  	public List<LoansBusinesses> queryAllAdmainpro(Integer page){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page);
+  		return list;
+  	}
 }

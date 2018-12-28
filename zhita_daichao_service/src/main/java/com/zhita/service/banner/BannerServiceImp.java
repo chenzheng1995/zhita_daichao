@@ -53,6 +53,11 @@ public class BannerServiceImp implements IntBannerService{
     	ShufflingFigure shufflingFigure=shufflingFigureMapper.selectByPrimaryKey(id);
     	return shufflingFigure;
     }
+    //后台管理---通过传过来的轮播图对象，对当前对象进行修改保存
+    public int updateShufflingFigure(ShufflingFigure shufflingFigure) {
+    	int num=shufflingFigureMapper.updateShufflingFigure(shufflingFigure);
+    	return num;
+    }
     //后台管理---根据删除按钮，修改轮播图假删除状态
     public int upaFalseDel(Integer id) {
     	int num=shufflingFigureMapper.upaFalseDel(id);

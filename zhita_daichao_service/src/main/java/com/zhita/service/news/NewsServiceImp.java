@@ -56,6 +56,12 @@ public class NewsServiceImp implements IntNewsService{
     	Strategy strategy=strategyMapper.selectByPrimaryKey(id);
     	return strategy;
     }
+    
+    //后台管理---通过传过来的攻略对象，对当前对象进行修改保存
+    public int updateStrategy(Strategy strategy) {
+    	int num=strategyMapper.updateStrategy(strategy);
+    	return num;
+    }
     //后台管理---通过主键id修改其当前对象的假删除状态
     public int upaFalseDelById(Integer id) {
     	int num=strategyMapper.upaFalseDelById(id);

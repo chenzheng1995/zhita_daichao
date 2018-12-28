@@ -58,6 +58,12 @@ public class CardServiceImp implements IntCardService{
     	CreditCard creditCard=creditCardMapper.selectByPrimaryKey(id);
     	return creditCard;
     }
+    //后台管理---通过传过来的信用卡对象，对当前对象进行修改保存
+    public int updateCreditCard(CreditCard creditCard) {
+    	int num=creditCardMapper.updateCreditCard(creditCard);
+    	return num;
+    }
+    
     //后台管理---通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除
     public int upaFalseDel(Integer id) {
     	int num=creditCardMapper.upaFalseDel(id);

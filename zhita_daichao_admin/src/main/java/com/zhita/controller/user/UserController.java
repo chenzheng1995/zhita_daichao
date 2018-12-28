@@ -33,8 +33,11 @@ public class UserController {
     	
        	int totalCount=userService.pageCount();//该方法是查询出用户表总数量
     	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
+    	if(page<1) {
     		page=1;
+    	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil=new PageUtil(pages, totalCount);
@@ -59,15 +62,18 @@ public class UserController {
 	public Map<String,Object> queryAllButton(Integer userId,Integer page){
        	int totalCount=userService.pageCountThreeFootprint(userId);//该方法是根据用户id查询出按钮足迹  商品足迹和贷款分类足迹的总数量
     	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
+    	if(page<1) {
     		page=1;
+    	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil=new PageUtil(pages, totalCount);
     	List<ButtonFootprint> list=userService.queryAllButton(userId,page);
     
     	HashMap<String, Object> map=new HashMap<>();
-    	map.put("listUser",list);
+    	map.put("listFootprint",list);
     	map.put("pageutil",pageUtil);
 		return map;
 	}

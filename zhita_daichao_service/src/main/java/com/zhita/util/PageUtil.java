@@ -6,7 +6,7 @@ package com.zhita.util;
 public class PageUtil{
     private int page;      //当前页
 
-    private int pageSize=2;     //每页显示的数量
+    private int pageSize=10;     //每页显示的数量
 
     private int totalCount;     //总记录数
     

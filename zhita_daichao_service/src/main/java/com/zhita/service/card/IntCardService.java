@@ -20,7 +20,9 @@ public interface IntCardService {
     //后台管理---通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除
 	public int upaFalseDel(Integer id);
     //后台管理---修改信用卡状态为开启
-    int upaStateOpen(Integer id);
+    public int upaStateOpen(Integer id);
     //后台管理---修改信用卡状态为关闭
-    int upaStateClose(Integer id);
+    public int upaStateClose(Integer id);
+    //后台管理---通过传过来的信用卡对象，对当前对象进行修改保存
+    public int updateCreditCard(CreditCard creditCard);
 }

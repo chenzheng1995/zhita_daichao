@@ -152,9 +152,23 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 后台管理  通过传过来的攻略对象，对当前对象进行修改保存 -->
+    <update id="updateStrategy" parameterType="com.zhita.model.manage.Strategy">
+    update strategy
+    set title = #{title,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      synopsis = #{synopsis,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
   <!-- 后台管理   查询攻略表所有信息，含分页 -->
   <select id="queryAllNews" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Strategy">
-  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' order by isStick desc limit #{page},2
+  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' limit #{page},2
   </select>
   <!-- 后台管理   查询攻略表总数量-->
   <select id="pageCount" resultType="java.lang.Integer">
@@ -166,7 +180,7 @@
   </select>
     <!-- 后台管理   查询攻略表所有信息，含分页 -->
   <select id="queryNewsByLike" resultType="com.zhita.model.manage.Strategy">
-  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' and title like "%"#{arg0}"%" order by isStick desc limit #{arg1},2
+  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},2
   </select>
   <!-- 后台管理 添加攻略信息 -->
    <insert id="addAll" parameterType="com.zhita.model.manage.Strategy" >

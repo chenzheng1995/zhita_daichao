@@ -20,6 +20,11 @@ public class AdvServiceImp implements IntAdvService{
     	Advertising advertising=advertisingMapper.selectByPrimaryKey(id);
     	return advertising;
     }
+    //后台管理---根据传过来的广告对象，对当前对象进行修改保存
+    public int updateAdvertising(Advertising advertising) {
+    	int num=advertisingMapper.updateAdvertising(advertising);
+    	return num;
+    }
 	
     //后台管理---查询出广告表总数量
     public int pageCount() {

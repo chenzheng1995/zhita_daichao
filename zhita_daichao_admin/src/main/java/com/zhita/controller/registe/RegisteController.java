@@ -61,11 +61,15 @@ public class RegisteController {
     	
     	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
     	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
+    	if(page<1) {
     		page=1;
+    	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil=new PageUtil(pages, totalCount);
+    	
     	List<LoansBusinesses> list=intRegisteService.queryAllAdmain(pageUtil.getPage());
     	for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
@@ -153,8 +157,11 @@ public class RegisteController {
         	
         	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
         	pageUtil=new PageUtil(page, totalCount);
-        	if(page==0) {
+        	if(page<1) {
         		page=1;
+        	}
+        	else if(page>pageUtil.getTotalPageCount()) {
+        		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil=new PageUtil(pages, totalCount);
@@ -167,8 +174,11 @@ public class RegisteController {
     		
           	int totalCount=intRegisteService.pageCountByLike(businessName);//该方法是模糊查询的贷款商家总数量
         	pageUtil=new PageUtil(page, totalCount);
-        	if(page==0) {
+        	if(page<1) {
         		page=1;
+        	}
+        	else if(page>pageUtil.getTotalPageCount()) {
+        		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil=new PageUtil(pages, totalCount);
@@ -196,9 +206,50 @@ public class RegisteController {
     //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
     @ResponseBody
     @RequestMapping("/upaBaocunByPrimaryKey")
-    public Integer upaBaocunByPrimaryKey(LoansBusinesses loansBusinesses){
-    	int num=intRegisteService.updateByPrimaryKey(loansBusinesses);
-    	return num;
+    public Map<String, Object> upaBaocunByPrimaryKey(LoansBusinesses loansBusinesses,MultipartFile file)throws Exception{
+		Map<String, Object> map = new HashMap<>();
+		if (file != null) {// 判断上传的文件是否为空
+			String path = null;// 文件路径
+			String type = null;// 文件类型
+			InputStream iStream = file.getInputStream();
+			String fileName = file.getOriginalFilename();// 文件原名称
+			// 判断文件类型
+			type = fileName.indexOf(".") != -1? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()): null;
+			if (type != null) {// 判断文件类型是否为空
+				if ("GIF".equals(type.toUpperCase()) || "PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+					// 自定义的文件名称
+					String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
+					// 设置存放图片文件的路径
+					path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
+					OssUtil ossUtil = new OssUtil();
+					String ossPath = ossUtil.uploadFile(iStream, path);
+					if(ossPath.substring(0, 5).equals("https")) {
+						System.out.println("路径为："+ossPath);
+						loansBusinesses.setTrademark(ossPath);
+						map.put("msg", "图片上传成功");
+					}
+					
+					System.out.println("存放图片文件的路径:" + ossPath);
+				} else {
+					map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
+					return map;
+				}
+			} else {
+				map.put("msg", "文件类型为空");
+				return map;
+			}
+		}else {
+			map.put("msg", "请上传图片");
+			return map;
+		} 
+		
+    	BigDecimal limitsmall=loansBusinesses.getLoanlimitsmall();//得到输入框的借款额度（小）
+    	BigDecimal limitbig=loansBusinesses.getLoanlimitbig();//得到输入框的借款额度（大）
+    	String limit=limitsmall+"~"+limitbig;//将两个额度拼接成一个字符串，赋给loansBusinesses的loanlimit的字段 	
+    	loansBusinesses.setLoanlimit(limit);
+		
+    	intRegisteService.updateLoansBusinesses(loansBusinesses);
+    	return map;
     }
     
   	//后台管理---修改贷款商家状态

@@ -23,4 +23,6 @@ public interface IntNewsService{
     public int upaStateOpen(Integer id);
     //后台管理---修改攻略状态为关闭
     public int upaStateClose(Integer id);
+    //后台管理---通过传过来的攻略对象，对当前对象进行修改保存
+    public int updateStrategy(Strategy strategy);
 }

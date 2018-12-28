@@ -106,6 +106,14 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--后台管理  通过传过来的轮播图对象，对当前对象进行修改保存  -->
+    <update id="updateShufflingFigure" parameterType="com.zhita.model.manage.ShufflingFigure">
+    update shuffling_figure
+    set title = #{title,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      link = #{link,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
   <!-- 后台管理    查询出轮播图总数量 -->
   <select id="pageCount" resultType="java.lang.Integer">
   	select count(title) from shuffling_figure where deleted='0'
