@@ -5,8 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zhita.model.manage.ButtonFootprint;
-import com.zhita.model.manage.CommodityFootprint;
-import com.zhita.model.manage.LoanClassificationFootprint;
 import com.zhita.model.manage.User;
 
 public interface UserMapper {
@@ -60,31 +58,31 @@ public interface UserMapper {
 	int pageCountThreeFootprint(Integer id);
 	
 	//后台管理---查询出用户表所有信息，含分页
-	List<User> queryAllUser(Integer page);
+	List<User> queryAllUser(Integer page,Integer pagesize);
 	
 	//后台管理---通过手机号模糊查询，含分页
-	List<User> queryByPhone(String phone,Integer page);
+	List<User> queryByPhone(String phone,Integer page,Integer pagesize);
 	
 	//后台管理---通过渠道名称模糊查询，含分页
-	List<User> queryBySourceName(String sourceName,Integer page);
+	List<User> queryBySourceName(String sourceName,Integer page,Integer pagesize);
 	
 	//后台管理---通过注册时间模糊查询，含分页
-	List<User> queryByRegistrationtime(String registrationtime1,String registrationtime2,Integer page);
+	List<User> queryByRegistrationtime(String registrationtime1,String registrationtime2,Integer page,Integer pagesize);
 	
 	//后台管理--根据手机号和渠道名称进行模糊查询，含分页
-	List<User> queryByPhoneAndSourceName(String phone,String sourceName,Integer page);
+	List<User> queryByPhoneAndSourceName(String phone,String sourceName,Integer page,Integer pagesize);
 	
 	//后台管理--根据手机号和注册时间进行模糊查询，含分页
-	List<User> queryByPhoneAndRegistrationtime(String phone,String registrationtime1,String registrationtime2,Integer page);
+	List<User> queryByPhoneAndRegistrationtime(String phone,String registrationtime1,String registrationtime2,Integer page,Integer pagesize);
 	
 	//后台管理--根据渠道名称和注册时间进行模糊查询，含分页
-	List<User> queryBySourceNameAndRegistrationtime(String sourceName,String registrationtime1,String registrationtime2,Integer page);
+	List<User> queryBySourceNameAndRegistrationtime(String sourceName,String registrationtime1,String registrationtime2,Integer page,Integer pagesize);
 	
 	//后台管理--根据手机号、渠道名称和注册时间进行模糊查询，含分页
-	List<User> queryByPhoneSourceNameAndRegistrationtime(String phone,String sourceName,String registrationtime1,String registrationtime2,Integer page);
+	List<User> queryByPhoneSourceNameAndRegistrationtime(String phone,String sourceName,String registrationtime1,String registrationtime2,Integer page,Integer pagesize);
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中,含分页
-	List<ButtonFootprint> queryAllButton(Integer id,Integer page);
+	List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize);
 
 	int updateloginStatus(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone);
 

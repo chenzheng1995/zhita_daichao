@@ -26,8 +26,8 @@ public class CardServiceImp implements IntCardService{
 	
 	//后台管理---查询所有信用卡信息，含分页
 	@Override
-	public List<CreditCard> queryAllCard(Integer page) {
-		List<CreditCard> list=creditCardMapper.queryAllCard(page);
+	public List<CreditCard> queryAllCard(Integer page,Integer pagesize) {
+		List<CreditCard> list=creditCardMapper.queryAllCard(page,pagesize);
 		return list;
 	}
 	//后台管理---用于获取总页数
@@ -43,8 +43,8 @@ public class CardServiceImp implements IntCardService{
     }
 	//后台管理---模糊查询信用卡信息,并且有分页功能
 	@Override
-	public List<CreditCard> queryByLike(String title, Integer page) {
-		List<CreditCard> list=creditCardMapper.queryByLike(title, page);
+	public List<CreditCard> queryByLike(String title, Integer page,Integer pagesize) {
+		List<CreditCard> list=creditCardMapper.queryByLike(title, page,pagesize);
 		return list;
 	}
 	//后台管理---添加信用卡信息

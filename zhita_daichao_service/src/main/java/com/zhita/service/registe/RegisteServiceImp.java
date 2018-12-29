@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +35,8 @@ public class RegisteServiceImp implements IntRegisteService{
 		return list;
 	}
 */	//后台管理---查询贷款商家部分字段信息，含分页
-  	public List<LoansBusinesses> queryAllAdmain(Integer page) {
-		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain(page);
+  	public List<LoansBusinesses> queryAllAdmain(Integer page,Integer pagesize) {
+		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain(page,pagesize);
 		return list;
 	}
   	//后台管理---查询贷款商家总条数
@@ -57,8 +56,8 @@ public class RegisteServiceImp implements IntRegisteService{
     	return selnum;
     }
   	//后台管理---通过商家名称模糊查询，并且有分页功能
-  	public List<LoansBusinesses> queryByNameLike(String businessName,Integer page){
-  		List<LoansBusinesses> list=loansBusinessesMapper.queryByNameLike(businessName,page);
+  	public List<LoansBusinesses> queryByNameLike(String businessName,Integer page,Integer pagesize){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryByNameLike(businessName,page,pagesize);
   		return list;
   	}
   	//后台管理---通过商家主键id修改假删除字段的值
@@ -118,8 +117,9 @@ public class RegisteServiceImp implements IntRegisteService{
     	return num;
     }
   	//小程序---查询贷款商家部分字段信息，含分页
-  	public List<LoansBusinesses> queryAllAdmainpro(Integer page,int pageSize){
-  		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page,pageSize);
+
+  	public List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page,pagesize);
   		return list;
   	}
 }

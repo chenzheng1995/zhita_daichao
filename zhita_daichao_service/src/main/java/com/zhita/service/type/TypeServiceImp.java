@@ -40,8 +40,8 @@ public class TypeServiceImp implements IntTypeService{
 	
     //后台管理---查询贷款分类所有信息，含分页
 	@Override
-	public List<LoanClassification> queryAllPage(Integer page) {
-		List<LoanClassification> list=loanClassificationMapper.queryAllPage(page);
+	public List<LoanClassification> queryAllPage(Integer page,Integer pagesize) {
+		List<LoanClassification> list=loanClassificationMapper.queryAllPage(page,pagesize);
 		return list;
 	}
     //后台管理---用于获取总页数
@@ -62,8 +62,8 @@ public class TypeServiceImp implements IntTypeService{
     }
     //后台管理---模糊查询贷款分类信息,并且有分页功能
 	@Override
-	public List<LoanClassification> queryByLike(String businessClassification,Integer page) {
-		List<LoanClassification> list=loanClassificationMapper.queryByLike(businessClassification,page);
+	public List<LoanClassification> queryByLike(String businessClassification,Integer page,Integer pagesize) {
+		List<LoanClassification> list=loanClassificationMapper.queryByLike(businessClassification,page,pagesize);
 		return list;
 	}
     //后台管理---添加贷款分类信息
@@ -80,7 +80,7 @@ public class TypeServiceImp implements IntTypeService{
 	}
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
 	@Override
-	public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page,int pageSize) {
+	public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page,Integer pageSize) {
 		List<LoansBusinesses> list=loanClassificationMapper.queryLoanbusinByLoanClass(businessClassification,page,pageSize);
 		return list;
 	}

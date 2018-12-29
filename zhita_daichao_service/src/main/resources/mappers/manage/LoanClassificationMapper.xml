@@ -77,7 +77,7 @@
   <select id="queryAllPage" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoanClassification">
   	select 
    	 <include refid="Base_Column_List" />
-     from loan_classification limit #{page},2
+     from loan_classification limit #{arg0},#{arg1}
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -95,7 +95,7 @@
  <select id="queryByLike" resultType="com.zhita.model.manage.LoanClassification">
  	select 
    	 <include refid="Base_Column_List" />
-    from loan_classification where businessClassification like "%"#{arg0}"%" limit #{arg1},2
+    from loan_classification where businessClassification like "%"#{arg0}"%" limit #{arg1},#{arg2}
  </select>
  <!-- 后台管理   添加贷款分类信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.LoanClassification">
@@ -139,7 +139,9 @@
  </resultMap>
  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClass" resultMap="loanCla">
+
  	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted=0 order by isStick desc limit #{page},#{pageSize}
+
  </select>
 
 </mapper>

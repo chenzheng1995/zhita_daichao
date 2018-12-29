@@ -336,23 +336,25 @@
   </update>
   <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmainpro" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
+
   	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' order by isStick desc limit #{page},#{pageSize}
+
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' limit #{page},10
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' limit #{arg0},#{arg1}
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
-   select count(businessname) from loans_businesses where deleted='0'
+   select count(businessName) from loans_businesses where deleted='0'
  </select>
    <!-- 后台管理 用于模糊查询获取总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(businessname) from loans_businesses where businessName where deleted='0' and like "%"#{0}"%"
+   select count(businessName) from loans_businesses where deleted='0' and businessName like "%"#{0}"%"
  </select>
  <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
  <select id="queryByNameLike" resultType="com.zhita.model.manage.LoansBusinesses">
- 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" limit #{arg1},10
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" limit #{arg1},#{arg2}
  </select>
  <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">

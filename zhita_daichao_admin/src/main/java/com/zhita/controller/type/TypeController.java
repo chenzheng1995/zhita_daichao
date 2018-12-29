@@ -33,7 +33,7 @@ public class TypeController {
     @RequestMapping("/queryAllPage")
     public Map<String,Object> queryAllPage(HttpServletRequest request,Integer page){
     	int totalCount=intTypeService.pageCount();//该方法是查询贷款分类总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -41,9 +41,9 @@ public class TypeController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
+    	pageUtil.setPage(pages);
     	
-    	List<LoanClassification> list=intTypeService.queryAllPage(pages);
+    	List<LoanClassification> list=intTypeService.queryAllPage(pageUtil.getPage(),pageUtil.getPageSize());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listLoanClass", list);
@@ -58,7 +58,7 @@ public class TypeController {
     	PageUtil pageUtil=null;
     	if(businessClassification==null||"".equals(businessClassification)) {
         	int totalCount=intTypeService.pageCount();//该方法是查询贷款分类总数量
-        	pageUtil=new PageUtil(page, totalCount);
+        	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -66,12 +66,12 @@ public class TypeController {
         		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	pageUtil=new PageUtil(pages, totalCount);
+        	pageUtil.setPage(pages);
         	
-        	list=intTypeService.queryAllPage(pages);
+        	list=intTypeService.queryAllPage(pageUtil.getPage(),pageUtil.getPageSize());
     	}else {
           	int totalCount=intTypeService.pageCountByLike(businessClassification);//该方法是模糊查询的贷款分类总数量
-        	pageUtil=new PageUtil(page, totalCount);
+        	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -79,8 +79,8 @@ public class TypeController {
         		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	pageUtil=new PageUtil(pages, totalCount);
-        	list=intTypeService.queryByLike(businessClassification, pages);
+        	pageUtil.setPage(pages);
+        	list=intTypeService.queryByLike(businessClassification,pageUtil.getPage(),pageUtil.getPageSize() );
     	}
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listLoanClaByLike", list);

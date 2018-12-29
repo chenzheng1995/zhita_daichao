@@ -34,13 +34,13 @@ public class BannerServiceImp implements IntBannerService{
     	return count;
     }
     //后台管理---查询轮播图全部信息,含分页
-    public List<ShufflingFigure> queryAll(Integer page){
-    	List<ShufflingFigure> list=shufflingFigureMapper.queryAll(page);
+    public List<ShufflingFigure> queryAll(Integer page,Integer pagesize){
+    	List<ShufflingFigure> list=shufflingFigureMapper.queryAll(page,pagesize);
     	return list;
     }
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
-    public List<ShufflingFigure> queryAllByLike(String title,Integer page){
-    	List<ShufflingFigure> list=shufflingFigureMapper.queryAllByLike(title, page);
+    public List<ShufflingFigure> queryAllByLike(String title,Integer page,Integer pagesize){
+    	List<ShufflingFigure> list=shufflingFigureMapper.queryAllByLike(title, page,pagesize);
     	return list;
     }
     //后台管理---添加轮播图信息

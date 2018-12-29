@@ -6,13 +6,13 @@ import com.zhita.model.manage.CreditCard;
 
 public interface IntCardService {
 	//后台管理---查询所有信用卡信息，含分页
-	public List<CreditCard> queryAllCard(Integer page);
+	public List<CreditCard> queryAllCard(Integer page,Integer pagesize);
     //后台管理---用于获取总页数
 	public int pageCount();
     //后台管理---用于获取模糊查询总页数
 	public int pageCountByLike(String title);
     //后台管理---模糊查询信用卡信息,并且有分页功能
-	public List<CreditCard> queryByLike(String title,Integer page);
+	public List<CreditCard> queryByLike(String title,Integer page,Integer pagesize);
     //后台管理---添加信用卡信息
 	public int addAll(CreditCard record);
     //后台管理---通过信用卡id，查询信用卡信息

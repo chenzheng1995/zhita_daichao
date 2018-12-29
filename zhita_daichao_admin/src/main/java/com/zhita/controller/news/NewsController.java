@@ -36,7 +36,7 @@ public class NewsController {
 	@RequestMapping("/queryAllNews")
     public Map<String,Object> queryAllNews(Integer page){
     	int totalCount=intNewsService.pageCount();//该方法是查询攻略总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+       	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -44,8 +44,8 @@ public class NewsController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<Strategy> list=intNewsService.queryAllNews(pageUtil.getPage());
+    	pageUtil.setPage(pages);
+    	List<Strategy> list=intNewsService.queryAllNews(pageUtil.getPage(),pageUtil.getPageSize());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listnews",list);
@@ -61,7 +61,7 @@ public class NewsController {
 		PageUtil pageUtil=null;
 		if(title==null||"".equals(title)) {
 	    	int totalCount=intNewsService.pageCount();//该方法是查询攻略总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	       	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -69,11 +69,11 @@ public class NewsController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intNewsService.queryAllNews(pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intNewsService.queryAllNews(pageUtil.getPage(),pageUtil.getPageSize());
 		}else {
 	    	int totalCount=intNewsService.pageCountByLike(title);//该方法是模糊查询的攻略总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	       	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -81,8 +81,8 @@ public class NewsController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intNewsService.queryNewsByLike(title, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intNewsService.queryNewsByLike(title, pageUtil.getPage(),pageUtil.getPageSize());
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listnewsByLike",list);
@@ -92,7 +92,6 @@ public class NewsController {
 	//后台管理---添加攻略信息
 	@ResponseBody
 	@RequestMapping("/AddALL")
-
     public Map<String,Object> AddALL(Strategy strategy,MultipartFile file)throws Exception{
 		Map<String, Object> map = new HashMap<>();
 		if (file != null) {// 判断上传的文件是否为空

@@ -39,7 +39,7 @@ public class CardController {
     @RequestMapping("/queryAllCard")
     public Map<String,Object> queryAllCard(HttpServletRequest request,Integer page){
     	int totalCount=intCardService.pageCount();//该方法是查询信用卡总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+       	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -47,9 +47,9 @@ public class CardController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
+    	pageUtil.setPage(pages);
     	
-    	List<CreditCard> list=intCardService.queryAllCard(pageUtil.getPage());
+    	List<CreditCard> list=intCardService.queryAllCard(pageUtil.getPage(),pageUtil.getPageSize());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listCard", list);
@@ -64,7 +64,7 @@ public class CardController {
     	PageUtil pageUtil=null;
     	if(title==null||"".equals(title)) {
         	int totalCount=intCardService.pageCount();//该方法是查询信用卡总数量
-        	pageUtil=new PageUtil(page, totalCount);
+           	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -72,12 +72,12 @@ public class CardController {
         		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	pageUtil=new PageUtil(pages, totalCount);
+        	pageUtil.setPage(pages);
         	
-        	list=intCardService.queryAllCard(pageUtil.getPage());
+        	list=intCardService.queryAllCard(pageUtil.getPage(),pageUtil.getPageSize());
     	}else {
         	int totalCount=intCardService.pageCountByLike(title);//该方法是模糊查询的信用卡总数量
-        	pageUtil=new PageUtil(page, totalCount);
+           	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -85,9 +85,9 @@ public class CardController {
         		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	pageUtil=new PageUtil(pages, totalCount);
+        	pageUtil.setPage(pages);
         	
-        	list=intCardService.queryByLike(title,pageUtil.getPage());
+        	list=intCardService.queryByLike(title,pageUtil.getPage(),pageUtil.getPageSize());
     	}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listCardByLike", list);

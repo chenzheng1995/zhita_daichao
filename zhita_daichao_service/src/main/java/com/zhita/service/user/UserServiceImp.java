@@ -50,8 +50,8 @@ public class UserServiceImp implements UserService {
 		return count;
 	}
 	//后台管理---查询出用户表所有信息，含分页
-	public List<User> queryAllUser(Integer page){
-		List<User> list=userMapper.queryAllUser(page);
+	public List<User> queryAllUser(Integer page,Integer pagesize){
+		List<User> list=userMapper.queryAllUser(page,pagesize);
 		return list;
 	}
 
@@ -67,7 +67,7 @@ public class UserServiceImp implements UserService {
 	    	list1=sourceMapper.queryAll();//查询出所有的渠道信息，将渠道名称渲染到下拉框中
 	    	
 	       	int totalCount=userMapper.pageCount();//该方法是查询出用户表总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -75,8 +75,8 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryAllUser(pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryAllUser(pageUtil.getPage(),pageUtil.getPageSize());
 	    
 	    	HashMap<String, Object> map=new HashMap<>();
 	    	map.put("listSource", list1);
@@ -91,7 +91,7 @@ public class UserServiceImp implements UserService {
 	    	list1=sourceMapper.queryAll();//查询出所有的渠道信息，将渠道名称渲染到下拉框中
 	    	
 			int totalCount=userMapper.pageCountByPhone(phone);//该方法是通过手机号模糊查询出用户总数量
-			pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -99,14 +99,14 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryByPhone(phone, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryByPhone(phone, pageUtil.getPage(),pageUtil.getPageSize());
 		}
 		//通过电话和渠道名称模糊查询
 		else if((phone!=null||!"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))) {
 			System.out.println("第三个if");
 	 		int totalCount=userMapper.pageCountByPhoneAndSourceName(phone,sourceName);//该方法是通过电话和渠道名称模糊查询出用户总数量
-			pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -114,8 +114,8 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryByPhoneAndSourceName(phone,sourceName, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryByPhoneAndSourceName(phone,sourceName, pageUtil.getPage(),pageUtil.getPageSize());
 	    }
 		//通过电话和注册时间模糊查询
 		else if((phone!=null||!"".equals(phone))&&(sourceName==null||"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
@@ -123,7 +123,7 @@ public class UserServiceImp implements UserService {
 			
 	    	list1=sourceMapper.queryAll();//查询出所有的渠道信息，将渠道名称渲染到下拉框中
 			int totalCount=userMapper.pageCountByPhoneAndRegistrationtime(phone,registrationTimeStart,registrationTimeEnd);//该方法是通过电话和注册时间模糊查询出用户总数量
-			pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -131,14 +131,14 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryByPhoneAndRegistrationtime(phone,registrationTimeStart,registrationTimeEnd,pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryByPhoneAndRegistrationtime(phone,registrationTimeStart,registrationTimeEnd,pageUtil.getPage(),pageUtil.getPageSize());
 	    }
 		//通过电话，渠道名称，注册时间模糊查询
 		else if((phone!=null||!"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
 			System.out.println("第五个if");
 			int totalCount=userMapper.pageCountByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd);//该方法是通过电话、渠道名称和注册时间模糊查询出用户总数量
-			pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -146,15 +146,15 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,page);
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,pageUtil.getPage(),pageUtil.getPageSize());
 	    	
 		}
 		//通过渠道名称模糊查询
 		else if((phone==null||"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))) {
 			System.out.println("第六个if");
 			int totalCount=userMapper.pageCountBySourceName(sourceName);//该方法是通过渠道名称模糊查询出用户总数量
-			pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -162,14 +162,14 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryBySourceName(sourceName, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryBySourceName(sourceName, pageUtil.getPage(),pageUtil.getPageSize());
 		}
 		//通过渠道名称，注册时间模糊查询
 		else if((phone==null||"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
 			System.out.println("第七个if");
 			int totalCount=userMapper.pageCountBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd);//该方法是通过渠道名称和注册时间模糊查询出用户总数量
-			pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -177,15 +177,15 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd, pageUtil.getPage(),pageUtil.getPageSize());
 		}
 		//通过注册时间模糊查询
 		else if((phone==null||"".equals(phone))&&(sourceName==null||"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
 			System.out.println("第八个if");
 	    	list1=sourceMapper.queryAll();//查询出所有的渠道信息，将渠道名称渲染到下拉框中
 			int totalCount=userMapper.pageCountByRegistrationtime(registrationTimeStart,registrationTimeEnd);//该方法是通过注册时间模糊查询出用户总数量
-			pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -193,8 +193,8 @@ public class UserServiceImp implements UserService {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=userMapper.queryByRegistrationtime(registrationTimeStart,registrationTimeEnd, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryByRegistrationtime(registrationTimeStart,registrationTimeEnd, pageUtil.getPage(),pageUtil.getPageSize());
 	    }
 		
 		HashMap<String, Object> map=new HashMap<>();
@@ -205,8 +205,8 @@ public class UserServiceImp implements UserService {
 	}
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中，含分页
-	public List<ButtonFootprint> queryAllButton(Integer id,Integer page){
-		List<ButtonFootprint> list=userMapper.queryAllButton(id,page);
+	public List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize){
+		List<ButtonFootprint> list=userMapper.queryAllButton(id,page,pagesize);
 		return list;
 	}
 }

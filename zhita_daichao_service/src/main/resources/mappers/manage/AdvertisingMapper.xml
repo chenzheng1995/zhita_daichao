@@ -131,15 +131,15 @@
   </select>
   <!-- 后台管理   根据标题字段模糊查询出 广告表总数量 -->
   <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-  	select count(title) from advertising where deleted='0' and title=#{title}
+  	select count(title) from advertising where deleted='0' and title like "%"#{title}"%"
   </select>
   <!--后台管理   查询广告表全部信息 含分页 -->
   <select id="queryAll" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Advertising">
-  	select * from advertising where deleted='0' limit #{page},2
+  	select * from advertising where deleted='0' limit #{arg0},#{arg1}
   </select>
   <!-- 后台管理   根据标题字段模糊查询广告表信息，含分页 -->
   <select id="queryAllByLike" resultType="com.zhita.model.manage.Advertising">
-  	select * from advertising where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},2
+  	select * from advertising where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理   添加广告表信息 -->
   <insert id="AddAll" parameterType="com.zhita.model.manage.Advertising">

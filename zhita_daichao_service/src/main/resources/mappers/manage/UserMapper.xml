@@ -272,35 +272,35 @@
 	
 	<!-- 后台管理    查询出用户表所有信息，含分页 -->
 	<select id="queryAllUser" parameterType="java.lang.Integer" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id limit #{page},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id limit #{arg0},#{arg1}
 	</select>
 	<!-- 后台管理   通过手机号模糊查询，含分页 -->
 	<select id="queryByPhone" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" limit #{arg1},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" limit #{arg1},#{arg2}
 	</select>
 	<!--后台管理   通过渠道名称模糊查询，含分页  -->
 	<select id="queryBySourceName" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.sourceName=#{arg0} limit #{arg1},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.sourceName=#{arg0} limit #{arg1},#{arg2}
 	</select>
 	<!-- 后台管理  通过注册时间模糊查询，含分页 -->
 	<select id="queryByRegistrationtime" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.registrationTime between #{arg0} and #{arg1} limit #{arg2},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.registrationTime between #{arg0} and #{arg1} limit #{arg2},#{arg3}
 	</select>
 	<!-- 后台管理   根据手机号和渠道名称进行模糊查询，含分页 -->
 	<select id="queryByPhoneAndSourceName" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" and s.sourceName=#{arg1} limit #{arg2},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" and s.sourceName=#{arg1} limit #{arg2},#{arg3}
 	</select>
 	<!-- 后台管理   根据手机号和注册时间进行模糊查询，含分页 -->
 	<select id="queryByPhoneAndRegistrationtime" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" and u.registrationTime between #{arg1} and #{arg2} limit #{arg3},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" and u.registrationTime between #{arg1} and #{arg2} limit #{arg3},#{arg4}
 	</select>
 	<!-- 后台管理   根据渠道名称和注册时间进行模糊查询，含分页 -->
 	<select id="queryBySourceNameAndRegistrationtime" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.sourceName=#{arg0} and u.registrationTime between #{arg1} and #{arg2} limit #{arg3},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.sourceName=#{arg0} and u.registrationTime between #{arg1} and #{arg2} limit #{arg3},#{arg4}
 	</select>
 	<!-- 后台管理   根据手机号、渠道名称和注册时间进行模糊查询，含分页 -->
 	<select id="queryByPhoneSourceNameAndRegistrationtime" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" and s.sourceName=#{arg1} and u.registrationTime between #{arg2} and #{arg3} limit #{arg4},2
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime from user u inner join source s on u.sourceId=s.id where u.phone like "%"#{arg0}"%" and s.sourceName=#{arg1} and u.registrationTime between #{arg2} and #{arg3} limit #{arg4},#{arg5}
 	</select>
 	<!-- 后台管理 根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中  含分页-->
 	<select id="queryAllButton" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.ButtonFootprint">
@@ -309,7 +309,7 @@
 		SELECT * from commodity_footprint c where userId=#{arg0} and deleted='0'
 		UNION ALL
 		SELECT * from loan_classification_footprint l where userId=#{arg0} and deleted='0'
-		ORDER BY footprintTime desc limit #{arg1},2
+		ORDER BY footprintTime desc limit #{arg1},#{arg2}
 	</select>
 	<!-- 登录状态修改 -->
 	<update id="updateloginStatus" parameterType="java.lang.String" >

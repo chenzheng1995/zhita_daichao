@@ -112,16 +112,16 @@
   </select>
   
     <!-- 后台管理  通过传过来的渠道对象，对当前对象进行修改保存 -->
-    <update id="updateSource" parameterType="com.zhita.model.manage.Source">
+   <update id="updateSource" parameterType="com.zhita.model.manage.Source">
     update source
     set sourceName = #{sourcename,jdbcType=VARCHAR},
-      account = #{account,jdbcType=VARCHAR},
-         link = #{link,jdbcType=VARCHAR}
+        account = #{account,jdbcType=VARCHAR},
+        link = #{link,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理 查询出所有渠道表信息，含分页-->
   <select id="queryAllSource" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Source">
-  	select id,sourceName,acount,link,state from source where deleted='0' limit #{page},2
+  	select id,sourceName,account,link,state from source where deleted='0' limit #{page},2
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -129,26 +129,26 @@
  </select>
   <!-- 后台管理 用于获取模糊总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(sourceName) from source where deleted='0' and source like "%"#{0}"%" 
+   select count(sourceName) from source where deleted='0' and sourceName like "%"#{0}"%" 
  </select>
  <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.Source">
- 	select id,sourceName,acount,link,state from source where deleted='0' and sourceName like "%"#{arg0}"%" limit #{arg1},2
+ 	select id,sourceName,account,link,state from source where deleted='0' and sourceName like "%"#{arg0}"%" limit #{arg1},2
  </select>
  <!--后台管理 添加渠道信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.Source" >
- 	insert into source(sourceName,acount,link) values(#{sourceName},#{acount},#{link})
+ 	insert into source(sourceName,account,link) values(#{sourceName},#{account},#{link})
  </insert>
  <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">
- 	update credit_card set deleted ='1' where id=#{id}
+ 	update source set deleted ='1' where id=#{id}
  </update>
  <!-- 后台管理  修改信用卡状态 为开启-->
  <update id="upaStateOpen" parameterType="java.lang.Integer">
- 	update credit_card set state ='1' where id=#{id}
+ 	update source set state ='1' where id=#{id}
  </update>
   <!-- 后台管理  修改信用卡状态 为关闭-->
  <update id="upaStateClose" parameterType="java.lang.Integer">
- 	update credit_card set state ='2' where id=#{id}
+ 	update source set state ='2' where id=#{id}
  </update>
 </mapper>

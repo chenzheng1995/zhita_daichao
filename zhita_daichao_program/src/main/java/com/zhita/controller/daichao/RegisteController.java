@@ -43,6 +43,7 @@ public class RegisteController {
     	int pageSize = 10; //每页的条数，暂时写死，后续可以让前端传
     	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
     	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	pageUtil.setPageSize(10);
     	if(page<1) {
     		page=1;
     	}
@@ -51,6 +52,7 @@ public class RegisteController {
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil=new PageUtil(pages, totalCount);
+
     	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageSize);
         for (LoansBusinesses loansBusinesses : list) {
         String businessName = loansBusinesses.getBusinessname();
@@ -61,7 +63,7 @@ public class RegisteController {
         String loanlimit = loanlimitsmall+"~"+loanlimitbig;
         loansBusinesses.setLoanlimit(loanlimit);
 		}
-    	
+ 	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listLoansBusin",list);
     	map.put("pageutil", pageUtil);

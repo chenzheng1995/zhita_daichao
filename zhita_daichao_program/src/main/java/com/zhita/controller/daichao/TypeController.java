@@ -38,17 +38,15 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryLoanbusinByLoanClass")
     public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page){
-    	int pageSize = 10; //每页的条数，暂时写死，后续可以让前端传
     	int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification);
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page<0) {
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+    	if(page<1) {
     		page=1;
     	}else if(page>pageUtil.getTotalPageCount()) {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification, pageUtil.getPage(),pageSize);
+    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification, pages,pageUtil.getPageSize());
     	 for (LoansBusinesses loansBusinesses : list) {
     	        String businessName = loansBusinesses.getBusinessname();
     	        int applications = (int)cFootprintService.getApplications(businessName);//获取申请人数	  
