@@ -4,10 +4,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zhita.dao.manage.LoanClassificationMapper;
+import com.zhita.dao.manage.LoansBusinessesMapper;
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoansBusinesses;
 
@@ -24,6 +26,18 @@ public class TypeServiceImp implements IntTypeService{
 	public void setLoanClassificationMapper(LoanClassificationMapper loanClassificationMapper) {
 		this.loanClassificationMapper = loanClassificationMapper;
 	}
+
+	@Resource(name="loansBusinessesMapper")
+    private LoansBusinessesMapper loansBusinessesMapper;
+
+	public LoansBusinessesMapper getLoansBusinessesMapper() {
+		return loansBusinessesMapper;
+	}
+
+	public void setLoansBusinessesMapper(LoansBusinessesMapper loansBusinessesMapper) {
+		this.loansBusinessesMapper = loansBusinessesMapper;
+	}
+	
     //后台管理---查询贷款分类所有信息，含分页
 	@Override
 	public List<LoanClassification> queryAllPage(Integer page) {
@@ -66,10 +80,18 @@ public class TypeServiceImp implements IntTypeService{
 	}
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
 	@Override
-	public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page) {
-		List<LoansBusinesses> list=loanClassificationMapper.queryLoanbusinByLoanClass(businessClassification,page);
+	public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page,int pageSize) {
+		List<LoansBusinesses> list=loanClassificationMapper.queryLoanbusinByLoanClass(businessClassification,page,pageSize);
 		return list;
 	}
+	
+//    //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
+//	@Override
+//	public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page,int pageSize) {
+//		List<LoansBusinesses> list=loansBusinessesMapper.queryLoanbusinByLoanClass(businessClassification,page,pageSize);
+//		return list;
+//	}
+	
     //后台管理---查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用
     public List<LoanClassification> queryAllLoanCla(){
     	List<LoanClassification> list=loanClassificationMapper.queryAllLoanCla();

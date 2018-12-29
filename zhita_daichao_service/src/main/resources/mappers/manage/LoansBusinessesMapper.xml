@@ -26,7 +26,7 @@
       <arg column="registerLink" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />    
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -317,7 +317,7 @@
     set businessName = #{businessname,jdbcType=VARCHAR},
       intro = #{intro,jdbcType=VARCHAR},
       trademark = #{trademark,jdbcType=VARCHAR},
-       loanLimit = #{loanlimit,jdbcType=VARCHAR},
+      loanLimit = #{loanlimit,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
       busClaId = #{busClaId,jdbcType=INTEGER},
@@ -336,7 +336,7 @@
   </update>
   <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmainpro" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' order by isStick desc limit #{page},10
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' order by isStick desc limit #{page},#{pageSize}
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
@@ -388,5 +388,10 @@
  <update id="upaApplicationNumber">
  	update loans_businesses set applicationNumber=#{arg0} where businessName=#{arg1}
  </update>
+ 
+  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
+ <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap">
+ 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted = 0 order by isStick desc limit #{page},#{pageSize}
+ </select>
 
 </mapper>

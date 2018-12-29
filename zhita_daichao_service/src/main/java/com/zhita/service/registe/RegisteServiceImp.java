@@ -118,8 +118,8 @@ public class RegisteServiceImp implements IntRegisteService{
     	return num;
     }
   	//小程序---查询贷款商家部分字段信息，含分页
-  	public List<LoansBusinesses> queryAllAdmainpro(Integer page){
-  		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page);
+  	public List<LoansBusinesses> queryAllAdmainpro(Integer page,int pageSize){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page,pageSize);
   		return list;
   	}
 }

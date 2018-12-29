@@ -208,7 +208,7 @@ public class RegisteController {
     @RequestMapping("/upaBaocunByPrimaryKey")
     public Map<String, Object> upaBaocunByPrimaryKey(LoansBusinesses loansBusinesses,MultipartFile file)throws Exception{
 		Map<String, Object> map = new HashMap<>();
-		if (file != null) {// 判断上传的文件是否为空
+		if (file.getSize()!=0) {// 判断上传的文件是否为空
 			String path = null;// 文件路径
 			String type = null;// 文件类型
 			InputStream iStream = file.getInputStream();
@@ -238,17 +238,17 @@ public class RegisteController {
 				map.put("msg", "文件类型为空");
 				return map;
 			}
-		}else {
-			map.put("msg", "请上传图片");
-			return map;
-		} 
-		
+		}	
     	BigDecimal limitsmall=loansBusinesses.getLoanlimitsmall();//得到输入框的借款额度（小）
     	BigDecimal limitbig=loansBusinesses.getLoanlimitbig();//得到输入框的借款额度（大）
     	String limit=limitsmall+"~"+limitbig;//将两个额度拼接成一个字符串，赋给loansBusinesses的loanlimit的字段 	
-    	loansBusinesses.setLoanlimit(limit);
-		
-    	intRegisteService.updateLoansBusinesses(loansBusinesses);
+    	loansBusinesses.setLoanlimit(limit);		
+    	int number = intRegisteService.updateLoansBusinesses(loansBusinesses);
+    	if(number==1) {
+    		map.put("msg2", "数据修改成功");
+    	}else {
+    		map.put("msg2", "数据修改失败");
+		}
     	return map;
     }
     

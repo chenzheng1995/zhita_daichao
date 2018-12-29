@@ -40,6 +40,6 @@ public interface IntRegisteService{
     //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
     public int updateLoansBusinesses(LoansBusinesses loans);
   	//小程序---查询贷款商家部分字段信息，含分页
-  	public List<LoansBusinesses> queryAllAdmainpro(Integer page);
+  	public List<LoansBusinesses> queryAllAdmainpro(Integer page, int pageSize);
 
 }

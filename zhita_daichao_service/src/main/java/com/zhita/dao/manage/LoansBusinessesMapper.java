@@ -3,6 +3,7 @@ package com.zhita.dao.manage;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zhita.model.manage.LoansBusinesses;
@@ -26,7 +27,7 @@ public interface LoansBusinessesMapper {
     int updateLoansBusinesses(LoansBusinesses loans);
     
   	//小程序---查询贷款商家部分字段信息，含分页
-  	List<LoansBusinesses> queryAllAdmainpro(Integer page);
+  	List<LoansBusinesses> queryAllAdmainpro(@Param("page")Integer page,@Param("pageSize") int pageSize);
     
   	//后台管理---查询贷款商家部分字段信息，含分页
   	List<LoansBusinesses> queryAllAdmain(Integer page);
@@ -63,5 +64,8 @@ public interface LoansBusinessesMapper {
   	
   	//后台管理---根据商家名称更新被申请次数字段
   	int upaApplicationNumber(Integer num,String businessName);
+
+    //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
+    List<LoansBusinesses> queryLoanbusinByLoanClass(@Param("businessClassification")String businessClassification,@Param("page")Integer page,@Param("pageSize") int pageSize);
 
 }

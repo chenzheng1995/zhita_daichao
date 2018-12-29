@@ -50,6 +50,9 @@ public class LoansBusinesses implements Serializable{
     private String deleted;//假删除（删除：1，没删除：0）
 
     private Integer applications;//申请人数
+    
+
+    
 
     public LoansBusinesses(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications) {
         this.id = id;

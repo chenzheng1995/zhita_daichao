@@ -21,7 +21,7 @@ public interface IntTypeService{
     //后台管理---通过主键id查询出贷款分类信息
     public LoanClassification selectByPrimaryKey(Integer id);
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
-    public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page);
+    public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page, int pageSize);
     //后台管理---查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用
     public List<LoanClassification> queryAllLoanCla();
     //通过传过来的贷款分类对象，对当前对象进行修改保存
