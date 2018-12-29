@@ -32,7 +32,7 @@ public class UserController {
     	List<Source> list1=IntMerchantService.queryAll();//查询出所有的渠道信息，将渠道名称渲染到下拉框中
     	
        	int totalCount=userService.pageCount();//该方法是查询出用户表总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -40,8 +40,8 @@ public class UserController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<User> list=userService.queryAllUser(pageUtil.getPage());
+    	pageUtil.setPage(pages);
+    	List<User> list=userService.queryAllUser(pageUtil.getPage(),pageUtil.getPageSize());
     
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listSource", list1);
@@ -61,7 +61,7 @@ public class UserController {
     @RequestMapping("/queryAllButton")
 	public Map<String,Object> queryAllButton(Integer userId,Integer page){
        	int totalCount=userService.pageCountThreeFootprint(userId);//该方法是根据用户id查询出按钮足迹  商品足迹和贷款分类足迹的总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -69,8 +69,8 @@ public class UserController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<ButtonFootprint> list=userService.queryAllButton(userId,page);
+    	pageUtil.setPage(pages);
+    	List<ButtonFootprint> list=userService.queryAllButton(userId,pageUtil.getPage(),pageUtil.getPageSize());
     
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listFootprint",list);

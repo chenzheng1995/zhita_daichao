@@ -58,9 +58,8 @@ public class RegisteController {
     	for (int i = 0; i < list1.size(); i++) {
     		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)), list1.get(i));//将商家的被申请人数字段进行修改
 		}
-    	
     	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -68,9 +67,11 @@ public class RegisteController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
+    	pageUtil.setPage(pages);
     	
-    	List<LoansBusinesses> list=intRegisteService.queryAllAdmain(pageUtil.getPage());
+    	System.out.println(pageUtil.getPage()+"------"+pageUtil.getPageSize()+"-----"+pageUtil.getTotalCount()+"----"+pageUtil.getTotalPageCount());
+    	
+    	List<LoansBusinesses> list=intRegisteService.queryAllAdmain(pageUtil.getPage(),pageUtil.getPageSize());
     	for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
 		}
@@ -90,7 +91,6 @@ public class RegisteController {
     }
     
 	//后台管理---添加贷款商家信息
-    
     @ResponseBody
     @RequestMapping("/insertAllAdmin")
     public Map<String, Object> insertAll(LoansBusinesses loansBusinesses,MultipartFile file) throws Exception{
@@ -156,7 +156,7 @@ public class RegisteController {
     		}
         	
         	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
-        	pageUtil=new PageUtil(page, totalCount);
+        	pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -164,8 +164,8 @@ public class RegisteController {
         		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	pageUtil=new PageUtil(pages, totalCount);
-        	list=intRegisteService.queryAllAdmain(pageUtil.getPage());
+        	pageUtil.setPage(pages);
+        	list=intRegisteService.queryAllAdmain(pageUtil.getPage(),pageUtil.getPageSize());
     	}else {
     		List<String> list1=intRegisteService.queryAllBusinessNameByLike(businessName);//通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中
         	for (int i = 0; i < list1.size(); i++) {
@@ -173,7 +173,7 @@ public class RegisteController {
     		}
     		
           	int totalCount=intRegisteService.pageCountByLike(businessName);//该方法是模糊查询的贷款商家总数量
-        	pageUtil=new PageUtil(page, totalCount);
+           	pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -181,8 +181,8 @@ public class RegisteController {
         		page=pageUtil.getTotalPageCount();
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	pageUtil=new PageUtil(pages, totalCount);
-        	list=intRegisteService.queryByNameLike(businessName,pageUtil.getPage());
+        	pageUtil.setPage(pages);
+        	list=intRegisteService.queryByNameLike(businessName,pageUtil.getPage(),pageUtil.getPageSize());
     	}
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listLoanBusinByLike",list);

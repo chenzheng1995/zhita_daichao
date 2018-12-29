@@ -37,7 +37,7 @@ public class BannerController {
 	@RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page){
     	int totalCount=intBannerService.pageCount();//该方法是查询轮播图总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -45,8 +45,8 @@ public class BannerController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<ShufflingFigure> list=intBannerService.queryAll(pageUtil.getPage());
+    	pageUtil.setPage(pages);
+    	List<ShufflingFigure> list=intBannerService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listshuff",list);
@@ -61,7 +61,7 @@ public class BannerController {
 		PageUtil pageUtil=null;
 		if(title==null||"".equals(title)) {
 	    	int totalCount=intBannerService.pageCount();//该方法是查询轮播图总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -69,11 +69,11 @@ public class BannerController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intBannerService.queryAll(pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intBannerService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
 		}else {
 	    	int totalCount=intBannerService.pageCountByLike(title);//该方法是根据标题模糊查询轮播图总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -81,8 +81,8 @@ public class BannerController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intBannerService.queryAllByLike(title, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intBannerService.queryAllByLike(title, pageUtil.getPage(),pageUtil.getPageSize());
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listshuffByLike",list);

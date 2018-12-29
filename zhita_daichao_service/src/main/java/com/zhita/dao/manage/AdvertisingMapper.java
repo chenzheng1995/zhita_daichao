@@ -28,10 +28,10 @@ public interface AdvertisingMapper {
     int pageCountByLike(String title);
     
     //后台管理---查询广告表全部信息,含分页
-    List<Advertising> queryAll(Integer page);
+    List<Advertising> queryAll(Integer page,Integer pagesize);
     
     //后台管理---根据标题字段模糊查询广告表信息，含分页
-    List<Advertising> queryAllByLike(String title,Integer page);
+    List<Advertising> queryAllByLike(String title,Integer page,Integer pagesize);
     
     //后台管理---添加广告表信息
     int AddAll(Advertising advertising); 

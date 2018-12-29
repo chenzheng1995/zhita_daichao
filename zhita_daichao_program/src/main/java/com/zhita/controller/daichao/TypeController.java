@@ -33,13 +33,16 @@ public class TypeController {
     @RequestMapping("/queryLoanbusinByLoanClass")
     public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page){
     	int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification);
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	if(page==0) {
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
+    	if(page<1) {
     		page=1;
     	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		page=pageUtil.getTotalPageCount();
+    	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification, pageUtil.getPage());
+    	pageUtil.setPage(pages);
+    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification, pageUtil.getPage(),pageUtil.getPageSize());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listLoansBusinByLike",list);

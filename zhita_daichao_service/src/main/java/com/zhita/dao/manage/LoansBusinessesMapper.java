@@ -26,10 +26,10 @@ public interface LoansBusinessesMapper {
     int updateLoansBusinesses(LoansBusinesses loans);
     
   	//小程序---查询贷款商家部分字段信息，含分页
-  	List<LoansBusinesses> queryAllAdmainpro(Integer page);
+  	List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize);
     
   	//后台管理---查询贷款商家部分字段信息，含分页
-  	List<LoansBusinesses> queryAllAdmain(Integer page);
+  	List<LoansBusinesses> queryAllAdmain(Integer page,Integer pagesize);
   	
   	//后台管理---查询贷款商家总条数
   	int pageCount();
@@ -38,7 +38,7 @@ public interface LoansBusinessesMapper {
   	int pageCountByLike(String businessName);
   	
   	//后台管理---通过商家名称模糊查询，并且有分页功能
-  	List<LoansBusinesses> queryByNameLike(String businessName,Integer page);
+  	List<LoansBusinesses> queryByNameLike(String businessName,Integer page,Integer pagesize);
   	
   	//后台管理---通过商家主键id修改假删除字段的值
   	int upaFalseDel(Integer id);

@@ -21,12 +21,12 @@ public interface UserService {
 	public int pageCountThreeFootprint(Integer id);
 
 	//后台管理---查询出用户表所有信息，含分页
-	public List<User> queryAllUser(Integer page);
+	public List<User> queryAllUser(Integer page,Integer pagesize);
 	
 	//后台管理---通过传过来的值，进行多种情况的模糊查询，含分页
 	public Map<String,Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,Integer page);
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中，含分页
-	public List<ButtonFootprint> queryAllButton(Integer id,Integer page);
+	public List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize);
 	
 }

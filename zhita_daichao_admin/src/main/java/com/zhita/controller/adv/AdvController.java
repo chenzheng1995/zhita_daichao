@@ -29,7 +29,7 @@ public class AdvController {
 	@RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page){
     	int totalCount=intAdvService.pageCount();//该方法是查询广告表总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -37,8 +37,8 @@ public class AdvController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<Advertising> list=intAdvService.queryAll(pageUtil.getPage());
+    	pageUtil.setPage(pages);
+    	List<Advertising> list=intAdvService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listadv",list);
@@ -53,7 +53,7 @@ public class AdvController {
 		PageUtil pageUtil=null;
 		if(title==null||"".equals(title)) {
 	    	int totalCount=intAdvService.pageCount();//该方法是查询广告表总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -61,11 +61,11 @@ public class AdvController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intAdvService.queryAll(pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intAdvService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
 		}else {
 	    	int totalCount=intAdvService.pageCountByLike(title);//该方法是根据标题模糊查询轮播图总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -73,8 +73,8 @@ public class AdvController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intAdvService.queryAllByLike(title, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intAdvService.queryAllByLike(title, pageUtil.getPage(),pageUtil.getPageSize());
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listadvByLike",list);
