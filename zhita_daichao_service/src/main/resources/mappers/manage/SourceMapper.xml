@@ -114,14 +114,14 @@
     <!-- 后台管理  通过传过来的渠道对象，对当前对象进行修改保存 -->
    <update id="updateSource" parameterType="com.zhita.model.manage.Source">
     update source
-    set sourceName = #{sourcename,jdbcType=VARCHAR},
+    set sourceName = #{sourceName,jdbcType=VARCHAR},
         account = #{account,jdbcType=VARCHAR},
         link = #{link,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理 查询出所有渠道表信息，含分页-->
   <select id="queryAllSource" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Source">
-  	select id,sourceName,account,link,state from source where deleted='0' limit #{page},2
+  	select id,sourceName,account,link,state from source where deleted='0' limit #{arg0},#{arg1}
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -133,7 +133,7 @@
  </select>
  <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.Source">
- 	select id,sourceName,account,link,state from source where deleted='0' and sourceName like "%"#{arg0}"%" limit #{arg1},2
+ 	select id,sourceName,account,link,state from source where deleted='0' and sourceName like "%"#{arg0}"%" limit #{arg1},#{arg2}
  </select>
  <!--后台管理 添加渠道信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.Source" >
@@ -151,4 +151,45 @@
  <update id="upaStateClose" parameterType="java.lang.Integer">
  	update source set state ='2' where id=#{id}
  </update>
+  <!-- 后台管理   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+ <select id="pageCountBySourceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+ 	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0}
+ </select>
+ 
+   <!-- 后台管理   通过注册时间模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+ <select id="pageCountByRegistrationTime" resultType="java.lang.Integer">
+ 	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2}
+ </select>
+ 
+   <!-- 后台管理   通过手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+ <select id="pageCountByPhone" resultType="java.lang.Integer">
+ 	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.phone like "%"#{arg1}"%"
+ </select>
+ 
+   <!-- 后台管理   通过注册时间 。。手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+ <select id="pageCountByRegistrationTimePhone" resultType="java.lang.Integer">
+ 	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} and u.phone like "%"#{arg3}"%"
+ </select>
+ 
+ 
+ 
+ <!-- 后台管理   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+ <select id="queryAllUserBySourceId" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.User">
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} limit #{arg1},#{arg2}
+ </select>
+ 
+  <!-- 后台管理   通过注册时间   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+ <select id="queryAllUserByRegistrationTime" resultType="com.zhita.model.manage.User">
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} limit #{arg3},#{arg4}
+ </select>
+ 
+  <!-- 后台管理   通过手机号查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+ <select id="queryAllUserByPhone" resultType="com.zhita.model.manage.User">
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.phone like "%"#{arg1}"%" limit #{arg2},#{arg3}
+ </select>
+ 
+  <!-- 后台管理  通过注册时间。。手机号 查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+ <select id="queryAllUserByRegistrationTimePhone" resultType="com.zhita.model.manage.User">
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} and u.phone like "%"#{arg3}"%" limit #{arg4},#{arg5}
+ </select>
 </mapper>

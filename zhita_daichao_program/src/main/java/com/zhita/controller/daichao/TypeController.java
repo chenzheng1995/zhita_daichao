@@ -46,7 +46,7 @@ public class TypeController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification, pages,pageUtil.getPageSize());
+    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize());
     	 for (LoansBusinesses loansBusinesses : list) {
     	        String businessName = loansBusinesses.getBusinessname();
     	        int applications = (int)cFootprintService.getApplications(businessName);//获取申请人数	  
@@ -56,7 +56,6 @@ public class TypeController {
     	        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
     	        loansBusinesses.setLoanlimit(loanlimit);
     			}
-    	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listLoansBusinByLike",list);
     	map.put("pageutil", pageUtil);

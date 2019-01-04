@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhita.dao.manage.IncomeSmalltypeMapper" >
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.IncomeSmalltype" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="smalltype" property="smalltype" jdbcType="VARCHAR" />
+    <result column="bigid" property="bigid" jdbcType="INTEGER" />
+    <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, smalltype, bigid, deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from income_smalltype
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from income_smalltype
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.IncomeSmalltype" >
+    insert into income_smalltype (id, smalltype, bigid, 
+      deleted)
+    values (#{id,jdbcType=INTEGER}, #{smalltype,jdbcType=VARCHAR}, #{bigid,jdbcType=INTEGER}, 
+      #{deleted,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.IncomeSmalltype" >
+    insert into income_smalltype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="smalltype != null" >
+        smalltype,
+      </if>
+      <if test="bigid != null" >
+        bigid,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="smalltype != null" >
+        #{smalltype,jdbcType=VARCHAR},
+      </if>
+      <if test="bigid != null" >
+        #{bigid,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.IncomeSmalltype" >
+    update income_smalltype
+    <set >
+      <if test="smalltype != null" >
+        smalltype = #{smalltype,jdbcType=VARCHAR},
+      </if>
+      <if test="bigid != null" >
+        bigid = #{bigid,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.IncomeSmalltype" >
+    update income_smalltype
+    set smalltype = #{smalltype,jdbcType=VARCHAR},
+      bigid = #{bigid,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 通过传过来的收入大分类查询出该大分类下的小分类数据 -->
+  <select id="querySmallTypeByBigType" parameterType="java.lang.String" resultType="com.zhita.model.manage.IncomeSmalltype">
+  	select s.id,s.smalltype from income_bigtype b inner join income_smalltype s on b.id=s.bigid where b.bigtype=#{bigtype} and s.deleted='0';
+  </select>
+</mapper>

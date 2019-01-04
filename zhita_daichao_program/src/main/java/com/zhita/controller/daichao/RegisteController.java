@@ -40,10 +40,9 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page){    	
-    	int pageSize = 10; //每页的条数，暂时写死，后续可以让前端传
+    	//int pageSize = 10; //每页的条数，暂时写死，后续可以让前端传
     	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
-    	pageUtil.setPageSize(10);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -51,9 +50,10 @@ public class RegisteController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
+    	pageUtil.setPage(pages);
 
-    	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageSize);
+    	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize());
+    	
         for (LoansBusinesses loansBusinesses : list) {
         String businessName = loansBusinesses.getBusinessname();
         int applications = (int)cFootprintService.getApplications(businessName);//获取申请人数	  
@@ -62,6 +62,7 @@ public class RegisteController {
         String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
         String loanlimit = loanlimitsmall+"~"+loanlimitbig;
         loansBusinesses.setLoanlimit(loanlimit);
+        
 		}
  	
     	HashMap<String,Object> map=new HashMap<>();

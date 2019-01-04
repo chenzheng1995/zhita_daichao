@@ -13,7 +13,13 @@ public class Statistical implements Serializable{
     private Integer conversionrate;//转换率
 
     private Integer businessid;//商家id
-
+    
+    private Integer sourceId;//渠道id
+    
+    private String businessName;//贷款商家的名称
+    
+    private Integer applicationNumber;//贷款商家的申请次数
+    
     public Statistical(Integer id, String time, Integer uv, Integer conversionrate, Integer businessid) {
         this.id = id;
         this.time = time;
@@ -65,4 +71,29 @@ public class Statistical implements Serializable{
     public void setBusinessid(Integer businessid) {
         this.businessid = businessid;
     }
+    
+	public Integer getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(Integer sourceId) {
+		this.sourceId = sourceId;
+	}
+
+	public String getBusinessName() {
+		return businessName;
+	}
+
+	public void setBusinessName(String businessName) {
+		this.businessName = businessName;
+	}
+
+	public Integer getApplicationNumber() {
+		return applicationNumber;
+	}
+
+	public void setApplicationNumber(Integer applicationNumber) {
+		this.applicationNumber = applicationNumber;
+	}
+    
 }
