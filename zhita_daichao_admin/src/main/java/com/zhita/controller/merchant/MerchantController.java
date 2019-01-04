@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.Source;
+import com.zhita.model.manage.User;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.util.PageUtil;
 
@@ -25,7 +26,7 @@ public class MerchantController {
 	@RequestMapping("/queryAllSource")
     public Map<String,Object> queryAllSource(Integer page){
     	int totalCount=intMerchantService.pageCount();//该方法是查询渠道表总数量
-    	PageUtil pageUtil=new PageUtil(page, totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -33,8 +34,8 @@ public class MerchantController {
     		page=pageUtil.getTotalPageCount();
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil=new PageUtil(pages, totalCount);
-    	List<Source> list=intMerchantService.queryAllSource(pageUtil.getPage());
+    	pageUtil.setPage(pages);
+    	List<Source> list=intMerchantService.queryAllSource(pageUtil.getPage(),pageUtil.getPageSize());
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listsource",list);
@@ -42,15 +43,15 @@ public class MerchantController {
     	return map;
     }
 	
-	//后台管理---根据姓名字段模糊查询渠道表所有信息，含分页
+	//后台管理---根据渠道名称字段模糊查询渠道表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/querySourceByLike")
     public Map<String,Object> querySourceByLike(String sourceName,Integer page){
 		List<Source> list=null;
 		PageUtil pageUtil=null;
 		if(sourceName==null||"".equals(sourceName)) {
-	    	int totalCount=intMerchantService.pageCount();//该方法是查询渠道总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	    	int totalCount=intMerchantService.pageCount();//该方法是查询渠道表总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -58,11 +59,11 @@ public class MerchantController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intMerchantService.queryByLike(sourceName, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intMerchantService.queryAllSource(pageUtil.getPage(),pageUtil.getPageSize());
 		}else {
 	    	int totalCount=intMerchantService.pageCountByLike(sourceName);//该方法是模糊查询的攻略总数量
-	    	pageUtil=new PageUtil(page, totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -70,8 +71,8 @@ public class MerchantController {
 	    		page=pageUtil.getTotalPageCount();
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil=new PageUtil(pages, totalCount);
-	    	list=intMerchantService.queryByLike(sourceName, pageUtil.getPage());
+	    	pageUtil.setPage(pages);
+	    	list=intMerchantService.queryByLike(sourceName, pageUtil.getPage(),pageUtil.getPageSize());
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listsourceByLike",list);
@@ -80,8 +81,8 @@ public class MerchantController {
     }
 	//后台管理---添加渠道
 	@ResponseBody
-	@RequestMapping("/AddALL")
-    public int AddALL(Source source){
+	@RequestMapping("/AddAll")
+    public int AddAll(Source source){
 		int num=intMerchantService.addAll(source);
 		return num;
 	}
@@ -118,5 +119,33 @@ public class MerchantController {
 			num=intMerchantService.upaStateClose(id);
 		}
 		return num;
+	}
+    //后台管理---查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
+	@ResponseBody
+	@RequestMapping("/queryAllUserBySourceId")
+    public Map<String,Object> queryAllUserBySourceId(Integer sourceId,Integer page){
+    	int totalCount=intMerchantService.pageCountBySourceId(sourceId);//该方法是查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
+    	if(page<1) {
+    		page=1;
+    	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		page=pageUtil.getTotalPageCount();
+    	}
+    	int pages=(page-1)*pageUtil.getPageSize();
+    	pageUtil.setPage(pages);
+    	List<User> list=intMerchantService.queryAllUserBySourceId(sourceId,pageUtil.getPage(),pageUtil.getPageSize());
+    	
+    	HashMap<String,Object> map=new HashMap<>();
+    	map.put("listuser",list);
+    	map.put("pageutil", pageUtil);
+    	return map;
+    }
+    //后台管理---通过条件做各种模糊查询   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
+	@ResponseBody
+	@RequestMapping("/queryAllUserByLikeAll")
+    public Map<String,Object> queryAllUserByLikeAll(Integer SourceId,String registrationTimeStart,String registrationTimeEnd,String phone,Integer page){
+		Map<String,Object> map=intMerchantService.queryAllUserByLikeAll(SourceId, registrationTimeStart, registrationTimeEnd, phone, page);
+		return map;
 	}
 }

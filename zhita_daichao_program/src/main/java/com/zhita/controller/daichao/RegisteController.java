@@ -30,8 +30,8 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page){    	
+
     	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
-    	
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
@@ -50,6 +50,7 @@ public class RegisteController {
         String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
         String loanlimit = loanlimitsmall+"~"+loanlimitbig;
         loansBusinesses.setLoanlimit(loanlimit);
+        
 		}
  	
     	HashMap<String,Object> map=new HashMap<>();

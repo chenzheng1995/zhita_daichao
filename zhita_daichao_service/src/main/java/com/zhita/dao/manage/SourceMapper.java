@@ -3,6 +3,7 @@ package com.zhita.dao.manage;
 import java.util.List;
 
 import com.zhita.model.manage.Source;
+import com.zhita.model.manage.User;
 
 public interface SourceMapper {
     int deleteByPrimaryKey(Integer id);
@@ -25,7 +26,7 @@ public interface SourceMapper {
     int updateSource(Source source);
     
     //后台管理---查询出所有渠道表信息，含分页
-    List<Source> queryAllSource(Integer page);
+    List<Source> queryAllSource(Integer page,Integer pagesize);
     
     //后台管理---用于获取总页数
     int pageCount();
@@ -34,7 +35,7 @@ public interface SourceMapper {
     int pageCountByLike(String sourceName);
     
     //后台管理---模糊查询渠道信息,并且有分页功能
-    List<Source> queryByLike(String sourceName,Integer page);
+    List<Source> queryByLike(String sourceName,Integer page,Integer pagesize);
     
     //后台管理---添加渠道信息
     int addAll(Source source);
@@ -47,4 +48,28 @@ public interface SourceMapper {
     
     //后台管理---修改信用卡状态为关闭
     int upaStateClose(Integer id);
+    
+    //后台管理 ---查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量
+    int pageCountBySourceId(Integer sourceId);
+    
+    //后台管理 ---通过注册时间模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量
+    int pageCountByRegistrationTime(Integer sourceId,String registrationTime,String registrationTime1);
+    
+    //后台管理 ---通过手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量
+    int pageCountByPhone(Integer sourceId,String phone);
+    
+    //后台管理 ---通过注册时间 。。手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量
+    int pageCountByRegistrationTimePhone(Integer sourceId,String registrationTime,String registrationTime1,String phone);
+    
+    //后台 管理---查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
+    List<User> queryAllUserBySourceId(Integer SourceId,Integer page,Integer pagesize);
+    
+    //后台 管理---通过注册时间  查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
+    List<User> queryAllUserByRegistrationTime(Integer SourceId,String registrationTime,String registrationTime1,Integer page,Integer pagesize);
+    
+    //后台 管理---通过手机号    查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
+    List<User> queryAllUserByPhone(Integer SourceId,String phone,Integer page,Integer pagesize);
+    
+    //后台 管理---通过注册时间 。。手机号    查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
+    List<User> queryAllUserByRegistrationTimePhone(Integer SourceId,String registrationTime,String registrationTime1,String phone,Integer page,Integer pagesize);
 }

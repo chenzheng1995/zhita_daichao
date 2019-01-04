@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhita.dao.manage.ExpenditureBillMapper" >
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.ExpenditureBill" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="bigtypeId" property="bigtypeid" jdbcType="INTEGER" />
+    <result column="smalltypeId" property="smalltypeid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="VARCHAR" />
+    <result column="beizhu" property="beizhu" jdbcType="VARCHAR" />
+    <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, money, bigtypeId, smalltypeId, userId,time, beizhu, deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from expenditure_bill
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from expenditure_bill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.ExpenditureBill" >
+    insert into expenditure_bill (id, money, bigtypeId, 
+      smalltypeId, userId,time, beizhu, 
+      deleted)
+    values (#{id,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL}, #{bigtypeid,jdbcType=INTEGER}, 
+      #{smalltypeid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER},#{time,jdbcType=VARCHAR}, #{beizhu,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.ExpenditureBill" >
+    insert into expenditure_bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="bigtypeid != null" >
+        bigtypeId,
+      </if>
+      <if test="smalltypeid != null" >
+        smalltypeId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="beizhu != null" >
+        beizhu,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="bigtypeid != null" >
+        #{bigtypeid,jdbcType=INTEGER},
+      </if>
+      <if test="smalltypeid != null" >
+        #{smalltypeid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null" >
+        #{beizhu,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.ExpenditureBill" >
+    update expenditure_bill
+    <set >
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="bigtypeid != null" >
+        bigtypeId = #{bigtypeid,jdbcType=INTEGER},
+      </if>
+      <if test="smalltypeid != null" >
+        smalltypeId = #{smalltypeid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null" >
+        beizhu = #{beizhu,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.ExpenditureBill" >
+    update expenditure_bill
+    set money = #{money,jdbcType=DECIMAL},
+      bigtypeId = #{bigtypeid,jdbcType=INTEGER},
+      smalltypeId = #{smalltypeid,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=INTEGER},
+      time = #{time,jdbcType=VARCHAR},
+      beizhu = #{beizhu,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 添加支出账单信息 -->
+    <insert id="addExpenditureBill" parameterType="com.zhita.model.manage.ExpenditureBill">
+    insert into expenditure_bill (money, bigtypeId,smalltypeId,userId,time,beizhu)
+    values (#{money,jdbcType=DECIMAL}, #{bigtypeid,jdbcType=INTEGER}, 
+      #{smalltypeid,jdbcType=INTEGER},#{useid,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR},#{beizhu,jdbcType=VARCHAR})
+  </insert>
+  <!-- 通过时间模糊查询   当前用户  当前月 所有支出金额总和-->
+  <select id="queryTotalMoney" resultType="java.lang.Integer">
+  	select sum(money) from expenditure_bill where userId=#{arg0} and time like "%"#{arg1}"%"
+  </select>
+  <!-- 通过时间模糊查询出当前用户  当前月 每一天  的支出详细信息 -->
+  <select id="queryAllByTimeLike" resultType="com.zhita.model.manage.ExpenditureBill">
+  	select l.id,l.money,b.bigtype,s.smalltype,l.time from expenditure_bill l
+	inner join expenditure_bigtype b on l.bigtypeId=b.id
+	inner join expenditure_smalltype s on l.smalltypeId=s.id
+	where userId=#{arg0} and time like "%"#{arg1}"%";
+  </select>
+  <!-- 通过时间模糊查询出当前用户  当前月 每一天  的支出总和 -->
+  <select id="querySumByTimeLike" resultType="java.lang.Integer">
+  	select time,sum(money) from expenditure_bill
+	where userId=#{arg0} and time like "%"#{arg1}"%" group by time;
+  </select>
+</mapper>
