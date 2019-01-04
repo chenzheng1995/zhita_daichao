@@ -395,5 +395,10 @@
  <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap">
  	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted = 0 order by isStick desc limit #{page},#{pageSize}
  </select>
+ 
+   <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->
+ <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.String">
+ 	select trademark  from loans_businesses where businessName = #{businessname}
+ </select>
 
 </mapper>

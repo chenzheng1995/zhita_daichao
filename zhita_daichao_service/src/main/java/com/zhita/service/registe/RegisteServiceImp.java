@@ -122,4 +122,10 @@ public class RegisteServiceImp implements IntRegisteService{
   		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page,pagesize);
   		return list;
   	}
+
+	@Override
+	public String getTrademark(String businessname) {
+		String trademark = loansBusinessesMapper.getTrademark(businessname);
+		return trademark;
+	}
 }

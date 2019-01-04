@@ -42,6 +42,9 @@ public interface IntRegisteService{
   	//小程序---查询贷款商家部分字段信息，含分页
 
   	public List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize);
+  	
+  	//后台管理---通过传过来的贷款商家名字，查询商标的URL
+	public String getTrademark(String businessname);
 
 
 }
