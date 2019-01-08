@@ -43,13 +43,13 @@ public class RegisteController {
     	pageUtil.setPage(pages); 	
     	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize());
         for (LoansBusinesses loansBusinesses : list) {
-        String businessName = loansBusinesses.getBusinessname();
-        int applications = (int)cFootprintService.getApplications(businessName);//获取申请人数	  
-        loansBusinesses.setApplications(applications);
-        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
-        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
-        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
-        loansBusinesses.setLoanlimit(loanlimit);
+	        String businessName = loansBusinesses.getBusinessname();
+	        int applications = (int)cFootprintService.getApplications(businessName);//获取申请人数	  
+	        loansBusinesses.setApplications(applications);
+	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
+	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
+	        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
+	        loansBusinesses.setLoanlimit(loanlimit);
         
 		}
  	

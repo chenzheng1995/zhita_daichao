@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.ExpenditureBillMapper;
+import com.zhita.model.manage.DayBill;
 import com.zhita.model.manage.ExpenditureBill;
 
 @Service
@@ -31,9 +32,15 @@ public class ExpenditurebillServiceImp implements IntexpenditurebillService{
     	return list;
     }
     
+    //通过时间准确查询出当前用户  当前月 每一天  的支出详细信息
+    public List<ExpenditureBill> queryAllByTime(Integer userid,String time){
+    	List<ExpenditureBill> list=expenditureBillMapper.queryAllByTime(userid, time);
+    	return list;
+    }
+    
     //通过时间模糊查询出当前用户  当前月 每一天  的支出总和
-    public BigDecimal querySumByTimeLike(Integer userid,String time) {
-    	BigDecimal sum=expenditureBillMapper.querySumByTimeLike(userid, time);
-    	return sum;
+    public List<DayBill> querySumByTimeLike(Integer userid,String time) {
+    	List<DayBill> listexpenditurelike=expenditureBillMapper.querySumByTimeLike(userid, time);
+    	return listexpenditurelike;
     }
 }

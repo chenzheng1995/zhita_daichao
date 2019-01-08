@@ -2,7 +2,7 @@ package com.zhita.model.manage;
 
 import java.io.Serializable;
 
-//管理登录表
+//管理登录用户表
 public class ManageLogin implements Serializable{
     private Integer id;
 
