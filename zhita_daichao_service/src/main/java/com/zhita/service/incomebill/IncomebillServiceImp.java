@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.IncomeBillMapper;
+import com.zhita.model.manage.DayBill;
 import com.zhita.model.manage.IncomeBill;
 
 @Service
@@ -29,9 +30,14 @@ public class IncomebillServiceImp implements IntincomebillService{
     	List<IncomeBill> list=incomeBillMapper.queryAllByTimeLike(userid, time);
     	return list;
     }
+    //通过时间准确查询出当前用户  当前月 每一天  的收入详细信息
+    public List<IncomeBill> queryAllByTime(Integer userid,String time){
+    	List<IncomeBill> list=incomeBillMapper.queryAllByTime(userid, time);
+    	return list;
+    }
     //通过时间模糊查询出当前用户  当前月 每一天  的收入总和
-    public BigDecimal querySumByTimeLike(Integer userid,String time) {
-    	BigDecimal sum=incomeBillMapper.querySumByTimeLike(userid, time);
-    	return sum;
+    public List<DayBill> querySumByTimeLike(Integer userid,String time) {
+    	List<DayBill> listincomelike=incomeBillMapper.querySumByTimeLike(userid, time);
+    	return listincomelike;
     }
 }

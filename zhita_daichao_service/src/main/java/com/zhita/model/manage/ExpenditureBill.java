@@ -9,8 +9,12 @@ public class ExpenditureBill {
     private BigDecimal money;//支出金额
 
     private Integer bigtypeid;//大分类id
+    
+    private String bigtype;//大分类
 
     private Integer smalltypeid;//小分类id
+    
+    private String smalltype;//小分类
     
     private Integer userid;//用户id
     
@@ -43,8 +47,16 @@ public class ExpenditureBill {
     public void setBigtypeid(Integer bigtypeid) {
         this.bigtypeid = bigtypeid;
     }
+    
+    public String getBigtype() {
+		return bigtype;
+	}
 
-    public Integer getSmalltypeid() {
+	public void setBigtype(String bigtype) {
+		this.bigtype = bigtype;
+	}
+
+	public Integer getSmalltypeid() {
         return smalltypeid;
     }
 
@@ -52,6 +64,13 @@ public class ExpenditureBill {
         this.smalltypeid = smalltypeid;
     }
 
+	public String getSmalltype() {
+		return smalltype;
+	}
+
+	public void setSmalltype(String smalltype) {
+		this.smalltype = smalltype;
+	}
 
 	public Integer getUserid() {
 		return userid;

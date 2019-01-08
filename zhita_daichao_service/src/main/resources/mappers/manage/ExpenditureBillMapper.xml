@@ -129,10 +129,10 @@
     <insert id="addExpenditureBill" parameterType="com.zhita.model.manage.ExpenditureBill">
     insert into expenditure_bill (money, bigtypeId,smalltypeId,userId,time,beizhu)
     values (#{money,jdbcType=DECIMAL}, #{bigtypeid,jdbcType=INTEGER}, 
-      #{smalltypeid,jdbcType=INTEGER},#{useid,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR},#{beizhu,jdbcType=VARCHAR})
+      #{smalltypeid,jdbcType=INTEGER},#{userid,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR},#{beizhu,jdbcType=VARCHAR})
   </insert>
   <!-- 通过时间模糊查询   当前用户  当前月 所有支出金额总和-->
-  <select id="queryTotalMoney" resultType="java.lang.Integer">
+  <select id="queryTotalMoney" resultType="java.math.BigDecimal">
   	select sum(money) from expenditure_bill where userId=#{arg0} and time like "%"#{arg1}"%"
   </select>
   <!-- 通过时间模糊查询出当前用户  当前月 每一天  的支出详细信息 -->
@@ -140,11 +140,20 @@
   	select l.id,l.money,b.bigtype,s.smalltype,l.time from expenditure_bill l
 	inner join expenditure_bigtype b on l.bigtypeId=b.id
 	inner join expenditure_smalltype s on l.smalltypeId=s.id
-	where userId=#{arg0} and time like "%"#{arg1}"%";
+	where userId=#{arg0} and time like "%"#{arg1}"%"
   </select>
+  
+  <!-- 通过时间准确查询出当前用户  当前月 每一天  的支出详细信息 -->
+  <select id="queryAllByTime" resultType="com.zhita.model.manage.ExpenditureBill">
+  	select l.id,l.money,b.bigtype,s.smalltype,l.time from expenditure_bill l
+	inner join expenditure_bigtype b on l.bigtypeId=b.id
+	inner join expenditure_smalltype s on l.smalltypeId=s.id
+	where userId=#{arg0} and time =#{arg1}
+  </select>
+  
   <!-- 通过时间模糊查询出当前用户  当前月 每一天  的支出总和 -->
-  <select id="querySumByTimeLike" resultType="java.lang.Integer">
-  	select time,sum(money) from expenditure_bill
-	where userId=#{arg0} and time like "%"#{arg1}"%" group by time;
+  <select id="querySumByTimeLike" resultType="com.zhita.model.manage.DayBill">
+  	select time,sum(money) sum from expenditure_bill
+	where userId=#{arg0} and time=#{arg1} group by time;
   </select>
 </mapper>

@@ -1,6 +1,11 @@
 package com.zhita.model.manage;
 
-public class ManageLogin {
+
+import java.io.Serializable;
+
+//管理登录用户表
+public class ManageLogin implements Serializable{
+
     private Integer id;
 
     private String username;

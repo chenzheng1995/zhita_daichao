@@ -58,6 +58,7 @@ public class TypeServiceImp implements IntTypeService{
     //小程序---通过贷款分类的名称查询出贷款商家的个数
     public int pageCountByBusinessClassification(String businessClassification) {
     	int count=loanClassificationMapper.pageCountByBusinessClassification(businessClassification);
+    	System.out.println(count+"----");
     	return count;
     }
     //后台管理---模糊查询贷款分类信息,并且有分页功能

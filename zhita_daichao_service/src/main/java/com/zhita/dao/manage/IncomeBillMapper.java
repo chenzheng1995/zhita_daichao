@@ -3,6 +3,7 @@ package com.zhita.dao.manage;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.zhita.model.manage.DayBill;
 import com.zhita.model.manage.IncomeBill;
 
 public interface IncomeBillMapper {
@@ -28,7 +29,10 @@ public interface IncomeBillMapper {
     //通过时间模糊查询出当前用户  当前月 每一天  的收入详细信息
     List<IncomeBill> queryAllByTimeLike(Integer userid,String time);
     
+    //通过时间准确查询出当前用户  当前月 每一天  的收入详细信息
+    List<IncomeBill> queryAllByTime(Integer userid,String time);
+    
     //通过时间模糊查询出当前用户  当前月 每一天  的收入总和
-    BigDecimal querySumByTimeLike(Integer userid,String time);
+    List<DayBill> querySumByTimeLike(Integer userid,String time);
     
 }
