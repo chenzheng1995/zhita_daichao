@@ -43,4 +43,6 @@ public interface StrategyMapper {
     int upaStateOpen(Integer id);
     //后台管理---修改攻略状态为关闭
     int upaStateClose(Integer id);
+
+	String getCover(int id);
 }

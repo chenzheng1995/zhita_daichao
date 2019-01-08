@@ -25,4 +25,5 @@ public interface IntCardService {
     public int upaStateClose(Integer id);
     //后台管理---通过传过来的信用卡对象，对当前对象进行修改保存
     public int updateCreditCard(CreditCard creditCard);
+	public String getCover(int id);
 }

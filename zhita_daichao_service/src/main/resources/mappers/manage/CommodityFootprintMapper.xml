@@ -151,7 +151,7 @@
 
 	<!-- 查找商品足迹表中的商品名称 -->
 	<select id="getbusinessName" resultType="String" parameterType="map">
-		select footprint from commodity_footprint where userId = #{userId} order by footprintTime desc limit #{startRow},#{pageSize}
+		select distinct footprint from commodity_footprint where userId = #{userId} order by footprintTime desc limit #{startRow},#{pageSize}
 	</select>
 	
 	<!-- 查询出某个商品的申请人数 -->

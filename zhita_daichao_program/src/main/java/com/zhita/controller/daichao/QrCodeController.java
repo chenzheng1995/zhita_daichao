@@ -14,7 +14,7 @@ import com.zhita.util.PostAndGet;
 
 @Controller
 @RequestMapping("/qrcode")
-public class QrCode {
+public class QrCodeController {
 
 	@RequestMapping("/getqrcode")
 	@ResponseBody

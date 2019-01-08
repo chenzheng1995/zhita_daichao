@@ -86,4 +86,10 @@ public interface UserMapper {
 
 	int updateloginStatus(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone);
 
+	int getId(@Param("phone")String phone,@Param("openId") String openId);
+
+	int updatelogOutStatus(@Param("loginStatus")String loginStatus,@Param("userId") int userId);
+
+	String getLoginStatus(String openId);
+
 }

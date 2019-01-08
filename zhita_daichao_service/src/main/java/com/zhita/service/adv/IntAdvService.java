@@ -33,4 +33,6 @@ public interface IntAdvService {
     public int upaStateClose(Integer id);
     //后台管理---根据传过来的广告对象，对当前对象进行修改保存
     public int updateAdvertising(Advertising advertising);
+
+	public String getCover(int id);
 }

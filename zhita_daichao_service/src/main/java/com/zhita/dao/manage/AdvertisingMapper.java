@@ -44,4 +44,6 @@ public interface AdvertisingMapper {
     
     //后台管理---修改广告表的状态为关闭
     int upaStateClose(Integer id);
+
+	String getCover(int id);
 }

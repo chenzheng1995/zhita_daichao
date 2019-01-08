@@ -42,4 +42,41 @@ public class LoginServiceImp implements IntLoginService{
 		int number = userMapper.updateloginStatus(loginStatus,openId,phone);
 		return number;
 	}
+
+	@Override
+	public int getId(String phone, String openId) {
+		int id = userMapper.getId(phone,openId);
+		return id;
+	}
+
+	@Override
+	public int updatelogOutStatus(String loginStatus, int userId) {
+		int number = userMapper.updatelogOutStatus(loginStatus,userId);
+		return number;
+	}
+
+	@Override
+	public int updateAdminLoginStatus(String loginStatus, String phone, String userName, String registrationTime) {
+		int number = manageLoginMapper.updateAdminLoginStatus(loginStatus,phone,userName,registrationTime);
+		return number;
+	}
+
+	@Override
+	public int getAdminId(String phone, String userName) {
+		int id = manageLoginMapper.getAdminId(phone,userName);
+		return id;
+	}
+
+	@Override
+	public int updateAdminLogOutStatus(String loginStatus, int userId) {
+		int number = manageLoginMapper.updateAdminLogOutStatus(loginStatus,userId);
+		return number;
+	}
+
+	@Override
+	public String getLoginStatus(String openId) {
+		String loginStatus = userMapper.getLoginStatus(openId);
+		return loginStatus;
+	}
+
 }

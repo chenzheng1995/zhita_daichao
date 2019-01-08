@@ -44,6 +44,10 @@ public interface ShufflingFigureMapper {
     
     //后台管理---修改轮播图的状态为关闭
     int upaStateClose(Integer id);
+
+	String getCover(int id);
+
+	List<ShufflingFigure> getShufflingFigure();
     
     
 }

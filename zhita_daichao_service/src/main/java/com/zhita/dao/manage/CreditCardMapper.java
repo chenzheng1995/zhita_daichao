@@ -45,4 +45,6 @@ public interface CreditCardMapper {
     
     //后台管理---修改信用卡状态为关闭
     int upaStateClose(Integer id);
+
+	String getCover(int id);
 }

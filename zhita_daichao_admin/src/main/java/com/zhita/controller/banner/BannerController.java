@@ -37,7 +37,7 @@ public class BannerController {
 	@RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page){
     	int totalCount=intBannerService.pageCount();//该方法是查询轮播图总数量
-    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -174,8 +174,9 @@ public class BannerController {
 				return map;
 			}
 		}else {
-			map.put("msg", "请上传图片");
-			return map;
+			int id = shufflingFigure.getId();
+			String cover = intBannerService.getCover(id); //通过传过来的轮播图id，查询图片的URL
+			shufflingFigure.setCover(cover);
 		} 
     	intBannerService.updateShufflingFigure(shufflingFigure);
     	return map;

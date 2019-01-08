@@ -135,7 +135,7 @@ public class AdvController {
 	@RequestMapping("/updateAdvertising")
     public Map<String, Object> updateAdvertising(Advertising advertising,MultipartFile file) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		if (file != null) {// 判断上传的文件是否为空
+		if (file.getSize()!=0) {// 判断上传的文件是否为空
 			String path = null;// 文件路径
 			String type = null;// 文件类型
 			InputStream iStream = file.getInputStream();
@@ -166,12 +166,15 @@ public class AdvController {
 				return map;
 			}
 		}else {
-			map.put("msg", "请上传图片");
-			return map;
+			int id = advertising.getId();
+			String cover = intAdvService.getCover(id); //通过传过来的广告id，查询商标的URL，查询商标的URL
+			advertising.setCover(cover);
 		} 
     	intAdvService.updateAdvertising(advertising);
     	return map;
     }
+	
+
 	
     //后台管理---根据删除按钮，修改广告表假删除状态
 	@ResponseBody

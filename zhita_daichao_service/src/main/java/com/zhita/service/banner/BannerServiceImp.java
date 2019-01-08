@@ -73,4 +73,16 @@ public class BannerServiceImp implements IntBannerService{
     	int num=shufflingFigureMapper.upaStateClose(id);
     	return num;
     }
+
+	@Override
+	public String getCover(int id) {
+		String cover = shufflingFigureMapper.getCover(id);
+		return cover;
+	}
+
+	@Override
+	public List<ShufflingFigure> getShufflingFigure() {
+    	List<ShufflingFigure> list=shufflingFigureMapper.getShufflingFigure(); //获取轮播图的所有数据
+		return list;
+	}
 }

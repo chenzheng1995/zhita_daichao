@@ -25,4 +25,6 @@ public interface IntNewsService{
     public int upaStateClose(Integer id);
     //后台管理---通过传过来的攻略对象，对当前对象进行修改保存
     public int updateStrategy(Strategy strategy);
+    
+	public String getCover(int id);
 }

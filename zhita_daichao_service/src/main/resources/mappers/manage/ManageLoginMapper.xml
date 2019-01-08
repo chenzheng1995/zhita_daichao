@@ -5,11 +5,14 @@
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="userName" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="md5Pwd" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="loginStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="loginTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, userName, md5Pwd
+    id, userName, phone, loginStatus, loginTime, deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -22,10 +25,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.ManageLogin">
-    insert into manage_login (id, userName, md5Pwd
-      )
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{md5pwd,jdbcType=VARCHAR}
-      )
+    insert into manage_login (id, userName, phone, 
+      loginStatus, loginTime, deleted)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{loginstatus,jdbcType=VARCHAR}, #{logintime,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.ManageLogin">
     insert into manage_login
@@ -36,8 +39,17 @@
       <if test="username != null">
         userName,
       </if>
-      <if test="md5pwd != null">
-        md5Pwd,
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="loginstatus != null">
+        loginStatus,
+      </if>
+      <if test="logintime != null">
+        loginTime,
+      </if>
+      <if test="deleted != null">
+        deleted,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -47,8 +59,17 @@
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="md5pwd != null">
-        #{md5pwd,jdbcType=VARCHAR},
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginstatus != null">
+        #{loginstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="logintime != null">
+        #{logintime,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -58,8 +79,17 @@
       <if test="username != null">
         userName = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="md5pwd != null">
-        md5Pwd = #{md5pwd,jdbcType=VARCHAR},
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginstatus != null">
+        loginStatus = #{loginstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="logintime != null">
+        loginTime = #{logintime,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -67,15 +97,34 @@
   <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.ManageLogin">
     update manage_login
     set userName = #{username,jdbcType=VARCHAR},
-      md5Pwd = #{md5pwd,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+      phone = #{phone,jdbcType=VARCHAR},
+      loginStatus = #{loginstatus,jdbcType=VARCHAR},
+      loginTime = #{logintime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER} and deleted= '0'
   </update>
-  	<!--判断用户名是否存在 -->
+    	<!--判断用户名是否存在 -->
 	<select id="findFormatByLoginName" resultMap="BaseResultMap"
 		parameterType="String">
     	<![CDATA[
        SELECT a.* FROM manage_login a WHERE 1=1 
-       AND a.userName=#{userName}
+       AND a.userName=#{userName} and deleted = '0'
        ]]>
 	</select>
+		<!--登录时，登录状态修改 -->
+	<update id="updateAdminLoginStatus" parameterType="java.lang.String" >
+		update manage_login
+		set loginStatus = #{loginStatus},loginTime = #{registrationTime}
+		where userName = #{userName}
+		and phone = #{phone} and deleted = '0'
+	</update>
+		<!-- 后台管理 通过手机号、用户名，获取用户的id  -->
+	<select id="getAdminId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select id from manage_login where phone = #{phone} and userName = #{userName} and deleted ='0'
+	</select>
+			<!-- 退出时，修改登录状态修改 -->
+	<update id="updateAdminLogOutStatus" parameterType="map" >
+		update user
+		set loginStatus = #{loginStatus}
+		where id = #{userId} and deleted = '0'
+	</update>
 </mapper>

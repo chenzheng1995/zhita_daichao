@@ -1,19 +1,25 @@
 package com.zhita.model.manage;
 
-import java.io.Serializable;
-
-//管理登录表
-public class ManageLogin implements Serializable{
+public class ManageLogin {
     private Integer id;
 
-    private String username;//用户名
+    private String username;
 
-    private String md5pwd;//密码
+    private String phone;
 
-    public ManageLogin(Integer id, String username, String md5pwd) {
+    private String loginstatus;
+
+    private String logintime;
+    
+    private String deleted;
+
+    public ManageLogin(Integer id, String username, String phone, String loginstatus, String logintime, String deleted) {
         this.id = id;
         this.username = username;
-        this.md5pwd = md5pwd;
+        this.phone = phone;
+        this.loginstatus = loginstatus;
+        this.logintime = logintime;
+        this.deleted = deleted;
     }
 
     public ManageLogin() {
@@ -36,11 +42,35 @@ public class ManageLogin implements Serializable{
         this.username = username == null ? null : username.trim();
     }
 
-    public String getMd5pwd() {
-        return md5pwd;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMd5pwd(String md5pwd) {
-        this.md5pwd = md5pwd == null ? null : md5pwd.trim();
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    public String getLoginstatus() {
+        return loginstatus;
+    }
+
+    public void setLoginstatus(String loginstatus) {
+        this.loginstatus = loginstatus == null ? null : loginstatus.trim();
+    }
+
+    public String getLogintime() {
+        return logintime;
+    }
+
+    public void setLogintime(String logintime) {
+        this.logintime = logintime == null ? null : logintime.trim();
+    }
+    
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted == null ? null : deleted.trim();
     }
 }

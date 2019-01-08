@@ -182,8 +182,9 @@ public class CardController {
 				return map;
 			}
 		}else {
-			map.put("msg", "请上传图片");
-			return map;
+			int id = creditCard.getId();
+			String cover = intCardService.getCover(id); //通过传过来的信用卡id，查询商标的URL，查询图片的URL
+			creditCard.setCover(cover);
 		} 
     	intCardService.updateCreditCard(creditCard);
     	return map;

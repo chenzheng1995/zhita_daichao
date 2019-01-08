@@ -182,4 +182,8 @@
  <update id="upaStateClose" parameterType="java.lang.Integer">
  	update credit_card set state ='2' where id=#{id}
  </update>
+  <!-- 通过传过来的攻略id，查询商标的URL -->
+ <select id="getCover" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select cover from credit_card where id = #{id}
+ </select>
 </mapper>

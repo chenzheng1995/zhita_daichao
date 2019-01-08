@@ -162,7 +162,7 @@
       type = #{type,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -198,4 +198,9 @@
  <update id="upaStateClose" parameterType="java.lang.Integer">
  	update strategy set state ='2' where id=#{id}
  </update>
+ 
+    <!-- 通过传过来的攻略id，查询商标的URL -->
+ <select id="getCover" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select cover from strategy where id = #{id}
+ </select>
 </mapper>

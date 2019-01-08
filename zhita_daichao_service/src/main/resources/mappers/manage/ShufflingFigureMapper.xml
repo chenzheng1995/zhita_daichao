@@ -111,7 +111,7 @@
     update shuffling_figure
     set title = #{title,jdbcType=VARCHAR},
       cover = #{cover,jdbcType=VARCHAR},
-      link = #{link,jdbcType=VARCHAR},
+      link = #{link,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理    查询出轮播图总数量 -->
@@ -146,4 +146,11 @@
   <update id="upaStateClose" parameterType="java.lang.Integer">
   	update shuffling_figure set state='2' where id=#{id}
   </update>
+     <!-- 后台管理,通过传过来的轮播图id，查询商标的URL -->
+ <select id="getCover" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select cover from shuffling_figure where id =#{id}
+ </select>
+   <select id="getShufflingFigure" resultType="com.zhita.model.manage.ShufflingFigure">
+  	select id,title,cover,link,state,deleted from shuffling_figure where deleted='0'
+  </select>
 </mapper>

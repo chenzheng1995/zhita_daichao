@@ -311,11 +311,25 @@
 		SELECT * from loan_classification_footprint l where userId=#{arg0} and deleted='0'
 		ORDER BY footprintTime desc limit #{arg1},#{arg2}
 	</select>
-	<!-- 登录状态修改 -->
+	<!--登录时，登录状态修改 -->
 	<update id="updateloginStatus" parameterType="java.lang.String" >
 		update user
 		set loginStatus = #{loginStatus}
 		where openId = #{openId}
 		and phone = #{phone}
 	</update>
+	<!-- 后台管理 通过手机号、openid，获取用户的id  -->
+	<select id="getId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select id from user where phone = #{phone} and openId = #{openId}
+	</select>
+		<!-- 退出时，修改登录状态修改 -->
+	<update id="updatelogOutStatus" parameterType="map" >
+		update user
+		set loginStatus = #{loginStatus}
+		where id = #{userId}
+	</update>
+		<!-- 小程序 通过openid查询登录状态 -->
+	<select id="getLoginStatus" parameterType="java.lang.String" resultType="java.lang.String">
+		select loginStatus from user where openId = #{openId} 
+	</select>
 </mapper>

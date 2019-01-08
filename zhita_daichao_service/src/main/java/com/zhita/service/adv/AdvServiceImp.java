@@ -73,4 +73,9 @@ public class AdvServiceImp implements IntAdvService{
     	int num=advertisingMapper.upaStateClose(id);
     	return num;
     }
+	@Override
+	public String getCover(int id) {
+		String cover = advertisingMapper.getCover(id);
+		return cover;
+	}
 }

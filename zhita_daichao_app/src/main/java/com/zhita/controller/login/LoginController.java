@@ -23,35 +23,35 @@ public class LoginController {
 	@Autowired
 	LoginServiceImp loginService;
 
-	@RequestMapping("/login")
-	@ResponseBody
-	public Map<String, String> login(HttpServletRequest request, HttpServletResponse response) {
-		Map<String, String> map = new HashMap<String, String>();
-		String userName = request.getParameter("userName");
-		String Pwd = request.getParameter("Pwd");
-
-		if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(Pwd)) {
-			map.put("msg", "用户名密码不能为空");
-			return map;
-		} else {
-			ManageLogin manageLogin = loginService.findFormatByLoginName(userName); // 判断用户名是否存在
-			if (manageLogin == null) {
-				map.put("msg", "用户名不存在");
-				return map;
-			}
-			MD5Util md5Util = new MD5Util();
-			String dataMd5Pwd = manageLogin.getMd5pwd();
-			String Md5Pwd = md5Util.EncoderByMd5(Pwd); // md5加密
-			if (!Md5Pwd.equals(dataMd5Pwd)) {
-				map.put("msg", "密码错误");
-				return map;
-			}else {
-				map.put("msg", "200");
-			}
-		}
-
-		return map;
-
-	}
+//	@RequestMapping("/login")
+//	@ResponseBody
+//	public Map<String, String> login(HttpServletRequest request, HttpServletResponse response) {
+//		Map<String, String> map = new HashMap<String, String>();
+//		String userName = request.getParameter("userName");
+//		String Pwd = request.getParameter("Pwd");
+//
+//		if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(Pwd)) {
+//			map.put("msg", "用户名密码不能为空");
+//			return map;
+//		} else {
+//			ManageLogin manageLogin = loginService.findFormatByLoginName(userName); // 判断用户名是否存在
+//			if (manageLogin == null) {
+//				map.put("msg", "用户名不存在");
+//				return map;
+//			}
+//			MD5Util md5Util = new MD5Util();
+//			String dataMd5Pwd = manageLogin.getMd5pwd();
+//			String Md5Pwd = md5Util.EncoderByMd5(Pwd); // md5加密
+//			if (!Md5Pwd.equals(dataMd5Pwd)) {
+//				map.put("msg", "密码错误");
+//				return map;
+//			}else {
+//				map.put("msg", "200");
+//			}
+//		}
+//
+//		return map;
+//
+//	}
 
 }

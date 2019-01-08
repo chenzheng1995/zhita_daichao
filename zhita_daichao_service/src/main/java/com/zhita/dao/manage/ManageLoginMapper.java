@@ -1,5 +1,7 @@
 package com.zhita.dao.manage;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.zhita.model.manage.ManageLogin;
 
 public interface ManageLoginMapper {
@@ -14,6 +16,12 @@ public interface ManageLoginMapper {
     int updateByPrimaryKeySelective(ManageLogin record);
 
     int updateByPrimaryKey(ManageLogin record);
-    
-    ManageLogin findFormatByLoginName(String userName);
+
+	ManageLogin findFormatByLoginName(String userName);
+
+	int updateAdminLoginStatus(@Param("loginStatus")String loginStatus, @Param("phone")String phone,@Param("userName") String userName,@Param("registrationTime") String registrationTime);
+
+	int getAdminId(@Param("phone")String phone,@Param("userName") String userName);
+
+	int updateAdminLogOutStatus(@Param("loginStatus")String loginStatus,@Param("userId") int userId);
 }

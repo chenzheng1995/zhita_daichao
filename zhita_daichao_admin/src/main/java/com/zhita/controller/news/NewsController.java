@@ -144,7 +144,7 @@ public class NewsController {
 	@RequestMapping("/updateStrategy")
     public Map<String,Object> updateStrategy(Strategy strategy,MultipartFile file)throws Exception{
 		Map<String, Object> map = new HashMap<>();
-		if (file != null) {// 判断上传的文件是否为空
+		if (file.getSize()!=0) {// 判断上传的文件是否为空
 			String path = null;// 文件路径
 			String type = null;// 文件类型
 			InputStream iStream = file.getInputStream();
@@ -175,8 +175,9 @@ public class NewsController {
 				return map;
 			}
 		}else {
-			map.put("msg", "请上传图片");
-			return map;
+			int id = strategy.getId();
+			String cover = intNewsService.getCover(id); //通过传过来的攻略id，查询商标的URL
+			strategy.setCover(cover);
 		} 
 		intNewsService.updateStrategy(strategy);
 		return map;

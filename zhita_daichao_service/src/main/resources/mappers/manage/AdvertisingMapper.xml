@@ -122,7 +122,7 @@
     set title = #{title,jdbcType=VARCHAR},
       cover = #{cover,jdbcType=VARCHAR},
       link = #{link,jdbcType=VARCHAR},
-      advertising = #{advertising,jdbcType=VARCHAR},
+      advertising = #{advertising,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
     <!-- 后台管理    查询出广告表总数量 -->
@@ -157,4 +157,8 @@
   <update id="upaStateClose" parameterType="java.lang.Integer">
   	update advertising set state='2' where id=#{id}
   </update>
+  <!-- 通过传过来的广告id，查询商标的URL -->
+ <select id="getCover" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select cover  from advertising where id = #{id}
+ </select>
 </mapper>

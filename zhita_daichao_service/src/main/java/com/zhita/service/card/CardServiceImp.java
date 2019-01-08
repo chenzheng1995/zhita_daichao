@@ -80,4 +80,10 @@ public class CardServiceImp implements IntCardService{
     	int num=creditCardMapper.upaStateClose(id);
     	return num;
     }
+
+	@Override
+	public String getCover(int id) {
+		String cover = creditCardMapper.getCover(id);
+		return cover;
+	}
 }

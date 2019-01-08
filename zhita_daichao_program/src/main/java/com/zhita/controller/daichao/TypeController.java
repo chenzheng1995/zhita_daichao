@@ -60,5 +60,6 @@ public class TypeController {
     	map.put("listLoansBusinByLike",list);
     	map.put("pageutil", pageUtil);
     	return map;
-    }
+    }   
+
 }

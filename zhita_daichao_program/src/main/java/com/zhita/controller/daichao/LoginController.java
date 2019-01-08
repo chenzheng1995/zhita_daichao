@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.util.RedisClientUtil;
@@ -84,11 +83,7 @@ public class LoginController {
 		Map<String, String> map = new HashMap<>();
 		SMSUtil smsUtil = new SMSUtil();
 		String state = smsUtil.sendSMS(phone, "json");
-		if(state.equals("200")){
-			map.put("msg", "验证码发送成功");
-		}else {
-			map.put("msg", "验证码发送失败");
-		}		
+        map.put("msg",state);		
 		return map;
 		
 	}
@@ -96,8 +91,8 @@ public class LoginController {
 	// 验证码登录
 	@RequestMapping("/codelogin")
 	@ResponseBody
-	public Map<String, String> codeLogin(String verificationCode, String phone,String nickName,String openId) {//verificationCode是验证码，phone是手机号，nickName是昵称
-		Map<String, String> map = new HashMap<>();
+	public Map<String, Object> codeLogin(String verificationCode, String phone,String nickName,String openId) {//verificationCode是验证码，phone是手机号，nickName是昵称
+		Map<String, Object> map = new HashMap<>();
 		if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(nickName) || StringUtils.isEmpty(openId)) {
 			map.put("msg", "verificationCode,phone,nickName或openId不能为空");
 			return map;
@@ -105,23 +100,31 @@ public class LoginController {
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
 				String key = phone+"Key";
 				String redisCode = redisClientUtil.get(key);
+				if(redisCode==null) {
+					map.put("msg", "验证码已过期，请重新发送");
+					return map;
+				}
 				if(redisCode.equals(verificationCode)) {
-					String registrationTime = System.currentTimeMillis()+"";
+					String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
 					User user = intLoginService.findFormatByLoginName(phone,openId); // 判断用户名是否存在
 					String loginStatus = "1";
-					if (user == null) {						
+					if (user == null) {			//如果用户不存在			
 						int number = intLoginService.insertfootprint(phone, nickName, openId,registrationTime,loginStatus);
-						if (number == 1) {														
+						if (number == 1) {		
+							int id = intLoginService.getId(phone,openId); //获取该用户的id
 							map.put("msg", "用户登录成功，数据插入成功");
 							map.put("loginStatus", loginStatus);
+							map.put("userId", id);
 						} else {
 							map.put("msg", "用户登录失败，用户数据插入失败");
 						}
 					}else {
 						int number = intLoginService.updateloginStatus(loginStatus,openId,phone);
-						if (number == 1) {														
+						if (number == 1) {	
+							int id = intLoginService.getId(phone,openId); //获取该用户的id
 							map.put("msg", "用户登录成功，登录状态修改成功");
 							map.put("loginStatus", loginStatus);
+							map.put("userId", id);
 						} else {
 							map.put("msg", "用户登录失败，登录状态修改失败");
 						}
@@ -139,14 +142,14 @@ public class LoginController {
 	// 退出登录
 	@RequestMapping("/logOut")
 	@ResponseBody
-	public Map<String, String> logOut(String phone,String openId) {//phone是手机号
+	public Map<String, String> logOut(int userId) {
 		Map<String, String> map = new HashMap<>();
-		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(openId)) {
-			map.put("msg", "phone,openId不能为空");
+		if (StringUtils.isEmpty(userId)) {
+			map.put("msg", "userId不能为空");
 			return map;
 			}else {
 				String loginStatus = "0";
-				int number = intLoginService.updateloginStatus(loginStatus,openId,phone);
+				int number = intLoginService.updatelogOutStatus(loginStatus,userId);
 				if (number == 1) {														
 					map.put("msg", "用户退出成功，登录状态修改成功");
 					map.put("loginStatus", loginStatus);
@@ -158,5 +161,35 @@ public class LoginController {
 		return map;
 
 	}
+	
+	
+	// 判断用户是否登录
+	@RequestMapping("/islogin")
+	@ResponseBody
+	public Map<String, String> islogin(String openId) {
+		Map<String, String> map = new HashMap<>();
+		if (StringUtils.isEmpty(openId)) {
+			map.put("msg", "openId不能为空");
+			return map;
+			}else {
+				String loginStatus = intLoginService.getLoginStatus(openId);
+				if(loginStatus==null) {
+					map.put("msg","该用户还未注册");
+					map.put("code","2");
+				}
+				if("0".equals(loginStatus)) {
+					map.put("msg","该用户未登录");
+					map.put("code","0");
+				}				
+				if("1".equals(loginStatus)) {
+					map.put("msg","该用户已登录");
+					map.put("code","1");
+				}
+			}
+
+		return map;
+
+	}
+	
 
 }

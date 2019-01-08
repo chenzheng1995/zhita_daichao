@@ -19,6 +19,7 @@ public class LoanInformationController {
 	@Autowired
 	LoanInformationService loanInformationService;
 	
+	//添加贷款信息
 	@RequestMapping("/setloaninformation")
 	@ResponseBody
 	/*

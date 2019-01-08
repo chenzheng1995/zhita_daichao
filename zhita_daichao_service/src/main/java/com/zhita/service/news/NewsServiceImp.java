@@ -77,4 +77,9 @@ public class NewsServiceImp implements IntNewsService{
     	int num=strategyMapper.upaStateClose(id);
     	return num;
     }
+	@Override
+	public String getCover(int id) {
+		String cover = strategyMapper.getCover(id);
+		return cover;
+	}
 }
