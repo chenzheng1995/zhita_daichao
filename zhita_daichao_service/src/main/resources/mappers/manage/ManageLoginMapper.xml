@@ -127,4 +127,36 @@
 		set loginStatus = #{loginStatus}
 		where id = #{userId} and deleted = '0'
 	</update>
+	
+	<!-- 后台管理      查询出管理登陆用户表一共有多少条数据 -->
+	<select id="pageCountManageLogin" resultType="java.lang.Integer">
+		select count(username) from manage_login where deleted='0';
+	</select>
+	
+	<resultMap type="com.zhita.model.manage.ManageLogin" id="manageloginMap">
+		<id property="id" column="id" />
+        <result property="username" column="userName" />
+        <result property="phone" column="phone" />
+        <result property="loginstatus" column="loginStatus" />
+        <result property="logintime" column="loginTime" />
+	    <collection  property="listRole"  ofType="com.zhita.model.manage.Role">
+            <id property="id" column="id" />
+            <result property="rolename" column="roleName" />    
+            <result property="rolemiaoshu" column="roleMiaoshu" />   
+           	<collection  property="listFunction"  ofType="com.zhita.model.manage.Functions">
+	            <id property="id" column="id" />
+	            <result property="functionFirst" column="function_first" />    
+	            <result property="functionSecond" column="function_second" />    
+            </collection> 
+        </collection>
+	</resultMap>
+	<!-- 后台管理     查询出所有用户信息   含用户信息  用户的角色  以及权限   含分页 -->
+	<select id="queryManageLogin" parameterType="java.lang.Integer" resultMap="manageloginMap">
+		select u.id loginid,u.userName,u.phone,u.loginStatus,u.loginTime,r.id roleid,r.roleName,r.roleMiaoshu,f.id functionsid,f.function_first,f.function_second from manage_login u 
+		inner join managelogin_role m on u.id=m.manage_login_id
+		inner join role r on r.id=m.role_id
+		inner join role_function  rf on r.id=rf.role_id
+		inner join functions f on f.id=rf.function_id 
+		where u.deleted='0' and r.deleted='0' ORDER BY loginid
+	</select>
 </mapper>

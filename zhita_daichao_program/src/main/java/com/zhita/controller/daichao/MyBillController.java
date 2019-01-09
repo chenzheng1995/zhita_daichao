@@ -83,6 +83,10 @@ public class MyBillController {
     @ResponseBody
     @RequestMapping("/addIncomeBill")
     public int addIncomeBill(IncomeBill incomeBill) {
+    	if(incomeBill.getBigtypeid()==2) {
+    		incomeBill.setSmalltypeid(incomeBill.getSmalltypeid()+6);
+    	}
+    	System.out.println(incomeBill.getBigtypeid()+"========="+incomeBill.getSmalltypeid()+"----------");
     	int count=intincomebillService.addIncomeBill(incomeBill);
     	return count;
     }
@@ -91,6 +95,34 @@ public class MyBillController {
     @ResponseBody
     @RequestMapping("/addExpendBill")
     public int addExpendBill(ExpenditureBill expenditureBill) {
+    	if(expenditureBill.getBigtypeid()==2) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+3);
+    	}
+    	if(expenditureBill.getBigtypeid()==3) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+6);
+    	}
+    	if(expenditureBill.getBigtypeid()==4) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+11);
+    	}
+    	if(expenditureBill.getBigtypeid()==5) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+14);
+    	}
+    	if(expenditureBill.getBigtypeid()==6) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+18);
+    	}
+    	if(expenditureBill.getBigtypeid()==7) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+23);
+    	}
+    	if(expenditureBill.getBigtypeid()==8) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+26);
+    	}
+    	if(expenditureBill.getBigtypeid()==9) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+30);
+    	}
+    	if(expenditureBill.getBigtypeid()==10) {
+    		expenditureBill.setSmalltypeid(expenditureBill.getSmalltypeid()+34);
+    	}
+    	System.out.println(expenditureBill.getBigtypeid()+expenditureBill.getSmalltypeid());
     	int count=intexpenditurebillService.addExpenditureBill(expenditureBill);
     	return count;
     }

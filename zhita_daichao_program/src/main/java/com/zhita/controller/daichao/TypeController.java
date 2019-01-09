@@ -43,7 +43,11 @@ public class TypeController {
     	if(page<1) {
     		page=1;
     	}else if(page>pageUtil.getTotalPageCount()) {
-    		page=pageUtil.getTotalPageCount();
+    		if(totalCount==0) {
+    			page=pageUtil.getTotalPageCount()+1;
+    		}else {
+    			page=pageUtil.getTotalPageCount();
+    		}
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize());

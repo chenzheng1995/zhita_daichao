@@ -7,12 +7,13 @@
       <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="cover" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="link" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="businessname" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, cover, link, state, deleted
+    id, title, cover, link,businessname, state, deleted
   </sql>
   <!-- 后台管理  根据主键id查询出轮播图信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -111,7 +112,8 @@
     update shuffling_figure
     set title = #{title,jdbcType=VARCHAR},
       cover = #{cover,jdbcType=VARCHAR},
-      link = #{link,jdbcType=VARCHAR}
+      link = #{link,jdbcType=VARCHAR},
+      businessname=#{businessname,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理    查询出轮播图总数量 -->
@@ -132,7 +134,7 @@
   </select>
   <!-- 后台管理   添加轮播图信息 -->
   <insert id="AddAll" parameterType="com.zhita.model.manage.ShufflingFigure">
-  	insert into shuffling_figure(title,cover,link) values(#{title},#{cover},#{link})
+  	insert into shuffling_figure(title,cover,link,businessname) values(#{title},#{cover},#{link},#{businessname})
   </insert>
   <!-- 后台管理   根据删除按钮，修改轮播图假删除状态 -->
   <update id="upaFalseDel" parameterType="java.lang.Integer">
@@ -151,6 +153,10 @@
  	select cover from shuffling_figure where id =#{id}
  </select>
    <select id="getShufflingFigure" resultType="com.zhita.model.manage.ShufflingFigure">
-  	select id,title,cover,link,state,deleted from shuffling_figure where deleted='0'
+  	select id,title,cover,link,state,businessname,deleted from shuffling_figure where deleted='0'
+  </select>
+  <!-- 后台管理    用于添加轮播图时进行判断   将传过来的贷款商家名称  传进贷款商家表看是否存在 -->
+  <select id="ifBusinessNameIfExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(businessname) from loans_businesses  where businessname=#{businessname}
   </select>
 </mapper>

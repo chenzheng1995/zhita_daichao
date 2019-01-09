@@ -85,4 +85,9 @@ public class BannerServiceImp implements IntBannerService{
     	List<ShufflingFigure> list=shufflingFigureMapper.getShufflingFigure(); //获取轮播图的所有数据
 		return list;
 	}
+    //后台管理 ——用于添加轮播图时进行判断----将传过来的贷款商家名称  传进贷款商家表看是否存在
+	public int  ifBusinessNameIfExist(String businessname) {
+		int count=shufflingFigureMapper.ifBusinessNameIfExist(businessname);
+		return count;
+	}
 }

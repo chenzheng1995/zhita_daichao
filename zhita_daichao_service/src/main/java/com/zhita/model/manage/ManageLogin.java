@@ -2,21 +2,24 @@ package com.zhita.model.manage;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 //管理登录用户表
 public class ManageLogin implements Serializable{
 
-    private Integer id;
+    private Integer id;//用户id
 
-    private String username;
+    private String username;//用户名
 
-    private String phone;
+    private String phone;//手机号
 
-    private String loginstatus;
+    private String loginstatus;//登陆状态
 
-    private String logintime;
+    private String logintime;//登陆时间
     
-    private String deleted;
+    private String deleted;//假删除（删除：1，没删除：0）
+    
+    private List<Role> listRole;//一个用户有多个角色
 
     public ManageLogin(Integer id, String username, String phone, String loginstatus, String logintime, String deleted) {
         this.id = id;
@@ -78,4 +81,13 @@ public class ManageLogin implements Serializable{
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
     }
+
+	public List<Role> getListRole() {
+		return listRole;
+	}
+
+	public void setListRole(List<Role> listRole) {
+		this.listRole = listRole;
+	}
+    
 }
