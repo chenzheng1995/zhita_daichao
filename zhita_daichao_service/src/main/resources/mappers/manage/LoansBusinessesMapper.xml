@@ -337,7 +337,7 @@
   <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmainpro" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
 
-  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationNmber,state from loans_businesses where deleted='0' order by isStick desc limit #{page},#{pageSize}
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' order by isStick desc limit #{page},#{pageSize}
 
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->

@@ -92,4 +92,8 @@ public interface UserMapper {
 
 	String getLoginStatus(String openId);
 
+	String getUserId(String openId);
+
+	String getPhone(String openId);
+
 }

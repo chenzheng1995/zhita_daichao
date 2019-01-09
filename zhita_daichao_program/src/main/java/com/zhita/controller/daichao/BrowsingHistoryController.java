@@ -47,6 +47,9 @@ public class BrowsingHistoryController {
 	    for (String businessName : list) {	
 	    	long applications = cFootprintService.getApplications(businessName); //获取申请人数	    	
 	    	map = intRegisteService.getLoansBusinesses(businessName); //获取商品的所有信息
+	    	if(map==null) {
+            continue;
+	    	}
 	    	map.put("applications", applications);
 	    	goodslist.add(map);
 		}	

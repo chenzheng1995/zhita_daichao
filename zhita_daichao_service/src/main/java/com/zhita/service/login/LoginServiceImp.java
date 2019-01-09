@@ -79,4 +79,16 @@ public class LoginServiceImp implements IntLoginService{
 		return loginStatus;
 	}
 
+	@Override
+	public String getUserId(String openId) {
+		String userId = userMapper.getUserId(openId);
+		return userId;
+	}
+
+	@Override
+	public String getPhone(String openId) {
+		String phone = userMapper.getPhone(openId);
+		return phone;
+	}
+
 }

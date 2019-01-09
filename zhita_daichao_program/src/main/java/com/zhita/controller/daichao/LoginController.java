@@ -182,8 +182,11 @@ public class LoginController {
 					map.put("code","0");
 				}				
 				if("1".equals(loginStatus)) {
+					String userId = intLoginService.getUserId(openId);
+					String phone = intLoginService.getPhone(openId);
 					map.put("msg","该用户已登录");
 					map.put("code","1");
+					map.put("userId", userId);
 				}
 			}
 

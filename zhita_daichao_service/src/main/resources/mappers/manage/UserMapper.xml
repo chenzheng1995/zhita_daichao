@@ -332,4 +332,12 @@
 	<select id="getLoginStatus" parameterType="java.lang.String" resultType="java.lang.String">
 		select loginStatus from user where openId = #{openId} 
 	</select>
+			<!-- 小程序 通过openid查询userId-->
+	<select id="getUserId" parameterType="java.lang.String" resultType="java.lang.String">
+		select id from user where openId = #{openId} 
+	</select>
+				<!-- 小程序 通过openid查询phone-->
+	<select id="getUserId" parameterType="java.lang.String" resultType="java.lang.String">
+		select phone from user where openId = #{openId} 
+	</select>
 </mapper>

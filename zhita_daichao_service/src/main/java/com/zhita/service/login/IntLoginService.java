@@ -23,4 +23,8 @@ public interface IntLoginService {
 	int updateAdminLogOutStatus(String loginStatus, int userId);
 
 	String getLoginStatus(String openId);
+
+	String getUserId(String openId);
+
+	String getPhone(String openId);
 }

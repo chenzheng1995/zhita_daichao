@@ -56,7 +56,7 @@ public class SMSUtil {
 		cmap.put("4080", "同一手机号码同一秒钟之内发送频率不能超过1条");
 		cmap.put("4082", "超出同一手机号一天之内【5】条短信限制");
 		cmap.put("4085", "同一手机号验证码短信发送超出【5】条");
-		String state = null;
+		String state = "未知问题";
 	    PostAndGet postAndGet = new PostAndGet();	   
 	    String code =((int)((Math.random()*9+1)*100000))+"";
 	    String content = "您的验证码是："+code+"。请不要把验证码泄露给其他人。";
@@ -69,8 +69,6 @@ public class SMSUtil {
 	        	RedisClientUtil redisClientUtil = new RedisClientUtil();
 	        	redisClientUtil.set(mobile+"Key", code);
 	        	state =(String) cmap.get(key) ;
-	        }else {
-	        	state="未知问题";
 	        }
 	    }
 
