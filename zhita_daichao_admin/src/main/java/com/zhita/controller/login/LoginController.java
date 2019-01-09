@@ -1,14 +1,18 @@
 package com.zhita.controller.login;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.service.login.IntLoginService;
+import com.zhita.util.PageUtil;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
 
@@ -105,5 +109,33 @@ public class LoginController {
 		return map;
 
 	}
+	//查询出所有用户信息——含用户信息  用户的角色  以及权限   含分页
+    @ResponseBody
+    @RequestMapping("/queryAllManageLogin")
+    public Map<String,Object> queryAllManageLogin(Integer page){
+    /*	int totalCount=loginService.pageCountManageLogin();//查询出管理登陆用户表一共有多少条数据
+    	PageUtil pageUtil=new PageUtil(page,1,totalCount);
+    	if(page<1) {
+    		page=1;
+    	}
+    	else if(page>pageUtil.getTotalPageCount()) {
+    		if(totalCount==0) {
+    			page=pageUtil.getTotalPageCount()+1;
+    		}else {
+    			page=pageUtil.getTotalPageCount();
+    		}
+    	}
+    	int pages=(page-1)*pageUtil.getPageSize();
+    	pageUtil.setPage(pages);*/
+    	List<ManageLogin> list=loginService.queryManageLogin();
+    	for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getUsername());
+		}
+    	
+    	HashMap<String,Object> map=new HashMap<>();
+    	map.put("listManagelogin",list);
+    	//map.put("pageutil", pageUtil);
+    	return map;
+    }
 
 }

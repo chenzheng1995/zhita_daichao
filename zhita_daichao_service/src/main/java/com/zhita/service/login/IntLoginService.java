@@ -1,5 +1,7 @@
 package com.zhita.service.login;
 
+import java.util.List;
+
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.User;
 
@@ -27,4 +29,10 @@ public interface IntLoginService {
 	String getUserId(String openId);
 
 	String getPhone(String openId);
+	
+	//后台管理---查询出管理登陆用户表一共有多少条数据
+	public int pageCountManageLogin();
+	//后台管理 ----查询出所有用户信息——含用户信息  用户的角色  以及权限   含分页
+	public List<ManageLogin> queryManageLogin();
+
 }

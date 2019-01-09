@@ -41,7 +41,11 @@ public class NewsController {
     		page=1;
     	}
     	else if(page>pageUtil.getTotalPageCount()) {
-    		page=pageUtil.getTotalPageCount();
+    		if(totalCount==0) {
+    			page=pageUtil.getTotalPageCount()+1;
+    		}else {
+    			page=pageUtil.getTotalPageCount();
+    		}
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
@@ -66,7 +70,11 @@ public class NewsController {
 	    		page=1;
 	    	}
 	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		page=pageUtil.getTotalPageCount();
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
@@ -78,7 +86,11 @@ public class NewsController {
 	    		page=1;
 	    	}
 	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		page=pageUtil.getTotalPageCount();
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);

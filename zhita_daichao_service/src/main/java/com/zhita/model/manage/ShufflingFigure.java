@@ -11,16 +11,19 @@ public class ShufflingFigure implements Serializable{
     private String cover;//封面
 
     private String link;//链接
+    
+    private String businessname;//商家名称
 
     private String state;//状态(1开启，2关闭)
 
     private String deleted;//假删除
 
-    public ShufflingFigure(Integer id, String title, String cover, String link, String state, String deleted) {
+    public ShufflingFigure(Integer id, String title, String cover, String link, String businessname,String state, String deleted) {
         this.id = id;
         this.title = title;
         this.cover = cover;
         this.link = link;
+        this.businessname=businessname;
         this.state = state;
         this.deleted = deleted;
     }
@@ -60,8 +63,16 @@ public class ShufflingFigure implements Serializable{
     public void setLink(String link) {
         this.link = link == null ? null : link.trim();
     }
+    
+    public String getBusinessname() {
+		return businessname;
+	}
 
-    public String getState() {
+	public void setBusinessname(String businessname) {
+		this.businessname = businessname;
+	}
+
+	public String getState() {
         return state;
     }
 
