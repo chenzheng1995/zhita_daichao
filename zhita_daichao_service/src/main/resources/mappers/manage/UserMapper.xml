@@ -24,11 +24,13 @@
 				jdbcType="VARCHAR" />
 			<arg column="loginStatus" javaType="java.lang.String"
 				jdbcType="VARCHAR" />
+			<arg column="pwd" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
 		</constructor>
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, sourceId, nickname, phone, dayFen, registrationTime,
-		name, age, idCard,openId,loginStatus
+		name, age, idCard,openId,loginStatus,pwd
 	</sql>	
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">
@@ -39,14 +41,14 @@
 		insert into user (id, sourceId,
 		nickname,
 		phone, dayFen, registrationTime,
-		name, age, idCard,openId,loginStatus)
+		name, age, idCard,openId,loginStatus,pwd)
 		values
 		(#{id,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER},
 		#{nickname,jdbcType=VARCHAR},
 		#{phone,jdbcType=VARCHAR},
 		#{dayfen,jdbcType=INTEGER}, #{registrationtime,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
-		#{idcard,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR},#{loginStatus,jdbcType=VARCHAR})
+		#{idcard,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR},#{loginStatus,jdbcType=VARCHAR},#{pwd,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.zhita.model.manage.User">
@@ -85,6 +87,9 @@
 			<if test="loginStatus != null">
 				loginStatus,
 			</if>
+			<if test="pwd != null">
+				pwd,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -119,6 +124,9 @@
 			</if>
 			<if test="loginStatus != null">
 				#{loginStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="loginStatus != null">
+				#{pwd,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -156,6 +164,9 @@
 			<if test="loginStatus != null">
 				loginStatus = #{loginStatus,jdbcType=VARCHAR},
 			</if>
+			<if test="loginStatus != null">
+				loginStatus = #{pwd,jdbcType=VARCHAR},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -174,18 +185,19 @@
 		idCard =
 		#{idcard,jdbcType=VARCHAR},
 		openId = #{openId,jdbcType=VARCHAR},
-		loginStatus =#{loginStatus,jdbcType=VARCHAR}
+		loginStatus =#{loginStatus,jdbcType=VARCHAR},
+		pwd =#{pwd,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 查找用户表有多少条记录 -->
 	<select id="getregistered" resultType="java.lang.Long">
-		select count(openId) from
+		select count(phone) from
 		user
 	</select>
 	<!-- 查找日新增用户数 -->
 	<select id="getdailyUsers" resultType="java.lang.Long"
 		parameterType="java.lang.Long">
-		select count(openId) from user where
+		select count(phone) from user where
 		registrationTime>=#{todayZeroTimestamps}
 		and registrationTime &lt;
 		#{tomorrowZeroTimestamps}
@@ -193,18 +205,17 @@
 	<!-- 查找月新增用户数 -->
 	<select id="getmonthlyUsers" resultType="java.lang.Long"
 		parameterType="java.lang.Long">
-		select count(openId) from user where
+		select count(phone) from user where
 		registrationTime>=#{monthlyZeroTimestamps} and registrationTime &lt;
 		#{nextMonthlyZeroTimestamps}
 	</select>
 
 	  	<!--判断用户名是否存在 -->
-	<select id="findFormatByLoginName" resultMap="BaseResultMap"
+	<select id="findphone" resultMap="BaseResultMap"
 		parameterType="String">
     	<![CDATA[
        SELECT a.* FROM user a WHERE 1=1 
        AND a.phone=#{phone}
-       AND a.openId=#{openId} 
        ]]>
 	</select>
 	  	<!-- 插入用户信息 -->
@@ -219,7 +230,7 @@
 	</insert>
 	<!-- 后台管理   查询出用户表总数量 -->
 	<select id="pageCount" resultType="java.lang.Integer">
-		select count(openId) from user
+		select count(phone) from user
 	</select>
 	<!-- 后台管理   通过手机号模糊查询用户总数量 -->
 	<select id="pageCountByPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -311,16 +322,22 @@
 		SELECT * from loan_classification_footprint l where userId=#{arg0} and deleted='0'
 		ORDER BY footprintTime desc limit #{arg1},#{arg2}
 	</select>
-	<!--登录时，登录状态修改 -->
+	<!--登录时，修改登录状态和openId -->
 	<update id="updateloginStatus" parameterType="java.lang.String" >
 		update user
-		set loginStatus = #{loginStatus}
-		where openId = #{openId}
-		and phone = #{phone}
+		set loginStatus = #{loginStatus},
+		openId = #{openId}
+		where phone = #{phone}
 	</update>
-	<!-- 后台管理 通过手机号、openid，获取用户的id  -->
+		<!--登录时，修改登录状态-->
+	<update id="updateStatus" parameterType="java.lang.String" >
+		update user
+		set loginStatus = #{loginStatus}
+		where phone = #{phone}
+	</update>
+	<!-- 后台管理 通过手机号获取用户的id  -->
 	<select id="getId" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select id from user where phone = #{phone} and openId = #{openId}
+		select id from user where phone = #{phone}
 	</select>
 		<!-- 退出时，修改登录状态修改 -->
 	<update id="updatelogOutStatus" parameterType="map" >
@@ -328,16 +345,26 @@
 		set loginStatus = #{loginStatus}
 		where id = #{userId}
 	</update>
-	<!-- 小程序 通过openid查询登录状态 -->
+		<!-- 小程序 通过openId查询登录状态 -->
 	<select id="getLoginStatus" parameterType="java.lang.String" resultType="java.lang.String">
 		select loginStatus from user where openId = #{openId} 
 	</select>
-	<!-- 小程序 通过openid查询userId-->
+			<!-- 小程序 通过openId查询userId-->
 	<select id="getUserId" parameterType="java.lang.String" resultType="java.lang.String">
 		select id from user where openId = #{openId} 
 	</select>
-	<!-- 小程序 通过openid查询phone-->
+		<!-- 小程序 通过openId查询phone-->
 	<select id="getPhone" parameterType="java.lang.String" resultType="java.lang.String">
 		select phone from user where openId = #{openId} 
 	</select>
+		  	<!--APP 插入用户信息 -->
+	<insert id="setAPPUser" parameterType="java.util.Map">
+		insert into user (phone, pwd,
+		sourceId,registrationTime,loginStatus)
+		values (#{phone},
+		#{md5Pwd},
+		#{sourceId},
+		#{registrationTime},
+		#{loginStatus})
+	</insert>
 </mapper>

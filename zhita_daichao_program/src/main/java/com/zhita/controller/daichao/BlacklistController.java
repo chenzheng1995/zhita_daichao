@@ -36,6 +36,8 @@ public class BlacklistController {
 		if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(name) || StringUtils.isEmpty(idCard)
 				|| StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
 			map.put("msg", "userId,name,idCard,phone或code不能为空");
+			map.put("SCode", "401");
+			
 			return map;
 		} else {
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
@@ -43,6 +45,7 @@ public class BlacklistController {
 			String redisCode = redisClientUtil.get(key);
 			if (redisCode == null) {
 				map.put("msg", "验证码已过期，请重新发送");
+				map.put("SCode", "402");
 				return map;
 			}
 			if(redisCode.equals(code)) {
@@ -50,11 +53,14 @@ public class BlacklistController {
 				int number = blacklistService.setblacklist(userId,name,idCard,phone,creationTime);
 				if (number == 1) {		
 					map.put("msg","数据插入成功");
+					map.put("SCode", "200");
 				} else {
 					map.put("msg", "数据插入失败");
+					map.put("SCode", "405");
 				}
 			}else {
 				map.put("msg","验证码输入错误");
+				map.put("SCode", "403");
 			}	
 		}
 		return map;

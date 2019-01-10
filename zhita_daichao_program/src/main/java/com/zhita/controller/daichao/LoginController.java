@@ -92,9 +92,11 @@ public class LoginController {
 	@RequestMapping("/codelogin")
 	@ResponseBody
 	public Map<String, Object> codeLogin(String verificationCode, String phone,String nickName,String openId) {//verificationCode是验证码，phone是手机号，nickName是昵称
+		int num = 0;
 		Map<String, Object> map = new HashMap<>();
 		if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(nickName) || StringUtils.isEmpty(openId)) {
 			map.put("msg", "verificationCode,phone,nickName或openId不能为空");
+			map.put("SCode", "401");
 			return map;
 			}else {
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
@@ -102,36 +104,47 @@ public class LoginController {
 				String redisCode = redisClientUtil.get(key);
 				if(redisCode==null) {
 					map.put("msg", "验证码已过期，请重新发送");
+					map.put("SCode", "402");
 					return map;
 				}
 				if(redisCode.equals(verificationCode)) {
 					String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
-					User user = intLoginService.findFormatByLoginName(phone,openId); // 判断用户名是否存在
+					User user = intLoginService.findphone(phone); // 判断该用户是否存在
 					String loginStatus = "1";
 					if (user == null) {			//如果用户不存在			
 						int number = intLoginService.insertfootprint(phone, nickName, openId,registrationTime,loginStatus);
 						if (number == 1) {		
-							int id = intLoginService.getId(phone,openId); //获取该用户的id
+							int id = intLoginService.getId(phone); //获取该用户的id
 							map.put("msg", "用户登录成功，数据插入成功");
+							map.put("SCode", "200");
 							map.put("loginStatus", loginStatus);
 							map.put("userId", id);
 						} else {
 							map.put("msg", "用户登录失败，用户数据插入失败");
+							map.put("SCode", "405");
 						}
 					}else {
-						int number = intLoginService.updateloginStatus(loginStatus,openId,phone);
-						if (number == 1) {	
-							int id = intLoginService.getId(phone,openId); //获取该用户的id
+						if(user.getOpenId()==null) {
+						    num = intLoginService.updateloginStatus(loginStatus,openId,phone); //当openId为null时，通过phone更新loginStatus和openId
+						}else {
+						    num = intLoginService.updateStatus(loginStatus,phone);//当openId不为null时，通过phone更新loginStatus
+						}
+						
+						if (num == 1) {	
+							int id = intLoginService.getId(phone); //获取该用户的id
 							map.put("msg", "用户登录成功，登录状态修改成功");
+							map.put("SCode", "200");
 							map.put("loginStatus", loginStatus);
 							map.put("userId", id);
 						} else {
 							map.put("msg", "用户登录失败，登录状态修改失败");
+							map.put("SCode", "405");
 						}
 					}
 
 				}else {
 					map.put("msg", "验证码输入错误");
+					map.put("SCode", "403");
 				}
 			}
 
@@ -152,9 +165,11 @@ public class LoginController {
 				int number = intLoginService.updatelogOutStatus(loginStatus,userId);
 				if (number == 1) {														
 					map.put("msg", "用户退出成功，登录状态修改成功");
+					map.put("SCode", "200");
 					map.put("loginStatus", loginStatus);
 				} else {
 					map.put("msg", "用户退出失败，登录状态修改失败");
+					map.put("SCode", "408");
 				}
 			}
 
@@ -187,6 +202,7 @@ public class LoginController {
 					map.put("msg","该用户已登录");
 					map.put("code","1");
 					map.put("userId", userId);
+					map.put("phone", phone);
 				}
 			}
 

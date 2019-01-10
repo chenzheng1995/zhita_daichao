@@ -8,13 +8,13 @@ import com.zhita.model.manage.Role;
 import com.zhita.model.manage.User;
 
 public interface IntLoginService {
-	User findFormatByLoginName(String phone, String openId);
+	User findphone(String phone);
 
 	int insertfootprint(String phone, String nickName, String openId, String registrationTime, String loginStatus);
 
 	int updateloginStatus(String loginStatus, String openId, String phone);
 
-	int getId(String phone, String openId);
+	int getId(String phone);
 
 	int updatelogOutStatus(String loginStatus, int userId);
 
@@ -34,6 +34,12 @@ public interface IntLoginService {
 	
 	//后台管理---查询出管理登陆用户表一共有多少条数据
 	public int pageCountManageLogin();
+
+	int updateStatus(String loginStatus, String phone);
+
+	int setAPPUser(String phone, String md5Pwd, int sourceId, String registrationTime, String loginStatus);
+
+
 	//后台管理 ----查询出所有用户信息——含用户信息  用户的角色含分页
 	public List<ManageLogin> queryManageLogin(Integer page,Integer pagesize);
 	//后台管理---添加后台管理用户
@@ -55,5 +61,5 @@ public interface IntLoginService {
     public Map<String, Object> queryManageloginByLike(String userName,String deleted,Integer page);
     //后台管理---查询出所有的角色信息  不含分页
     public List<Role> queryAllRole();
-	
+
 }
