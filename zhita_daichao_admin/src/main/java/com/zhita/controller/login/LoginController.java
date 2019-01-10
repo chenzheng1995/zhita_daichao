@@ -59,7 +59,7 @@ public class LoginController {
 				return map;
 			}
 			if(redisCode.equals(code)) {
-				ManageLogin manageLogin = loginService.findFormatByLoginName(userName); // 判断用户名是否存在
+				ManageLogin manageLogin = loginService.findFormatByLoginName(userName); // 判断该用户是否存在
 				if (manageLogin == null) {
 					map.put("msg", "用户名不存在");
 					return map;

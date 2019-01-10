@@ -31,9 +31,11 @@ public class User implements Serializable{
     
     private String loginStatus;//用户登录状态
     
+    private String pwd;//密码
+    
 
 
-    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus) {
+    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus,String pwd) {
         this.id = id;
         this.sourceId = sourceId;
         this.nickname = nickname;
@@ -45,6 +47,7 @@ public class User implements Serializable{
         this.idcard = idcard;
         this.openId = openId;
         this.loginStatus = loginStatus;
+        this.pwd = pwd;
     }
 
     public User() {
@@ -155,5 +158,13 @@ public class User implements Serializable{
 
     public void setloginStatus(String loginStatus) {
     	this.loginStatus = loginStatus == null ? null : loginStatus.trim();
+    }
+    
+    public String getpwd() {
+        return pwd;
+    }
+
+    public void setpwd(String pwd) {
+    	this.pwd = pwd == null ? null : pwd.trim();
     }
 }

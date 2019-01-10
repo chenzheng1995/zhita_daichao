@@ -26,7 +26,7 @@ public interface UserMapper {
 
 	Long getmonthlyUsers(@Param("monthlyZeroTimestamps")long monthlyZeroTimestamps,@Param("nextMonthlyZeroTimestamps") long nextMonthlyZeroTimestamps);
 
-	User findFormatByLoginName(@Param("phone")String phone,@Param("openId") String openId);
+	User findphone(String phone);
 
 	int insertfootprint(@Param("phone")String phone,@Param("nickName") String nickName,@Param("openId") String openId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus);
 	
@@ -86,7 +86,7 @@ public interface UserMapper {
 
 	int updateloginStatus(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone);
 
-	int getId(@Param("phone")String phone,@Param("openId") String openId);
+	int getId(@Param("phone")String phone);
 
 	int updatelogOutStatus(@Param("loginStatus")String loginStatus,@Param("userId") int userId);
 
@@ -95,5 +95,9 @@ public interface UserMapper {
 	String getUserId(String openId);
 
 	String getPhone(String openId);
+
+	int updateStatus(String loginStatus, String phone);
+
+	int setAPPUser(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd,@Param("sourceId") int sourceId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus);
 
 }

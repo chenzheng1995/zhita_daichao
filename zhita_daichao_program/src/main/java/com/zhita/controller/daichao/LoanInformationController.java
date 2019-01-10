@@ -45,8 +45,10 @@ public class LoanInformationController {
 				sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse);
 		if(number == 1) {
 			map.put("msg", "插入成功");
+			map.put("SCode", "200");
 		}else {
 			map.put("msg", "插入失败");
+			map.put("SCode", "405");
 		}
 		return map; 
 		

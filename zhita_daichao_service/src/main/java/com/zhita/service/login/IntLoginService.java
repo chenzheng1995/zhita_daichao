@@ -6,13 +6,13 @@ import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.User;
 
 public interface IntLoginService {
-	User findFormatByLoginName(String phone, String openId);
+	User findphone(String phone);
 
 	int insertfootprint(String phone, String nickName, String openId, String registrationTime, String loginStatus);
 
 	int updateloginStatus(String loginStatus, String openId, String phone);
 
-	int getId(String phone, String openId);
+	int getId(String phone);
 
 	int updatelogOutStatus(String loginStatus, int userId);
 
@@ -34,5 +34,10 @@ public interface IntLoginService {
 	public int pageCountManageLogin();
 	//后台管理 ----查询出所有用户信息——含用户信息  用户的角色  以及权限   含分页
 	public List<ManageLogin> queryManageLogin();
+
+	int updateStatus(String loginStatus, String phone);
+
+	int setAPPUser(String phone, String md5Pwd, int sourceId, String registrationTime, String loginStatus);
+
 
 }

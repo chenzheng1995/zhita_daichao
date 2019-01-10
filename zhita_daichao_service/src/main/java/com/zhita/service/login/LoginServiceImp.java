@@ -12,7 +12,7 @@ import com.zhita.dao.manage.UserMapper;
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.User;
 
-@Transactional
+
 @Service(value="loginServiceImp")
 public class LoginServiceImp implements IntLoginService{
 
@@ -28,8 +28,8 @@ public class LoginServiceImp implements IntLoginService{
 	}
 
 	@Override
-	public User findFormatByLoginName(String phone, String openId) {
-		User user = userMapper.findFormatByLoginName(phone,openId);
+	public User findphone(String phone) {
+		User user = userMapper.findphone(phone);
 		return user;
 	}
 
@@ -46,8 +46,8 @@ public class LoginServiceImp implements IntLoginService{
 	}
 
 	@Override
-	public int getId(String phone, String openId) {
-		int id = userMapper.getId(phone,openId);
+	public int getId(String phone) {
+		int id = userMapper.getId(phone);
 		return id;
 	}
 
@@ -102,6 +102,17 @@ public class LoginServiceImp implements IntLoginService{
 	public List<ManageLogin> queryManageLogin(){
 		List<ManageLogin> list=manageLoginMapper.queryManageLogin();
 		return list;
+	}
+
+	@Override
+	public int updateStatus(String loginStatus, String phone) {
+		int num = userMapper.updateStatus(loginStatus,phone);
+		return num;
+	}
+
+	public int setAPPUser(String phone, String md5Pwd, int sourceId, String registrationTime,String loginStatus) {
+		int number = userMapper.setAPPUser(phone, md5Pwd, sourceId,registrationTime,loginStatus);
+		return number;
 	}
 
 }
