@@ -14,12 +14,18 @@
   <sql id="Base_Column_List">
     id, userName, phone, loginStatus, loginTime, deleted
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from manage_login
-    where id = #{id,jdbcType=INTEGER}
+  <!-- 后台管理   通过id查询出管理登陆用户信息 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="manageloginMap">
+	select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+	GROUP_CONCAT(r.id) roleid, 
+	GROUP_CONCAT(r.roleName) rolename,
+	GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
+	from manage_login u 
+	left join managelogin_role mr on mr.manage_login_id=u.id
+	left join role r on mr.role_id=r.id
+	group by u.id having u.id=#{id}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from manage_login
     where id = #{id,jdbcType=INTEGER}
@@ -130,7 +136,7 @@
 	
 	<!-- 后台管理      查询出管理登陆用户表一共有多少条数据 -->
 	<select id="pageCountManageLogin" resultType="java.lang.Integer">
-		select count(username) from manage_login where deleted='0';
+		select count(username) from manage_login;
 	</select>
 	
 	<resultMap type="com.zhita.model.manage.ManageLogin" id="manageloginMap">
@@ -139,24 +145,92 @@
         <result property="phone" column="phone" />
         <result property="loginstatus" column="loginStatus" />
         <result property="logintime" column="loginTime" />
+        <result property="deleted" column="deleted" />
 	    <collection  property="listRole"  ofType="com.zhita.model.manage.Role">
             <id property="id" column="id" />
             <result property="rolename" column="roleName" />    
             <result property="rolemiaoshu" column="roleMiaoshu" />   
-           	<collection  property="listFunction"  ofType="com.zhita.model.manage.Functions">
-	            <id property="id" column="id" />
-	            <result property="functionFirst" column="function_first" />    
-	            <result property="functionSecond" column="function_second" />    
-            </collection> 
         </collection>
 	</resultMap>
-	<!-- 后台管理     查询出所有用户信息   含用户信息  用户的角色  以及权限   含分页 -->
+	<!-- 后台管理     查询出所有用户信息   含用户信息  用户的角色含分页 -->
 	<select id="queryManageLogin" parameterType="java.lang.Integer" resultMap="manageloginMap">
-		select u.id loginid,u.userName,u.phone,u.loginStatus,u.loginTime,r.id roleid,r.roleName,r.roleMiaoshu,f.id functionsid,f.function_first,f.function_second from manage_login u 
-		inner join managelogin_role m on u.id=m.manage_login_id
-		inner join role r on r.id=m.role_id
-		inner join role_function  rf on r.id=rf.role_id
-		inner join functions f on f.id=rf.function_id 
-		where u.deleted='0' and r.deleted='0' ORDER BY loginid
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		GROUP_CONCAT(r.id) roleid, 
+		GROUP_CONCAT(r.roleName) rolename,
+		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
+		from manage_login u 
+		left join managelogin_role mr on mr.manage_login_id=u.id
+		left join role r on mr.role_id=r.id
+		group by u.id limit #{arg0},#{arg1}
 	</select>
+	
+	
+	<!-- 后台管理     根据用户名  模糊查询出管理登陆用户表一共有多少条数据 -->
+	<select id="pageCountManageLoginLike" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(username) from manage_login where userName like #{arg0}"%";
+	</select>
+	
+	<!-- 后台管理     根据用户名  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
+	<select id="queryManageLoginLike" resultMap="manageloginMap">
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		GROUP_CONCAT(r.id) roleid, 
+		GROUP_CONCAT(r.roleName) rolename,
+		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
+		from manage_login u 
+		left join managelogin_role mr on mr.manage_login_id=u.id
+		left join role r on mr.role_id=r.id
+		group by u.id having u.userName like #{arg0}"%" limit #{arg1},#{arg2}
+	</select>
+	
+	<!-- 后台管理   根据账号状态  模糊查询出管理登陆用户表一共有多少条数据 -->
+	<select id="pageCountManageLoginLike1" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(username) from manage_login where deleted=#{arg0}
+	</select>
+	
+	<!-- 后台管理  根据账号状态  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
+	<select id="queryManageLoginLike1" resultMap="manageloginMap">
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		GROUP_CONCAT(r.id) roleid, 
+		GROUP_CONCAT(r.roleName) rolename,
+		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
+		from manage_login u 
+		left join managelogin_role mr on mr.manage_login_id=u.id
+		left join role r on mr.role_id=r.id
+		group by u.id having u.deleted= #{arg0} limit #{arg1},#{arg2}
+	</select>
+		<!-- 后台管理   根据用户名和账号状态  模糊查询出管理登陆用户表一共有多少条数据 -->
+	<select id="pageCountManageLoginLike2" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(username) from manage_login where userName like #{arg0}"%" and deleted=#{arg1}
+	</select>
+	
+	<!-- 后台管理  根据用户名和账号状态  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
+	<select id="queryManageLoginLike2" resultMap="manageloginMap">
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		GROUP_CONCAT(r.id) roleid, 
+		GROUP_CONCAT(r.roleName) rolename,
+		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
+		from manage_login u 
+		left join managelogin_role mr on mr.manage_login_id=u.id
+		left join role r on mr.role_id=r.id
+		group by u.id having userName like #{arg0}"%" and deleted=#{arg1} limit #{arg2},#{arg3}
+	</select>
+	
+	<!-- 后台管理   添加后台管理用户 -->
+	<insert id="addManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
+		insert into manage_login(username,phone) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR})
+	</insert>
+	<!--后台管理    将修改后的管理登陆用户   信息进行保存  -->
+	<update id="upaManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
+		    update manage_login
+		    set userName = #{username,jdbcType=VARCHAR},
+		      phone = #{phone,jdbcType=VARCHAR},
+		      loginStatus = #{loginstatus,jdbcType=VARCHAR},
+		      loginTime = #{logintime,jdbcType=VARCHAR},
+		      deleted = #{deleted,jdbcType=VARCHAR}
+		    where id = #{id,jdbcType=INTEGER}
+	</update>
+	<!-- 后台管理       修改管理登陆用户的假删除状态-->
+	<delete id="upaManageloginFalseDel" parameterType="java.lang.Integer">
+		update manage_login set deleted='1' where id=#{id}
+	</delete>
 </mapper>

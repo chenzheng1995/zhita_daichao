@@ -15,4 +15,5 @@ public interface FunctionsMapper {
     int updateByPrimaryKeySelective(Functions record);
 
     int updateByPrimaryKey(Functions record);
+    
 }
