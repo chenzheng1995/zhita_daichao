@@ -42,7 +42,7 @@ public class RoleController {
     }
 	//后台管理----编辑功能——通过角色id  查询出角色信息
 	@ResponseBody
-	@RequestMapping("/")
+	@RequestMapping("/selectByPrimaryKey")
     public Map<String,Object> selectByPrimaryKey(Integer id) {
     	Role role=intRoleService.selectByPrimaryKey(id);//通过角色id 查询角色信息
     	List<FunctionUtilBean> listall=intRoleService.queryFunctionAll();//查询出功能表所有的信息  进行页面渲染
