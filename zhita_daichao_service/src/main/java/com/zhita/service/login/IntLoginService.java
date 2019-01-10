@@ -48,7 +48,7 @@ public interface IntLoginService {
     public int delManageloginRole(Integer id);
 	//后台管理----修改管理登陆用户的假删除状态
 	public int upaManageloginFalseDel(Integer id);
-    //后台管理---通过传过来的用户id和角色id   在中间表进行插入数据
+    //后台管理---通过传过来的用户id和角色id  在中间表进行插入数据 
     public int add(Integer loginuserid,Integer roleid);
     
     //后台管理---通过传过来的条件个数  做各种情况的模糊查询
