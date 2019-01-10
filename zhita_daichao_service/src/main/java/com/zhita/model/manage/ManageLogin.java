@@ -17,7 +17,7 @@ public class ManageLogin implements Serializable{
 
     private String logintime;//登陆时间
     
-    private String deleted;//假删除（删除：1，没删除：0）
+    private String deleted;//账号状态（ 1:已禁用 0:已启用）
     
     private List<Role> listRole;//一个用户有多个角色
 

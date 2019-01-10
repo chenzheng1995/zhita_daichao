@@ -12,7 +12,8 @@ public interface ManageLoginMapper {
     int insert(ManageLogin record);
 
     int insertSelective(ManageLogin record);
-
+    
+    //后台管理---通过id查询出管理登陆用户信息
     ManageLogin selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(ManageLogin record);
@@ -30,7 +31,34 @@ public interface ManageLoginMapper {
 	//后台管理---查询出管理登陆用户表一共有多少条数据
 	int pageCountManageLogin();
 	
-	//后台管理---查询出所有用户信息——含用户信息  用户的角色  以及权限   含分页
-	List<ManageLogin> queryManageLogin();
+	//后台管理---查询出所有用户信息——含用户信息  用户的角色 含分页
+	List<ManageLogin> queryManageLogin(Integer page,Integer pagesize);
+	
+	//后台管理---根据用户名  模糊查询出管理登陆用户表一共有多少条数据
+	int pageCountManageLoginLike(String userName);
+	
+	//后台管理---根据用户名  模糊查询出所有用户信息——含用户信息  用户的角色 含分页
+	List<ManageLogin> queryManageLoginLike(String userName,Integer page,Integer pagesize);
+	
+	//后台管理---根据账号状态  模糊查询出管理登陆用户表一共有多少条数据
+	int pageCountManageLoginLike1(String deleted);
+	
+	//后台管理---根据账号状态  模糊查询出所有用户信息——含用户信息  用户的角色 含分页
+	List<ManageLogin> queryManageLoginLike1(String deleted,Integer page,Integer pagesize);
+	
+	//后台管理---根据用户名和账号状态  模糊查询出管理登陆用户表一共有多少条数据
+	int pageCountManageLoginLike2(String userName,String deleted);
+	
+	//后台管理---根据用户名和账号状态  模糊查询出所有用户信息——含用户信息  用户的角色 含分页
+	List<ManageLogin> queryManageLoginLike2(String userName,String deleted,Integer page,Integer pagesize);
+	
+	//后台管理---添加后台管理用户
+	int addManageLogin(ManageLogin manageLogin);
+	
+	//后台管理----将修改后的管理登陆用户   信息进行保存
+	int upaManageLogin(ManageLogin manageLogin);
+	
+	//后台管理----修改管理登陆用户的假删除状态
+	int upaManageloginFalseDel(Integer id);
 	
 }

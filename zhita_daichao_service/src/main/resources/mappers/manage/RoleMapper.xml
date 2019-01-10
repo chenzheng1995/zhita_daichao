@@ -7,67 +7,10 @@
     <result column="roleMiaoshu" property="rolemiaoshu" jdbcType="VARCHAR" />
     <result column="deleted" property="deleted" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
   <sql id="Base_Column_List" >
     id, roleName, roleMiaoshu, deleted
   </sql>
+  <!-- 后台管理   通过角色id查询出角色信息 -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -118,4 +61,27 @@
       deleted = #{deleted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理  查询出所有的角色信息  不含分页-->
+  <select id="queryAllRole" resultType="com.zhita.model.manage.Role">
+  	select id,roleName from role;
+  </select>
+    <!-- 后台管理   查询出所有的角色信息  含分页 -->
+  <select id="queryAllRolePage" resultType="com.zhita.model.manage.Role">
+  	select id,roleName,roleMiaoshu,deleted from role limit #{arg0},#{arg1}
+  </select>
+  <!-- 后台管理   添加角色 -->
+  <insert id="addRole" parameterType="com.zhita.model.manage.Role">
+  	insert into role (roleName, roleMiaoshu)  values (#{rolename,jdbcType=VARCHAR}, #{rolemiaoshu,jdbcType=VARCHAR})
+  </insert>
+  
+  <!--后台管理   查看权限功能   通过角色id查询出  当前角色的所有权限  -->
+  <select id="queryFunctionByRoleid" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.FunctionUtilBean">
+ 	select id,function_first,GROUP_CONCAT(function_second) function_second from functions where id in (select function_id from role_function where role_id=#{arg0}) 
+	group by function_first
+  </select>
+  <!-- 后台管理  查询出功能表所有的信息 -->
+  <select id="queryFunctionAll" resultType="com.zhita.model.manage.FunctionUtilBean">
+  	select id,function_first,GROUP_CONCAT(function_second) function_second from functions 
+	group by function_fir
+  </select>
 </mapper>

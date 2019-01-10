@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.ManageLogin;
+import com.zhita.model.manage.Role;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.util.PageUtil;
 import com.zhita.util.RedisClientUtil;
@@ -109,11 +110,11 @@ public class LoginController {
 		return map;
 
 	}
-	//查询出所有用户信息——含用户信息  用户的角色  以及权限   含分页
+	//后台管理----查询出所有用户信息——含用户信息  用户的角色 含分页
     @ResponseBody
     @RequestMapping("/queryAllManageLogin")
     public Map<String,Object> queryAllManageLogin(Integer page){
-    /*	int totalCount=loginService.pageCountManageLogin();//查询出管理登陆用户表一共有多少条数据
+    	int totalCount=loginService.pageCountManageLogin();//查询出管理登陆用户表一共有多少条数据
     	PageUtil pageUtil=new PageUtil(page,1,totalCount);
     	if(page<1) {
     		page=1;
@@ -126,16 +127,69 @@ public class LoginController {
     		}
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil.setPage(pages);*/
-    	List<ManageLogin> list=loginService.queryManageLogin();
+    	pageUtil.setPage(pages);
+    	List<ManageLogin> list=loginService.queryManageLogin(pageUtil.getPage(),pageUtil.getPageSize());
     	for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getUsername());
 		}
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listManagelogin",list);
-    	//map.put("pageutil", pageUtil);
+    	map.put("pageutil", pageUtil);
     	return map;
+    }
+	//后台管理----根据传进去的条件 做各种条件的模糊查询  含分页
+    @ResponseBody
+    @RequestMapping("/queryManageloginByLike")
+    public Map<String,Object> queryManageloginByLike(String username,String deleted,Integer page){
+    	Map<String,Object> map=loginService.queryManageloginByLike(username, deleted, page);
+    	return map;
+    }
+	//后台管理---添加后台管理用户
+    @ResponseBody
+    @RequestMapping("/addManageLogin")
+    public int addManageLogin(ManageLogin manageLogin){
+    	int num=loginService.addManageLogin(manageLogin);
+    	return num;
+    }
+	//后台管理---通过id查询出管理登陆用户信息
+    @ResponseBody
+    @RequestMapping("/selectByPrimaryKey")
+    public Map<String, Object> selectByPrimaryKey(Integer id){
+    	List<Role> list=loginService.queryAllRole();//修改用户信息时   先查询出所有角色的id 和  角色名称    以供修改角色时做选择
+    	ManageLogin manageLogin=loginService.selectByPrimaryKey(id);
+    	
+      	HashMap<String,Object> map=new HashMap<>();
+    	map.put("listRole",list);
+    	map.put("manageLogin", manageLogin);
+    	return map;
+    }
+	//后台管理---将修改后的管理登陆用户   信息进行保存
+    @ResponseBody
+    @RequestMapping("/upaManageLogin")
+    public int upaManageLogin(ManageLogin manageLogin){
+    	List<Integer> list=loginService.queryByManageloginId(manageLogin.getId());//保存修改信息时   先查询出当前用户在中间表的数据id集合（因为一个用户可能有多个角色）
+    	if(list.size()!=0) {
+        	for (int i = 0; i < list.size(); i++) {
+    			loginService.delManageloginRole(list.get(i));//修改保存信息时   先删除中间表的信息
+    		}
+    	}
+    	for (int i = 0; i < manageLogin.getListRole().size(); i++) {
+			loginService.add(manageLogin.getId(), manageLogin.getListRole().get(i).getId());
+		}
+    	int num=loginService.upaManageLogin(manageLogin);
+    	return num;
+    }
+	//后台管理---删除用户(可有可无)
+    @ResponseBody
+    @RequestMapping("/delManagelogin")
+    public int delManagelogin(Integer id){
+    	List<Integer> list=loginService.queryByManageloginId(id);//将管理登陆用户的假删除状态改为  删除  的时候      先查询出当前用户在中间表的数据id集合（因为一个用户可能有多个角色）
+    	for (int i = 0; i < list.size(); i++) {
+			loginService.delManageloginRole(list.get(i));//将管理登陆用户的假删除状态改为  删除  的时候      先删除中间表的信息
+		}
+    	int num=loginService.upaManageloginFalseDel(id);//修改用户假删除状态为删除
+    	return num;
     }
 
 }

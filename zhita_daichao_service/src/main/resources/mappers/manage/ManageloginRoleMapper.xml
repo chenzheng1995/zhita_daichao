@@ -6,64 +6,6 @@
     <result column="manage_login_id" property="manageLoginId" jdbcType="INTEGER" />
     <result column="role_id" property="roleId" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
   <sql id="Base_Column_List" >
     id, manage_login_id, role_id
   </sql>
@@ -114,4 +56,16 @@
       role_id = #{roleId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理  通过用户id查询出   在用户角色关联表中的id集合 -->
+  <select id="queryByManageloginId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select id from managelogin_role where manage_login_id=#{id}
+  </select>
+  <!-- 后台管理   在用户角色关联表中    根据主键id进行删除 -->
+  <delete id="delManageloginRole" parameterType="java.lang.Integer">
+  	delete from managelogin_role where id=#{id}
+  </delete>
+  <!--后台管理   通过传过来的用户id和角色id   在中间表进行插入数据  -->
+  <insert id="add" parameterType="java.lang.Integer">
+	insert into managelogin_role(manage_login_id,role_id) values(#{arg0},#{arg1})  
+  </insert>
 </mapper>
