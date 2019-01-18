@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -92,6 +93,7 @@ public class MerchantController {
     	return map;
     }
 	//后台管理---添加渠道
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/AddAll")
     public int AddAll(Source source){
@@ -106,6 +108,7 @@ public class MerchantController {
     	return source;
     }
 	//后台管理---通过传过来的渠道对象，对当前对象进行修改保存
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateSource")
     public int updateSource(Source source){
@@ -114,13 +117,15 @@ public class MerchantController {
 	}
 	
 	//后台管理---通过主键id修改其当前对象的假删除状态
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaFalseDelById")
     public int upaFalseDelById(Integer id) {
     	int num=intMerchantService.upaFalseDel(id);
     	return num;
     }
-    //后台管理---修改攻略状态
+    //后台管理---修改渠道状态
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaState")
 	public int upaState(String state,Integer id) {

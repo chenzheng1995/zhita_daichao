@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,6 +103,7 @@ public class NewsController {
     	return map;
     }
 	//后台管理---添加攻略信息
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/AddALL")
     public Map<String,Object> AddALL(Strategy strategy,MultipartFile file)throws Exception{
@@ -152,6 +154,7 @@ public class NewsController {
     	return strategy;
     }
 	//后台管理---通过传过来的攻略对象，对当前对象进行修改保存
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateStrategy")
     public Map<String,Object> updateStrategy(Strategy strategy,MultipartFile file)throws Exception{
@@ -197,6 +200,7 @@ public class NewsController {
 	
 	
 	//后台管理---通过主键id修改其当前对象的假删除状态
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaFalseDelById")
     public int upaFalseDelById(Integer id) {
@@ -204,6 +208,7 @@ public class NewsController {
     	return num;
     }
     //后台管理---修改攻略状态
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaState")
 	public int upaState(String state,Integer id) {

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -100,6 +101,7 @@ public class TypeController {
 		return map;
     }
 	//后台管理---添加贷款分类信息
+    @Transactional
     @ResponseBody
     @RequestMapping("/insertAllfind")
     public Integer insertAll(LoanClassification loanClassification){
@@ -114,6 +116,7 @@ public class TypeController {
     	return loanClassification;
     }
     //通过传过来的贷款分类对象，对当前对象进行修改保存
+    @Transactional
     @ResponseBody
     @RequestMapping("/updateByPrimaryKey")
     public Integer updateByPrimaryKey(LoanClassification loanClassification){

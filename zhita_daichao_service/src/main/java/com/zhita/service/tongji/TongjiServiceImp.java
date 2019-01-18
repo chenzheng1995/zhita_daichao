@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.StatisticalMapper;
 import com.zhita.model.manage.Statistical;
+
 @Service
 public class TongjiServiceImp implements IntTongjiService{
 	@Autowired

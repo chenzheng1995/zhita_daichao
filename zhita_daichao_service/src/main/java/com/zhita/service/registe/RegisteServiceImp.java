@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zhita.dao.manage.LoansBusinessesMapper;
 import com.zhita.model.manage.LoansBusinesses;
 
-@Transactional
 @Service(value ="registeServiceImp")
 public class RegisteServiceImp implements IntRegisteService{
 	@Resource(name="loansBusinessesMapper")

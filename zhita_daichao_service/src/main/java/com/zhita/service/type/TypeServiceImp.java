@@ -13,7 +13,6 @@ import com.zhita.dao.manage.LoansBusinessesMapper;
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoansBusinesses;
 
-@Transactional
 @Service(value="typeServiceImp")
 public class TypeServiceImp implements IntTypeService{
 	@Resource(name="loanClassificationMapper")

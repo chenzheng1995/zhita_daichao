@@ -1,6 +1,7 @@
 package com.zhita.dao.manage;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -25,7 +26,7 @@ public interface ManageLoginMapper {
 	int updateAdminLoginStatus(@Param("loginStatus")String loginStatus, @Param("phone")String phone,@Param("userName") String userName,@Param("registrationTime") String registrationTime);
 
 	int getAdminId(@Param("phone")String phone,@Param("userName") String userName);
-
+	
 	int updateAdminLogOutStatus(@Param("loginStatus")String loginStatus,@Param("userId") int userId);
 	
 	//后台管理---查询出管理登陆用户表一共有多少条数据
@@ -60,5 +61,17 @@ public interface ManageLoginMapper {
 	
 	//后台管理----修改管理登陆用户的假删除状态
 	int upaManageloginFalseDel(Integer id);
+	
+	//后台管理---根据用户名查询出当前用户所拥有的角色
+	List<String> queryRoleByName(String username);
+	
+	//后台管理---通过手机号查询用户信息
+	ManageLogin  queryByPhone(String phone);
+	
+	//后台管理---通过手机号更新用户的登录状态和登录时间
+	int upaStateTime(ManageLogin manageLogin);
+	
+	//后台管理---通过手机号获取用户的id
+	int getIdByPhone(String phone);
 	
 }

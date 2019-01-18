@@ -2,6 +2,7 @@ package com.zhita.service.login;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Role;
@@ -61,5 +62,12 @@ public interface IntLoginService {
     public Map<String, Object> queryManageloginByLike(String userName,String deleted,Integer page);
     //后台管理---查询出所有的角色信息  不含分页
     public List<Role> queryAllRole();
-
+	//后台管理---根据用户名查询出当前用户所拥有的角色
+	public List<String> queryRoleByName(String username);
+	//后台管理---通过手机号查询用户信息
+	public ManageLogin  queryByPhone(String phone);
+	//后台管理---通过手机号更新用户的登录状态和登录时间
+	public int  upaStateTime(ManageLogin manageLogin);
+	//后台管理---通过手机号获取用户的id
+	public int getIdByPhone(String phone);
 }

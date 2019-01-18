@@ -12,7 +12,6 @@ import com.zhita.dao.manage.StrategyMapper;
 import com.zhita.model.manage.Strategy;
 
 
-@Transactional
 @Service(value="newsServiceImp")
 public class NewsServiceImp implements IntNewsService{
 	@Resource(name="strategyMapper")

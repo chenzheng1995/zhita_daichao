@@ -4,12 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhita.controller.shiro.PhoneToken;
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Role;
 import com.zhita.service.login.IntLoginService;
@@ -24,6 +29,61 @@ import com.zhita.util.SMSUtil;
 public class LoginController {
 	@Autowired
 	IntLoginService loginService;
+	
+	//后台管理----登录验证  以及授权
+	@ResponseBody
+	@RequestMapping("/logintest")
+	public Map<String, Object> login(String phone,String code){
+		Map<String, Object> map = new HashMap<String, Object>();
+		int a=0;
+		
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		String key = phone+"Key";
+		String redisCode = redisClientUtil.get(key);
+		
+		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
+			map.put("msg", "phone或验证码不能为空");
+		}else {
+			PhoneToken token=new PhoneToken(phone);
+	        Subject subject = SecurityUtils.getSubject();
+	        	try {
+	                //执行认证操作. 
+	                subject.login(token);
+	                a=1;
+	            }catch (UnknownAccountException e) {
+	            	map.put("msg", "没有此手机号");
+	           }
+	        	System.out.println("最外层："+"a:"+a+"rediscode:"+redisCode+"code:"+code);
+	        	if(a==1) {
+	        		if(redisCode==null||"".equals(redisCode)){
+	        			map.put("msg", "验证码过期，请重新发送");
+	        		}else{
+	        			if(redisCode.equals(code)) {
+		                    String loginStatus="1";
+		                	String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
+		                	
+		                	ManageLogin manageLogin=new ManageLogin();
+		                	manageLogin.setLoginstatus(loginStatus);
+		                	manageLogin.setLogintime(registrationTime);
+		                	manageLogin.setPhone(phone);
+		                	int num=loginService.upaStateTime(manageLogin);
+							if (num == 1) {	
+								int id = loginService.getIdByPhone(phone);//获取用户的id
+								map.put("msg", "用户登录成功，登录状态修改成功");
+								map.put("loginStatus", loginStatus);
+								map.put("userId", id);
+							} else {
+								map.put("msg", "用户登录失败，登录状态修改失败");
+							}
+	        			}else {
+	        				map.put("msg2", "验证码错误");
+	        			}
+	        		}
+	        	}
+		}
+		return map;
+}
+		
 	
 	//发送验证码
 	@RequestMapping("/sendSMS")
@@ -146,6 +206,7 @@ public class LoginController {
     	return map;
     }
 	//后台管理---添加后台管理用户
+    @Transactional
     @ResponseBody
     @RequestMapping("/addManageLogin")
     public int addManageLogin(ManageLogin manageLogin){
@@ -165,6 +226,7 @@ public class LoginController {
     	return map;
     }
 	//后台管理---将修改后的管理登陆用户   信息进行保存
+    @Transactional
     @ResponseBody
     @RequestMapping("/upaManageLogin")
     public int upaManageLogin(ManageLogin manageLogin){
@@ -181,6 +243,7 @@ public class LoginController {
     	return num;
     }
 	//后台管理---删除用户(可有可无)
+    @Transactional
     @ResponseBody
     @RequestMapping("/delManagelogin")
     public int delManagelogin(Integer id){

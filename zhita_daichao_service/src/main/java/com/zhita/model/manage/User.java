@@ -24,7 +24,6 @@ public class User implements Serializable{
 
     private String idcard;//身份证号
     
-
     private String openId;//用户唯一值
 
     private Source source;//关联渠道表,多个用户属于一个渠道的

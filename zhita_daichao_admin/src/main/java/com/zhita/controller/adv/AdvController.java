@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,7 @@ public class AdvController {
 	private IntAdvService intAdvService;
 	
     //后台管理---查询广告表全部信息,含分页
+	@RequiresPermissions("1")
 	@ResponseBody
 	@RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page){
@@ -94,6 +97,7 @@ public class AdvController {
     	return map;
     }
     //后台管理---添加广告表信息
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/AddAll")
     public Map<String, Object> AddAll(Advertising advertising,MultipartFile file) throws Exception {
@@ -143,6 +147,7 @@ public class AdvController {
     	return advertising;
     }
 	//后台管理---根据传过来的广告对象，对当前对象进行修改保存
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateAdvertising")
     public Map<String, Object> updateAdvertising(Advertising advertising,MultipartFile file) throws Exception {
@@ -189,6 +194,7 @@ public class AdvController {
 
 	
     //后台管理---根据删除按钮，修改广告表假删除状态
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaFalseDel")
     public int upaFalseDel(Integer id) {
@@ -196,6 +202,7 @@ public class AdvController {
     	return num;
     }
 	//后台管理---根据前端传过来的状态值，对当前对象的状态值进行修改
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaState")
 	public int upaState(String state,Integer id) {
