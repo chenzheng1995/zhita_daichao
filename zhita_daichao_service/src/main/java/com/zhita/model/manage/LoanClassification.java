@@ -13,11 +13,14 @@ public class LoanClassification implements Serializable{
     private BigDecimal amount;//金额
     
     private List<LoansBusinesses> listLoanBusiness;//一个贷款分类下有多个贷款商家----一对多的关系
+    
+    private String company;//公司名
 
-    public LoanClassification(Integer id, String businessClassification, BigDecimal amount) {
+    public LoanClassification(Integer id, String businessClassification, BigDecimal amount,String company) {
         this.id = id;
         this.businessClassification = businessClassification;
         this.amount = amount;
+        this.company = company;
     }
 
     public LoanClassification() {
@@ -56,5 +59,13 @@ public class LoanClassification implements Serializable{
 	public void setListLoanBusiness(List<LoansBusinesses> listLoanBusiness) {
 		this.listLoanBusiness = listLoanBusiness;
 	}
+	
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
+    }
     
 }

@@ -10,10 +10,12 @@
       <arg column="businessname" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, cover, link,businessname, state, deleted
+    id, title, cover, link,businessname, state, deleted,company
   </sql>
   <!-- 后台管理  根据主键id查询出轮播图信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -28,10 +30,10 @@
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.ShufflingFigure">
     insert into shuffling_figure (id, title, cover, 
-      link, state, deleted
+      link, state, deleted,company
       )
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
-      #{link,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}
+      #{link,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.ShufflingFigure">
@@ -55,6 +57,9 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="company != null">
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -74,6 +79,9 @@
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -95,6 +103,9 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=VARCHAR},
       </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -104,7 +115,8 @@
       cover = #{cover,jdbcType=VARCHAR},
       link = #{link,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=VARCHAR}
+      deleted = #{deleted,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--后台管理  通过传过来的轮播图对象，对当前对象进行修改保存  -->
@@ -153,7 +165,7 @@
  	select cover from shuffling_figure where id =#{id}
  </select>
    <select id="getShufflingFigure" resultType="com.zhita.model.manage.ShufflingFigure">
-  	select id,title,cover,link,state,businessname,deleted from shuffling_figure where deleted='0'
+  	select id,title,cover,link,state,businessname,deleted from shuffling_figure where deleted='0' and company=#{company}
   </select>
   <!-- 后台管理    用于添加轮播图时进行判断   将传过来的贷款商家名称  传进贷款商家表看是否存在 -->
   <select id="ifBusinessNameIfExist" parameterType="java.lang.String" resultType="java.lang.Integer">

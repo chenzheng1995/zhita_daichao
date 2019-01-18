@@ -10,13 +10,16 @@ public class CommodityFootprint {
     private String footprinttime;//足迹时间
 
     private String deleted;//假删除（删除：1没删除：0）
+    
+    private String company;//公司名
 
-    public CommodityFootprint(Integer id, Integer userid, String footprint, String footprinttime, String deleted) {
+    public CommodityFootprint(Integer id, Integer userid, String footprint, String footprinttime, String deleted, String company) {
         this.id = id;
         this.userid = userid;
         this.footprint = footprint;
         this.footprinttime = footprinttime;
         this.deleted = deleted;
+        this.company = company;
     }
 
     public CommodityFootprint() {
@@ -61,5 +64,13 @@ public class CommodityFootprint {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

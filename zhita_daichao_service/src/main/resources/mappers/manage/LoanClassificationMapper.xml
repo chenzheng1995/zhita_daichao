@@ -6,10 +6,11 @@
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, businessClassification, amount
+    id, businessClassification, amount,company
   </sql>
   <!-- 后台管理  通过主键id查询出贷款分类信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -23,9 +24,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.LoanClassification">
-    insert into loan_classification (id, businessClassification, amount
+    insert into loan_classification (id, businessClassification, amount,company
       )
-    values (#{id,jdbcType=INTEGER}, #{businessclassification,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}
+    values (#{id,jdbcType=INTEGER}, #{businessclassification,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{company,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.LoanClassification">
@@ -40,6 +41,9 @@
       <if test="amount != null">
         amount,
       </if>
+      <if test="company != null">
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -51,6 +55,9 @@
       <if test="amount != null">
         #{amount,jdbcType=DECIMAL},
       </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.LoanClassification">
@@ -61,6 +68,9 @@
       </if>
       <if test="amount != null">
         amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -89,7 +99,7 @@
  </select>
  <!-- 小程序    用于获取通过贷款分类的名称查询出贷款商家的个数 -->
  <select id="pageCountByBusinessClassification" parameterType="java.lang.String" resultType="java.lang.Integer">
- 	select count(businessClassification) from loans_businesses lb inner join loan_classification lc on lb.busClaId=lc.id where deleted='0' and businessClassification=#{businessClassification}
+ 	select count(businessClassification) from loans_businesses lb inner join loan_classification lc on lb.busClaId=lc.id where deleted='0' and businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
  </select>
  <!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
  <select id="queryByLike" resultType="com.zhita.model.manage.LoanClassification">

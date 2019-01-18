@@ -21,8 +21,10 @@ public class CreditCard implements Serializable{
     private String url;//"url"
 
     private String deleted;//假删除（删除：1，没删除：0）
+    
+    private String company;//公司名
 
-    public CreditCard(Integer id, String title, String cover, String intro, String isstick, String state,String content, String url, String deleted) {
+    public CreditCard(Integer id, String title, String cover, String intro, String isstick, String state,String content, String url, String deleted, String company) {
         this.id = id;
         this.title = title;
         this.cover = cover;
@@ -32,6 +34,7 @@ public class CreditCard implements Serializable{
         this.content=content;
         this.url = url;
         this.deleted = deleted;
+        this.company = company;
     }
 
     public CreditCard() {
@@ -108,5 +111,13 @@ public class CreditCard implements Serializable{
 
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

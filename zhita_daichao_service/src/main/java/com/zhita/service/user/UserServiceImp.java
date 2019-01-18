@@ -241,4 +241,16 @@ public class UserServiceImp implements UserService {
 		List<ButtonFootprint> list=userMapper.queryAllButton(id,page,pagesize);
 		return list;
 	}
+
+	@Override
+	public String getProgramQrCode(String scene) {
+		String programQrCode = userMapper.getProgramQrCode(scene);
+		return programQrCode;
+	}
+
+	@Override
+	public int setProgramQrCode(String scene, String qrurl) {
+		int number = userMapper.setProgramQrCode(scene,qrurl);
+		return number;
+	}
 }

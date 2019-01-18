@@ -15,14 +15,17 @@ public class Source implements Serializable{
     private String state;//状态
 
     private String deleted;//假删除（删除：1，没删除：0）
+    
+    private String company;//公司名
 
-    public Source(Integer id, String sourceName, String account, String link, String state, String deleted) {
+    public Source(Integer id, String sourceName, String account, String link, String state, String deleted, String company) {
         this.id = id;
         this.sourceName = sourceName;
         this.account = account;
         this.link = link;
         this.state = state;
         this.deleted = deleted;
+        this.company = company;
     }
 
     public Source() {
@@ -75,5 +78,13 @@ public class Source implements Serializable{
 
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

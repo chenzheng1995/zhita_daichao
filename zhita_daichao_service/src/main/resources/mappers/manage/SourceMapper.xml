@@ -9,10 +9,11 @@
       <arg column="link" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, sourceName, account, link, state, deleted
+    id, sourceName, account, link, state, deleted,company
   </sql>
   <!-- 后台管理  通过渠道id，查询渠道信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -27,10 +28,10 @@
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.Source">
     insert into source (id, sourceName, account, 
-      link, state, deleted
+      link, state, deleted,company
       )
     values (#{id,jdbcType=INTEGER}, #{sourcename,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
-      #{link,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}
+      #{link,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.Source">
@@ -54,6 +55,9 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="company != null">
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -73,6 +77,9 @@
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -94,6 +101,9 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=VARCHAR},
       </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -103,7 +113,8 @@
       account = #{account,jdbcType=VARCHAR},
       link = #{link,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=VARCHAR}
+      deleted = #{deleted,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--后台管理   查询出所有渠道表信息，不含分页  -->

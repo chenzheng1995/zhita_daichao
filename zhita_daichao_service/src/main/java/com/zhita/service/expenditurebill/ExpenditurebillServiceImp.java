@@ -21,26 +21,26 @@ public class ExpenditurebillServiceImp implements IntexpenditurebillService{
     	return count;
     }
     //通过时间模糊查询   当前用户  当前月 所有支出金额总和
-    public BigDecimal queryTotalMoney(Integer userid,String time) {
-    	BigDecimal sum=expenditureBillMapper.queryTotalMoney(userid, time);
+    public BigDecimal queryTotalMoney(Integer userid,String time,String company) {
+    	BigDecimal sum=expenditureBillMapper.queryTotalMoney(userid, time,company);
     	return sum;
     }
     
     //通过时间模糊查询出当前用户  当前月 每一天  的支出详细信息
-    public List<ExpenditureBill> queryAllByTimeLike(Integer userid,String time){
-    	List<ExpenditureBill> list=expenditureBillMapper.queryAllByTimeLike(userid, time);
+    public List<ExpenditureBill> queryAllByTimeLike(Integer userid,String time,String company){
+    	List<ExpenditureBill> list=expenditureBillMapper.queryAllByTimeLike(userid, time,company);
     	return list;
     }
     
     //通过时间准确查询出当前用户  当前月 每一天  的支出详细信息
-    public List<ExpenditureBill> queryAllByTime(Integer userid,String time){
-    	List<ExpenditureBill> list=expenditureBillMapper.queryAllByTime(userid, time);
+    public List<ExpenditureBill> queryAllByTime(Integer userid,String time,String company){
+    	List<ExpenditureBill> list=expenditureBillMapper.queryAllByTime(userid, time,company);
     	return list;
     }
     
     //通过时间模糊查询出当前用户  当前月 每一天  的支出总和
-    public List<DayBill> querySumByTimeLike(Integer userid,String time) {
-    	List<DayBill> listexpenditurelike=expenditureBillMapper.querySumByTimeLike(userid, time);
+    public List<DayBill> querySumByTimeLike(Integer userid,String time,String company) {
+    	List<DayBill> listexpenditurelike=expenditureBillMapper.querySumByTimeLike(userid, time,company);
     	return listexpenditurelike;
     }
 }

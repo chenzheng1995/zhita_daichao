@@ -8,15 +8,15 @@ import com.zhita.model.manage.Role;
 import com.zhita.model.manage.User;
 
 public interface IntLoginService {
-	User findphone(String phone);
+	User findphone(String phone, String company);
 
-	int insertfootprint(String phone, String nickName, String openId, String registrationTime, String loginStatus);
+	int insertfootprint(String phone, String nickName, String openId, String registrationTime, String loginStatus, String company, String registrationType);
 
-	int updateloginStatus(String loginStatus, String openId, String phone);
+	int updateloginStatus(String loginStatus, String openId, String phone, String company, String loginTime);
 
-	int getId(String phone);
+	int getId(String phone, String company);
 
-	int updatelogOutStatus(String loginStatus, int userId);
+	int updatelogOutStatus(String loginStatus, int userId, String company);
 
 	ManageLogin findFormatByLoginName(String userName);
 
@@ -26,18 +26,18 @@ public interface IntLoginService {
 
 	int updateAdminLogOutStatus(String loginStatus, int userId);
 
-	String getLoginStatus(String openId);
+	String getLoginStatus(String openId, String company);
 
-	String getUserId(String openId);
+	String getUserId(String openId, String company);
 
-	String getPhone(String openId);
+	String getPhone(String openId, String company);
 	
 	//后台管理---查询出管理登陆用户表一共有多少条数据
 	public int pageCountManageLogin();
 
-	int updateStatus(String loginStatus, String phone);
+	int updateStatus(String loginStatus, String phone, String company, String loginTime);
 
-	int setAPPUser(String phone, String md5Pwd, int sourceId, String registrationTime, String loginStatus);
+	int setAPPUser(String phone, String md5Pwd, int sourceId, String registrationTime, String loginStatus, String registrationType, String company);
 
 
 	//后台管理 ----查询出所有用户信息——含用户信息  用户的角色含分页
@@ -61,5 +61,23 @@ public interface IntLoginService {
     public Map<String, Object> queryManageloginByLike(String userName,String deleted,Integer page);
     //后台管理---查询出所有的角色信息  不含分页
     public List<Role> queryAllRole();
+
+	int updatePwd(String phone, String md5Pwd);
+
+	String getMd5pwd(String phone);
+
+	int insertfootprint1(String phone, String nickName, String openId, String registrationTime, String loginStatus,
+			String company, String registrationType, Integer fatherId);
+
+	int updateloginStatus1(String loginStatus, String openId, String phone, String company, String loginTime,
+			Integer fatherId);
+
+	int updateStatus1(String loginStatus, String phone, String company, String loginTime, Integer fatherId);
+
+	String getPwd(int id);
+
+	int setPwd(int userId, String md5Pwd);
+
+	int insertUser(String phone, String loginStatus, String company, String registrationType, String registrationTime);
 
 }

@@ -33,9 +33,19 @@ public class User implements Serializable{
     
     private String pwd;//密码
     
+    private String company;//公司名
+    
+    private String registrationType;//注册类型
+    
+    private String loginTime;//登录时间
+    
+    private String programQrCode;//小程序二维码url
+    
+    private Integer fatherId;//父id（用于二维码推荐人和使用人相关联）
+    
 
 
-    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus,String pwd) {
+    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus,String pwd,String company,String registrationType,String loginTime,String programQrCode,Integer fatherId) {
         this.id = id;
         this.sourceId = sourceId;
         this.nickname = nickname;
@@ -48,6 +58,11 @@ public class User implements Serializable{
         this.openId = openId;
         this.loginStatus = loginStatus;
         this.pwd = pwd;
+        this.company = company;
+        this.registrationType = registrationType;
+        this.loginTime = loginTime;
+        this.programQrCode = programQrCode;
+        this.fatherId = fatherId;
     }
 
     public User() {
@@ -166,5 +181,45 @@ public class User implements Serializable{
 
     public void setpwd(String pwd) {
     	this.pwd = pwd == null ? null : pwd.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
+    }
+    
+    public String getRegistrationType() {
+        return registrationType;
+    }
+
+    public void setRegistrationType(String registrationType) {
+        this.registrationType = registrationType == null ? null : registrationType.trim();
+    }
+    
+    public String getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(String loginTime) {
+        this.loginTime = loginTime == null ? null : loginTime.trim();
+    }
+    
+    public String getProgramQrCode() {
+        return programQrCode;
+    }
+
+    public void setProgramQrCode(String programQrCode) {
+        this.programQrCode = programQrCode == null ? null : programQrCode.trim();
+    }
+    
+    public Integer getFatherId() {
+        return fatherId;
+    }
+
+    public void setFatherId(Integer fatherId) {
+        this.fatherId = fatherId;
     }
 }

@@ -26,7 +26,7 @@ public interface IntBannerService {
     //后台管理---通过传过来的轮播图对象，对当前对象进行修改保存
     public int updateShufflingFigure(ShufflingFigure shufflingFigure);
 	public String getCover(int id);
-	public List<ShufflingFigure> getShufflingFigure();
+	public List<ShufflingFigure> getShufflingFigure(String company);
     //后台管理 ——用于添加轮播图时进行判断----将传过来的贷款商家名称  传进贷款商家表看是否存在
 	public int  ifBusinessNameIfExist(String businessname);
 }

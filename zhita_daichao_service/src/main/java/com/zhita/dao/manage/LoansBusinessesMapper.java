@@ -28,14 +28,14 @@ public interface LoansBusinessesMapper {
     
   	//小程序---查询贷款商家部分字段信息，含分页
 
-  	List<LoansBusinesses> queryAllAdmainpro(@Param("page")Integer page,@Param("pageSize") Integer pageSize);
+  	List<LoansBusinesses> queryAllAdmainpro(@Param("page")Integer page,@Param("pageSize") Integer pageSize,@Param("company") String company);
 
     
   	//后台管理---查询贷款商家部分字段信息，含分页
   	List<LoansBusinesses> queryAllAdmain(Integer page,Integer pagesize);
   	
   	//后台管理---查询贷款商家总条数
-  	int pageCount();
+  	int pageCount(String company);
   	
   	//后台管理---通过模糊查询的条件查询贷款商家总条数
   	int pageCountByLike(String businessName);
@@ -56,7 +56,7 @@ public interface LoansBusinessesMapper {
     //后台管理---插入图片的RUL
 	void insertPath(String ossPath);
 
-	Map<String, Object> getLoansBusinesses(String businessName);
+	Map<String, Object> getLoansBusinesses(@Param("businessName")String businessName,@Param("company") String company);
 
   	//后台管理---查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
   	List<String> queryAllBusinessName();
@@ -68,7 +68,7 @@ public interface LoansBusinessesMapper {
   	int upaApplicationNumber(Integer num,String businessName);
 
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
-    List<LoansBusinesses> queryLoanbusinByLoanClass(@Param("businessClassification")String businessClassification,@Param("page")Integer page,@Param("pageSize") int pageSize);
+    List<LoansBusinesses> queryLoanbusinByLoanClass(@Param("businessClassification")String businessClassification,@Param("page")Integer page,@Param("pageSize") int pageSize,@Param("company") String company);
 
 	String getTrademark(String businessname);
 

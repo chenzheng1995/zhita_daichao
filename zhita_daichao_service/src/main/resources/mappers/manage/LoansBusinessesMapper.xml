@@ -27,13 +27,14 @@
       <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />    
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
     id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
     state, busClaId, loanLimitSmall, loanLimitBig, cycle, interestRate, 
     applicationRequirements, applicationProcess, specialInstructions, successRate, lendingRate, 
-    registerLink, prepaidAmount, deleted, applications
+    registerLink, prepaidAmount, deleted, applications,company
   </sql>
   <!--后台管理  通过主键id查询出贷款商家信息  -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -56,7 +57,7 @@
       applicationRequirements, applicationProcess, 
       specialInstructions, successRate, lendingRate, 
       registerLink, prepaidAmount, 
-      applications)
+      applications,company)
     values (#{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
       #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER},
@@ -65,7 +66,7 @@
       #{applicationrequirements,jdbcType=VARCHAR}, #{applicationprocess,jdbcType=VARCHAR}, 
       #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, 
       #{registerlink,jdbcType=VARCHAR}, #{prepaidamount,jdbcType=DECIMAL},
-      #{applications,jdbcType=INTEGER})
+      #{applications,jdbcType=INTEGER},#{company,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.LoansBusinesses">
     insert into loans_businesses
@@ -139,6 +140,9 @@
       <if test="applications != null">
         applications,
       </if>
+      <if test="company != null">
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -209,6 +213,9 @@
       </if>
       <if test="applications != null">
         #{applications,jdbcType=INTEGER},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -281,6 +288,9 @@
       <if test="applications != null">
         applications = #{applications,jdbcType=INTEGER},
       </if>
+      <if test="company != null">
+        company = #{applications,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -307,7 +317,8 @@
       registerLink = #{registerlink,jdbcType=VARCHAR},
       prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
       deleted = #{deleted,jdbcType=VARCHAR},
-      applications = #{applications,jdbcType=INTEGER}
+      applications = #{applications,jdbcType=INTEGER},
+      company = #{company,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -335,9 +346,9 @@
       where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
-  <select id="queryAllAdmainpro" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
+  <select id="queryAllAdmainpro" parameterType="map" resultType="com.zhita.model.manage.LoansBusinesses">
 
-  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' order by isStick desc limit #{page},#{pageSize}
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' and company = #{company} order by isStick desc limit #{page},#{pageSize}
 
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
@@ -346,7 +357,7 @@
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
-   select count(businessName) from loans_businesses where deleted='0'
+   select count(businessName) from loans_businesses where deleted='0' and company = #{company}
  </select>
    <!-- 后台管理 用于模糊查询获取总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -376,7 +387,7 @@
 	</insert>
 	 <!-- 获取商品的所有信息 -->
  <select id="getLoansBusinesses" resultType="map" parameterType="java.lang.String">
- 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate,cycle,state from loans_businesses where deleted='0' and businessName = #{businessName}
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate,cycle,state from loans_businesses where deleted='0' and businessName = #{businessName} and company = #{company}
  </select>
  <!-- 后台管理  查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中 -->
  <select id="queryAllBusinessName" resultType="java.lang.String">
@@ -393,7 +404,7 @@
  
   <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap">
- 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted = '0' order by isStick desc limit #{page},#{pageSize}
+ 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} order by isStick desc limit #{page},#{pageSize}
  </select>
  
    <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->

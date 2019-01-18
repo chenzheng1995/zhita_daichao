@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -66,7 +67,7 @@ public class PostAndGet {
 		return result;
 	}
 	
-	public  String sendPost2(String url, String param) {
+	public  String sendPost2(String url, String param,String company, String scene,String softwareType) {
 		PrintWriter out = null;
 		BufferedReader in = null;
 		String result = "";
@@ -87,9 +88,7 @@ public class PostAndGet {
 			out.print(param);
 			// flush输出流的缓冲
 			out.flush();
-
 			InputStream is = conn.getInputStream();
-
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			byte[] buf = new byte[10 * 1024];
 			int len = -1;
@@ -103,13 +102,16 @@ public class PostAndGet {
 				new Gson().fromJson(s, new TypeToken<Map<String, Object>>(){}.getRawType());
 				result = s;
 			} catch (Exception e) {
-				FileOutputStream fos = new FileOutputStream(new File("d:/2.jpg"));
-				fos.write(baos.toByteArray());
-				fos.flush();
-				fos.close();
+//				FileOutputStream fos = new FileOutputStream(new File("d:/2.jpg"));
+//				fos.write(baos.toByteArray());
+//				fos.flush();
+//				fos.close();
+				
+				InputStream is2 = new ByteArrayInputStream(baos.toByteArray());
+				OssUtil sOssUtil = new OssUtil();
+				String qrurl = sOssUtil.uploadFile(is2,"QrCode/"+company+"/"+softwareType+"/"+scene+".jpg");			
 				Map<String, Object> map = new HashMap<>();
-				map.put("errcode", "0");
-				map.put("errmsg", "success");
+				map.put("qrurl", qrurl);
 				result = new Gson().toJson(map);
 			}
 		} catch (Exception e) {

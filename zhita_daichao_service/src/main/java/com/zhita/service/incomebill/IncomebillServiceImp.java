@@ -21,23 +21,24 @@ public class IncomebillServiceImp implements IntincomebillService{
     	return count;
     }
     //通过时间模糊查询   当前用户  当前月 所有收入金额总和
-    public BigDecimal queryTotalMoney(Integer userid,String time) {
-    	BigDecimal sum=incomeBillMapper.queryTotalMoney(userid, time);
+    public BigDecimal queryTotalMoney(Integer userid,String time,String company) {
+    	BigDecimal sum=incomeBillMapper.queryTotalMoney(userid, time,company);
     	return sum;
     }
     //通过时间模糊查询出当前用户  当前月 每一天  的收入详细信息
-    public List<IncomeBill> queryAllByTimeLike(Integer userid,String time){
-    	List<IncomeBill> list=incomeBillMapper.queryAllByTimeLike(userid, time);
+    public List<IncomeBill> queryAllByTimeLike(Integer userid,String time,String company){
+    	List<IncomeBill> list=incomeBillMapper.queryAllByTimeLike(userid, time,company);
     	return list;
     }
     //通过时间准确查询出当前用户  当前月 每一天  的收入详细信息
-    public List<IncomeBill> queryAllByTime(Integer userid,String time){
-    	List<IncomeBill> list=incomeBillMapper.queryAllByTime(userid, time);
+    public List<IncomeBill> queryAllByTime(Integer userid,String time,String company){
+    	List<IncomeBill> list=incomeBillMapper.queryAllByTime(userid, time,company);
     	return list;
     }
     //通过时间模糊查询出当前用户  当前月 每一天  的收入总和
-    public List<DayBill> querySumByTimeLike(Integer userid,String time) {
-    	List<DayBill> listincomelike=incomeBillMapper.querySumByTimeLike(userid, time);
+    public List<DayBill> querySumByTimeLike(Integer userid,String time,String company) {
+    	List<DayBill> listincomelike=incomeBillMapper.querySumByTimeLike(userid, time,company);
     	return listincomelike;
     }
+
 }

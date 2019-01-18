@@ -29,16 +29,16 @@ public interface CommodityFootprintMapper {
 
 	long getmonthlyApplicationsUsers(@Param("monthlyZeroTimestamps") long monthlyZeroTimestamps,@Param("nextMonthlyZeroTimestamps")long nextMonthlyZeroTimestamps);
 
-	int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp);
+	int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp,@Param("company") String company);
 
 
-	List<String> getbusinessName(@Param("userId")String userId,@Param("pageSize")int pageSize,@Param("startRow") int startRow);
+	List<String> getbusinessName(@Param("userId")String userId,@Param("pageSize")int pageSize,@Param("startRow") int startRow,@Param("company") String company);
 
-	long getApplications(String businessName);
+	long getApplications(@Param("businessName")String businessName,@Param("company") String company);
 	
 	//后台管理---根据传过来的足迹名称，查询出足迹的个数
 	int queryCount(String businessName);
 
-	long getRecordNumber(String userId);
+	long getRecordNumber(@Param("userId")String userId,@Param("company") String company);
 
 }

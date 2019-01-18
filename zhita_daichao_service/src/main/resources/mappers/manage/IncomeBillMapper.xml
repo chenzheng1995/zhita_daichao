@@ -10,9 +10,10 @@
     <result column="time" property="time" jdbcType="VARCHAR" />
     <result column="beizhu" property="beizhu" jdbcType="VARCHAR" />
     <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, money, bigtypeId, smalltypeId,userId, time, beizhu, deleted
+    id, money, bigtypeId, smalltypeId,userId, time, beizhu, deleted,company
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -27,10 +28,10 @@
   <insert id="insert" parameterType="com.zhita.model.manage.IncomeBill" >
     insert into income_bill (id, money, bigtypeId, 
       smalltypeId, userId,time, beizhu, 
-      deleted)
+      deleted,company)
     values (#{id,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL}, #{bigtypeid,jdbcType=INTEGER}, 
       #{smalltypeid,jdbcType=INTEGER},#{userId,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{beizhu,jdbcType=VARCHAR}, 
-      #{deleted,jdbcType=VARCHAR})
+      #{deleted,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.IncomeBill" >
     insert into income_bill
@@ -59,6 +60,9 @@
       <if test="deleted != null" >
         deleted,
       </if>
+      <if test="company != null" >
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -84,6 +88,9 @@
       </if>
       <if test="deleted != null" >
         #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -111,6 +118,9 @@
       <if test="deleted != null" >
         deleted = #{deleted,jdbcType=VARCHAR},
       </if>
+      <if test="company != null" >
+        company = #{company,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -122,18 +132,19 @@
       userId = #{useid,jdbcType=INTEGER},
       time = #{time,jdbcType=VARCHAR},
       beizhu = #{beizhu,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=VARCHAR}
+      deleted = #{deleted,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 添加收入账单信息 -->
   <insert id="addIncomeBill">
-  	insert into income_bill (money, bigtypeId,smalltypeId, userId,time, beizhu)
+  	insert into income_bill (money, bigtypeId,smalltypeId, userId,time, beizhu,company)
     values (#{money,jdbcType=DECIMAL}, #{bigtypeid,jdbcType=INTEGER}, 
-      #{smalltypeid,jdbcType=INTEGER},#{userid,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{beizhu,jdbcType=VARCHAR})
+      #{smalltypeid,jdbcType=INTEGER},#{userid,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{beizhu,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
   </insert>
   <!-- 通过时间模糊查询   当前用户  当前月 所有收入金额总和-->
   <select id="queryTotalMoney" resultType="java.math.BigDecimal">
-  	select sum(money) from income_bill where userId=#{arg0} and time like "%"#{arg1}"%"
+  	select sum(money) from income_bill where userId=#{arg0} and time like "%"#{arg1}"%" and company=#{arg2}
   </select>
   
   <!-- 通过时间模糊查询出当前用户  当前月 每一天  的收入详细信息 -->
@@ -141,7 +152,7 @@
   	select l.id,l.money,b.bigtype,s.smalltype,l.time from income_bill l
 	inner join income_bigtype b on l.bigtypeId=b.id
 	inner join income_smalltype s on l.smalltypeId=s.id
-	where userId=#{arg0} and time like "%"#{arg1}"%"
+	where userId=#{arg0} and time like "%"#{arg1}"%" and company=#{arg2}
   </select>
   
    <!-- 通过时间准确查询出当前用户  当前月 每一天  的收入详细信息 -->
@@ -149,12 +160,12 @@
   	select l.id,l.money,b.bigtype,s.smalltype,l.time from income_bill l
 	inner join income_bigtype b on l.bigtypeId=b.id
 	inner join income_smalltype s on l.smalltypeId=s.id
-	where userId=#{arg0} and time = #{arg1}
+	where userId=#{arg0} and time = #{arg1} and company=#{arg2}
   </select>
   
   <!-- 通过时间模糊查询出当前用户  当前月 每一天  的收入总和 -->
   <select id="querySumByTimeLike" resultType="com.zhita.model.manage.DayBill">
   	select time,sum(money) sum from income_bill
-	where userId=#{arg0} and time=#{arg1} group by time;
+	where userId=#{arg0} and time=#{arg1} and company=#{arg2} group by time;
   </select>
 </mapper>

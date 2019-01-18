@@ -26,9 +26,9 @@ public interface UserMapper {
 
 	Long getmonthlyUsers(@Param("monthlyZeroTimestamps")long monthlyZeroTimestamps,@Param("nextMonthlyZeroTimestamps") long nextMonthlyZeroTimestamps);
 
-	User findphone(String phone);
+	User findphone(@Param("phone")String phone,@Param("company") String company);
 
-	int insertfootprint(@Param("phone")String phone,@Param("nickName") String nickName,@Param("openId") String openId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus);
+	int insertfootprint(@Param("phone")String phone,@Param("nickName") String nickName,@Param("openId") String openId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus,@Param("company") String company,@Param("registrationType") String registrationType);
 	
 	//后台管理---查询出用户表总数量
 	int pageCount();
@@ -84,20 +84,40 @@ public interface UserMapper {
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中,含分页
 	List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize);
 
-	int updateloginStatus(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone);
+	int updateloginStatus(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone,@Param("company") String company,@Param("loginTime") String loginTime);
 
-	int getId(@Param("phone")String phone);
+	int getId(@Param("phone")String phone,@Param("company") String company);
 
-	int updatelogOutStatus(@Param("loginStatus")String loginStatus,@Param("userId") int userId);
+	int updatelogOutStatus(@Param("loginStatus")String loginStatus,@Param("userId") int userId,@Param("company") String company);
 
-	String getLoginStatus(String openId);
+	String getLoginStatus(@Param("openId")String openId,@Param("company") String company);
 
-	String getUserId(String openId);
+	String getUserId(@Param("openId")String openId,@Param("company") String company);
 
-	String getPhone(String openId);
+	String getPhone(@Param("openId")String openId,@Param("company") String company);
 
-	int updateStatus(String loginStatus, String phone);
+	int updateStatus(@Param("loginStatus")String loginStatus,@Param("phone") String phone,@Param("company") String company,@Param("loginTime") String loginTime);
 
-	int setAPPUser(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd,@Param("sourceId") int sourceId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus);
+	int setAPPUser(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd,@Param("sourceId") int sourceId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus,@Param("registrationType") String registrationType,@Param("company") String company);
+
+	int updatePwd(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd);
+
+	String getMd5pwd(String phone);
+
+	String getProgramQrCode(String scene);
+
+	int setProgramQrCode(@Param("scene")String scene,@Param("qrurl") String qrurl);
+
+	int insertfootprint1(@Param("phone")String phone,@Param("nickName") String nickName,@Param("openId") String openId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus,@Param("company") String company,@Param("registrationType") String registrationType,@Param("fatherId") Integer fatherId);
+
+	int updateloginStatus1(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone,@Param("company") String company,@Param("loginTime") String loginTime,@Param("fatherId") Integer fatherId);
+
+	int updateStatus1(@Param("loginStatus")String loginStatus,@Param("phone") String phone,@Param("company") String company,@Param("loginTime") String loginTime,@Param("fatherId") Integer fatherId);
+
+	String getPwd(int id);
+
+	int setPwd(@Param("userId")int userId,@Param("md5Pwd") String md5Pwd);
+
+	int insertUser(@Param("phone")String phone, @Param("loginStatus")String loginStatus, @Param("company")String company,@Param("registrationType") String registrationType,@Param("registrationTime") String registrationTime);
 
 }

@@ -24,15 +24,15 @@ public interface IncomeBillMapper {
     int addIncomeBill(IncomeBill incomeBill);
     
     //通过时间模糊查询   当前用户  当前月 所有收入金额总和
-    BigDecimal queryTotalMoney(Integer userid,String time);
+    BigDecimal queryTotalMoney(Integer userid,String time, String company);
     
     //通过时间模糊查询出当前用户  当前月 每一天  的收入详细信息
-    List<IncomeBill> queryAllByTimeLike(Integer userid,String time);
+    List<IncomeBill> queryAllByTimeLike(Integer userid,String time, String company);
     
     //通过时间准确查询出当前用户  当前月 每一天  的收入详细信息
-    List<IncomeBill> queryAllByTime(Integer userid,String time);
+    List<IncomeBill> queryAllByTime(Integer userid,String time, String company);
     
     //通过时间模糊查询出当前用户  当前月 每一天  的收入总和
-    List<DayBill> querySumByTimeLike(Integer userid,String time);
+    List<DayBill> querySumByTimeLike(Integer userid,String time, String company);
     
 }

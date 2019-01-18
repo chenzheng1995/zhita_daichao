@@ -40,8 +40,8 @@ public class RegisteServiceImp implements IntRegisteService{
 		return list;
 	}
   	//后台管理---查询贷款商家总条数
-  	public int pageCount() {
-  		int count=loansBusinessesMapper.pageCount();
+  	public int pageCount(String company) {
+  		int count=loansBusinessesMapper.pageCount(company);
   		return count;
   	}
   	
@@ -90,9 +90,9 @@ public class RegisteServiceImp implements IntRegisteService{
 	}
 
 	@Override
-	public Map<String, Object> getLoansBusinesses(String businessName) {
+	public Map<String, Object> getLoansBusinesses(String businessName,String company) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map = loansBusinessesMapper.getLoansBusinesses(businessName); 
+		map = loansBusinessesMapper.getLoansBusinesses(businessName,company); 
 		return map;
 	}
 
@@ -118,8 +118,8 @@ public class RegisteServiceImp implements IntRegisteService{
     }
   	//小程序---查询贷款商家部分字段信息，含分页
 
-  	public List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize){
-  		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page,pagesize);
+  	public List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize,String company){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmainpro(page,pagesize,company);
   		return list;
   	}
 

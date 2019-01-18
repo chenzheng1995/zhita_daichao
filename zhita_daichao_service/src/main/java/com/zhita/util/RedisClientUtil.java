@@ -34,7 +34,7 @@ public class RedisClientUtil {
     }
 
     /**
-     * 获取Redis存储的简单类型
+     * 根据key，获取值
      * 
      * @param key
      * @return
@@ -48,7 +48,7 @@ public class RedisClientUtil {
     }
     
     /**
-     * 获取Redis存储的简单类型
+     * 获取全部的key
      * 
      * @param key
      * @return
@@ -56,6 +56,19 @@ public class RedisClientUtil {
     public Set<String> getkeyAll() {
         Jedis jedis = pool.getResource();
         Set<String> value = jedis.keys("*");
+        jedis.close();
+        return value;
+    }
+    
+    /**
+     * 删除指定的key
+     * 
+     * @param key
+     * @return
+     */
+    public long delkey(String key) {
+        Jedis jedis = pool.getResource();
+        Long value = jedis.del(key);
         jedis.close();
         return value;
     }

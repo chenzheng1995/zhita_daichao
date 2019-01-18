@@ -12,8 +12,8 @@ public class LCFootprintServiceImp implements LCFootprintService{
 	LoanClassificationFootprintMapper lcFootprintMapper;
 
 	@Override
-	public int insertfootprint(String footprintName, String userId, long currentTimestamp) {
-		int number = lcFootprintMapper.insertfootprint(footprintName,userId,currentTimestamp);
+	public int insertfootprint(String footprintName, String userId, long currentTimestamp,String company) {
+		int number = lcFootprintMapper.insertfootprint(footprintName,userId,currentTimestamp,company);
 		return number;
 	}
 

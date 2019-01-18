@@ -12,8 +12,8 @@ public class ButtonFootprintServiceImp implements ButtonFootprintService{
 	ButtonFootprintMapper buttonFootprintMapper;
 	
 	@Override
-	public int insertfootprint(String footprintName, String userId, long currentTimestamp) {
-		int number = buttonFootprintMapper.insertfootprint(footprintName,userId,currentTimestamp);
+	public int insertfootprint(String footprintName, String userId, long currentTimestamp,String company) {
+		int number = buttonFootprintMapper.insertfootprint(footprintName,userId,currentTimestamp,company);
 		return number;
 	}
 

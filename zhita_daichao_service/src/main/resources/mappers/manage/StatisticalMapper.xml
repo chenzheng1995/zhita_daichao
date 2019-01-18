@@ -8,10 +8,11 @@
       <arg column="uv" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="conversionRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="businessId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, time, uv, conversionRate, businessId
+    id, time, uv, conversionRate, businessId,company
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,9 +26,9 @@
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.Statistical">
     insert into statistical (id, time, uv, 
-      conversionRate, businessId)
+      conversionRate, businessId,company)
     values (#{id,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, #{uv,jdbcType=INTEGER}, 
-      #{conversionrate,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER})
+      #{conversionrate,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, #{company,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.Statistical">
     insert into statistical
@@ -47,6 +48,9 @@
       <if test="businessid != null">
         businessId,
       </if>
+      <if test="company != null">
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -63,6 +67,9 @@
       </if>
       <if test="businessid != null">
         #{businessid,jdbcType=INTEGER},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -81,6 +88,9 @@
       <if test="businessid != null">
         businessId = #{businessid,jdbcType=INTEGER},
       </if>
+      <if test="company != null">
+        company = #{company,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -89,7 +99,8 @@
     set time = #{time,jdbcType=VARCHAR},
       uv = #{uv,jdbcType=INTEGER},
       conversionRate = #{conversionrate,jdbcType=INTEGER},
-      businessId = #{businessid,jdbcType=INTEGER}
+      businessId = #{businessid,jdbcType=INTEGER},
+      company = #{company,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--后台管理  查询出统计表所有的商家名称  -->

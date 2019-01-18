@@ -10,7 +10,7 @@ public interface IntRegisteService{
 	//后台管理---查询贷款商家部分字段信息，含分页
 	public List<LoansBusinesses> queryAllAdmain(Integer page,Integer pagesize) ;
   	//后台管理---查询贷款商家总条数
-  	public int pageCount();
+  	public int pageCount(String company);
   	//后台管理---通过模糊查询的条件查询贷款商家总条数
   	public int pageCountByLike(String businessName);
     //后台管理---添加贷款商家信息
@@ -28,7 +28,7 @@ public interface IntRegisteService{
     //后台管理---插入图片的URL
 	public void insertPath(String ossPath);
 	
-	public Map<String, Object> getLoansBusinesses(String businessName);
+	public Map<String, Object> getLoansBusinesses(String businessName, String company);
   	//后台管理---修改贷款商家状态为关闭
   	public int upaStateClose(Integer id);
   	//后台管理---查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
@@ -41,7 +41,7 @@ public interface IntRegisteService{
     public int updateLoansBusinesses(LoansBusinesses loans);
   	//小程序---查询贷款商家部分字段信息，含分页
 
-  	public List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize);
+  	public List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize, String company);
   	
   	//后台管理---通过传过来的贷款商家名字，查询商标的URL
 	public String getTrademark(String businessname);

@@ -130,16 +130,16 @@ public class MyBillController {
     //小程序---我的账单
     @ResponseBody
     @RequestMapping("/myBill")
-    public Map<String, Object> myBill(Integer userid,String time) {
+    public Map<String, Object> myBill(Integer userid,String time,String company) {
     	HashMap<String, Object> map=new HashMap<>();//map存当前月的收入总和    当前月的支出总和    当前月每一天的详细信息（listmap）
     	
-    	BigDecimal incomemoney=intincomebillService.queryTotalMoney(userid, time);//当前月的收入总和
-    	BigDecimal expendituremoney=intexpenditurebillService.queryTotalMoney(userid, time);//当前月的支出总和
+    	BigDecimal incomemoney=intincomebillService.queryTotalMoney(userid, time,company);//当前月的收入总和
+    	BigDecimal expendituremoney=intexpenditurebillService.queryTotalMoney(userid, time,company);//当前月的支出总和
     	
     	List<String> list=new ArrayList<>();//list集合存当前月的所有收入时间
     	List<String> list1=new ArrayList<>();//list1集合存当前月的所有支出时间
     	
-    	List<IncomeBill> incomelists=intincomebillService.queryAllByTimeLike(userid, time);//当前月    每一天 的收入信息
+    	List<IncomeBill> incomelists=intincomebillService.queryAllByTimeLike(userid, time,company);//当前月    每一天 的收入信息
     	for (int i = 0; i < incomelists.size(); i++) {
 			list.add(incomelists.get(i).getTime());
 		}
@@ -148,7 +148,7 @@ public class MyBillController {
 	    list.clear();   
 	    list.addAll(h);   
 	    
-    	List<ExpenditureBill> expenditurelists=intexpenditurebillService.queryAllByTimeLike(userid, time);//当前月  每一天的支出信息
+    	List<ExpenditureBill> expenditurelists=intexpenditurebillService.queryAllByTimeLike(userid, time,company);//当前月  每一天的支出信息
     	for (int i = 0; i < expenditurelists.size(); i++) {
 			list1.add(expenditurelists.get(i).getTime());
 		}
@@ -166,10 +166,10 @@ public class MyBillController {
 		HashMap<String, Object> map1=null;//map1存的是每一天的收入  支出详细信息
 		List listmap=new ArrayList();//listmap存的是每一个map1
 		for (int i = 0; i < list.size(); i++) {
-			List<IncomeBill> incomelist=intincomebillService.queryAllByTime(userid, list.get(i));//当前月    每一天 的收入信息
-    		List<ExpenditureBill> expenditurelist=intexpenditurebillService.queryAllByTime(userid, list.get(i));//当前月  每一天的支出信息
-    		List<DayBill> listincomelike=intincomebillService.querySumByTimeLike(userid, list.get(i));//当前月   每一天的收入总和
-    		List<DayBill> listexpenditurelike=intexpenditurebillService.querySumByTimeLike(userid, list.get(i));//当前月  每一天的支出总和
+			List<IncomeBill> incomelist=intincomebillService.queryAllByTime(userid, list.get(i),company);//当前月    每一天 的收入信息
+    		List<ExpenditureBill> expenditurelist=intexpenditurebillService.queryAllByTime(userid, list.get(i),company);//当前月  每一天的支出信息
+    		List<DayBill> listincomelike=intincomebillService.querySumByTimeLike(userid, list.get(i),company);//当前月   每一天的收入总和
+    		List<DayBill> listexpenditurelike=intexpenditurebillService.querySumByTimeLike(userid, list.get(i),company);//当前月  每一天的支出总和
     		map1=new HashMap<>();
     		map1.put("time", list.get(i));
     		map1.put("incomelist", incomelist);

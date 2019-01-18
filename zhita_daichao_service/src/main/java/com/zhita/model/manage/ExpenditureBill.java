@@ -23,6 +23,8 @@ public class ExpenditureBill {
     private String beizhu;//备注
 
     private String deleted;//假删除（删除：1，没删除：0）
+    
+    private String company;//公司名
 
     public Integer getId() {
         return id;
@@ -102,5 +104,13 @@ public class ExpenditureBill {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

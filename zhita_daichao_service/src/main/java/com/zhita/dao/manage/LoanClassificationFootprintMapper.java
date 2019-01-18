@@ -17,5 +17,5 @@ public interface LoanClassificationFootprintMapper {
 
     int updateByPrimaryKey(LoanClassificationFootprint record);
 
-    int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp);
+    int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp,@Param("company") String company);
 }

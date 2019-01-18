@@ -26,11 +26,21 @@
 				jdbcType="VARCHAR" />
 			<arg column="pwd" javaType="java.lang.String"
 				jdbcType="VARCHAR" />
+			<arg column="company" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
+		    <arg column="registrationType" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
+	        <arg column="loginTime" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
+			<arg column="programQrCode" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
+			<arg column="fatherId" javaType="java.lang.Integer"
+				jdbcType="INTEGER" />
 		</constructor>
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, sourceId, nickname, phone, dayFen, registrationTime,
-		name, age, idCard,openId,loginStatus,pwd
+		name, age, idCard,openId,loginStatus,pwd,company,registrationType,loginTime,programQrCode,fatherId
 	</sql>	
 	<delete id="deleteByPrimaryKey"
 		parameterType="java.lang.Integer">
@@ -41,14 +51,17 @@
 		insert into user (id, sourceId,
 		nickname,
 		phone, dayFen, registrationTime,
-		name, age, idCard,openId,loginStatus,pwd)
+		name, age, idCard,openId,loginStatus,pwd,company,registrationType,loginTime,programQrCode,fatherId)
 		values
 		(#{id,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER},
 		#{nickname,jdbcType=VARCHAR},
 		#{phone,jdbcType=VARCHAR},
 		#{dayfen,jdbcType=INTEGER}, #{registrationtime,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
-		#{idcard,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR},#{loginStatus,jdbcType=VARCHAR},#{pwd,jdbcType=VARCHAR})
+		#{idcard,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR},#{loginStatus,jdbcType=VARCHAR},
+		#{pwd,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},
+		#{registrationType,jdbcType=VARCHAR},#{loginTime,jdbcType=VARCHAR},#{programQrCode,jdbcType=VARCHAR},
+		#{fatherId,jdbcType=INTEGER})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.zhita.model.manage.User">
@@ -90,6 +103,21 @@
 			<if test="pwd != null">
 				pwd,
 			</if>
+		    <if test="company != null">
+				company,
+			</if>
+		    <if test="registrationType != null">
+				registrationType,
+			</if>
+		    <if test="loginTime != null">
+				loginTime,
+			</if>
+			<if test="programQrCode != null">
+				programQrCode,
+			</if>
+			<if test="fatherId != null">
+				fatherId,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -125,8 +153,23 @@
 			<if test="loginStatus != null">
 				#{loginStatus,jdbcType=VARCHAR},
 			</if>
-			<if test="loginStatus != null">
+			<if test="pwd != null">
 				#{pwd,jdbcType=VARCHAR},
+			</if>
+		    <if test="company != null">
+				#{company,jdbcType=VARCHAR},
+			</if>
+		    <if test="registrationType != null">
+				#{registrationType,jdbcType=VARCHAR},
+			</if>
+		    <if test="loginTime != null">
+				#{loginTime,jdbcType=VARCHAR},
+			</if>
+		    <if test="programQrCode != null">
+				#{programQrCode,jdbcType=VARCHAR},
+			</if>
+			<if test="fatherId != null">
+				#{fatherId,jdbcType=INTEGER},
 			</if>
 		</trim>
 	</insert>
@@ -164,8 +207,23 @@
 			<if test="loginStatus != null">
 				loginStatus = #{loginStatus,jdbcType=VARCHAR},
 			</if>
-			<if test="loginStatus != null">
-				loginStatus = #{pwd,jdbcType=VARCHAR},
+			<if test="pwd != null">
+				pwd = #{pwd,jdbcType=VARCHAR},
+			</if>
+		    <if test="company != null">
+				company = #{company,jdbcType=VARCHAR},
+			</if>
+	        <if test="registrationType != null">
+				registrationType = #{registrationType,jdbcType=VARCHAR},
+			</if>
+		    <if test="loginTime != null">
+				loginTime = #{loginTime,jdbcType=VARCHAR},
+			</if>
+		    <if test="programQrCode != null">
+				programQrCode = #{programQrCode,jdbcType=VARCHAR},
+			</if>
+			<if test="fatherId != null">
+				fatherId = #{fatherId,jdbcType=INTEGER},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
@@ -186,7 +244,12 @@
 		#{idcard,jdbcType=VARCHAR},
 		openId = #{openId,jdbcType=VARCHAR},
 		loginStatus =#{loginStatus,jdbcType=VARCHAR},
-		pwd =#{pwd,jdbcType=VARCHAR}
+		pwd =#{pwd,jdbcType=VARCHAR},
+		company =#{company,jdbcType=VARCHAR},
+		registrationType =#{registrationType,jdbcType=VARCHAR},
+		loginTime =#{loginTime,jdbcType=VARCHAR},
+		programQrCode =#{programQrCode,jdbcType=VARCHAR},
+		fatherId =#{fatherId,jdbcType=INTEGER}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 查找用户表有多少条记录 -->
@@ -195,38 +258,38 @@
 		user
 	</select>
 	<!-- 查找日新增用户数 -->
-	<select id="getdailyUsers" resultType="java.lang.Long"
-		parameterType="java.lang.Long">
+	<select id="getdailyUsers" resultType="java.lang.Long" parameterType="java.lang.Long">
 		select count(phone) from user where
 		registrationTime>=#{todayZeroTimestamps}
 		and registrationTime &lt;
 		#{tomorrowZeroTimestamps}
 	</select>
 	<!-- 查找月新增用户数 -->
-	<select id="getmonthlyUsers" resultType="java.lang.Long"
-		parameterType="java.lang.Long">
+	<select id="getmonthlyUsers" resultType="java.lang.Long" parameterType="java.lang.Long">
 		select count(phone) from user where
 		registrationTime>=#{monthlyZeroTimestamps} and registrationTime &lt;
 		#{nextMonthlyZeroTimestamps}
 	</select>
 
 	  	<!--判断用户名是否存在 -->
-	<select id="findphone" resultMap="BaseResultMap"
-		parameterType="String">
+	<select id="findphone" resultMap="BaseResultMap" parameterType="String">
     	<![CDATA[
        SELECT a.* FROM user a WHERE 1=1 
-       AND a.phone=#{phone}
+       AND a.phone=#{phone} and a.company=#{company}
        ]]>
 	</select>
 	  	<!-- 插入用户信息 -->
 	<insert id="insertfootprint" parameterType="java.util.Map">
 		insert into user (phone, nickname,
-		openId,registrationTime,loginStatus)
+		openId,registrationTime,loginStatus,company,registrationType,loginTime)
 		values (#{phone},
 		#{nickName},
 		#{openId},
 		#{registrationTime},
-		#{loginStatus})
+		#{loginStatus},
+		#{company},
+		#{registrationType},
+		#{registrationTime})
 	</insert>
 	<!-- 后台管理   查询出用户表总数量 -->
 	<select id="pageCount" resultType="java.lang.Integer">
@@ -326,45 +389,129 @@
 	<update id="updateloginStatus" parameterType="java.lang.String" >
 		update user
 		set loginStatus = #{loginStatus},
-		openId = #{openId}
-		where phone = #{phone}
+		openId = #{openId},
+		loginTime = #{loginTime}		
+		where phone = #{phone} and company = #{company}
 	</update>
 		<!--登录时，修改登录状态-->
 	<update id="updateStatus" parameterType="java.lang.String" >
 		update user
-		set loginStatus = #{loginStatus}
-		where phone = #{phone}
+		set loginStatus = #{loginStatus},
+		loginTime = #{loginTime}	
+		where phone = #{phone} and company = #{company}
 	</update>
 	<!-- 后台管理 通过手机号获取用户的id  -->
 	<select id="getId" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select id from user where phone = #{phone}
+		select id from user where phone = #{phone} and company = #{company}
 	</select>
 		<!-- 退出时，修改登录状态修改 -->
 	<update id="updatelogOutStatus" parameterType="map" >
 		update user
 		set loginStatus = #{loginStatus}
-		where id = #{userId}
+		where id = #{userId} and company = #{company} 
 	</update>
 		<!-- 小程序 通过openId查询登录状态 -->
 	<select id="getLoginStatus" parameterType="java.lang.String" resultType="java.lang.String">
-		select loginStatus from user where openId = #{openId} 
+		select loginStatus from user where openId = #{openId} and company = #{company}
 	</select>
 			<!-- 小程序 通过openId查询userId-->
 	<select id="getUserId" parameterType="java.lang.String" resultType="java.lang.String">
-		select id from user where openId = #{openId} 
+		select id from user where openId = #{openId} and company = #{company}
 	</select>
 		<!-- 小程序 通过openId查询phone-->
 	<select id="getPhone" parameterType="java.lang.String" resultType="java.lang.String">
-		select phone from user where openId = #{openId} 
+		select phone from user where openId = #{openId} and company = #{company}
 	</select>
 		  	<!--APP 插入用户信息 -->
 	<insert id="setAPPUser" parameterType="java.util.Map">
 		insert into user (phone, pwd,
-		sourceId,registrationTime,loginStatus)
+		sourceId,registrationTime,loginStatus,registrationType,company,loginTime)
 		values (#{phone},
 		#{md5Pwd},
 		#{sourceId},
 		#{registrationTime},
-		#{loginStatus})
+		#{loginStatus},
+		#{registrationType},
+		#{company},
+		#{registrationTime})
+	</insert>
+			<!--APP 修改密码-->
+	<update id="updatePwd" parameterType="java.lang.String" >
+		update user
+		set pwd = #{md5Pwd}
+		where phone = #{phone}
+	</update>	
+				<!--APP 查询密码-->
+	<select id="getMd5pwd" parameterType="java.lang.String" resultType="java.lang.String">
+      select pwd from user where phone = #{phone}
+	</select>
+	
+	<!--小程序 查询二维码的url-->
+	<select id="getProgramQrCode" parameterType="java.lang.String" resultType="java.lang.String">
+      select programQrCode from user where id = #{scene}
+	</select>
+	
+	<!--小程序 插入二维码的url-->
+		<update id="setProgramQrCode" parameterType="java.lang.String" >
+		update user
+		set programQrCode = #{qrurl}
+		where id = #{scene}
+	</update>	
+	
+		  	<!-- 插入用户信息,用于用户扫二维码登录时 -->
+	<insert id="insertfootprint1" parameterType="java.util.Map">
+		insert into user (phone, nickname,
+		openId,registrationTime,loginStatus,company,registrationType,loginTime,fatherId)
+		values (#{phone},
+		#{nickName},
+		#{openId},
+		#{registrationTime},
+		#{loginStatus},
+		#{company},
+		#{registrationType},
+		#{registrationTime},
+		#{fatherId})
+	</insert>
+	
+		<!--登录时，修改登录状态，openId和fatherId，用于用户扫二维码登录时 -->
+	<update id="updateloginStatus1" parameterType="java.util.Map" >
+		update user
+		set loginStatus = #{loginStatus},
+		openId = #{openId},
+		loginTime = #{loginTime},
+		fatherId = #{fatherId}		
+		where phone = #{phone} and company = #{company}
+	</update>
+	
+			<!--登录时，修改登录状态，用于用户扫二维码登录时-->
+	<update id="updateStatus1" parameterType="java.util.Map" >
+		update user
+		set loginStatus = #{loginStatus},
+		loginTime = #{loginTime},
+		fatherId = #{fatherId}	
+		where phone = #{phone} and company = #{company}
+	</update>
+	
+		<!-- 小程序 通过id获取密码  -->
+	<select id="getPwd" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select pwd from user where id = #{id}
+	</select>
+	
+		<!--APP 插入密码-->
+		<update id="setPwd" parameterType="map" >
+		update user
+		set pwd = #{md5Pwd}
+		where id = #{userId}
+	</update>	
+	
+		  	<!--APP 插入用户信息 -->
+	<insert id="insertUser" parameterType="java.util.Map">
+		insert into user (phone,registrationTime,loginStatus,company,registrationType,loginTime)
+		values (#{phone},
+		#{registrationTime},
+		#{loginStatus},
+		#{company},
+		#{registrationType},
+		#{registrationTime})
 	</insert>
 </mapper>

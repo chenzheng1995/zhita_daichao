@@ -37,8 +37,8 @@ public class TypeController {
 	//小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
     @ResponseBody
     @RequestMapping("/queryLoanbusinByLoanClass")
-    public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page){
-    	int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification);
+    public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page,String company){
+    	int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification,company);
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
@@ -50,10 +50,10 @@ public class TypeController {
     		}
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
-    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize());
+    	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize(),company);
     	 for (LoansBusinesses loansBusinesses : list) {
     	        String businessName = loansBusinesses.getBusinessname();
-    	        int applications = (int)cFootprintService.getApplications(businessName);//获取申请人数	  
+    	        int applications = (int)cFootprintService.getApplications(businessName,company);//获取申请人数	  
     	        loansBusinesses.setApplications(applications);
     	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
     	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";

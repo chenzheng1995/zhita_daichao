@@ -42,21 +42,21 @@ public class CommodityFootprintServiceImp implements CommodityFootprintService{
 	}
 
 	@Override
-	public int insertfootprint(String footprintName, String userId, long currentTimestamp) {
-		int number = commodityFootprintMapper.insertfootprint(footprintName,userId,currentTimestamp);
+	public int insertfootprint(String footprintName, String userId, long currentTimestamp, String company) {
+		int number = commodityFootprintMapper.insertfootprint(footprintName,userId,currentTimestamp,company);
 		return number;
 	}
 
 
 	@Override
-	public List<String> getbusinessName(String userId,int pageSize, int startRow) {
-		List<String> list =	(List<String>) commodityFootprintMapper.getbusinessName(userId,pageSize,startRow);
+	public List<String> getbusinessName(String userId,int pageSize, int startRow,String company) {
+		List<String> list =	(List<String>) commodityFootprintMapper.getbusinessName(userId,pageSize,startRow,company);
 		return list;
 	}
 
 	@Override
-	public long getApplications(String businessName) {
-		long applications = commodityFootprintMapper.getApplications(businessName);
+	public long getApplications(String businessName,String company) {
+		long applications = commodityFootprintMapper.getApplications(businessName,company);
 		return applications;
 	}
 
@@ -68,8 +68,8 @@ public class CommodityFootprintServiceImp implements CommodityFootprintService{
 	}
 
 	@Override
-	public long getRecordNumber(String userId) {
-		long recordNumber = commodityFootprintMapper.getRecordNumber(userId);
+	public long getRecordNumber(String userId,String company) {
+		long recordNumber = commodityFootprintMapper.getRecordNumber(userId,company);
 		return recordNumber;
 	}
 

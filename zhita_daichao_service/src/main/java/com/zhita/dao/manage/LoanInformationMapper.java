@@ -20,5 +20,12 @@ public interface LoanInformationMapper {
 	int setloanInformation(@Param("userId")int userId,@Param("name") String name,@Param("idCard") String idCard,@Param("professionalIdentity") String professionalIdentity,
 			@Param("monthlyIncomeRange") String monthlyIncomeRange,@Param("educationalBackground") String educationalBackground, @Param("sesamePoints")String sesamePoints,
 			@Param("cellPhoneTime") String cellPhoneTime,@Param("isCreditCard") String isCreditCard,@Param("isAccumulationFund") String isAccumulationFund,
-			@Param("isSocialSecurity") String isSocialSecurity,@Param("isCar") String isCar,@Param("isHouse") String isHouse);
+			@Param("isSocialSecurity") String isSocialSecurity,@Param("isCar") String isCar,@Param("isHouse") String isHouse,@Param("company") String company);
+
+	LoanInformation getloanInformation(@Param("userId")int userId,@Param("company") String company);
+
+	int updateloanInformation(@Param("userId")int userId,@Param("name") String name,@Param("idCard") String idCard,@Param("professionalIdentity") String professionalIdentity,
+			@Param("monthlyIncomeRange") String monthlyIncomeRange,@Param("educationalBackground") String educationalBackground, @Param("sesamePoints")String sesamePoints,
+			@Param("cellPhoneTime") String cellPhoneTime,@Param("isCreditCard") String isCreditCard,@Param("isAccumulationFund") String isAccumulationFund,
+			@Param("isSocialSecurity") String isSocialSecurity,@Param("isCar") String isCar,@Param("isHouse") String isHouse,@Param("company") String company);
 }

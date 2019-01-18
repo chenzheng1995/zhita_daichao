@@ -12,14 +12,17 @@ public class Blacklist {
     private String phone;
 
     private String creationtime;
+    
+    private String company;
 
-    public Blacklist(Integer id, Integer userid, String name, String idcard, String phone, String creationtime) {
+    public Blacklist(Integer id, Integer userid, String name, String idcard, String phone, String creationtime, String company) {
         this.id = id;
         this.userid = userid;
         this.name = name;
         this.idcard = idcard;
         this.phone = phone;
         this.creationtime = creationtime;
+        this.company = company;
     }
 
     public Blacklist() {
@@ -72,5 +75,13 @@ public class Blacklist {
 
     public void setCreationtime(String creationtime) {
         this.creationtime = creationtime == null ? null : creationtime.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

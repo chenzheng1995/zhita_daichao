@@ -17,7 +17,8 @@ public interface BlacklistMapper {
 
     int updateByPrimaryKey(Blacklist record);
 
-	int setblacklist(@Param("userId")int userId, @Param("name")String name, @Param("idCard")String idCard,@Param("phone") String phone,@Param("creationTime") String creationTime);
+	int setblacklist(@Param("userId")int userId, @Param("name")String name, @Param("idCard")String idCard,
+			@Param("phone") String phone,@Param("creationTime") String creationTime,@Param("company") String company);
 
 
 }

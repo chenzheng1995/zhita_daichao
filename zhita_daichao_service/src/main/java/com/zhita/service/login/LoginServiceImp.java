@@ -40,32 +40,32 @@ public class LoginServiceImp implements IntLoginService{
 	}
 
 	@Override
-	public User findphone(String phone) {
-		User user = userMapper.findphone(phone);
+	public User findphone(String phone,String company) {
+		User user = userMapper.findphone(phone,company);
 		return user;
 	}
 
 	@Override
-	public int insertfootprint(String phone, String nickName, String openId,String registrationTime,String loginStatus) {
-		int number = userMapper.insertfootprint(phone, nickName, openId,registrationTime,loginStatus);
+	public int insertfootprint(String phone, String nickName, String openId,String registrationTime,String loginStatus,String company,String registrationType) {
+		int number = userMapper.insertfootprint(phone, nickName, openId,registrationTime,loginStatus,company,registrationType);
 		return number;
 	}
 
 	@Override
-	public int updateloginStatus(String loginStatus,String openId,String phone) {
-		int number = userMapper.updateloginStatus(loginStatus,openId,phone);
+	public int updateloginStatus(String loginStatus,String openId,String phone,String company,String loginTime) {
+		int number = userMapper.updateloginStatus(loginStatus,openId,phone,company,loginTime);
 		return number;
 	}
 
 	@Override
-	public int getId(String phone) {
-		int id = userMapper.getId(phone);
+	public int getId(String phone,String company) {
+		int id = userMapper.getId(phone,company);
 		return id;
 	}
 
 	@Override
-	public int updatelogOutStatus(String loginStatus, int userId) {
-		int number = userMapper.updatelogOutStatus(loginStatus,userId);
+	public int updatelogOutStatus(String loginStatus, int userId,String company) {
+		int number = userMapper.updatelogOutStatus(loginStatus,userId,company);
 		return number;
 	}
 
@@ -88,20 +88,20 @@ public class LoginServiceImp implements IntLoginService{
 	}
 
 	@Override
-	public String getLoginStatus(String openId) {
-		String loginStatus = userMapper.getLoginStatus(openId);
+	public String getLoginStatus(String openId,String company) {
+		String loginStatus = userMapper.getLoginStatus(openId,company);
 		return loginStatus;
 	}
 
 	@Override
-	public String getUserId(String openId) {
-		String userId = userMapper.getUserId(openId);
+	public String getUserId(String openId,String company) {
+		String userId = userMapper.getUserId(openId,company);
 		return userId;
 	}
 
 	@Override
-	public String getPhone(String openId) {
-		String phone = userMapper.getPhone(openId);
+	public String getPhone(String openId,String company) {
+		String phone = userMapper.getPhone(openId,company);
 		return phone;
 	}
 
@@ -117,13 +117,13 @@ public class LoginServiceImp implements IntLoginService{
 	}
 
 	@Override
-	public int updateStatus(String loginStatus, String phone) {
-		int num = userMapper.updateStatus(loginStatus,phone);
+	public int updateStatus(String loginStatus, String phone,String company,String loginTime) {
+		int num = userMapper.updateStatus(loginStatus,phone,company,loginTime);
 		return num;
 	}
 
-	public int setAPPUser(String phone, String md5Pwd, int sourceId, String registrationTime,String loginStatus) {
-		int number = userMapper.setAPPUser(phone, md5Pwd, sourceId,registrationTime,loginStatus);
+	public int setAPPUser(String phone, String md5Pwd, int sourceId, String registrationTime,String loginStatus,String registrationType,String company) {
+		int number = userMapper.setAPPUser(phone, md5Pwd, sourceId,registrationTime,loginStatus,registrationType,company);
 		return number;
 	}
 
@@ -265,5 +265,56 @@ public class LoginServiceImp implements IntLoginService{
     	List<Role> list=roleMapper.queryAllRole();
     	return list;
     }
+
+	@Override
+	public int updatePwd(String phone, String md5Pwd) {
+		int number = userMapper.updatePwd(phone, md5Pwd);
+		return number;
+	}
+
+	@Override
+	public String getMd5pwd(String phone) {
+		String dataMd5Pwd = userMapper.getMd5pwd(phone);
+		return dataMd5Pwd;
+	}
+
+	@Override
+	public int insertfootprint1(String phone, String nickName, String openId, String registrationTime,
+			String loginStatus, String company, String registrationType, Integer fatherId) {
+		int number = userMapper.insertfootprint1(phone, nickName, openId,registrationTime,loginStatus,company,registrationType,fatherId);
+		return number;
+	}
+
+	@Override
+	public int updateloginStatus1(String loginStatus, String openId, String phone, String company, String loginTime,
+			Integer fatherId) {
+		int num = userMapper.updateloginStatus1(loginStatus,openId,phone,company,loginTime,fatherId); 
+		return num;
+	}
+
+	@Override
+	public int updateStatus1(String loginStatus, String phone, String company, String loginTime, Integer fatherId) {
+		int num = userMapper.updateStatus1(loginStatus,phone,company,loginTime,fatherId); 
+		return num;
+	}
+
+	@Override
+	public String getPwd(int id) {
+		String pwd = userMapper.getPwd(id);
+		return pwd;
+	}
+
+	@Override
+	public int setPwd(int userId, String md5Pwd) {
+		int number = userMapper.setPwd(userId, md5Pwd);
+		return number;
+	}
+
+	@Override
+	public int insertUser(String phone, String loginStatus, String company, String registrationType,
+			String registrationTime) {
+		int number = userMapper.insertUser(phone,loginStatus,company,registrationType,registrationTime);
+		return number;
+	}
 
 }

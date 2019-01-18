@@ -32,7 +32,7 @@ public interface LoanClassificationMapper {
     int pageCountByLike(String businessClassification);
     
     //小程序---用于获取通过贷款分类的名称查询出贷款商家的个数
-    int pageCountByBusinessClassification(String businessClassification);
+    int pageCountByBusinessClassification(@Param("businessClassification")String businessClassification,@Param("company") String company);
     
     //后台管理---模糊查询贷款分类信息,并且有分页功能
     List<LoanClassification> queryByLike(String businessClassification,Integer page,Integer pagesize);

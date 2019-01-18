@@ -12,8 +12,8 @@ public class BlacklistServiceImp implements BlacklistService{
 	BlacklistMapper blacklistMapper;
 	
 	@Override
-	public int setblacklist(int userId, String name, String idCard, String phone, String creationTime) {
-		int number = blacklistMapper.setblacklist(userId,name,idCard,phone,creationTime);
+	public int setblacklist(int userId, String name, String idCard, String phone, String creationTime, String company) {
+		int number = blacklistMapper.setblacklist(userId,name,idCard,phone,creationTime,company);
 		return number;
 	}
 

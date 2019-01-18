@@ -51,10 +51,12 @@ public class LoansBusinesses implements Serializable{
 
     private Integer applications;//申请人数
     
+    private String company;//公司名
+    
 
     
 
-    public LoansBusinesses(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications) {
+    public LoansBusinesses(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications,String company) {
         this.id = id;
         this.businessname = businessname;
         this.intro = intro;
@@ -78,6 +80,7 @@ public class LoansBusinesses implements Serializable{
         this.prepaidamount = prepaidamount;
         this.deleted = deleted;
         this.applications = applications;
+        this.company = company;
     }
 
     public LoansBusinesses() {
@@ -267,5 +270,13 @@ public class LoansBusinesses implements Serializable{
 
     public void setApplications(Integer applications) {
         this.applications = applications;
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

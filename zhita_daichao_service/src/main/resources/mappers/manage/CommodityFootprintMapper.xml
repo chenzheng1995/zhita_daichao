@@ -14,10 +14,12 @@
 				jdbcType="VARCHAR" />
 			<arg column="deleted" javaType="java.lang.String"
 				jdbcType="VARCHAR" />
+			<arg column="company" javaType="java.lang.String"
+				jdbcType="VARCHAR" />				
 		</constructor>
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, userId, footprint, footprintTime, deleted
+		id, userId, footprint, footprintTime, deleted,company
 	</sql>
 	<select id="selectByPrimaryKey"
 		parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -39,7 +41,7 @@
 		values (#{id,jdbcType=INTEGER},
 		#{userid,jdbcType=INTEGER},
 		#{footprint,jdbcType=VARCHAR},
-		#{footprinttime,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR})
+		#{footprinttime,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.zhita.model.manage.CommodityFootprint">
@@ -60,6 +62,9 @@
 			<if test="deleted != null">
 				deleted,
 			</if>
+			<if test="company != null">
+				company,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -76,6 +81,9 @@
 			</if>
 			<if test="deleted != null">
 				#{deleted,jdbcType=VARCHAR},
+			</if>
+     		<if test="company != null">
+				#{company,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -95,6 +103,9 @@
 			<if test="deleted != null">
 				deleted = #{deleted,jdbcType=VARCHAR},
 			</if>
+		    <if test="company != null">
+				company = #{company,jdbcType=VARCHAR},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -106,7 +117,8 @@
 		footprint = #{footprint,jdbcType=VARCHAR},
 		footprintTime = #{footprinttime,jdbcType=VARCHAR},
 		deleted =
-		#{deleted,jdbcType=VARCHAR}
+		#{deleted,jdbcType=VARCHAR},
+		company = #{company,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 查找商品足迹表每天有多少条记录 -->
@@ -114,7 +126,7 @@
 		select
 		count(footprint) from commodity_footprint where
 		footprintTime>=#{todayZeroTimestamps} and footprintTime &lt;
-		#{tomorrowZeroTimestamps}
+		#{tomorrowZeroTimestamps} and deleted = 0
 	</select>
 	<!-- 查找商品足迹表中每天有多少用户 -->
 	<select id="getdailyApplicationsUsers"
@@ -122,14 +134,14 @@
 		select count(distinct userId) from commodity_footprint
 		where
 		footprintTime>=#{todayZeroTimestamps} and footprintTime &lt;
-		#{tomorrowZeroTimestamps}
+		#{tomorrowZeroTimestamps} and deleted = 0
 	</select>
 	<!-- 查找商品足迹表每月有多少条记录 -->
 	<select id="getmonthlyApplications" resultType="java.lang.Long">
 		select
 		count(footprint) from commodity_footprint where
 		footprintTime>=#{monthlyZeroTimestamps} and footprintTime &lt;
-		#{nextMonthlyZeroTimestamps}
+		#{nextMonthlyZeroTimestamps} and deleted = 0
 	</select>
 	<!-- 查找商品足迹表中每月有多少用户 -->
 	<select id="getmonthlyApplicationsUsers"
@@ -137,34 +149,35 @@
 		select count(distinct userId) from commodity_footprint
 		where
 		footprintTime>=#{monthlyZeroTimestamps} and footprintTime &lt;
-		#{nextMonthlyZeroTimestamps}
+		#{nextMonthlyZeroTimestamps} and deleted = 0
 	</select>
 	<!-- 插入商品足迹 -->
 	<insert id="insertfootprint"
 		parameterType="java.util.Map">
 		insert into commodity_footprint (userId, footprint,
-		footprintTime)
+		footprintTime,company)
 		values (#{userId,jdbcType=INTEGER},
 		#{footprintName,jdbcType=VARCHAR},
-		#{currentTimestamp,jdbcType=VARCHAR})
+		#{currentTimestamp,jdbcType=VARCHAR},
+		#{company,jdbcType=VARCHAR})
 	</insert>
 
 	<!-- 查找商品足迹表中的商品名称 -->
 	<select id="getbusinessName" resultType="String" parameterType="map">
-		select distinct footprint from commodity_footprint where userId = #{userId} order by footprintTime desc limit #{startRow},#{pageSize}
+		select distinct footprint from commodity_footprint where userId = #{userId} and company = #{company} and deleted = 0 order by footprintTime desc limit #{startRow},#{pageSize}
 	</select>
 	
 	<!-- 查询出某个商品的申请人数 -->
 	<select id="getApplications" resultType="long" parameterType="java.lang.String">
-		select count(distinct userId) from commodity_footprint where footprint= #{businessName} and deleted = 0
+		select count(distinct userId) from commodity_footprint where footprint= #{businessName} and deleted = 0 and company= #{company}
     </select>
 
 	<!-- 后台管理   根据传过来的足迹名称，查询出足迹的个数 -->
 	<select id="queryCount" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(footprint) from commodity_footprint where footprint=#{footprint}
+		select count(footprint) from commodity_footprint where footprint=#{footprint} and deleted = 0
 	</select>
 		<!-- 小程序   查询某个用户有多少条浏览记录 -->
 	<select id="getRecordNumber" parameterType="java.lang.String" resultType="java.lang.Long">
-		select count(userId) from commodity_footprint where userId=#{userId}
+		select count(userId) from commodity_footprint where userId=#{userId} and company=#{company} and deleted = 0
 	</select>
 </mapper>

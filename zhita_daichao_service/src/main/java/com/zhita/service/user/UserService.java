@@ -28,5 +28,9 @@ public interface UserService {
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中，含分页
 	public List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize);
+
+	String getProgramQrCode(String scene);
+
+	int setProgramQrCode(String scene, String qrurl);
 	
 }

@@ -8,10 +8,11 @@
       <arg column="footprint" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="footprintTime" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, userId, footprint, footprintTime, deleted
+    id, userId, footprint, footprintTime, deleted,company
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,9 +26,9 @@
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.ButtonFootprint">
     insert into button_footprint (id, userId, footprint, 
-      footprintTime, deleted)
+      footprintTime, deleted,company)
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{footprint,jdbcType=VARCHAR}, 
-      #{footprinttime,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR})
+      #{footprinttime,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.ButtonFootprint">
     insert into button_footprint
@@ -47,6 +48,9 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="company != null">
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -63,6 +67,9 @@
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -81,6 +88,9 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=VARCHAR},
       </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -89,15 +99,17 @@
     set userId = #{userid,jdbcType=INTEGER},
       footprint = #{footprint,jdbcType=VARCHAR},
       footprintTime = #{footprinttime,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=VARCHAR}
+      deleted = #{deleted,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   	<!-- 插入按钮足迹 -->
 	<insert id="insertfootprint" parameterType="java.util.Map">
 		insert into button_footprint (userId, footprint,
-		footprintTime)
+		footprintTime,company)
 		values (#{userId,jdbcType=INTEGER},
 		#{footprintName,jdbcType=VARCHAR},
-		#{currentTimestamp,jdbcType=VARCHAR})
+		#{currentTimestamp,jdbcType=VARCHAR},
+		#{company,jdbcType=VARCHAR})
 	</insert>
 </mapper>

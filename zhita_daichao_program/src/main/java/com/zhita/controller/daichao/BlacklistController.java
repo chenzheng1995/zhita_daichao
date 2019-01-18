@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,15 +28,17 @@ public class BlacklistController {
 	 * @param phone  手机号码
 	 * @param code   短信验证码
 	 * @param idCard 身份证号
+	 * * @param idCard 公司名称
 	 * @return
 	 */
 	@RequestMapping("/setblacklist")
 	@ResponseBody
-	public Map<String, Object> setblacklist(int userId, String name, String idCard, String phone, String code) {
+	@Transactional
+	public Map<String, Object> setblacklist(int userId, String name, String idCard, String phone, String code,String company) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(name) || StringUtils.isEmpty(idCard)
-				|| StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
-			map.put("msg", "userId,name,idCard,phone或code不能为空");
+				|| StringUtils.isEmpty(phone) || StringUtils.isEmpty(code) || StringUtils.isEmpty(company)) {
+			map.put("msg", "userId,name,idCard,phone,code或公司名称不能为空");
 			map.put("SCode", "401");
 			
 			return map;
@@ -49,8 +52,9 @@ public class BlacklistController {
 				return map;
 			}
 			if(redisCode.equals(code)) {
+				redisClientUtil.delkey(key);//验证码正确就从redis里删除这个key
 				String creationTime = System.currentTimeMillis()+"";
-				int number = blacklistService.setblacklist(userId,name,idCard,phone,creationTime);
+				int number = blacklistService.setblacklist(userId,name,idCard,phone,creationTime,company);
 				if (number == 1) {		
 					map.put("msg","数据插入成功");
 					map.put("SCode", "200");

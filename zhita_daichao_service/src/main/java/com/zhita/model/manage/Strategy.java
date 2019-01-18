@@ -21,8 +21,10 @@ public class Strategy {
     private String content;//内容
 
     private String deleted;//假删除（删除；1没删除2）
+    
+    private String company;//公司名
 
-    public Strategy(Integer id, String title, String cover, String synopsis, String type, String url, String isstick, String state, String content, String deleted) {
+    public Strategy(Integer id, String title, String cover, String synopsis, String type, String url, String isstick, String state, String content, String deleted, String company) {
         this.id = id;
         this.title = title;
         this.cover = cover;
@@ -33,6 +35,7 @@ public class Strategy {
         this.state = state;
         this.content = content;
         this.deleted = deleted;
+        this.company = company;
     }
 
     public Strategy() {
@@ -117,5 +120,13 @@ public class Strategy {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

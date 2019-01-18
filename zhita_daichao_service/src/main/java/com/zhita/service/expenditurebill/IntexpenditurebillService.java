@@ -12,14 +12,14 @@ public interface IntexpenditurebillService {
     public int addExpenditureBill(ExpenditureBill expenditureBill);
     
     //通过时间模糊查询   当前用户  当前月 所有支出金额总和
-    public BigDecimal queryTotalMoney(Integer userid,String time);
+    public BigDecimal queryTotalMoney(Integer userid,String time, String company);
     
     //通过时间模糊查询出当前用户  当前月 每一天  的支出详细信息
-    public List<ExpenditureBill> queryAllByTimeLike(Integer userid,String time);
+    public List<ExpenditureBill> queryAllByTimeLike(Integer userid,String time, String company);
     
     //通过时间准确查询出当前用户  当前月 每一天  的支出详细信息
-    public List<ExpenditureBill> queryAllByTime(Integer userid,String time);
+    public List<ExpenditureBill> queryAllByTime(Integer userid,String time, String company);
     
     //通过时间模糊查询出当前用户  当前月 每一天  的支出总和
-    public List<DayBill> querySumByTimeLike(Integer userid,String time);
+    public List<DayBill> querySumByTimeLike(Integer userid,String time, String company);
 }

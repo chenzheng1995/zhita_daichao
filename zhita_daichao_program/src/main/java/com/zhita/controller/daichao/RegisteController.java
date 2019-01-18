@@ -29,22 +29,26 @@ public class RegisteController {
 	//小程序---查询所有贷款商家信息,含分页
     @ResponseBody
     @RequestMapping("/queryAll")
-    public Map<String,Object> queryAll(Integer page){    	
+    public Map<String,Object> queryAll(Integer page,String company){    	
 
-    	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
+    	int totalCount=intRegisteService.pageCount(company);//该方法是查询贷款商家总条数
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
     	else if(page>pageUtil.getTotalPageCount()) {
-    		page=pageUtil.getTotalPageCount();
+    		if(totalCount==0) {
+    			page=pageUtil.getTotalPageCount()+1;
+    		}else {
+    			page=pageUtil.getTotalPageCount();
+    		}
     	}
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages); 	
-    	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize());
+    	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
         for (LoansBusinesses loansBusinesses : list) {
 	        String businessName = loansBusinesses.getBusinessname();
-	        int applications = (int)cFootprintService.getApplications(businessName);//获取申请人数	  
+	        int applications = (int)cFootprintService.getApplications(businessName,company);//获取申请人数	  
 	        loansBusinesses.setApplications(applications);
 	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
 	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";

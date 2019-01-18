@@ -20,12 +20,15 @@ public class Statistical implements Serializable{
     
     private Integer applicationNumber;//贷款商家的申请次数
     
-    public Statistical(Integer id, String time, Integer uv, Integer conversionrate, Integer businessid) {
+    private String company;//公司名
+    
+    public Statistical(Integer id, String time, Integer uv, Integer conversionrate, Integer businessid, String company) {
         this.id = id;
         this.time = time;
         this.uv = uv;
         this.conversionrate = conversionrate;
         this.businessid = businessid;
+        this.company = company;
     }
 
     public Statistical() {
@@ -95,5 +98,13 @@ public class Statistical implements Serializable{
 	public void setApplicationNumber(Integer applicationNumber) {
 		this.applicationNumber = applicationNumber;
 	}
+	
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
+    }
     
 }

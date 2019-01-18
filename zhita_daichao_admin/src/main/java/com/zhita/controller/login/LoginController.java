@@ -28,10 +28,10 @@ public class LoginController {
 	//发送验证码
 	@RequestMapping("/sendSMS")
 	@ResponseBody
-	public Map<String, String> sendSMS(String phone){
+	public Map<String, String> sendSMS(String phone,String companyName){
 		Map<String, String> map = new HashMap<>();
 		SMSUtil smsUtil = new SMSUtil();
-		String state = smsUtil.sendSMS(phone, "json");
+		String state = smsUtil.sendSMS(phone, "json",companyName);
         map.put("msg",state);		
 		return map;	
 	}
@@ -47,12 +47,12 @@ public class LoginController {
 	@RequestMapping("/login")
 	@ResponseBody
 	public Map<String, Object> login(String userName,String code,String phone) {
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(code) || StringUtils.isEmpty(phone)) {
 			map.put("msg", "userName,code或phone不能为空");
 			return map;
 		} else {
-			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone+"Key";
 			String redisCode = redisClientUtil.get(key);
 			if(redisCode==null) {
@@ -60,6 +60,7 @@ public class LoginController {
 				return map;
 			}
 			if(redisCode.equals(code)) {
+				redisClientUtil.delkey(key);//验证码正确就从redis里删除这个key
 				ManageLogin manageLogin = loginService.findFormatByLoginName(userName); // 判断该用户是否存在
 				if (manageLogin == null) {
 					map.put("msg", "用户名不存在");

@@ -28,8 +28,10 @@ public class LoanInformation {
     private String iscar;
 
     private String ishouse;
+    
+    private String company;//公司名
 
-    public LoanInformation(Integer id, String name, Integer userid, String idcard, String professionalidentity, String monthlyincomerange, String educationalbackground, String sesamepoints, String cellphonetime, String iscreditcard, String isaccumulationfund, String issocialsecurity, String iscar, String ishouse) {
+    public LoanInformation(Integer id, String name, Integer userid, String idcard, String professionalidentity, String monthlyincomerange, String educationalbackground, String sesamepoints, String cellphonetime, String iscreditcard, String isaccumulationfund, String issocialsecurity, String iscar, String ishouse, String company) {
         this.id = id;
         this.name = name;
         this.userid = userid;
@@ -44,6 +46,7 @@ public class LoanInformation {
         this.issocialsecurity = issocialsecurity;
         this.iscar = iscar;
         this.ishouse = ishouse;
+        this.company = company;
     }
 
     public LoanInformation() {
@@ -160,5 +163,13 @@ public class LoanInformation {
 
     public void setIshouse(String ishouse) {
         this.ishouse = ishouse == null ? null : ishouse.trim();
+    }
+    
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
     }
 }

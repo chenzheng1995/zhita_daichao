@@ -53,12 +53,12 @@ public class RegisteController {
 	//后台管理---查询贷款商家部分字段信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllAdmin")
-    public Map<String,Object> queryAll(HttpServletRequest request,Integer page){
+    public Map<String,Object> queryAll(HttpServletRequest request,Integer page,String company){
     	List<String> list1=intRegisteService.queryAllBusinessName();//查询出所有贷款商家的商家名称，存入list集合
     	for (int i = 0; i < list1.size(); i++) {
     		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)), list1.get(i));//将商家的被申请人数字段进行修改
 		}
-    	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
+    	int totalCount=intRegisteService.pageCount(company);//该方法是查询贷款商家总条数
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
@@ -150,7 +150,7 @@ public class RegisteController {
 	//后台管理---通过商家名称模糊查询，并且有分页功能
     @ResponseBody
     @RequestMapping("/queryByNameLike")
-    public Map<String,Object> queryByNameLike(String businessName,Integer page){
+    public Map<String,Object> queryByNameLike(String businessName,Integer page,String company){
     	List<LoansBusinesses> list=null;
     	PageUtil pageUtil=null;
     	if(businessName==null||"".equals(businessName)) {
@@ -159,7 +159,7 @@ public class RegisteController {
         		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)), list1.get(i));//将商家的被申请人数字段进行修改
     		}
         	
-        	int totalCount=intRegisteService.pageCount();//该方法是查询贷款商家总条数
+        	int totalCount=intRegisteService.pageCount(company);//该方法是查询贷款商家总条数
         	pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;

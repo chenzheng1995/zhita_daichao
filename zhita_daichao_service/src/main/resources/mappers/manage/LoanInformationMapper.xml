@@ -17,12 +17,13 @@
       <arg column="isSocialSecurity" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="isCar" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="isHouse" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
     id, name, userId, idCard, professionalIdentity, monthlyIncomeRange, educationalBackground, 
     sesamePoints, cellPhoneTime, isCreditCard, isAccumulationFund, isSocialSecurity, 
-    isCar, isHouse
+    isCar, isHouse,company
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -39,12 +40,12 @@
       idCard, professionalIdentity, monthlyIncomeRange, 
       educationalBackground, sesamePoints, cellPhoneTime, 
       isCreditCard, isAccumulationFund, isSocialSecurity, 
-      isCar, isHouse)
+      isCar, isHouse,company)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
       #{idcard,jdbcType=VARCHAR}, #{professionalidentity,jdbcType=VARCHAR}, #{monthlyincomerange,jdbcType=VARCHAR}, 
       #{educationalbackground,jdbcType=VARCHAR}, #{sesamepoints,jdbcType=VARCHAR}, #{cellphonetime,jdbcType=VARCHAR}, 
       #{iscreditcard,jdbcType=VARCHAR}, #{isaccumulationfund,jdbcType=VARCHAR}, #{issocialsecurity,jdbcType=VARCHAR}, 
-      #{iscar,jdbcType=VARCHAR}, #{ishouse,jdbcType=VARCHAR})
+      #{iscar,jdbcType=VARCHAR}, #{ishouse,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.LoanInformation">
     insert into loan_information
@@ -91,6 +92,9 @@
       <if test="ishouse != null">
         isHouse,
       </if>
+      <if test="company != null">
+        company,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -134,6 +138,9 @@
       </if>
       <if test="ishouse != null">
         #{ishouse,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -179,6 +186,9 @@
       <if test="ishouse != null">
         isHouse = #{ishouse,jdbcType=VARCHAR},
       </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -196,16 +206,53 @@
       isAccumulationFund = #{isaccumulationfund,jdbcType=VARCHAR},
       isSocialSecurity = #{issocialsecurity,jdbcType=VARCHAR},
       isCar = #{iscar,jdbcType=VARCHAR},
-      isHouse = #{ishouse,jdbcType=VARCHAR}
+      isHouse = #{ishouse,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  	<!-- 插入用户的贷款信息-->
-	<insert id="setloanInformation"
-		parameterType="java.util.Map">
-		insert into loan_information (userId,name,idCard,professionalIdentity,monthlyIncomeRange,
-		educationalBackground,sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse)
-		values (#{userId},#{name},#{idCard},#{professionalIdentity},#{monthlyIncomeRange},
-		#{educationalBackground},#{sesamePoints},#{cellPhoneTime},#{isCreditCard},#{isAccumulationFund},
-		#{isSocialSecurity},#{isCar},#{isHouse})
+  	<!-- 更新用户的贷款信息-->
+	<update id="updateloanInformation" parameterType="java.util.Map">
+    update loan_information
+    set name = #{name,jdbcType=VARCHAR},
+      idCard = #{idCard,jdbcType=VARCHAR},
+      professionalIdentity = #{professionalIdentity,jdbcType=VARCHAR},
+      monthlyIncomeRange = #{monthlyIncomeRange,jdbcType=VARCHAR},
+      educationalBackground = #{educationalBackground,jdbcType=VARCHAR},
+      sesamePoints = #{sesamePoints,jdbcType=VARCHAR},
+      cellPhoneTime = #{cellPhoneTime,jdbcType=VARCHAR},
+      isCreditCard = #{isCreditCard,jdbcType=VARCHAR},
+      isAccumulationFund = #{isAccumulationFund,jdbcType=VARCHAR},
+      isSocialSecurity = #{isSocialSecurity,jdbcType=VARCHAR},
+      isCar = #{isCar,jdbcType=VARCHAR},
+      isHouse = #{isHouse,jdbcType=VARCHAR}
+    where userId = #{userId,jdbcType=INTEGER} and company = #{company,jdbcType=VARCHAR}
+	</update>
+	
+			  	<!--APP 插入用户的贷款信息 -->
+	<insert id="setloanInformation" parameterType="java.util.Map">
+		insert into loan_information (name, idCard,
+		professionalIdentity,monthlyIncomeRange,educationalBackground,sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse,userId,company)
+		values (#{name},
+		#{idCard},
+		#{professionalIdentity},
+		#{monthlyIncomeRange},
+		#{educationalBackground},
+		#{sesamePoints},
+		#{cellPhoneTime},
+		#{isCreditCard},
+		#{isAccumulationFund},
+		#{isSocialSecurity},
+		#{isCar},
+		#{isHouse},
+		#{userId},
+		#{company})
 	</insert>
+	
+		  	<!--查询用户的贷款信息 -->
+	<select id="getloanInformation" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select id,name,userId,idCard,professionalIdentity,monthlyIncomeRange,educationalBackground,
+      sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse,company
+      from loan_information
+      where userId = #{userId} and company =#{company}
+	</select>
 </mapper>
