@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zhita.dao.manage.ShufflingFigureMapper;
 import com.zhita.model.manage.ShufflingFigure;
 
-@Transactional
 @Service(value="bannerServiceImp")
 public class BannerServiceImp implements IntBannerService{
 	@Resource(name="shufflingFigureMapper")

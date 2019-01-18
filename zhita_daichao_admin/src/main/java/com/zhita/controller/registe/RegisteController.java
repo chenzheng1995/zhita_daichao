@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -95,6 +96,7 @@ public class RegisteController {
     }
     
 	//后台管理---添加贷款商家信息
+    @Transactional
     @ResponseBody
     @RequestMapping("/insertAllAdmin")
     public Map<String, Object> insertAll(LoansBusinesses loansBusinesses,MultipartFile file) throws Exception{
@@ -202,6 +204,7 @@ public class RegisteController {
 		return map;
     }
 	//后台管理---根据主键id删除商家  假删除,只修改假删除状态
+    @Transactional
     @ResponseBody
     @RequestMapping("/falsedeleteByPrimaryKey")
     public Integer falsedeleteByPrimaryKey(Integer id){
@@ -216,6 +219,7 @@ public class RegisteController {
     	return loansBusinesses;
     }
     //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存
+    @Transactional
     @ResponseBody
     @RequestMapping("/upaBaocunByPrimaryKey")
     public Map<String, Object> upaBaocunByPrimaryKey(LoansBusinesses loansBusinesses,MultipartFile file)throws Exception{
@@ -269,6 +273,7 @@ public class RegisteController {
     }
     
   	//后台管理---修改贷款商家状态
+    @Transactional
     @ResponseBody
     @RequestMapping("upaState")
 	public int upaState(String state,Integer id) {

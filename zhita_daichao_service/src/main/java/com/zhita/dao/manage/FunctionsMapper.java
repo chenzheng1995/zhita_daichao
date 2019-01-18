@@ -1,5 +1,7 @@
 package com.zhita.dao.manage;
 
+import java.util.List;
+
 import com.zhita.model.manage.Functions;
 
 public interface FunctionsMapper {
@@ -15,5 +17,8 @@ public interface FunctionsMapper {
     int updateByPrimaryKeySelective(Functions record);
 
     int updateByPrimaryKey(Functions record);
+    
+    //后台管理---根据用户名查询出当前用户所拥有的功能
+    List<Functions> queryFunctionByName(String name);
     
 }

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zhita.dao.manage.CreditCardMapper;
 import com.zhita.model.manage.CreditCard;
 
-@Transactional
 @Service(value="cardServiceImp")
 public class CardServiceImp implements IntCardService{
 	@Resource(name="creditCardMapper")

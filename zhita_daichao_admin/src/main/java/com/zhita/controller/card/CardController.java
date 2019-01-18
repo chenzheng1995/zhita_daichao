@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,6 +108,7 @@ public class CardController {
     	return map;
     }
     //后台管理---添加信用卡信息
+    @Transactional
     @ResponseBody
     @RequestMapping("/addAll")
     public Map<String, Object> addAll(CreditCard creditCard,MultipartFile file) throws Exception{
@@ -159,6 +161,7 @@ public class CardController {
     	return creditCard;
     }
     //后台管理---通过传过来的信用卡对象，对当前对象进行修改保存
+    @Transactional
     @ResponseBody
     @RequestMapping("/updateCreditCard")
     public Map<String, Object> updateCreditCard(CreditCard creditCard,MultipartFile file) throws Exception{
@@ -202,6 +205,7 @@ public class CardController {
     	return map;
     }
     //后台管理---通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除
+    @Transactional
     @ResponseBody
     @RequestMapping("/upaFalseDel")
     public int upaFalseDel(Integer id) {
@@ -209,6 +213,7 @@ public class CardController {
     	return num;
     }
     //后台管理---修改信用卡状态
+    @Transactional
     @ResponseBody
     @RequestMapping("/upaState")
 	public int upaState(String state,Integer id) {

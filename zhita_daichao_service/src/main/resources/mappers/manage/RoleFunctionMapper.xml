@@ -3,69 +3,11 @@
 <mapper namespace="com.zhita.dao.manage.RoleFunctionMapper" >
   <resultMap id="BaseResultMap" type="com.zhita.model.manage.RoleFunction" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="role_id" property="roleId" jdbcType="INTEGER" />
-    <result column="function_id" property="functionId" jdbcType="INTEGER" />
+    <result column="roleId" property="roleId" jdbcType="INTEGER" />
+    <result column="functionId" property="functionId" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
   <sql id="Base_Column_List" >
-    id, role_id, function_id
+    id, roleId, functionId
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -78,7 +20,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.RoleFunction" >
-    insert into role_function (id, role_id, function_id
+    insert into role_function (id, roleId, functionId
       )
     values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{functionId,jdbcType=INTEGER}
       )
@@ -90,10 +32,10 @@
         id,
       </if>
       <if test="roleId != null" >
-        role_id,
+        roleId,
       </if>
       <if test="functionId != null" >
-        function_id,
+        functionId,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -112,18 +54,30 @@
     update role_function
     <set >
       <if test="roleId != null" >
-        role_id = #{roleId,jdbcType=INTEGER},
+        roleId = #{roleId,jdbcType=INTEGER},
       </if>
       <if test="functionId != null" >
-        function_id = #{functionId,jdbcType=INTEGER},
+        functionId = #{functionId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.RoleFunction" >
     update role_function
-    set role_id = #{roleId,jdbcType=INTEGER},
-      function_id = #{functionId,jdbcType=INTEGER}
+    set roleId = #{roleId,jdbcType=INTEGER},
+      functionId = #{functionId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 后台管理  通过传过来的角色id   查询出当前角色id  在角色功能中间表的所有id集合 -->
+  <select id="queryAllIdByRoleid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select id from role_function where roleId=#{id}
+  </select>
+  <!-- 后台管理  通过在角色功能中间表得到的主键id集合   进行数据删除 -->
+  <delete id="delFunctionByid" parameterType="java.lang.Integer">
+  	delete from role_function where id =#{id}
+  </delete>
+  <!-- 后台管理  通过传过来的角色id  和  功能id  在角色功能表进行添加数据 -->
+  <insert id="add" parameterType="java.lang.Integer">
+  	insert into role_function(roleId,functionId) values(#{arg0},#{arg1})
+  </insert>
 </mapper>

@@ -3,11 +3,11 @@
 <mapper namespace="com.zhita.dao.manage.ManageloginRoleMapper" >
   <resultMap id="BaseResultMap" type="com.zhita.model.manage.ManageloginRole" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="manage_login_id" property="manageLoginId" jdbcType="INTEGER" />
-    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="manageLoginId" property="manageLoginId" jdbcType="INTEGER" />
+    <result column="roleId" property="roleId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, manage_login_id, role_id
+    id, manageLoginId, roleId
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -20,7 +20,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.ManageloginRole" >
-    insert into managelogin_role (id, manage_login_id, role_id
+    insert into managelogin_role (id,manageLoginId, roleId
       )
     values (#{id,jdbcType=INTEGER}, #{manageLoginId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}
       )
@@ -32,10 +32,10 @@
         id,
       </if>
       <if test="manageLoginId != null" >
-        manage_login_id,
+        manageLoginId,
       </if>
       <if test="roleId != null" >
-        role_id,
+        roleId,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -52,13 +52,13 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.ManageloginRole" >
     update managelogin_role
-    set manage_login_id = #{manageLoginId,jdbcType=INTEGER},
-      role_id = #{roleId,jdbcType=INTEGER}
+    set manageLoginId = #{manageLoginId,jdbcType=INTEGER},
+      roleId = #{roleId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理  通过用户id查询出   在用户角色关联表中的id集合 -->
   <select id="queryByManageloginId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-  	select id from managelogin_role where manage_login_id=#{id}
+  	select id from managelogin_role where manageLoginId=#{id}
   </select>
   <!-- 后台管理   在用户角色关联表中    根据主键id进行删除 -->
   <delete id="delManageloginRole" parameterType="java.lang.Integer">
@@ -66,6 +66,6 @@
   </delete>
   <!--后台管理   通过传过来的用户id和角色id   在中间表进行插入数据  -->
   <insert id="add" parameterType="java.lang.Integer">
-	insert into managelogin_role(manage_login_id,role_id) values(#{arg0},#{arg1})  
+	insert into managelogin_role(manageLoginId,roleId) values(#{arg0},#{arg1})  
   </insert>
 </mapper>

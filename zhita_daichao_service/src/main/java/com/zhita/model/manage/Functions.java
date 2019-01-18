@@ -1,5 +1,7 @@
 package com.zhita.model.manage;
 
+import java.util.List;
+
 //功能表
 public class Functions {
     private Integer id;//功能id
@@ -7,6 +9,8 @@ public class Functions {
     private String functionFirst;//第一层功能
 
     private String functionSecond;//第二层功能
+    
+    private List<String> secondlist;
 
     public Integer getId() {
         return id;
@@ -31,4 +35,13 @@ public class Functions {
     public void setFunctionSecond(String functionSecond) {
         this.functionSecond = functionSecond == null ? null : functionSecond.trim();
     }
+
+	public List<String> getSecondlist() {
+		return secondlist;
+	}
+
+	public void setSecondlist(List<String> secondlist) {
+		this.secondlist = secondlist;
+	}
+    
 }

@@ -2,6 +2,7 @@ package com.zhita.service.login;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Role;
@@ -54,7 +55,7 @@ public interface IntLoginService {
     public int delManageloginRole(Integer id);
 	//后台管理----修改管理登陆用户的假删除状态
 	public int upaManageloginFalseDel(Integer id);
-    //后台管理---通过传过来的用户id和角色id   在中间表进行插入数据
+    //后台管理---通过传过来的用户id和角色id  在中间表进行插入数据 
     public int add(Integer loginuserid,Integer roleid);
     
     //后台管理---通过传过来的条件个数  做各种情况的模糊查询
@@ -79,5 +80,14 @@ public interface IntLoginService {
 	int setPwd(int userId, String md5Pwd);
 
 	int insertUser(String phone, String loginStatus, String company, String registrationType, String registrationTime);
+
+	//后台管理---根据用户名查询出当前用户所拥有的角色
+	public List<String> queryRoleByName(String username);
+	//后台管理---通过手机号查询用户信息
+	public ManageLogin  queryByPhone(String phone);
+	//后台管理---通过手机号更新用户的登录状态和登录时间
+	public int  upaStateTime(ManageLogin manageLogin);
+	//后台管理---通过手机号获取用户的id
+	public int getIdByPhone(String phone);
 
 }

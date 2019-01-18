@@ -21,8 +21,8 @@
 	GROUP_CONCAT(r.roleName) rolename,
 	GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
 	from manage_login u 
-	left join managelogin_role mr on mr.manage_login_id=u.id
-	left join role r on mr.role_id=r.id
+	left join managelogin_role mr on mr.manageLoginId=u.id
+	left join role r on mr.roleId=r.id
 	group by u.id having u.id=#{id}
   </select>
   
@@ -159,8 +159,8 @@
 		GROUP_CONCAT(r.roleName) rolename,
 		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
 		from manage_login u 
-		left join managelogin_role mr on mr.manage_login_id=u.id
-		left join role r on mr.role_id=r.id
+		left join managelogin_role mr on mr.manageLoginId=u.id
+		left join role r on mr.roleId=r.id
 		group by u.id limit #{arg0},#{arg1}
 	</select>
 	
@@ -233,4 +233,25 @@
 	<delete id="upaManageloginFalseDel" parameterType="java.lang.Integer">
 		update manage_login set deleted='1' where id=#{id}
 	</delete>
+	<!-- 后台管理   根据用户名查询出当前用户所拥有的角色 -->
+	<select id="queryRoleByName" parameterType="java.lang.String" resultType="java.lang.String">
+		select r.roleName from manage_login lg
+		inner join managelogin_role mr on lg.id=mr.manageLoginId
+		inner join role r on r.id=mr.roleId  where lg.phone=#{arg0} and lg.deleted='0'
+	</select>
+	<!-- 后台管理   通过手机号查询用户信息 -->
+	<select id="queryByPhone" parameterType="java.lang.String" resultType="com.zhita.model.manage.ManageLogin">
+		select m.id,m.userName,m.phone,m.loginStatus,m.loginTime,m.deleted from manage_login m where phone=#{arg0} and deleted='0'
+	</select>
+	<!-- 后后台理  通过手机号更新用户的登录状态和登录时间 -->
+	<update id="upaStateTime" parameterType="com.zhita.model.manage.ManageLogin">
+	    update manage_login 
+	    set loginStatus = #{loginstatus,jdbcType=VARCHAR},
+	    loginTime = #{logintime,jdbcType=VARCHAR}
+	    where phone = #{phone,jdbcType=VARCHAR} and deleted='0'
+	</update>
+	<!-- 后台管理   通过手机号获取用户的id -->
+	<select id="getIdByPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select id from manage_login where phone = #{phone} and deleted ='0'
+	</select>
 </mapper>

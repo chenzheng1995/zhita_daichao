@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,6 +103,7 @@ public class BannerController {
     	return map;
     }
     //后台管理---添加轮播图信息
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/AddAll")
     public Map<String, Object> AddAll(ShufflingFigure shufflingFigure,MultipartFile file) throws Exception{
@@ -157,6 +159,7 @@ public class BannerController {
     	return shufflingFigure;
     }
     //后台管理---通过传过来的轮播图对象，对当前对象进行修改保存
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateShufflingFigure")
     public Map<String, Object> updateShufflingFigure(ShufflingFigure shufflingFigure,MultipartFile file) throws Exception{
@@ -200,6 +203,7 @@ public class BannerController {
     	return map;
     }
     //后台管理---根据删除按钮，修改轮播图假删除状态
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaFalseDel")
     public int upaFalseDel(Integer id) {
@@ -207,6 +211,7 @@ public class BannerController {
     	return num;
     }
 	//后台管理---根据前端传过来的状态值，对当前对象的状态值进行修改
+	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaState")
 	public int upaState(String state,Integer id) {

@@ -4,6 +4,7 @@ package com.zhita.service.login;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -315,6 +316,28 @@ public class LoginServiceImp implements IntLoginService{
 			String registrationTime) {
 		int number = userMapper.insertUser(phone,loginStatus,company,registrationType,registrationTime);
 		return number;
+	}
+
+
+	//后台管理---根据用户名查询出当前用户所拥有的角色
+	public List<String> queryRoleByName(String username){
+		List<String> list=manageLoginMapper.queryRoleByName(username);
+		return list;
+	}
+	//后台管理---通过手机号查询用户信息
+	public ManageLogin  queryByPhone(String phone) {
+		ManageLogin manageLogin=manageLoginMapper.queryByPhone(phone);
+		return manageLogin;
+	}
+	//后台管理---通过手机号更新用户的登录状态和登录时间
+	public int  upaStateTime(ManageLogin manageLogin) {
+		int sum=manageLoginMapper.upaStateTime(manageLogin);
+		return sum;
+	}
+	//后台管理---通过手机号获取用户的id
+	public int getIdByPhone(String phone) {
+		int id=manageLoginMapper.getIdByPhone(phone);
+		return id;
 	}
 
 }
