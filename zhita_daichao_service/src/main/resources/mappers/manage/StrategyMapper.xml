@@ -178,24 +178,24 @@
   </update>
   
   <!-- 后台管理   查询攻略表所有信息，含分页 -->
-  <select id="queryAllNews" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Strategy">
-  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' limit #{arg0},#{arg1}
+  <select id="queryAllNews" resultType="com.zhita.model.manage.Strategy">
+  	select id,title,cover,synopsis,type,isstick,state,company from strategy where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理   查询攻略表总数量-->
   <select id="pageCount" resultType="java.lang.Integer">
-  	select count(cover) from strategy where deleted='0'
+  	select count(cover) from strategy where deleted='0' and company=#{arg0}
   </select>
     <!--后台管理    根据标题字段模糊查询攻略表总数量-->
   <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-  	select count(cover) from strategy where deleted='0' and title like "%"#{title}"%"
+  	select count(cover) from strategy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
   </select>
     <!-- 后台管理   查询攻略表所有信息，含分页 -->
   <select id="queryNewsByLike" resultType="com.zhita.model.manage.Strategy">
-  	select id,title,cover,synopsis,type,isstick,state from strategy where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},#{arg2}
+  	select id,title,cover,synopsis,type,isstick,state,company from strategy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理 添加攻略信息 -->
    <insert id="addAll" parameterType="com.zhita.model.manage.Strategy" >
- 	insert into strategy(cover,title,synopsis,type,isstick,url,content) values(#{cover},#{title},#{synopsis},#{type},#{isstick},#{url},#{content})
+ 	insert into strategy(cover,title,synopsis,type,isstick,url,content,company) values(#{cover},#{title},#{synopsis},#{type},#{isstick},#{url},#{content},#{company})
  </insert>
  <!--后台管理   通过主键id修改其当前对象的假删除状态 -->
  <update id="upaFalseDelById" parameterType="java.lang.Integer">

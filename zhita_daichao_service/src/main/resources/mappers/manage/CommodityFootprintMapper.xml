@@ -175,7 +175,7 @@
 
 	<!-- 后台管理   根据传过来的足迹名称，查询出足迹的个数 -->
 	<select id="queryCount" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(footprint) from commodity_footprint where footprint=#{footprint} and deleted = 0
+		select count(DISTINCT f.userId) from commodity_footprint f where footprint=#{arg0} and company=#{arg1} and deleted = 0
 	</select>
 		<!-- 小程序   查询某个用户有多少条浏览记录 -->
 	<select id="getRecordNumber" parameterType="java.lang.String" resultType="java.lang.Long">

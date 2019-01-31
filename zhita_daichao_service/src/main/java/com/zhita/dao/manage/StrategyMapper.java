@@ -22,16 +22,16 @@ public interface StrategyMapper {
     int updateStrategy(Strategy strategy);
     
     //后台管理---查询攻略表所有信息，含分页
-    List<Strategy> queryAllNews(Integer page,Integer pagesize);
+    List<Strategy> queryAllNews(String company,Integer page,Integer pagesize);
     
     //后台管理---查询攻略表总数量
-    int pageCount();
+    int pageCount(String company);
     
     //后台管理---根据标题字段模糊查询攻略表总数量
-    int pageCountByLike(String title);
+    int pageCountByLike(String title,String company);
     
     //后台管理---根据标题字段模糊查询，攻略表信息，含分页
-    List<Strategy> queryNewsByLike(String title,Integer page,Integer pagesize);
+    List<Strategy> queryNewsByLike(String title,String company,Integer page,Integer pagesize);
     
     //后台管理---添加攻略信息
     int addAll(Strategy strategy);

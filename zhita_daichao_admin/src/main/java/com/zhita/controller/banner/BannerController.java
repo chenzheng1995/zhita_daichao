@@ -2,6 +2,7 @@ package com.zhita.controller.banner;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.zhita.model.manage.Advertising;
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.ShufflingFigure;
 import com.zhita.service.banner.IntBannerService;
@@ -36,23 +38,57 @@ public class BannerController {
     //后台管理---查询轮播图全部信息,含分页
 	@ResponseBody
 	@RequestMapping("/queryAll")
-    public Map<String,Object> queryAll(Integer page){
-    	int totalCount=intBannerService.pageCount();//该方法是查询轮播图总数量
-    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
-    	if(page<1) {
-    		page=1;
-    	}
-    	else if(page>pageUtil.getTotalPageCount()) {
-    		if(totalCount==0) {
-    			page=pageUtil.getTotalPageCount()+1;
-    		}else {
-    			page=pageUtil.getTotalPageCount();
-    		}
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil.setPage(pages);
-    	List<ShufflingFigure> list=intBannerService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
-    	
+    public Map<String,Object> queryAll(Integer page,String[] company){
+		PageUtil pageUtil=null;
+		List<ShufflingFigure> list=new ArrayList<>();
+		if(company.length==1) {
+			
+			System.out.println("company.length==1");
+			
+	    	int totalCount=intBannerService.pageCount(company[0]);//该方法是查询轮播图总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=intBannerService.queryAll(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+		}
+		else if(company.length>1) {
+			
+			System.out.println("company.length>1");
+			
+    		int totalCountfor=0;
+    		List<ShufflingFigure> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	int totalCountfor1=intBannerService.pageCount(company[i]);//该方法是查询轮播图总数量
+            	totalCountfor=totalCountfor+totalCountfor1;
+            	
+            	System.out.println("totalCountfor："+totalCountfor);
+		    	pageUtil=new PageUtil(page,2,totalCountfor);
+		    	if(page<1) {
+		    		page=1;
+		    	}
+		    	else if(page>pageUtil.getTotalPageCount()) {
+		    		if(totalCountfor==0) {
+		    			page=pageUtil.getTotalPageCount()+1;
+		    		}else {
+		    			page=pageUtil.getTotalPageCount();
+		    		}
+		    	}
+		    	int pages=(page-1)*pageUtil.getPageSize();
+		    	pageUtil.setPage(pages);
+		    	listfor=intBannerService.queryAll(company[i],pageUtil.getPage(),pageUtil.getPageSize());
+            	list.addAll(listfor);
+			}
+		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listshuff",list);
     	map.put("pageutil", pageUtil);
@@ -61,11 +97,11 @@ public class BannerController {
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllByLike")
-    public Map<String,Object> queryAllByLike(String title,Integer page){
+    public Map<String,Object> queryAllByLike(String title,Integer page,String company){
 		List<ShufflingFigure> list=null;
 		PageUtil pageUtil=null;
 		if(title==null||"".equals(title)) {
-	    	int totalCount=intBannerService.pageCount();//该方法是查询轮播图总数量
+	    	int totalCount=intBannerService.pageCount(company);//该方法是查询轮播图总数量
 	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -79,9 +115,9 @@ public class BannerController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intBannerService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=intBannerService.queryAll(company,pageUtil.getPage(),pageUtil.getPageSize());
 		}else {
-	    	int totalCount=intBannerService.pageCountByLike(title);//该方法是根据标题模糊查询轮播图总数量
+	    	int totalCount=intBannerService.pageCountByLike(title,company);//该方法是根据标题模糊查询轮播图总数量
 	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -95,7 +131,7 @@ public class BannerController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intBannerService.queryAllByLike(title, pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=intBannerService.queryAllByLike(title,company,pageUtil.getPage(),pageUtil.getPageSize());
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listshuffByLike",list);

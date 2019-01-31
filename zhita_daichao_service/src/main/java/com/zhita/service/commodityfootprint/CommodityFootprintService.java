@@ -15,7 +15,7 @@ public interface CommodityFootprintService {
 	int insertfootprint(String footprintName, String userId, long currentTimestamp, String company);
 	
 	//后台管理---根据传过来的足迹名称，查询出足迹的个数
-	public int queryCount(String businessName);
+	public int queryCount(String businessName,String company);
 
 	List<String> getbusinessName(String userId, int pageSize, int startRow, String company);
 

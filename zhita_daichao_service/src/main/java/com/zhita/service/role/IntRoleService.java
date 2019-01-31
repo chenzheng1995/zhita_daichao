@@ -33,4 +33,6 @@ public interface IntRoleService {
     public int upaRole(Role role);
     //后台管理---根据用户名查询出当前用户所拥有的功能
     public List<Functions> queryFunctionByName(String name);
+    //后台管理---根据权限id查询权限名称
+    public String queryFunctionsByFunctionId(Integer functionid);
 }

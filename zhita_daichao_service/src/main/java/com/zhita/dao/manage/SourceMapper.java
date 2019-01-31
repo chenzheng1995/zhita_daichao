@@ -20,22 +20,22 @@ public interface SourceMapper {
     int updateByPrimaryKey(Source record);
     
     //后台管理---查询出所有渠道表信息，不含分页
-    List<Source> queryAll();
+    List<Source> queryAll(String company);
     
     //后台管理---通过传过来的渠道对象，对当前对象进行修改保存
     int updateSource(Source source);
     
     //后台管理---查询出所有渠道表信息，含分页
-    List<Source> queryAllSource(Integer page,Integer pagesize);
+    List<Source> queryAllSource(String company,Integer page,Integer pagesize);
     
     //后台管理---用于获取总页数
-    int pageCount();
+    int pageCount(String company);
     
     //后台管理---用于获取模糊查询总页数
-    int pageCountByLike(String sourceName);
+    int pageCountByLike(String sourceName,String company);
     
     //后台管理---模糊查询渠道信息,并且有分页功能
-    List<Source> queryByLike(String sourceName,Integer page,Integer pagesize);
+    List<Source> queryByLike(String sourceName,String company,Integer page,Integer pagesize);
     
     //后台管理---添加渠道信息
     int addAll(Source source);

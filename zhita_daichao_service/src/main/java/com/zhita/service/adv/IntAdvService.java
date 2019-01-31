@@ -9,16 +9,16 @@ public interface IntAdvService {
     public Advertising selectByPrimaryKey(Integer id);
 	
     //后台管理---查询出广告表总数量
-    public int pageCount();
+    public int pageCount(String company);
     
     //后台管理---根据标题字段模糊查询出 广告表总数量
-    public int pageCountByLike(String title);
+    public int pageCountByLike(String title,String company);
     
     //后台管理---查询广告表全部信息,含分页
-    public List<Advertising> queryAll(Integer page,Integer pagesize);
+    public List<Advertising> queryAll(String company,Integer page,Integer pagesize);
     
     //后台管理---根据标题字段模糊查询广告表信息，含分页
-    public List<Advertising> queryAllByLike(String title,Integer page,Integer pagesize);
+    public List<Advertising> queryAllByLike(String title,String company,Integer page,Integer pagesize);
     
     //后台管理---添加广告表信息
     public int AddAll(Advertising advertising); 

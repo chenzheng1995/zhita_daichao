@@ -22,16 +22,16 @@ public interface ShufflingFigureMapper {
     int updateShufflingFigure(ShufflingFigure shufflingFigure);
     
     //后台管理---查询出轮播图总数量
-    int pageCount();
+    int pageCount(String company);
     
     //后台管理---根据标题字段模糊查询出  轮播图总数量
-    int pageCountByLike(String title);
+    int pageCountByLike(String title,String company);
     
     //后台管理---查询轮播图全部信息,含分页
-    List<ShufflingFigure> queryAll(Integer page,Integer pagesize);
+    List<ShufflingFigure> queryAll(String company,Integer page,Integer pagesize);
     
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
-    List<ShufflingFigure> queryAllByLike(String title,Integer page,Integer pagesize);
+    List<ShufflingFigure> queryAllByLike(String title,String company,Integer page,Integer pagesize);
     
     //后台管理---添加轮播图信息
     int AddAll(ShufflingFigure shufflingFigure); 

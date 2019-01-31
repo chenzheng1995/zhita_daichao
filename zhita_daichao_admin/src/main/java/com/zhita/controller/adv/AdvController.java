@@ -2,6 +2,7 @@ package com.zhita.controller.adv;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zhita.model.manage.Advertising;
 import com.zhita.model.manage.LoanClassification;
+import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.adv.IntAdvService;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
@@ -27,26 +29,59 @@ public class AdvController {
 	private IntAdvService intAdvService;
 	
     //后台管理---查询广告表全部信息,含分页
-	@RequiresPermissions("1")
 	@ResponseBody
 	@RequestMapping("/queryAll")
-    public Map<String,Object> queryAll(Integer page){
-    	int totalCount=intAdvService.pageCount();//该方法是查询广告表总数量
-    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
-    	if(page<1) {
-    		page=1;
-    	}
-    	else if(page>pageUtil.getTotalPageCount()) {
-    		if(totalCount==0) {
-    			page=pageUtil.getTotalPageCount()+1;
-    		}else {
-    			page=pageUtil.getTotalPageCount();
-    		}
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil.setPage(pages);
-    	List<Advertising> list=intAdvService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
-    	
+    public Map<String,Object> queryAll(Integer page,String[] company){
+		PageUtil pageUtil=null;
+		List<Advertising> list=new ArrayList<>();
+		if(company.length==1) {
+			
+			System.out.println("company.length==1");
+			
+	    	int totalCount=intAdvService.pageCount(company[0]);//该方法是查询广告表总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=intAdvService.queryAll(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+		}
+		else if(company.length>1) {
+			
+			System.out.println("company.length>1");
+			
+    		int totalCountfor=0;
+    		List<Advertising> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	int totalCountfor1=intAdvService.pageCount(company[i]);//该方法是查询广告表总数量
+            	totalCountfor=totalCountfor+totalCountfor1;
+            	
+            	System.out.println("totalCountfor："+totalCountfor);
+		    	pageUtil=new PageUtil(page,2,totalCountfor);
+		    	if(page<1) {
+		    		page=1;
+		    	}
+		    	else if(page>pageUtil.getTotalPageCount()) {
+		    		if(totalCountfor==0) {
+		    			page=pageUtil.getTotalPageCount()+1;
+		    		}else {
+		    			page=pageUtil.getTotalPageCount();
+		    		}
+		    	}
+		    	int pages=(page-1)*pageUtil.getPageSize();
+		    	pageUtil.setPage(pages);
+		    	listfor=intAdvService.queryAll(company[i],pageUtil.getPage(),pageUtil.getPageSize());
+            	list.addAll(listfor);
+			}
+		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listadv",list);
     	map.put("pageutil", pageUtil);
@@ -55,11 +90,11 @@ public class AdvController {
     //后台管理---根据标题字段模糊查询广告表信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllByLike")
-    public Map<String,Object> queryAllByLike(String title,Integer page){
+    public Map<String,Object> queryAllByLike(String title,Integer page,String company){
 		List<Advertising> list=null;
 		PageUtil pageUtil=null;
 		if(title==null||"".equals(title)) {
-	    	int totalCount=intAdvService.pageCount();//该方法是查询广告表总数量
+	    	int totalCount=intAdvService.pageCount(company);//该方法是查询广告表总数量
 	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -73,9 +108,9 @@ public class AdvController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intAdvService.queryAll(pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=intAdvService.queryAll(company,pageUtil.getPage(),pageUtil.getPageSize());
 		}else {
-	    	int totalCount=intAdvService.pageCountByLike(title);//该方法是根据标题模糊查询轮播图总数量
+	    	int totalCount=intAdvService.pageCountByLike(title,company);//该方法是根据标题模糊查询轮播图总数量
 	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -89,7 +124,7 @@ public class AdvController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intAdvService.queryAllByLike(title, pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=intAdvService.queryAllByLike(title,company,pageUtil.getPage(),pageUtil.getPageSize());
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listadvByLike",list);

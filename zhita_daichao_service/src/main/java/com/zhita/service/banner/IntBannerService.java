@@ -6,13 +6,13 @@ import com.zhita.model.manage.ShufflingFigure;
 
 public interface IntBannerService {
     //后台管理---查询出轮播图总数量
-    public int pageCount();
+    public int pageCount(String company);
     //后台管理---根据标题字段模糊查询出  轮播图总数量
-    public int pageCountByLike(String title);
+    public int pageCountByLike(String title,String company);
     //后台管理---查询轮播图全部信息,含分页
-    public List<ShufflingFigure> queryAll(Integer page,Integer pagesize);
+    public List<ShufflingFigure> queryAll(String company,Integer page,Integer pagesize);
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
-    public List<ShufflingFigure> queryAllByLike(String title,Integer page,Integer pagesize);
+    public List<ShufflingFigure> queryAllByLike(String title,String company,Integer page,Integer pagesize);
     //后台管理---添加轮播图信息
     public int AddAll(ShufflingFigure shufflingFigure);
     //后台管理 ---根据主键id查询出轮播图信息

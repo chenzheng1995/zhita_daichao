@@ -28,6 +28,23 @@
 	<url-pattern>/*</url-pattern>
 	</filter-mapping>
   
+  	<!-- shiro配置 开始 -->
+	<filter>
+		<filter-name>shiroFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<async-supported>true</async-supported>
+		<init-param>
+			<!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 -->
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>shiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- shiro配置 结束 -->
+  
   <!-- 设置Spring容器加载配置文件路径 (主要配置都在这里面) -->  
 	<context-param>  
 	    <param-name>contextConfigLocation</param-name>  
@@ -61,8 +78,9 @@
     <welcome-file>/index.jsp</welcome-file>
   </welcome-file-list>
   
+
 	<!-- shiro配置 开始 -->
-<!-- 	<filter>
+	<filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 		<async-supported>true</async-supported>
@@ -75,7 +93,8 @@
 	<filter-mapping>
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+	</filter-mapping>
 	<!-- shiro配置 结束 -->
   
+
 </web-app>

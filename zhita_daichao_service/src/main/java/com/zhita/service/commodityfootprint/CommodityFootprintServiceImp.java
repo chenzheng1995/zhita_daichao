@@ -62,8 +62,8 @@ public class CommodityFootprintServiceImp implements CommodityFootprintService{
 
 
 	//后台管理---根据传过来的足迹名称，查询出足迹的个数
-	public int queryCount(String businessName) {
-		int count=commodityFootprintMapper.queryCount(businessName);
+	public int queryCount(String businessName,String company) {
+		int count=commodityFootprintMapper.queryCount(businessName,company);
 		return count;
 	}
 

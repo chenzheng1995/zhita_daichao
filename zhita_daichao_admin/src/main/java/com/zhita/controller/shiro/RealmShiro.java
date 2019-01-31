@@ -11,10 +11,8 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.realm.AuthenticatingRealm;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +70,7 @@ public class RealmShiro extends AuthorizingRealm{
 	//认证
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken arg0) throws AuthenticationException {
+		System.out.println("进入认证模块");
 		 PhoneToken token=(PhoneToken)arg0; 
 	     //第一步：从token中取出手机号，这个手机号是用户在页面输入的信息，传递给token
 		 String phone = (String) token.getPrincipal();

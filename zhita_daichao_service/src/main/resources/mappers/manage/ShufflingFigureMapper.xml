@@ -130,19 +130,19 @@
   </update>
   <!-- 后台管理    查询出轮播图总数量 -->
   <select id="pageCount" resultType="java.lang.Integer">
-  	select count(title) from shuffling_figure where deleted='0'
+  	select count(title) from shuffling_figure where deleted='0' and company=#{arg0}
   </select>
   <!-- 后台管理   根据标题字段模糊查询出  轮播图总数量 -->
   <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-  	select count(title) from shuffling_figure where deleted='0' and title like "%"#{title}"%"
+  	select count(title) from shuffling_figure where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
   </select>
   <!--后台管理   查询轮播图全部信息 含分页 -->
-  <select id="queryAll" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.ShufflingFigure">
-  	select * from shuffling_figure where deleted='0' limit #{arg0},#{arg1}
+  <select id="queryAll" resultType="com.zhita.model.manage.ShufflingFigure">
+  	select * from shuffling_figure where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理   根据标题字段模糊查询轮播图信息，含分页 -->
   <select id="queryAllByLike" resultType="com.zhita.model.manage.ShufflingFigure">
-  	select * from shuffling_figure where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},#{arg2}
+  	select * from shuffling_figure where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
   </select>
   <!-- 后台管理   添加轮播图信息 -->
   <insert id="AddAll" parameterType="com.zhita.model.manage.ShufflingFigure">

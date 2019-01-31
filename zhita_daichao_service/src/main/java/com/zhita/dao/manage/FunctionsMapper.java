@@ -20,5 +20,6 @@ public interface FunctionsMapper {
     
     //后台管理---根据用户名查询出当前用户所拥有的功能
     List<Functions> queryFunctionByName(String name);
-    
+    //后台管理---根据权限id查询权限名称
+    String queryFunctionsByFunctionId(Integer functionid);
 }

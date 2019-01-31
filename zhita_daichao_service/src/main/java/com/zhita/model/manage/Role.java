@@ -12,6 +12,8 @@ public class Role {
 
     private String deleted;//角色状态（ 1:已禁用 0:已启用）
     
+    private String company;//公司名
+    
     private List<Functions> listfunction;//一个角色对应多个功能
     
     public Integer getId() {
@@ -45,6 +47,14 @@ public class Role {
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
     }
+    
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
 
 	public List<Functions> getListfunction() {
 		return listfunction;

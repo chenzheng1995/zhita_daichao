@@ -88,6 +88,5 @@ public interface IntLoginService {
 	//后台管理---通过手机号更新用户的登录状态和登录时间
 	public int  upaStateTime(ManageLogin manageLogin);
 	//后台管理---通过手机号获取用户的id
-	public int getIdByPhone(String phone);
-
+	public ManageLogin getIdByPhone(String phone);
 }
