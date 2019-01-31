@@ -23,23 +23,23 @@ public class BannerServiceImp implements IntBannerService{
 		this.shufflingFigureMapper = shufflingFigureMapper;
 	}
     //后台管理---查询出轮播图总数量
-    public int pageCount() {
-    	int count=shufflingFigureMapper.pageCount();
+    public int pageCount(String company) {
+    	int count=shufflingFigureMapper.pageCount(company);
     	return count;
     }
     //后台管理---根据标题字段模糊查询出  轮播图总数量
-    public int pageCountByLike(String title) {
-    	int count=shufflingFigureMapper.pageCountByLike(title);
+    public int pageCountByLike(String title,String company) {
+    	int count=shufflingFigureMapper.pageCountByLike(title,company);
     	return count;
     }
     //后台管理---查询轮播图全部信息,含分页
-    public List<ShufflingFigure> queryAll(Integer page,Integer pagesize){
-    	List<ShufflingFigure> list=shufflingFigureMapper.queryAll(page,pagesize);
+    public List<ShufflingFigure> queryAll(String company,Integer page,Integer pagesize){
+    	List<ShufflingFigure> list=shufflingFigureMapper.queryAll(company,page,pagesize);
     	return list;
     }
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
-    public List<ShufflingFigure> queryAllByLike(String title,Integer page,Integer pagesize){
-    	List<ShufflingFigure> list=shufflingFigureMapper.queryAllByLike(title, page,pagesize);
+    public List<ShufflingFigure> queryAllByLike(String title,String company,Integer page,Integer pagesize){
+    	List<ShufflingFigure> list=shufflingFigureMapper.queryAllByLike(title,company,page,pagesize);
     	return list;
     }
     //后台管理---添加轮播图信息

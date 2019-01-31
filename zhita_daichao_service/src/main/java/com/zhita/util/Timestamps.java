@@ -1,6 +1,9 @@
 package com.zhita.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Timestamps {
 
@@ -32,5 +35,41 @@ public class Timestamps {
 		return nextMonthlyZeroTimestamps;
 	}
 
-
+	//把时间戳转换成时间格式(年 月 日 时 分 秒)
+	 public static String stampToDate(String s){
+		 String res=null;
+		 if(s==null) {
+			 res="0";
+		 }else {
+		     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		     long lt = new Long(s);
+		     Date date = new Date(lt);
+		     res = simpleDateFormat.format(date);
+		 }
+		 return res;
+	 }
+	 
+	//把时间戳转换成时间格式(年 月 日)
+	 public static String stampToDate1(String s){
+		 String res=null;
+		 if(s==null) {
+			 res="0";
+		 }else {
+		     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		     long lt = new Long(s);
+		     Date date = new Date(lt);
+		     res = simpleDateFormat.format(date);
+		 }
+		 return res;
+	 }
+	    
+	 //将时间转换为时间戳格式(年 月 日)
+	  public static String dateToStamp(String s) throws ParseException{
+	      String res;
+	      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	      Date date = simpleDateFormat.parse(s);
+	      long ts = date.getTime();
+	      res = String.valueOf(ts);
+	      return res;
+	  }
 }

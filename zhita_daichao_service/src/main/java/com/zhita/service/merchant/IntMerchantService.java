@@ -11,22 +11,22 @@ public interface IntMerchantService {
     public Source selectByPrimaryKey(Integer id);
 	
     //后台管理---查询出所有渠道表信息，不含分页
-    public List<Source> queryAll();
+    public List<Source> queryAll(String company);
     
     //后台管理---通过传过来的渠道对象，对当前对象进行修改保存
     public int updateSource(Source source);
     
     //后台管理---查询出所有渠道表信息，含分页
-    public List<Source> queryAllSource(Integer page,Integer pagesize);
+    public List<Source> queryAllSource(String company,Integer page,Integer pagesize);
     
     //后台管理---用于获取总页数
-    public int pageCount();
+    public int pageCount(String company);
     
     //后台管理---用于获取模糊查询总页数
-    public int pageCountByLike(String sourceName);
+    public int pageCountByLike(String sourceName,String company);
     
     //后台管理---模糊查询渠道信息,并且有分页功能
-    public List<Source> queryByLike(String sourceName,Integer page,Integer pagesize);
+    public List<Source> queryByLike(String sourceName,String company,Integer page,Integer pagesize);
     
     //后台管理---添加渠道信息
     public int addAll(Source source);

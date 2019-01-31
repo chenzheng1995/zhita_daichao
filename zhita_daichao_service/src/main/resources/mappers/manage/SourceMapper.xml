@@ -119,7 +119,7 @@
   </update>
   <!--后台管理   查询出所有渠道表信息，不含分页  -->
   <select id="queryAll" resultType="com.zhita.model.manage.Source">
-  	select id,sourceName from source where deleted="0"
+  	select id,sourceName from source where deleted="0" and company=#{arg0}
   </select>
   
     <!-- 后台管理  通过传过来的渠道对象，对当前对象进行修改保存 -->
@@ -131,24 +131,24 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理 查询出所有渠道表信息，含分页-->
-  <select id="queryAllSource" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Source">
-  	select id,sourceName,account,link,state from source where deleted='0' limit #{arg0},#{arg1}
+  <select id="queryAllSource" resultType="com.zhita.model.manage.Source">
+  	select id,sourceName,account,link,state,company from source where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
-   select count(sourceName) from source where deleted='0'
+   select count(sourceName) from source where deleted='0' and company=#{company}
  </select>
   <!-- 后台管理 用于获取模糊总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(sourceName) from source where deleted='0' and sourceName like "%"#{0}"%" 
+   select count(sourceName) from source where deleted='0' and sourceName like "%"#{arg0}"%" and company=#{arg1}
  </select>
  <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.Source">
- 	select id,sourceName,account,link,state from source where deleted='0' and sourceName like "%"#{arg0}"%" limit #{arg1},#{arg2}
+ 	select id,sourceName,account,link,state,company from source where deleted='0' and sourceName like "%"#{arg0}"%" and company=#{arg1}limit #{arg2},#{arg3}
  </select>
  <!--后台管理 添加渠道信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.Source" >
- 	insert into source(sourceName,account,link) values(#{sourceName},#{account},#{link})
+ 	insert into source(sourceName,account,link,company) values(#{sourceName},#{account},#{link},#{company})
  </insert>
  <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">
@@ -186,21 +186,21 @@
  
  <!-- 后台管理   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
  <select id="queryAllUserBySourceId" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.User">
- 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} limit #{arg1},#{arg2}
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} limit #{arg1},#{arg2}
  </select>
  
   <!-- 后台管理   通过注册时间   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
  <select id="queryAllUserByRegistrationTime" resultType="com.zhita.model.manage.User">
- 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} limit #{arg3},#{arg4}
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} limit #{arg3},#{arg4}
  </select>
  
   <!-- 后台管理   通过手机号查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
  <select id="queryAllUserByPhone" resultType="com.zhita.model.manage.User">
- 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.phone like "%"#{arg1}"%" limit #{arg2},#{arg3}
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.phone like "%"#{arg1}"%" limit #{arg2},#{arg3}
  </select>
  
   <!-- 后台管理  通过注册时间。。手机号 查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
  <select id="queryAllUserByRegistrationTimePhone" resultType="com.zhita.model.manage.User">
- 	select u.name,u.age,u.idCard,u.phone,u.registrationTime from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} and u.phone like "%"#{arg3}"%" limit #{arg4},#{arg5}
+ 	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} and u.phone like "%"#{arg3}"%" limit #{arg4},#{arg5}
  </select>
 </mapper>

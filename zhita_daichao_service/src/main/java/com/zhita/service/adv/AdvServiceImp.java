@@ -25,26 +25,26 @@ public class AdvServiceImp implements IntAdvService{
     }
 	
     //后台管理---查询出广告表总数量
-    public int pageCount() {
-    	int count=advertisingMapper.pageCount();
+    public int pageCount(String company) {
+    	int count=advertisingMapper.pageCount(company);
     	return count;
     }
     
     //后台管理---根据标题字段模糊查询出 广告表总数量
-    public int pageCountByLike(String title) {
-    	int count=advertisingMapper.pageCountByLike(title);
+    public int pageCountByLike(String title,String company) {
+    	int count=advertisingMapper.pageCountByLike(title,company);
     	return count;
     }
     
     //后台管理---查询广告表全部信息,含分页
-    public List<Advertising> queryAll(Integer page,Integer pagesize){
-    	List<Advertising> list=advertisingMapper.queryAll(page,pagesize);
+    public List<Advertising> queryAll(String company,Integer page,Integer pagesize){
+    	List<Advertising> list=advertisingMapper.queryAll(company,page,pagesize);
     	return list;
     }
     
     //后台管理---根据标题字段模糊查询广告表信息，含分页
-    public List<Advertising> queryAllByLike(String title,Integer page,Integer pagesize){
-    	List<Advertising> list=advertisingMapper.queryAllByLike(title, page,pagesize);
+    public List<Advertising> queryAllByLike(String title,String company,Integer page,Integer pagesize){
+    	List<Advertising> list=advertisingMapper.queryAllByLike(title,company,page,pagesize);
     	return list;
     }
     

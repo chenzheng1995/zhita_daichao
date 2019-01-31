@@ -72,6 +72,6 @@ public interface ManageLoginMapper {
 	int upaStateTime(ManageLogin manageLogin);
 	
 	//后台管理---通过手机号获取用户的id
-	int getIdByPhone(String phone);
+	ManageLogin getIdByPhone(String phone);
 	
 }

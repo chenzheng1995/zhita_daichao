@@ -34,8 +34,8 @@ public class RegisteServiceImp implements IntRegisteService{
 		return list;
 	}
 */	//后台管理---查询贷款商家部分字段信息，含分页
-  	public List<LoansBusinesses> queryAllAdmain(Integer page,Integer pagesize) {
-		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain(page,pagesize);
+  	public List<LoansBusinesses> queryAllAdmain(String company,Integer page,Integer pagesize) {
+		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain(company,page,pagesize);
 		return list;
 	}
   	//后台管理---查询贷款商家总条数
@@ -45,8 +45,8 @@ public class RegisteServiceImp implements IntRegisteService{
   	}
   	
   	//后台管理---通过模糊查询的条件查询贷款商家总条数
-  	public int pageCountByLike(String businessName) {
-  		int count=loansBusinessesMapper.pageCountByLike(businessName);
+  	public int pageCountByLike(String businessName,String company) {
+  		int count=loansBusinessesMapper.pageCountByLike(businessName,company);
   		return count;
   	}
     //后台管理---添加贷款商家信息
@@ -55,8 +55,8 @@ public class RegisteServiceImp implements IntRegisteService{
     	return selnum;
     }
   	//后台管理---通过商家名称模糊查询，并且有分页功能
-  	public List<LoansBusinesses> queryByNameLike(String businessName,Integer page,Integer pagesize){
-  		List<LoansBusinesses> list=loansBusinessesMapper.queryByNameLike(businessName,page,pagesize);
+  	public List<LoansBusinesses> queryByNameLike(String businessName,String company,Integer page,Integer pagesize){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryByNameLike(businessName,company,page,pagesize);
   		return list;
   	}
   	//后台管理---通过商家主键id修改假删除字段的值
@@ -96,13 +96,13 @@ public class RegisteServiceImp implements IntRegisteService{
 	}
 
   	//后台管理---查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
-  	public List<String> queryAllBusinessName(){
-  		List<String> list=loansBusinessesMapper.queryAllBusinessName();
+  	public List<String> queryAllBusinessName(String company){
+  		List<String> list=loansBusinessesMapper.queryAllBusinessName(company);
   		return list;
   	}
   	//后台管理---通过商家名称模糊查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中
-  	public List<String> queryAllBusinessNameByLike(String businessName){
-  		List<String> list=loansBusinessesMapper.queryAllBusinessNameByLike(businessName);
+  	public List<String> queryAllBusinessNameByLike(String businessName,String company){
+  		List<String> list=loansBusinessesMapper.queryAllBusinessNameByLike(businessName,company);
   		return list;
   	}
   	//后台管理---根据商家名称更新被申请次数字段
@@ -127,4 +127,14 @@ public class RegisteServiceImp implements IntRegisteService{
 		String trademark = loansBusinessesMapper.getTrademark(businessname);
 		return trademark;
 	}
+	//后台管理---根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间
+  	public List<String> queryTime(String businessName,String LikeTime,String LikeTime2){
+  		List<String> list=loansBusinessesMapper.queryTime(businessName, LikeTime,LikeTime2);
+  		return list;
+  	}
+  	//后台管理---根据商品名称和传过来的年  月  日(例如：2019-01-01) 获取当前甲方商家这一天的足迹数量
+  	public int  queryAmount(String businessName,String LikeTime1,String LikeTime2) {
+  		int count=loansBusinessesMapper.queryAmount(businessName, LikeTime1, LikeTime2);
+  		return count;
+  	}
 }

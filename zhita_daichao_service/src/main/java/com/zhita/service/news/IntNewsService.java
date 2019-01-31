@@ -6,13 +6,13 @@ import com.zhita.model.manage.Strategy;
 
 public interface IntNewsService{
     //后台管理---查询攻略表所有信息，含分页
-    public List<Strategy> queryAllNews(Integer page,Integer pagesize);
+    public List<Strategy> queryAllNews(String company,Integer page,Integer pagesize);
     //后台管理---查询攻略表总数量
-    public int pageCount();
+    public int pageCount(String company);
     //后台管理---根据标题字段模糊查询攻略表总数量
-    public int pageCountByLike(String title);
+    public int pageCountByLike(String title,String company);
     //后台管理---根据标题字段模糊查询，攻略表信息，含分页
-    public List<Strategy> queryNewsByLike(String title,Integer page,Integer pagesize);
+    public List<Strategy> queryNewsByLike(String title,String company,Integer page,Integer pagesize);
     //后台管理---添加攻略信息
     public int addAll(Strategy strategy);
     //后台管理---通过主键id查询出攻略信息

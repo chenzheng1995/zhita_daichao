@@ -1,6 +1,7 @@
 package com.zhita.controller.news;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,23 +36,57 @@ public class NewsController {
 	//后台管理---查询攻略表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllNews")
-    public Map<String,Object> queryAllNews(Integer page){
-    	int totalCount=intNewsService.pageCount();//该方法是查询攻略总数量
-       	PageUtil pageUtil=new PageUtil(page,2,totalCount);
-    	if(page<1) {
-    		page=1;
-    	}
-    	else if(page>pageUtil.getTotalPageCount()) {
-    		if(totalCount==0) {
-    			page=pageUtil.getTotalPageCount()+1;
-    		}else {
-    			page=pageUtil.getTotalPageCount();
-    		}
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil.setPage(pages);
-    	List<Strategy> list=intNewsService.queryAllNews(pageUtil.getPage(),pageUtil.getPageSize());
-    	
+    public Map<String,Object> queryAllNews(Integer page,String[] company){
+		PageUtil pageUtil=null;
+		List<Strategy> list=new ArrayList<>();
+		if(company.length==1) {
+			
+			System.out.println("company.length==1");
+			
+	    	int totalCount=intNewsService.pageCount(company[0]);//该方法是查询攻略总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=intNewsService.queryAllNews(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+		}
+		else if(company.length>1) {
+			
+			System.out.println("company.length>1");
+			
+    		int totalCountfor=0;
+    		List<Strategy> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	int totalCountfor1=intNewsService.pageCount(company[i]);//该方法是查询攻略总数量
+            	totalCountfor=totalCountfor+totalCountfor1;
+            	
+            	System.out.println("totalCountfor："+totalCountfor);
+		    	pageUtil=new PageUtil(page,2,totalCountfor);
+		    	if(page<1) {
+		    		page=1;
+		    	}
+		    	else if(page>pageUtil.getTotalPageCount()) {
+		    		if(totalCountfor==0) {
+		    			page=pageUtil.getTotalPageCount()+1;
+		    		}else {
+		    			page=pageUtil.getTotalPageCount();
+		    		}
+		    	}
+		    	int pages=(page-1)*pageUtil.getPageSize();
+		    	pageUtil.setPage(pages);
+		    	listfor=intNewsService.queryAllNews(company[i],pageUtil.getPage(),pageUtil.getPageSize());
+            	list.addAll(listfor);
+			}
+		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listnews",list);
     	map.put("pageutil", pageUtil);
@@ -61,11 +96,11 @@ public class NewsController {
 	//后台管理---根据标题字段模糊查询攻略表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryNewsByLike")
-    public Map<String,Object> queryNewsByLike(String title,Integer page){
+    public Map<String,Object> queryNewsByLike(String title,Integer page,String company){
 		List<Strategy> list=null;
 		PageUtil pageUtil=null;
 		if(title==null||"".equals(title)) {
-	    	int totalCount=intNewsService.pageCount();//该方法是查询攻略总数量
+	    	int totalCount=intNewsService.pageCount(company);//该方法是查询攻略总数量
 	       	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -79,9 +114,9 @@ public class NewsController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intNewsService.queryAllNews(pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=intNewsService.queryAllNews(company,pageUtil.getPage(),pageUtil.getPageSize());
 		}else {
-	    	int totalCount=intNewsService.pageCountByLike(title);//该方法是模糊查询的攻略总数量
+	    	int totalCount=intNewsService.pageCountByLike(title,company);//该方法是模糊查询的攻略总数量
 	       	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -95,7 +130,7 @@ public class NewsController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intNewsService.queryNewsByLike(title, pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=intNewsService.queryNewsByLike(title,company,pageUtil.getPage(),pageUtil.getPageSize());
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listnewsByLike",list);

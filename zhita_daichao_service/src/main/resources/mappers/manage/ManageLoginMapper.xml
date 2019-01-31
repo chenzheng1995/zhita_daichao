@@ -16,7 +16,7 @@
   </sql>
   <!-- 后台管理   通过id查询出管理登陆用户信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="manageloginMap">
-	select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+	select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,u.company,
 	GROUP_CONCAT(r.id) roleid, 
 	GROUP_CONCAT(r.roleName) rolename,
 	GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
@@ -146,6 +146,7 @@
         <result property="loginstatus" column="loginStatus" />
         <result property="logintime" column="loginTime" />
         <result property="deleted" column="deleted" />
+        <result property="company" column="company" />
 	    <collection  property="listRole"  ofType="com.zhita.model.manage.Role">
             <id property="id" column="id" />
             <result property="rolename" column="roleName" />    
@@ -217,7 +218,7 @@
 	
 	<!-- 后台管理   添加后台管理用户 -->
 	<insert id="addManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
-		insert into manage_login(username,phone) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR})
+		insert into manage_login(username,phone,company) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR})
 	</insert>
 	<!--后台管理    将修改后的管理登陆用户   信息进行保存  -->
 	<update id="upaManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
@@ -226,7 +227,8 @@
 		      phone = #{phone,jdbcType=VARCHAR},
 		      loginStatus = #{loginstatus,jdbcType=VARCHAR},
 		      loginTime = #{logintime,jdbcType=VARCHAR},
-		      deleted = #{deleted,jdbcType=VARCHAR}
+		      deleted = #{deleted,jdbcType=VARCHAR},
+		      company = #{company,jdbcType=VARCHAR}
 		    where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 后台管理       修改管理登陆用户的假删除状态-->
@@ -251,7 +253,7 @@
 	    where phone = #{phone,jdbcType=VARCHAR} and deleted='0'
 	</update>
 	<!-- 后台管理   通过手机号获取用户的id -->
-	<select id="getIdByPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select id from manage_login where phone = #{phone} and deleted ='0'
+	<select id="getIdByPhone" parameterType="java.lang.String" resultType="com.zhita.model.manage.ManageLogin">
+		select id,company from manage_login where phone = #{phone} and deleted ='0'
 	</select>
 </mapper>

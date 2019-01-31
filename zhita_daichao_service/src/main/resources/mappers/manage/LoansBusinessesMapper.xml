@@ -347,13 +347,11 @@
   </update>
   <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmainpro" parameterType="map" resultType="com.zhita.model.manage.LoansBusinesses">
-
   	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,state from loans_businesses where deleted='0' and company = #{company} order by isStick desc limit #{page},#{pageSize}
-
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
-  <select id="queryAllAdmain" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state from loans_businesses where deleted='0' limit #{arg0},#{arg1}
+  <select id="queryAllAdmain" resultType="com.zhita.model.manage.LoansBusinesses">
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -361,11 +359,11 @@
  </select>
    <!-- 后台管理 用于模糊查询获取总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(businessName) from loans_businesses where deleted='0' and businessName like "%"#{0}"%"
+   select count(businessName) from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
  </select>
  <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
  <select id="queryByNameLike" resultType="com.zhita.model.manage.LoansBusinesses">
- 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" limit #{arg1},#{arg2}
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
  </select>
  <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">
@@ -379,6 +377,10 @@
  <update id="upaStateClose" parameterType="java.lang.Integer">
  	update loans_businesses set state='2' where id=#{id}
  </update>
+ <!-- 后台管理    申请统计功能    查询当前商家每个月每一天的用户信息（用户流量）-->
+<!--  <select id="queryByFootprintTimeAndFootprint" parameterType="java.lang.String" resultType="com.zhita.model.manage.CommodityFootprint">
+ 	select * from commodity_footprint f where footprint='飞天猪' and deleted = 0 group by userId having footprintTime like '1548%';
+ </select> -->
  	<!-- 插入商标的URL -->
 	<insert id="insertPath" parameterType="java.lang.String">
 		insert into loans_businesses
@@ -391,17 +393,24 @@
  </select>
  <!-- 后台管理  查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中 -->
  <select id="queryAllBusinessName" resultType="java.lang.String">
- 	select businessName from loans_businesses
+ 	select businessName from loans_businesses where company=#{company} and deleted='0'
  </select>
  <!-- 后台管理  通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中 -->
  <select id="queryAllBusinessNameByLike" parameterType="java.lang.String" resultType="java.lang.String">
- 	select businessName from loans_businesses where businessName like "%"#{businessName}"%"
+ 	select businessName from loans_businesses where businessName like "%"#{arg0}"%" and company=#{arg1} and deleted=0
  </select>
  <!-- 后台管理    根据商家名称更新被申请次数字段 -->
  <update id="upaApplicationNumber">
  	update loans_businesses set applicationNumber=#{arg0} where businessName=#{arg1}
  </update>
- 
+ <!--后台管理  根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间 -->
+ <select id="queryTime" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select footprinttime from commodity_footprint where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ </select>
+ <!--后台管理   根据商品名称和传过来的年  月  日(例如：2019-01-01) 获取当前甲方商家这一天的足迹数量  -->
+ <select id="queryAmount"  parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select count(DISTINCT f.userId) from commodity_footprint f where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ </select>
   <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap">
  	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} order by isStick desc limit #{page},#{pageSize}

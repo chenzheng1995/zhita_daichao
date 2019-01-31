@@ -86,4 +86,9 @@ public class RoleServieImp implements IntRoleService{
     	List<Functions> list=functionsMapper.queryFunctionByName(name);
     	return list;
     }
+    //后台管理---根据权限id查询权限名称
+    public String queryFunctionsByFunctionId(Integer functionid) {
+    	String functionSecond=functionsMapper.queryFunctionsByFunctionId(functionid);
+    	return functionSecond;
+    }
 }

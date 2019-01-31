@@ -4,23 +4,23 @@ import java.util.List;
 
 //功能表
 public class Functions {
-    private Integer id;//功能id
+    private String id;//功能id
 
     private String functionFirst;//第一层功能
 
     private String functionSecond;//第二层功能
     
-    private List<String> secondlist;
+    private List<SecondFunction> secondlist;
 
-    public Integer getId() {
-        return id;
-    }
+    public String getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getFunctionFirst() {
+	public String getFunctionFirst() {
         return functionFirst;
     }
 
@@ -36,12 +36,17 @@ public class Functions {
         this.functionSecond = functionSecond == null ? null : functionSecond.trim();
     }
 
-	public List<String> getSecondlist() {
+	public List<SecondFunction> getSecondlist() {
 		return secondlist;
 	}
 
-	public void setSecondlist(List<String> secondlist) {
+	public void setSecondlist(List<SecondFunction> secondlist) {
 		this.secondlist = secondlist;
 	}
-    
+
+	@Override
+	public String toString() {
+		return "Functions [id=" + id + ", functionFirst=" + functionFirst + ", functionSecond=" + functionSecond
+				+ ", secondlist=" + secondlist + "]";
+	}
 }

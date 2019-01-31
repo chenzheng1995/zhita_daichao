@@ -12,7 +12,7 @@ public class User implements Serializable{
 
     private String phone;//手机号
 
-    private Integer dayfen;//当日分布系数
+    private Integer dayfen;//当日分发系数
 
     private String registrationtime;//注册开始时间
     
@@ -41,8 +41,6 @@ public class User implements Serializable{
     private String programQrCode;//小程序二维码url
     
     private Integer fatherId;//父id（用于二维码推荐人和使用人相关联）
-    
-
 
     public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus,String pwd,String company,String registrationType,String loginTime,String programQrCode,Integer fatherId) {
         this.id = id;

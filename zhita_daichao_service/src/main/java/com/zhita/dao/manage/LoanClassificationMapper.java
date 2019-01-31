@@ -23,19 +23,19 @@ public interface LoanClassificationMapper {
     int updateByPrimaryKey(LoanClassification record);
     
     //后台管理---查询贷款分类所有信息，含分页
-    List<LoanClassification> queryAllPage(Integer page,Integer pagesize);
+    List<LoanClassification> queryAllPage(String company,Integer page,Integer pagesize);
     
     //后台管理---用于获取总页数
-    int pageCount();
+    int pageCount(String company);
     
     //后台管理---用于获取模糊查询总页数
-    int pageCountByLike(String businessClassification);
+    int pageCountByLike(String businessClassification,String company);
     
     //小程序---用于获取通过贷款分类的名称查询出贷款商家的个数
     int pageCountByBusinessClassification(@Param("businessClassification")String businessClassification,@Param("company") String company);
     
     //后台管理---模糊查询贷款分类信息,并且有分页功能
-    List<LoanClassification> queryByLike(String businessClassification,Integer page,Integer pagesize);
+    List<LoanClassification> queryByLike(String businessClassification,String company,Integer page,Integer pagesize);
     
     //后台管理---添加贷款分类信息
     int addAll(LoanClassification loanClassification);

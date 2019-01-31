@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.Functions;
 import com.zhita.model.manage.Role;
+import com.zhita.model.manage.SecondFunction;
 import com.zhita.service.role.IntRoleService;
 import com.zhita.util.PageUtil;
 
@@ -94,29 +95,69 @@ public class RoleController {
     	map.put("pageutil", pageUtil);
     	return map;
     }
-	
+	//后台管理---点击添加按钮的时候  先把权限表的所有数据返回给前端
+	@ResponseBody
+	@RequestMapping("/queryFunctions")
+	public List<Functions> queryFunctions(){
+		List<Functions> list=intRoleService.queryFunctionAll();//查询出权限表所有的数据
+		
+		List<Functions> list1=new ArrayList<>();
+		
+    	for (int i = 0; i < list.size(); i++) {
+    		Functions functions=new Functions();
+    		functions.setFunctionFirst(list.get(i).getFunctionFirst());
+    		
+    		String[] idarray=list.get(i).getId().split(",");//将查出来的String类型的一串id  用逗号进行分隔，变成一个数组
+    		List<String> idlist=idlist=Arrays.asList(idarray);//将数组变成集合   进行循环
+    		List<SecondFunction> listsf=new ArrayList<>();
+    		for (int j = 0; j < idlist.size(); j++) {
+				SecondFunction sf=new SecondFunction();
+				sf.setId(Integer.parseInt(idlist.get(j)));
+				String funsecond=intRoleService.queryFunctionsByFunctionId(Integer.parseInt(idlist.get(j)));
+				sf.setSecondFunction(funsecond);
+				listsf.add(sf);
+			}
+    		functions.setSecondlist(listsf);
+    		list1.add(functions);
+		}
+    	return list1;
+	}
+		
 	//后台管理--添加角色
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/addRole")
-    public int addRole(Role role){
+    public void addRole(Role role){
     	int num=intRoleService.addRole(role);
-    	return num;
+    	List<Functions> listfunction=role.getListfunction();
+    	for (int i = 0; i < listfunction.size(); i++) {
+    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
+    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
+			}
+		}
     }
 	//后台管理----查看权限功能--通过角色id查询出  当前角色的所有权限
 	@ResponseBody
 	@RequestMapping("/queryFunctionByRoleid")
     public List<Functions> queryFunctionByRoleid(Integer roleid){
 		List<Functions> list=intRoleService.queryFunctionByRoleid(roleid);
-    	
 		List<Functions> list1=new ArrayList<>();
-    	
+		
     	for (int i = 0; i < list.size(); i++) {
     		Functions functions=new Functions();
-    		functions.setId(list.get(i).getId());
     		functions.setFunctionFirst(list.get(i).getFunctionFirst());
-    		functions.setFunctionSecond(list.get(i).getFunctionSecond());
-    		functions.setSecondlist(Arrays.asList(list.get(i).getFunctionSecond().split(",")));
+    		
+    		String[] idarray=list.get(i).getId().split(",");//将查出来的String类型的一串id  用逗号进行分隔，变成一个数组
+    		List<String> idlist=idlist=Arrays.asList(idarray);//将数组变成集合   进行循环
+    		List<SecondFunction> listsf=new ArrayList<>();
+    		for (int j = 0; j < idlist.size(); j++) {
+				SecondFunction sf=new SecondFunction();
+				sf.setId(Integer.parseInt(idlist.get(j)));
+				String funsecond=intRoleService.queryFunctionsByFunctionId(Integer.parseInt(idlist.get(j)));
+				sf.setSecondFunction(funsecond);
+				listsf.add(sf);
+			}
+    		functions.setSecondlist(listsf);
     		list1.add(functions);
 		}
     	return list1;
@@ -126,23 +167,55 @@ public class RoleController {
 	@RequestMapping("/selectByPrimaryKey")
     public Map<String,Object> selectByPrimaryKey(Integer id) {
     	Role role=intRoleService.selectByPrimaryKey(id);//通过角色id 查询角色信息
-    	List<Functions> listall=intRoleService.queryFunctionAll();//查询出功能表所有的信息  进行页面渲染
-    	List<Functions> list=intRoleService.queryFunctionByRoleid(id);//通过角色id查询出当前角色的所有功能
-    	
-    	List<Functions> listByRoleid=new ArrayList<>();
+		List<Functions> list=intRoleService.queryFunctionAll();//查询出权限表所有的数据
+		
+		List<Functions> list1=new ArrayList<>();
+		
     	for (int i = 0; i < list.size(); i++) {
     		Functions functions=new Functions();
-    		functions.setId(list.get(i).getId());
     		functions.setFunctionFirst(list.get(i).getFunctionFirst());
-    		functions.setFunctionSecond(list.get(i).getFunctionSecond());
-    		functions.setSecondlist(Arrays.asList(list.get(i).getFunctionSecond().split(",")));
-    		listByRoleid.add(functions);
+    		
+    		String[] idarray=list.get(i).getId().split(",");//将查出来的String类型的一串id  用逗号进行分隔，变成一个数组
+    		List<String> idlist=idlist=Arrays.asList(idarray);//将数组变成集合   进行循环
+    		List<SecondFunction> listsf=new ArrayList<>();
+    		for (int j = 0; j < idlist.size(); j++) {
+				SecondFunction sf=new SecondFunction();
+				sf.setId(Integer.parseInt(idlist.get(j)));
+				String funsecond=intRoleService.queryFunctionsByFunctionId(Integer.parseInt(idlist.get(j)));
+				sf.setSecondFunction(funsecond);
+				listsf.add(sf);
+			}
+    		functions.setSecondlist(listsf);
+    		list1.add(functions);
 		}
+    	
+		List<Functions> lists=intRoleService.queryFunctionByRoleid(id);
+		List<Functions> lists1=new ArrayList<>();
+		
+    	for (int i = 0; i < lists.size(); i++) {
+    		Functions functions=new Functions();
+    		functions.setFunctionFirst(lists.get(i).getFunctionFirst());
+    		
+    		String[] idarray=lists.get(i).getId().split(",");//将查出来的String类型的一串id  用逗号进行分隔，变成一个数组
+    		List<String> idlist=idlist=Arrays.asList(idarray);//将数组变成集合   进行循环
+    		List<SecondFunction> listsf=new ArrayList<>();
+    		for (int j = 0; j < idlist.size(); j++) {
+				SecondFunction sf=new SecondFunction();
+				sf.setId(Integer.parseInt(idlist.get(j)));
+				String funsecond=intRoleService.queryFunctionsByFunctionId(Integer.parseInt(idlist.get(j)));
+				sf.setSecondFunction(funsecond);
+				listsf.add(sf);
+			}
+    		functions.setSecondlist(listsf);
+    		lists1.add(functions);
+		}
+    	
+    	
     	
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("role",role);
-    	map.put("listall",listall);
-    	map.put("listByRoleid",listByRoleid);
+    	map.put("listall",list1);
+    	map.put("listByRoleid",lists1);
     	return map;
     }
 	//后台管理---保存编辑后的信息
@@ -156,8 +229,12 @@ public class RoleController {
 				intRoleService.delFunctionByid(list.get(i));
 			}
 		}
-		for (int i = 0; i < role.getListfunction().size(); i++) {
-			intRoleService.add(role.getId(), role.getListfunction().get(i).getId());
+		
+	  	List<Functions> listfunction=role.getListfunction();
+    	for (int i = 0; i < listfunction.size(); i++) {
+    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
+    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
+			}
 		}
 		int num=intRoleService.upaRole(role);
 		return num;

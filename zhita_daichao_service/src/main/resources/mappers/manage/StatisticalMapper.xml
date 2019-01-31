@@ -126,11 +126,11 @@
   </select>
   <!-- 后台管理  查询统计表所有信息   含分页-->
   <select id="queryAllPage" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Statistical">
-  	select s.id,s.time,s.uv,s.conversionRate,l.businessName,l.applicationNumber from statistical s inner join loans_businesses l where s.businessId=l.id limit #{arg0},#{arg1}
+  	select s.id,s.time,s.uv,s.conversionRate,s.company,l.businessName,l.applicationNumber from statistical s inner join loans_businesses l where s.businessId=l.id limit #{arg0},#{arg1}
   </select>
     <!-- 后台管理  根据渠道名称   查询统计表所有信息   含分页-->
   <select id="queryAllPageBySourceName" resultType="com.zhita.model.manage.Statistical">
-  	select s.id,s.time,s.uv,s.conversionRate,l.businessName,l.applicationNumber ,sourceId from statistical s 
+  	select s.id,s.time,s.uv,s.conversionRate,s.company,l.businessName,l.applicationNumber,sourceId from statistical s 
 	inner join loans_businesses l on s.businessId=l.id 
 	inner join source sc on s.sourceId=sc.id  where sc.sourceName=#{arg0} limit #{arg1},#{arg2}
   </select>

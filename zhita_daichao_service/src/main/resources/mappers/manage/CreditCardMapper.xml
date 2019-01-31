@@ -16,7 +16,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, cover, intro, isStick, state,content, url, deleted,company
+    id, title, cover, intro, isStick, state,content, url, deleted,company                 
   </sql>
   <!--后台管理   通过信用卡id，查询出信用卡信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -37,7 +37,7 @@
       #{intro,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.zhita.model.manage.CreditCard">
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.CreditCard">                                             
     insert into credit_card
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -162,24 +162,24 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理  查询所有信用卡信息 含分页-->
-  <select id="queryAllCard" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.CreditCard">
-  	select id,title,cover,intro,isStick,state from credit_card where deleted='0' limit #{arg0},#{arg1}
+  <select id="queryAllCard" resultType="com.zhita.model.manage.CreditCard">
+  	select id,title,cover,intro,isStick,state,company from credit_card where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
-   select count(cover) from credit_card where deleted='0'
+   select count(cover) from credit_card where deleted='0' and company=#{arg0}
  </select>
   <!-- 后台管理 用于获取模糊总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(cover) from credit_card where deleted='0' and title like "%"#{0}"%" 
+   select count(cover) from credit_card where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
  </select>
  <!--后台管理  根据标题字段模糊查询信用卡信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.CreditCard">
- 	select id,title,cover,intro,isStick,state from credit_card where deleted='0' and title like "%"#{arg0}"%" limit #{arg1},#{arg2}
+ 	select id,title,cover,intro,isStick,state,company from credit_card where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
  </select>
  <!--后台管理 添加信用卡信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.CreditCard" >
- 	insert into credit_card(cover,title,intro,url,content) values(#{cover},#{title},#{intro},#{url},#{content})
+ 	insert into credit_card(cover,title,intro,url,content,company) values(#{cover},#{title},#{intro},#{url},#{content},#{company})
  </insert>
  <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">

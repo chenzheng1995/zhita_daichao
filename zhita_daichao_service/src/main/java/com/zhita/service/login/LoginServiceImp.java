@@ -335,9 +335,8 @@ public class LoginServiceImp implements IntLoginService{
 		return sum;
 	}
 	//后台管理---通过手机号获取用户的id
-	public int getIdByPhone(String phone) {
-		int id=manageLoginMapper.getIdByPhone(phone);
-		return id;
+	public ManageLogin getIdByPhone(String phone) {
+		ManageLogin manageLogin=manageLoginMapper.getIdByPhone(phone);
+		return manageLogin;
 	}
-
 }

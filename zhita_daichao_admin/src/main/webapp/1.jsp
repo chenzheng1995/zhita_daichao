@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>page</title>
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+<meta charset="utf-8">
+<title>Insert title here</title>
 </head>
 <body>
-		不好意思   您没有权限！
+	1.jsp不好意思，您没有权限！
 </body>
 </html>

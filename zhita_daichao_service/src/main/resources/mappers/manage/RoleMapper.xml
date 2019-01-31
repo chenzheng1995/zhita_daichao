@@ -84,7 +84,7 @@
   </select>
   
   <!-- 后台管理   添加角色 -->
-  <insert id="addRole" parameterType="com.zhita.model.manage.Role">
+  <insert id="addRole" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.zhita.model.manage.Role">
   	insert into role (roleName, roleMiaoshu)  values (#{rolename,jdbcType=VARCHAR}, #{rolemiaoshu,jdbcType=VARCHAR})
   </insert>
   
@@ -95,7 +95,7 @@
   </select>
   <!-- 后台管理  查询出功能表所有的信息 -->
   <select id="queryFunctionAll" resultType="com.zhita.model.manage.Functions">
-  	select id,functionFirst,GROUP_CONCAT(functionSecond) functionSecond from functions 
+  	select GROUP_CONCAT(id) id,functionFirst,GROUP_CONCAT(functionSecond) functionSecond from functions 
 	group by functionFirst
   </select>
   <!-- 后台管理   保存编辑后的信息 -->

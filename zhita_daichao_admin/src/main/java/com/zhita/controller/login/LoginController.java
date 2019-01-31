@@ -1,10 +1,9 @@
 package com.zhita.controller.login;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -13,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.controller.shiro.PhoneToken;
@@ -23,6 +24,7 @@ import com.zhita.service.login.IntLoginService;
 import com.zhita.util.PageUtil;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
+import com.zhita.util.Timestamps;
 
 
 
@@ -34,7 +36,7 @@ public class LoginController {
 	
 	//后台管理----登录验证  以及授权
 	@ResponseBody
-	@RequestMapping("/logintest")
+	@RequestMapping(value="/logintest", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public Map<String, Object> login(String phone,String code){
 		Map<String, Object> map = new HashMap<String, Object>();
 		int a=0;
@@ -70,10 +72,20 @@ public class LoginController {
 		                	manageLogin.setPhone(phone);
 		                	int num=loginService.upaStateTime(manageLogin);
 							if (num == 1) {	
-								int id = loginService.getIdByPhone(phone);//获取用户的id
+								ManageLogin manageLogin2 = loginService.getIdByPhone(phone);//通过手机号获取当前用户对象
+								int id=manageLogin2.getId();//获取用户id
+								String company=manageLogin2.getCompany();//获取用户公司名
+								
+								String[] listCompany=company.split(",");//该数组里面存了当前用户所有的公司名
+								//List<String> listcom=new ArrayList<>();//new集合  存通过公司id查询出来的公司名称
+								/*for (int i = 0; i < listCompany.length; i++) {
+									listcom.add(company);
+								}*/
+								
 								map.put("msg", "用户登录成功，登录状态修改成功");
 								map.put("loginStatus", loginStatus);
 								map.put("userId", id);
+								map.put("company", listCompany);//集合里面存的是当前用户的所有公司名
 							} else {
 								map.put("msg", "用户登录失败，登录状态修改失败");
 							}
@@ -84,8 +96,7 @@ public class LoginController {
 	        	}
 		}
 		return map;
-}
-		
+	}
 	
 	//发送验证码
 	@RequestMapping("/sendSMS")
@@ -193,7 +204,7 @@ public class LoginController {
     	pageUtil.setPage(pages);
     	List<ManageLogin> list=loginService.queryManageLogin(pageUtil.getPage(),pageUtil.getPageSize());
     	for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).getUsername());
+    		list.get(i).setLogintime(Timestamps.stampToDate(list.get(i).getLogintime()));
 		}
     	
     	HashMap<String,Object> map=new HashMap<>();
@@ -212,16 +223,39 @@ public class LoginController {
     @Transactional
     @ResponseBody
     @RequestMapping("/addManageLogin")
-    public int addManageLogin(ManageLogin manageLogin){
+    public List<Role> addManageLogin(ManageLogin manageLogin){
+    	List<Role> listrole=loginService.queryAllRole();//添加用户信息时   先查询出所有角色的id 和  角色名称    以供添加角色时做选择
+    	List<String> list=manageLogin.getListcompany();//得到前端传过来的公司名的集合
+    	String str="";
+    	for (int i = 0; i < list.size(); i++) {
+    		if(i==0) {
+    			str=list.get(i)+",";
+    		}else {
+    			str=str+list.get(i)+",";
+    		}
+    		
+		}
+    	manageLogin.setCompany(str);
     	int num=loginService.addManageLogin(manageLogin);
-    	return num;
+    	for (int i = 0; i < manageLogin.getListRole().size(); i++) {
+    		int num1=loginService.add(manageLogin.getId(), manageLogin.getListRole().get(i).getId());
+		}
+    	return listrole;
     }
 	//后台管理---通过id查询出管理登陆用户信息
     @ResponseBody
     @RequestMapping("/selectByPrimaryKey")
     public Map<String, Object> selectByPrimaryKey(Integer id){
     	List<Role> list=loginService.queryAllRole();//修改用户信息时   先查询出所有角色的id 和  角色名称    以供修改角色时做选择
+    	List<String> listcompany=new ArrayList<>();//用来存当前用户所有的公司名
     	ManageLogin manageLogin=loginService.selectByPrimaryKey(id);
+    	String company=manageLogin.getCompany();//得到当前用户所有的公司名
+    	String[] companyarray=company.split(",");
+    	for (int i = 0; i < companyarray.length; i++) {
+    		listcompany.add(companyarray[i]);
+		}
+    	
+    	manageLogin.setListcompany(listcompany);
     	
       	HashMap<String,Object> map=new HashMap<>();
     	map.put("listRole",list);
@@ -232,7 +266,7 @@ public class LoginController {
     @Transactional
     @ResponseBody
     @RequestMapping("/upaManageLogin")
-    public int upaManageLogin(ManageLogin manageLogin){
+    public Integer upaManageLogin(@RequestBody ManageLogin manageLogin){
     	List<Integer> list=loginService.queryByManageloginId(manageLogin.getId());//保存修改信息时   先查询出当前用户在中间表的数据id集合（因为一个用户可能有多个角色）
     	if(list.size()!=0) {
         	for (int i = 0; i < list.size(); i++) {
@@ -242,6 +276,16 @@ public class LoginController {
     	for (int i = 0; i < manageLogin.getListRole().size(); i++) {
 			loginService.add(manageLogin.getId(), manageLogin.getListRole().get(i).getId());
 		}
+    	List<String> list1=manageLogin.getListcompany();//得到前端传过来的公司名的集合
+    	String str="";
+    	for (int i = 0; i < list1.size(); i++) {
+    		if(i==0) {
+    			str=list1.get(i)+",";
+    		}else {
+    			str=str+list1.get(i)+",";
+    		}
+    	}
+    	manageLogin.setCompany(str);
     	int num=loginService.upaManageLogin(manageLogin);
     	return num;
     }

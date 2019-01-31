@@ -19,14 +19,18 @@ public class ManageLogin implements Serializable{
     
     private String deleted;//账号状态（ 1:已禁用 0:已启用）
     
+    private String company;//公司名
+    private List<String> listcompany;//公司名list（添加后台管理用户的时候，复选框选值的时候使用的公司名字段）
+    
     private List<Role> listRole;//一个用户有多个角色
 
-    public ManageLogin(Integer id, String username, String phone, String loginstatus, String logintime, String deleted) {
+    public ManageLogin(Integer id, String username, String phone, String loginstatus, String logintime, String company,String deleted) {
         this.id = id;
         this.username = username;
         this.phone = phone;
         this.loginstatus = loginstatus;
         this.logintime = logintime;
+        this.company=company;
         this.deleted = deleted;
     }
 
@@ -74,7 +78,24 @@ public class ManageLogin implements Serializable{
         this.logintime = logintime == null ? null : logintime.trim();
     }
     
-    public String getDeleted() {
+    
+    public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public List<String> getListcompany() {
+		return listcompany;
+	}
+
+	public void setListcompany(List<String> listcompany) {
+		this.listcompany = listcompany;
+	}
+
+	public String getDeleted() {
         return deleted;
     }
 
@@ -88,6 +109,13 @@ public class ManageLogin implements Serializable{
 
 	public void setListRole(List<Role> listRole) {
 		this.listRole = listRole;
+	}
+
+	@Override
+	public String toString() {
+		return "ManageLogin [id=" + id + ", username=" + username + ", phone=" + phone + ", loginstatus=" + loginstatus
+				+ ", logintime=" + logintime + ", deleted=" + deleted + ", company=" + company + ", listcompany="
+				+ listcompany + ", listRole=" + listRole + "]";
 	}
     
 }

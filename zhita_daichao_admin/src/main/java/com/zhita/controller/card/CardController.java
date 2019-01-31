@@ -3,6 +3,7 @@ package com.zhita.controller.card;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.zhita.model.manage.Advertising;
 import com.zhita.model.manage.CreditCard;
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.service.card.IntCardService;
@@ -38,24 +40,57 @@ public class CardController {
 	//后台管理---查询信用卡部分字段信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllCard")
-    public Map<String,Object> queryAllCard(HttpServletRequest request,Integer page){
-    	int totalCount=intCardService.pageCount();//该方法是查询信用卡总数量
-       	PageUtil pageUtil=new PageUtil(page,2,totalCount);
-    	if(page<1) {
-    		page=1;
-    	}
-    	else if(page>pageUtil.getTotalPageCount()) {
-    		if(totalCount==0) {
-    			page=pageUtil.getTotalPageCount()+1;
-    		}else {
-    			page=pageUtil.getTotalPageCount();
-    		}
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-    	pageUtil.setPage(pages);
-    	
-    	List<CreditCard> list=intCardService.queryAllCard(pageUtil.getPage(),pageUtil.getPageSize());
-    	
+    public Map<String,Object> queryAllCard(Integer page,String[] company){
+		PageUtil pageUtil=null;
+		List<CreditCard> list=new ArrayList<>();
+		if(company.length==1) {
+			
+			System.out.println("company.length==1");
+			
+	    	int totalCount=intCardService.pageCount(company[0]);//该方法是查询信用卡总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=intCardService.queryAllCard(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+		}
+		else if(company.length>1) {
+			
+			System.out.println("company.length>1");
+			
+    		int totalCountfor=0;
+    		List<CreditCard> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	int totalCountfor1=intCardService.pageCount(company[i]);//该方法是查询信用卡总数量
+            	totalCountfor=totalCountfor+totalCountfor1;
+            	
+            	System.out.println("totalCountfor："+totalCountfor);
+		    	pageUtil=new PageUtil(page,2,totalCountfor);
+		    	if(page<1) {
+		    		page=1;
+		    	}
+		    	else if(page>pageUtil.getTotalPageCount()) {
+		    		if(totalCountfor==0) {
+		    			page=pageUtil.getTotalPageCount()+1;
+		    		}else {
+		    			page=pageUtil.getTotalPageCount();
+		    		}
+		    	}
+		    	int pages=(page-1)*pageUtil.getPageSize();
+		    	pageUtil.setPage(pages);
+		    	listfor=intCardService.queryAllCard(company[i],pageUtil.getPage(),pageUtil.getPageSize());
+            	list.addAll(listfor);
+			}
+		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listCard", list);
     	map.put("pageutil", pageUtil);
@@ -64,11 +99,11 @@ public class CardController {
 	//后台管理---根据标题模糊查询所有信用卡信息，含分页
     @ResponseBody
     @RequestMapping("/queryByLike")
-    public Map<String,Object> queryByLike(HttpServletRequest request,String title,Integer page){
+    public Map<String,Object> queryByLike(HttpServletRequest request,String title,Integer page,String company){
     	List<CreditCard> list=null;
     	PageUtil pageUtil=null;
     	if(title==null||"".equals(title)) {
-        	int totalCount=intCardService.pageCount();//该方法是查询信用卡总数量
+        	int totalCount=intCardService.pageCount(company);//该方法是查询信用卡总数量
            	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
@@ -83,9 +118,9 @@ public class CardController {
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	
-        	list=intCardService.queryAllCard(pageUtil.getPage(),pageUtil.getPageSize());
+        	list=intCardService.queryAllCard(company,pageUtil.getPage(),pageUtil.getPageSize());
     	}else {
-        	int totalCount=intCardService.pageCountByLike(title);//该方法是模糊查询的信用卡总数量
+        	int totalCount=intCardService.pageCountByLike(title,company);//该方法是模糊查询的信用卡总数量
            	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
@@ -100,7 +135,7 @@ public class CardController {
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	
-        	list=intCardService.queryByLike(title,pageUtil.getPage(),pageUtil.getPageSize());
+        	list=intCardService.queryByLike(title,company,pageUtil.getPage(),pageUtil.getPageSize());
     	}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listCardByLike", list);

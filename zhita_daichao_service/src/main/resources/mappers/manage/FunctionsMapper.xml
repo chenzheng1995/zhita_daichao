@@ -77,4 +77,8 @@
 	inner join functions f on f.id=rf.functionId
 	where lg.phone=#{arg0} and lg.deleted='0'
   </select>
+  <!-- 后台管理   根据权限id查询权限名称 -->
+  <select id="queryFunctionsByFunctionId" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select functionSecond from functions where id=#{id};
+  </select>
 </mapper>

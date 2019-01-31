@@ -32,11 +32,11 @@ public class TongjiController {
 	//后台管理---查询统计表所有信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllPage")
-    public Map<String,Object> queryAllPage(Integer page){
-    	List<Source> listSource=IntMerchantService.queryAll();
+    public Map<String,Object> queryAllPage(Integer page,String company){
+    	List<Source> listSource=IntMerchantService.queryAll(company);//查询出所有的渠道信息
     	List<String> list1=intTongjiService.queryAllLoansName();//查询出所有贷款商家的商家名称，存入lis1t集合
     	for (int i = 0; i < list1.size(); i++) {
-    		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)),list1.get(i));//将商家的被申请人数字段进行修改
+    		//intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)),list1.get(i));//将商家的被申请人数字段进行修改
 		}
     	int totalCount=intTongjiService.pageCount();//该方法是查询贷款商家总条数
     	PageUtil pageUtil=new PageUtil(page,2,totalCount);
@@ -67,16 +67,16 @@ public class TongjiController {
 	//后台管理---通过渠道名称   查询统计表所有信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllPageBySourceName")
-    public Map<String,Object> queryAllPageBySourceName(String sourceName,Integer page){
+    public Map<String,Object> queryAllPageBySourceName(String sourceName,Integer page,String company){
     	List<String> list1=null;
     	List<Statistical> list=null;
     	PageUtil pageUtil=null;
     	HashMap<String,Object> map=null;
     	if(sourceName==null||"".equals(sourceName)) {
-    	   	List<Source> listSource=IntMerchantService.queryAll();
+    	   	List<Source> listSource=IntMerchantService.queryAll(company);
         	list1=intTongjiService.queryAllLoansName();//查询出所有贷款商家的商家名称，存入lis1t集合
         	for (int i = 0; i < list1.size(); i++) {
-        		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)),list1.get(i));//将商家的被申请人数字段进行修改
+        		//intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)),list1.get(i));//将商家的被申请人数字段进行修改
     		}
         	int totalCount=intTongjiService.pageCount();//该方法是查询贷款商家总条数
         	pageUtil=new PageUtil(page,2,totalCount);
@@ -106,7 +106,7 @@ public class TongjiController {
     	else {
     		list1=intTongjiService.quereyAllLoansNameBySourceName(sourceName);//通过渠道名称   查询出所有贷款商家的商家名称，存入lis1t集合
         	for (int i = 0; i < list1.size(); i++) {
-        		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)),list1.get(i));//将商家的被申请人数字段进行修改
+        		//intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i)),list1.get(i));//将商家的被申请人数字段进行修改
     		}
         	int totalCount=intTongjiService.pageCountBySourceName(sourceName);
         	pageUtil=new PageUtil(page,2,totalCount);
