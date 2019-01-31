@@ -164,7 +164,8 @@
 
 	<!-- 查找商品足迹表中的商品名称 -->
 	<select id="getbusinessName" resultType="String" parameterType="map">
-		select distinct footprint from commodity_footprint where userId = #{userId} and company = #{company} and deleted = 0 order by footprintTime desc limit #{startRow},#{pageSize}
+	    select distinct c.footprint from commodity_footprint c,loans_businesses l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime desc limit #{startRow},#{pageSize}
+		<!-- select distinct footprint from commodity_footprint where userId = #{userId} and company = #{company} and deleted = 0 order by footprintTime desc limit #{startRow},#{pageSize} -->
 	</select>
 	
 	<!-- 查询出某个商品的申请人数 -->
@@ -178,6 +179,7 @@
 	</select>
 		<!-- 小程序   查询某个用户有多少条浏览记录 -->
 	<select id="getRecordNumber" parameterType="java.lang.String" resultType="java.lang.Long">
-		select count(userId) from commodity_footprint where userId=#{userId} and company=#{company} and deleted = 0
+	select count(distinct c.footprint) from commodity_footprint c,loans_businesses l where c.footprint = l.businessName and userId=#{userId} and c.company=#{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.state = 1;
+		<!-- select count(userId) from commodity_footprint where userId=#{userId} and company=#{company} and deleted = 0 -->
 	</select>
 </mapper>

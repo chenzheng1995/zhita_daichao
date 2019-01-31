@@ -146,7 +146,7 @@
   </select>
   <!-- 后台管理   添加轮播图信息 -->
   <insert id="AddAll" parameterType="com.zhita.model.manage.ShufflingFigure">
-  	insert into shuffling_figure(title,cover,link,businessname) values(#{title},#{cover},#{link},#{businessname})
+  	insert into shuffling_figure(title,cover,link,businessname,company) values(#{title},#{cover},#{link},#{businessname},#{company})
   </insert>
   <!-- 后台管理   根据删除按钮，修改轮播图假删除状态 -->
   <update id="upaFalseDel" parameterType="java.lang.Integer">

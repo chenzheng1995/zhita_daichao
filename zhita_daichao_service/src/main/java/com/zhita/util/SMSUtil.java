@@ -36,6 +36,10 @@ public class SMSUtil {
 			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
 			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
 		}
+		if("融51".equals(company)) {
+			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
+			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
+		}
 		
 		Map<String,Object> cmap =new HashMap<String, Object>();
 		cmap.put("0", "提交失败");

@@ -1,6 +1,8 @@
 package com.zhita.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Timestamps {
 
@@ -31,6 +33,7 @@ public class Timestamps {
 		Long nextMonthlyZeroTimestamps = last - (last + 60 * 60 * 8 * 1000) % oneDayTimestamps+86400000;
 		return nextMonthlyZeroTimestamps;
 	}
+	
 
 
 }
