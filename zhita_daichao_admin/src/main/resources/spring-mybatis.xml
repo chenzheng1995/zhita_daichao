@@ -112,5 +112,5 @@
 		proxy-target-class="true" />
 
 
-	  <!-- <import resource="spring-shiro.xml"/> -->
+	  <import resource="spring-shiro.xml"/>
 </beans>  
