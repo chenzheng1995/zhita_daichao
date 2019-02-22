@@ -40,7 +40,9 @@ public class CardController {
 	//后台管理---查询信用卡部分字段信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllCard")
-    public Map<String,Object> queryAllCard(Integer page,String[] company){
+    public Map<String,Object> queryAllCard(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<CreditCard> list=new ArrayList<>();
 		if(company.length==1) {

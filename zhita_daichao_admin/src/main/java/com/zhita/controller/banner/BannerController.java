@@ -38,7 +38,9 @@ public class BannerController {
     //后台管理---查询轮播图全部信息,含分页
 	@ResponseBody
 	@RequestMapping("/queryAll")
-    public Map<String,Object> queryAll(Integer page,String[] company){
+    public Map<String,Object> queryAll(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<ShufflingFigure> list=new ArrayList<>();
 		if(company.length==1) {
@@ -46,7 +48,7 @@ public class BannerController {
 			System.out.println("company.length==1");
 			
 	    	int totalCount=intBannerService.pageCount(company[0]);//该方法是查询轮播图总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -72,7 +74,7 @@ public class BannerController {
             	totalCountfor=totalCountfor+totalCountfor1;
             	
             	System.out.println("totalCountfor："+totalCountfor);
-		    	pageUtil=new PageUtil(page,2,totalCountfor);
+		    	pageUtil=new PageUtil(page,10,totalCountfor);
 		    	if(page<1) {
 		    		page=1;
 		    	}

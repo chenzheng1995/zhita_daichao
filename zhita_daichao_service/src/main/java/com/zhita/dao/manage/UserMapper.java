@@ -123,9 +123,9 @@ public interface UserMapper {
 
 	int setAPPUser(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd,@Param("sourceId") int sourceId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus,@Param("registrationType") String registrationType,@Param("company") String company);
 
-	int updatePwd(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd);
+	int updatePwd(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd,@Param("company") String company);
 
-	String getMd5pwd(String phone);
+	String getMd5pwd(@Param("phone")String phone,@Param("company") String company);
 
 	String getProgramQrCode(String scene);
 

@@ -268,14 +268,14 @@ public class LoginServiceImp implements IntLoginService{
     }
 
 	@Override
-	public int updatePwd(String phone, String md5Pwd) {
-		int number = userMapper.updatePwd(phone, md5Pwd);
+	public int updatePwd(String phone, String md5Pwd , String company) {
+		int number = userMapper.updatePwd(phone, md5Pwd, company);
 		return number;
 	}
 
 	@Override
-	public String getMd5pwd(String phone) {
-		String dataMd5Pwd = userMapper.getMd5pwd(phone);
+	public String getMd5pwd(String phone,String company) {
+		String dataMd5Pwd = userMapper.getMd5pwd(phone,company);
 		return dataMd5Pwd;
 	}
 

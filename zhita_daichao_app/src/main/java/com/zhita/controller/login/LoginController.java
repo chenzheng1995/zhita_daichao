@@ -123,7 +123,7 @@ public class LoginController {
 				redisClientUtil.delkey(key);// 验证码正确就从redis里删除这个key
 				MD5Util md5Util = new MD5Util();
 				String md5Pwd = md5Util.EncoderByMd5(pwd);
-				int number = loginService.updatePwd(phone, md5Pwd);
+				int number = loginService.updatePwd(phone, md5Pwd,company);
 				if (number == 1) {
 					int id = loginService.getId(phone,company); // 获取该用户的id
 					map.put("msg", "密码修改成功");
@@ -166,7 +166,7 @@ public class LoginController {
 				return map;
 			} else {
 				MD5Util md5Util = new MD5Util();
-				String dataMd5Pwd = loginService.getMd5pwd(phone);
+				String dataMd5Pwd = loginService.getMd5pwd(phone,company);
 				String Md5Pwd = md5Util.EncoderByMd5(pwd); // md5加密
 				if (Md5Pwd.equals(dataMd5Pwd)) {
 					String loginTime = System.currentTimeMillis()+"";

@@ -27,7 +27,9 @@ public class MerchantController {
 	//后台管理---查询渠道表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllSource")
-    public Map<String,Object> queryAllSource(Integer page,String[] company){
+    public Map<String,Object> queryAllSource(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<Source> list=new ArrayList<>();
 		if(company.length==1) {

@@ -62,7 +62,9 @@ public class RegisteController {
 	//后台管理---查询贷款商家部分字段信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllAdmin")
-    public Map<String,Object> queryAll(Integer page,String[] company){
+    public Map<String,Object> queryAll(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<LoansBusinesses> list=new ArrayList<>();
     	if(company.length==1) {

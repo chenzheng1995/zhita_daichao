@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class Test {
@@ -51,25 +52,25 @@ public class Test {
 //			threads[i].start();
 //			}
 		
-		System.out.println(mobileEncrypt("13486070402"));
-		System.out.println(idEncrypt("330225199507155112"));
-	}
-
-    // 手机号码前三后四脱敏
-    public static String mobileEncrypt(String mobile) {
-        if (StringUtils.isEmpty(mobile) || (mobile.length() != 11)) {
-            return mobile;
-        }
-        return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
-    }
-
-    //身份证前三后四脱敏
-    public static String idEncrypt(String id) {
-        if (StringUtils.isEmpty(id) || (id.length() < 8)) {
-            return id;
-        }
-        return id.replaceAll("(?<=\\w{3})\\w(?=\\w{4})", "*");
-    }
+//		System.out.println(mobileEncrypt("13486070402"));
+//		System.out.println(idEncrypt("330225199507155112"));
+//	}
+//
+//    // 手机号码前三后四脱敏
+//    public static String mobileEncrypt(String mobile) {
+//        if (StringUtils.isEmpty(mobile) || (mobile.length() != 11)) {
+//            return mobile;
+//        }
+//        return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+//    }
+//
+//    //身份证前三后四脱敏
+//    public static String idEncrypt(String id) {
+//        if (StringUtils.isEmpty(id) || (id.length() < 8)) {
+//            return id;
+//        }
+//        return id.replaceAll("(?<=\\w{3})\\w(?=\\w{4})", "*");
+//    }
 	 
 //	 public static String stampToDate(String s){
 //	        String res;
@@ -79,5 +80,39 @@ public class Test {
 //	        res = simpleDateFormat.format(date);
 //	        return res;
 //	    }
-
+//		String [] aStrings = {"多米记","xx1","xx2"};
+//        String JSON_ARRAY_STR = "[\"多米记\",\"xx1\",\"xx2\"]";
+//		JSONArray jsonArray = JSON.parseArray(JSON_ARRAY_STR);
+//        int size = jsonArray.size();
+//        for (int i = 0; i < size; i++){
+//            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//            System.out.println(jsonObject.getString("studentName")+":"+jsonObject.getInteger("studentAge"));
+//        }
+		
+//		StringBuffer stringBuffer = new StringBuffer().append("a").append("b");
+//		System.out.println(stringBuffer);
+		
+//		String string = "[\"多米记\",\"xx1\",\"xx2\"]";
+//		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+//		System.out.println(string);
+//		String [] stringArr= string.split(",");
+//		for(int i=0;i<stringArr.length;i++){
+//			System.out.println(stringArr[i]);
+//			}
+		
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		String SourceClick =redisClientUtil.get("123");
+		if(SourceClick==null) {
+			System.out.println(redisClientUtil.getkeyAll());
+			redisClientUtil.set("akey","0");
+			System.out.println(redisClientUtil.getkeyAll());
+			System.out.println(redisClientUtil.getSourceClick("akey"));
+			redisClientUtil.set("akey","1");
+			System.out.println(redisClientUtil.getSourceClick("akey"));
+		}else {
+			System.out.println(2);
+		}
+		
+		
+	}
 }

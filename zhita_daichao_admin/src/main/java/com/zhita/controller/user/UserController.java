@@ -31,7 +31,9 @@ public class UserController {
 	//后台管理---查询出用户表所有信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllUser")
-    public Map<String,Object> queryAllUser(Integer page,String[] company){
+    public Map<String,Object> queryAllUser(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
     	List<Source> list1=new ArrayList<>();
 		PageUtil pageUtil=null;
 		List<User> list=new ArrayList<>();

@@ -63,9 +63,9 @@ public interface IntLoginService {
     //后台管理---查询出所有的角色信息  不含分页
     public List<Role> queryAllRole();
 
-	int updatePwd(String phone, String md5Pwd);
+	int updatePwd(String phone, String md5Pwd, String company);
 
-	String getMd5pwd(String phone);
+	String getMd5pwd(String phone, String company);
 
 	int insertfootprint1(String phone, String nickName, String openId, String registrationTime, String loginStatus,
 			String company, String registrationType, Integer fatherId);

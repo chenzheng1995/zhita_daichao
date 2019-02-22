@@ -482,11 +482,11 @@
 	<update id="updatePwd" parameterType="java.lang.String" >
 		update user
 		set pwd = #{md5Pwd}
-		where phone = #{phone}
+		where phone = #{phone} and company = #{company}
 	</update>	
 				<!--APP 查询密码-->
 	<select id="getMd5pwd" parameterType="java.lang.String" resultType="java.lang.String">
-      select pwd from user where phone = #{phone}
+      select pwd from user where phone = #{phone} and company = #{company}
 	</select>
 	
 	<!--小程序 查询二维码的url-->

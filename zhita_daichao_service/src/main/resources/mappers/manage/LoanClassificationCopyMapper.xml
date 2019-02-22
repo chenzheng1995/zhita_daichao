@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.LoanClassificationCopyMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.LoanClassificationCopy">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessClassification, amount, company
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loan_classification_copy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loan_classification_copy
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.LoanClassificationCopy">
+    insert into loan_classification_copy (id, businessClassification, amount, 
+      company)
+    values (#{id,jdbcType=INTEGER}, #{businessclassification,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{company,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.LoanClassificationCopy">
+    insert into loan_classification_copy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessclassification != null">
+        businessClassification,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessclassification != null">
+        #{businessclassification,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.LoanClassificationCopy">
+    update loan_classification_copy
+    <set>
+      <if test="businessclassification != null">
+        businessClassification = #{businessclassification,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoanClassificationCopy">
+    update loan_classification_copy
+    set businessClassification = #{businessclassification,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      company = #{company,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update> 
+
+<!-- ============================================================ -->
+  <select id="queryLoanClass" resultType="com.zhita.model.manage.LoanClassificationCopy">
+  	SELECT businessClassification from loan_classification_copy where company = #{company}
+  </select>
+  
+  
+</mapper>

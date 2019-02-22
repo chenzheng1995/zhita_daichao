@@ -31,7 +31,9 @@ public class AdvController {
     //后台管理---查询广告表全部信息,含分页
 	@ResponseBody
 	@RequestMapping("/queryAll")
-    public Map<String,Object> queryAll(Integer page,String[] company){
+    public Map<String,Object> queryAll(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<Advertising> list=new ArrayList<>();
 		if(company.length==1) {

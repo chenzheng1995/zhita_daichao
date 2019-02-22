@@ -32,6 +32,7 @@ public class RedisClientUtil {
         jedis.close();
         return set;
     }
+       
 
     /**
      * 根据key，获取值
@@ -43,6 +44,19 @@ public class RedisClientUtil {
         Jedis jedis = pool.getResource();
         String value = jedis.get(key);
         jedis.expire(key,180);        //过期时间设置单位为秒
+        jedis.close();
+        return value;
+    }
+    
+    /**
+     * 根据key，获取值
+     * 
+     * @param key
+     * @return
+     */
+    public String getSourceClick(String key) {
+        Jedis jedis = pool.getResource();
+        String value = jedis.get(key);
         jedis.close();
         return value;
     }

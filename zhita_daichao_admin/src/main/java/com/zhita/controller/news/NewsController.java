@@ -36,7 +36,9 @@ public class NewsController {
 	//后台管理---查询攻略表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllNews")
-    public Map<String,Object> queryAllNews(Integer page,String[] company){
+    public Map<String,Object> queryAllNews(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<Strategy> list=new ArrayList<>();
 		if(company.length==1) {

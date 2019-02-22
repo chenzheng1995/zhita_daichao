@@ -1,18 +1,16 @@
-package com.zhita.controller.news;
+package com.zhita.controller.daichao;
 
-import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+
 
 import com.zhita.service.news.IntNewsService;
 
 @Controller
-@RequestMapping("/news")
+@RequestMapping(value="/news")
 public class NewsController {
 	@Resource(name="newsServiceImp")
 	private IntNewsService intNewsService;
