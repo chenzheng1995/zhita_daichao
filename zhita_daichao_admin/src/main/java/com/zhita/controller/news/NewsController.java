@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zhita.model.manage.Strategy;
 import com.zhita.service.news.IntNewsService;
+import com.zhita.util.ListPageUtil;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
 
@@ -39,6 +40,7 @@ public class NewsController {
     public Map<String,Object> queryAllNews(Integer page,String[] company){
 		PageUtil pageUtil=null;
 		List<Strategy> list=new ArrayList<>();
+		List<Strategy> listto=new ArrayList<>();
 		if(company.length==1) {
 			
 			System.out.println("company.length==1");
@@ -57,51 +59,75 @@ public class NewsController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intNewsService.queryAllNews(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	listto=intNewsService.queryAllNews(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
 		}
 		else if(company.length>1) {
 			
 			System.out.println("company.length>1");
 			
-    		int totalCountfor=0;
     		List<Strategy> listfor=null;
 			for (int i = 0; i < company.length; i++) {
-		    	int totalCountfor1=intNewsService.pageCount(company[i]);//该方法是查询攻略总数量
-            	totalCountfor=totalCountfor+totalCountfor1;
-            	
-            	System.out.println("totalCountfor："+totalCountfor);
-		    	pageUtil=new PageUtil(page,2,totalCountfor);
-		    	if(page<1) {
-		    		page=1;
-		    	}
-		    	else if(page>pageUtil.getTotalPageCount()) {
-		    		if(totalCountfor==0) {
-		    			page=pageUtil.getTotalPageCount()+1;
-		    		}else {
-		    			page=pageUtil.getTotalPageCount();
-		    		}
-		    	}
-		    	int pages=(page-1)*pageUtil.getPageSize();
-		    	pageUtil.setPage(pages);
-		    	listfor=intNewsService.queryAllNews(company[i],pageUtil.getPage(),pageUtil.getPageSize());
+		    	listfor=intNewsService.queryAllNews1(company[i]);
             	list.addAll(listfor);
 			}
+			
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
 		}
     	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listnews",list);
+    	map.put("listnews",listto);
     	map.put("pageutil", pageUtil);
+    	map.put("company", company);
     	return map;
     }
 	
 	//后台管理---根据标题字段模糊查询攻略表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryNewsByLike")
-    public Map<String,Object> queryNewsByLike(String title,Integer page,String company){
-		List<Strategy> list=null;
+    public Map<String,Object> queryNewsByLike(String title,Integer page,String[] company){
 		PageUtil pageUtil=null;
-		if(title==null||"".equals(title)) {
-	    	int totalCount=intNewsService.pageCount(company);//该方法是查询攻略总数量
-	       	pageUtil=new PageUtil(page,2,totalCount);
+		List<Strategy> list=new ArrayList<>();
+		List<Strategy> listto=new ArrayList<>();
+		
+		//标题为空并且公司名不为空   公司名选择的是  全部 项
+		if((title==null||"".equals(title))&&(company.length>1)) {
+			
+			System.out.println("第一个if");
+			
+	   		List<Strategy> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	listfor=intNewsService.queryAllNews1(company[i]);
+            	list.addAll(listfor);
+			}
+			
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+			
+		}
+		//标题为空并且公司名不为空   公司名选择的不是  全部项
+		else if((title==null||"".equals(title))&&(company.length==1)) {
+			
+			System.out.println("第二个if");
+			
+	    	int totalCount=intNewsService.pageCount(company[0]);//该方法是查询攻略总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -114,10 +140,39 @@ public class NewsController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intNewsService.queryAllNews(company,pageUtil.getPage(),pageUtil.getPageSize());
-		}else {
-	    	int totalCount=intNewsService.pageCountByLike(title,company);//该方法是模糊查询的攻略总数量
-	       	pageUtil=new PageUtil(page,2,totalCount);
+	    	listto=intNewsService.queryAllNews(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
+		}
+		//标题不为空并且公司名不为空   公司名选择的是  全部项
+		else if((title!=null||!"".equals(title))&&(company.length>1)) {
+			
+			System.out.println("第三个if");
+			
+	   		List<Strategy> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	listfor=intNewsService.queryNewsByLike1(title,company[i]);
+            	list.addAll(listfor);
+			}
+			
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+			
+		}
+		//标题不为空并且公司名不为空   公司名选择的不是  全部项
+		else if((title!=null||!"".equals(title))&&(company.length==1)){
+			
+			System.out.println("第四个if");
+			
+	    	int totalCount=intNewsService.pageCountByLike(title,company[0]);//该方法是模糊查询的攻略总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -130,10 +185,12 @@ public class NewsController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intNewsService.queryNewsByLike(title,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	listto=intNewsService.queryNewsByLike(title,company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
+			
 		}
     	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listnewsByLike",list);
+    	map.put("listnewsByLike",listto);
     	map.put("pageutil", pageUtil);
     	return map;
     }

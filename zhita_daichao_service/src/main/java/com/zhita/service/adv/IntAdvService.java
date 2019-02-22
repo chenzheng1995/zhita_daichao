@@ -17,8 +17,14 @@ public interface IntAdvService {
     //后台管理---查询广告表全部信息,含分页
     public List<Advertising> queryAll(String company,Integer page,Integer pagesize);
     
+    //后台管理---查询广告表全部信息,不含分页
+    public List<Advertising> queryAll1(String company);
+    
     //后台管理---根据标题字段模糊查询广告表信息，含分页
     public List<Advertising> queryAllByLike(String title,String company,Integer page,Integer pagesize);
+    
+    //后台管理---根据标题字段模糊查询广告表信息，不含分页
+    public List<Advertising> queryAllByLike1(String title,String company);
     
     //后台管理---添加广告表信息
     public int AddAll(Advertising advertising); 

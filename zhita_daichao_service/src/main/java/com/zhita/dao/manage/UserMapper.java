@@ -60,6 +60,9 @@ public interface UserMapper {
 	//后台管理---查询出用户表所有信息，含分页
 	List<User> queryAllUser(String company,Integer page,Integer pagesize);
 	
+	//后台管理---查询出用户表所有信息，不含分页
+	List<User> queryAllUser1(String company);
+	
 	//后台管理---通过手机号模糊查询，含分页
 	List<User> queryByPhone(String phone,String company,Integer page,Integer pagesize);
 	

@@ -67,5 +67,11 @@ public class LoanClassification implements Serializable{
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
     }
+
+	@Override
+	public String toString() {
+		return "LoanClassification [id=" + id + ", businessClassification=" + businessClassification + ", amount="
+				+ amount + ", listLoanBusiness=" + listLoanBusiness + ", company=" + company + "]";
+	}
     
 }

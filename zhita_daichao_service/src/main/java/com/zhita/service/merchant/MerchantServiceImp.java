@@ -40,6 +40,12 @@ public class MerchantServiceImp implements IntMerchantService{
     	return list;
     }
     
+    //后台管理---查询出所有渠道表信息，不含分页
+    public List<Source> queryAllSource1(String company){
+    	List<Source> list=sourceMapper.queryAllSource1(company);
+    	return list;
+    }
+    
     //后台管理---用于获取总页数
     public int pageCount(String company) {
     	int count=sourceMapper.pageCount(company);
@@ -55,6 +61,12 @@ public class MerchantServiceImp implements IntMerchantService{
     //后台管理---模糊查询渠道信息,并且有分页功能
     public List<Source> queryByLike(String sourceName,String company,Integer page,Integer pagesize){
     	List<Source> list=sourceMapper.queryByLike(sourceName,company,page,pagesize);
+    	return list;
+    }
+    
+    //后台管理---模糊查询渠道信息,并且没有分页功能
+    public List<Source> queryByLike1(String sourceName,String company){
+    	List<Source> list=sourceMapper.queryByLike1(sourceName,company);
     	return list;
     }
     

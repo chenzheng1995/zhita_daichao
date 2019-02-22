@@ -11,8 +11,12 @@ public interface IntBannerService {
     public int pageCountByLike(String title,String company);
     //后台管理---查询轮播图全部信息,含分页
     public List<ShufflingFigure> queryAll(String company,Integer page,Integer pagesize);
+    //后台管理---查询轮播图全部信息,不含分页
+    public List<ShufflingFigure> queryAll1(String company);
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
     public List<ShufflingFigure> queryAllByLike(String title,String company,Integer page,Integer pagesize);
+    //后台管理---根据标题字段模糊查询轮播图信息，不含分页
+    public List<ShufflingFigure> queryAllByLike1(String title,String company);
     //后台管理---添加轮播图信息
     public int AddAll(ShufflingFigure shufflingFigure);
     //后台管理 ---根据主键id查询出轮播图信息

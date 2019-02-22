@@ -176,7 +176,7 @@
 	<select id="queryCount" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(DISTINCT f.userId) from commodity_footprint f where footprint=#{arg0} and company=#{arg1} and deleted = 0
 	</select>
-		<!-- 小程序   查询某个用户有多少条浏览记录 -->
+	<!-- 小程序   查询某个用户有多少条浏览记录 -->
 	<select id="getRecordNumber" parameterType="java.lang.String" resultType="java.lang.Long">
 		select count(userId) from commodity_footprint where userId=#{userId} and company=#{company} and deleted = 0
 	</select>

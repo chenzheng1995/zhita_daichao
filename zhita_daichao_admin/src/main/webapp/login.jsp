@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	1.jsp不好意思，您没有权限！
+	login.jsp
 </body>
 </html>

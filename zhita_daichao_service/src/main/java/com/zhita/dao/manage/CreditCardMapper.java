@@ -25,6 +25,9 @@ public interface CreditCardMapper {
     //后台管理---查询信用卡所有的信息,含分页
     List<CreditCard> queryAllCard(String company,Integer page,Integer pagesize);
     
+    //后台管理---查询信用卡所有的信息,不含分页
+    List<CreditCard> queryAllCard1(String company);
+    
     //后台管理---用于获取总页数
     int pageCount(String company);
     
@@ -33,6 +36,9 @@ public interface CreditCardMapper {
     
     //后台管理---模糊查询信用卡信息,并且有分页功能
     List<CreditCard> queryByLike(String title,String company,Integer page,Integer pagesize);
+    
+    //后台管理---模糊查询信用卡信息,并且没有分页功能
+    List<CreditCard> queryByLike1(String title,String company);
     
     //后台管理---添加信用卡信息
     int addAll(CreditCard record);

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +28,7 @@ import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.registe.IntRegisteService;
 import com.zhita.service.type.IntTypeService;
+import com.zhita.util.ListPageUtil;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
 import com.zhita.util.Timestamps;
@@ -65,6 +65,7 @@ public class RegisteController {
     public Map<String,Object> queryAll(Integer page,String[] company){
 		PageUtil pageUtil=null;
 		List<LoansBusinesses> list=new ArrayList<>();
+		List<LoansBusinesses> listto=new ArrayList<>();
     	if(company.length==1) {
     		
     		System.out.println("company.length==1");
@@ -88,9 +89,8 @@ public class RegisteController {
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	
-        	System.out.println(pageUtil.getPage()+"------"+pageUtil.getPageSize()+"-----"+pageUtil.getTotalCount()+"----"+pageUtil.getTotalPageCount());
-        	
-        	list=intRegisteService.queryAllAdmain(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+        	listto=intRegisteService.queryAllAdmain(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,2,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
     		}
@@ -99,45 +99,32 @@ public class RegisteController {
     		
     		System.out.println("company.length>1");
     		
-    		int totalCountfor=0;
     		List<LoansBusinesses> listfor=null;
     		for (int j = 0; j < company.length; j++) {
     			List<String> list1=intRegisteService.queryAllBusinessName(company[j]);//查询出所有贷款商家的商家名称，存入list集合
             	for (int i = 0; i < list1.size(); i++) {
             		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i),company[j]),list1.get(i));//将商家的被申请人数字段进行修改
         		}
-            	int totalCountfor1=intRegisteService.pageCount(company[j]);//该方法是查询贷款商家总条数
-            	totalCountfor=totalCountfor+totalCountfor1;
             	
-            	System.out.println("totalCountfor："+totalCountfor);
-            	
-            	pageUtil=new PageUtil(page,10,totalCountfor);
-            	if(page<1) {
-            		page=1;
-            	}
-            	else if(page>pageUtil.getTotalPageCount()) {
-            		if(totalCountfor==0) {
-            			page=pageUtil.getTotalPageCount()+1;
-            		}else {
-            			page=pageUtil.getTotalPageCount();
-            		}
-            	}
-            	int pages=(page-1)*pageUtil.getPageSize();
-            	pageUtil.setPage(pages);
-            	
-            	System.out.println(pageUtil.getPage()+"------"+pageUtil.getPageSize()+"-----"+pageUtil.getTotalCount()+"----"+pageUtil.getTotalPageCount());
-            	
-            	listfor=intRegisteService.queryAllAdmain(company[j],pageUtil.getPage(),pageUtil.getPageSize());
+            	listfor=intRegisteService.queryAllAdmain1(company[j]);
             	list.addAll(listfor);
-            	for (int i = 0; i < list.size(); i++) {
-        			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
-        		}
-            	
 			}
+    		
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
     	}
     	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listLoansBusin",list);
+    	map.put("listLoansBusin",listto);
     	map.put("pageutil", pageUtil);
+    	map.put("company", company);
     	return map;
     }
     
@@ -206,16 +193,47 @@ public class RegisteController {
 	//后台管理---通过商家名称模糊查询，并且有分页功能
     @ResponseBody
     @RequestMapping("/queryByNameLike")
-    public Map<String,Object> queryByNameLike(String businessName,Integer page,String company){
-    	List<LoansBusinesses> list=null;
+    public Map<String,Object> queryByNameLike(String businessName,Integer page,String[] company){
     	PageUtil pageUtil=null;
-    	if(businessName==null||"".equals(businessName)) {
-    	   	List<String> list1=intRegisteService.queryAllBusinessName(company);//查询出所有贷款商家的商家名称，存入list集合
+    	List<LoansBusinesses> list=new ArrayList<>();
+    	List<LoansBusinesses> listto=new ArrayList<>();
+    	//商家名称为空并且公司名不为空    公司名选择的是 全部项
+    	if((businessName==null||"".equals(businessName))&&(company.length>1)){
+    		
+    		System.out.println("第一个if");
+    		
+    		List<LoansBusinesses> listfor=null;
+    		for (int j = 0; j < company.length; j++) {
+    			List<String> list1=intRegisteService.queryAllBusinessName(company[j]);//查询出所有贷款商家的商家名称，存入list集合
+            	for (int i = 0; i < list1.size(); i++) {
+            		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i),company[j]),list1.get(i));//将商家的被申请人数字段进行修改
+        		}
+            	
+            	listfor=intRegisteService.queryAllAdmain1(company[j]);
+            	list.addAll(listfor);
+			}
+    		
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+    	}
+		//商家名称为空并且公司名不为空   公司名选择的不是全部项
+    	else if((businessName==null||"".equals(businessName))&&(company.length==1)) {
+    		
+    		System.out.println("第二个if");
+    		
+       		List<String> list1=intRegisteService.queryAllBusinessName(company[0]);//查询出所有贷款商家的商家名称，存入list集合
         	for (int i = 0; i < list1.size(); i++) {
-        		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i),company), list1.get(i));//将商家的被申请人数字段进行修改
+        		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i),company[0]),list1.get(i));//将商家的被申请人数字段进行修改
     		}
-        	
-        	int totalCount=intRegisteService.pageCount(company);//该方法是查询贷款商家总条数
+        	int totalCount=intRegisteService.pageCount(company[0]);//该方法是查询贷款商家总条数
         	pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
@@ -229,15 +247,53 @@ public class RegisteController {
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
-        	list=intRegisteService.queryAllAdmain(company,pageUtil.getPage(),pageUtil.getPageSize());
-    	}else {
-    		List<String> list1=intRegisteService.queryAllBusinessNameByLike(businessName,company);//通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中
-        	for (int i = 0; i < list1.size(); i++) {
-        		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i),company), list1.get(i));//将商家的被申请人数字段进行修改
+        	
+        	listto=intRegisteService.queryAllAdmain(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,2,totalCount);
+        	for (int i = 0; i < list.size(); i++) {
+    			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
     		}
+    	
+    	}
+		//商家名称不为空并且公司名不为空   公司名选择的是全部项
+    	else if((businessName!=null||!"".equals(businessName))&&(company.length>1)) {
+
+    		System.out.println("第三个if");
     		
-          	int totalCount=intRegisteService.pageCountByLike(businessName,company);//该方法是模糊查询的贷款商家总数量
-           	pageUtil=new PageUtil(page,10,totalCount);
+    		List<LoansBusinesses> listfor=null;
+    		for (int j = 0; j < company.length; j++) {
+    			List<String> list1=intRegisteService.queryAllBusinessName(company[j]);//查询出所有贷款商家的商家名称，存入list集合
+            	for (int i = 0; i < list1.size(); i++) {
+            		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i),company[j]),list1.get(i));//将商家的被申请人数字段进行修改
+        		}
+            	
+            	listfor=intRegisteService.queryByNameLike1(businessName,company[j]);
+            	list.addAll(listfor);
+			}
+    		
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());    		
+			
+    	}
+    	//商家名称不为空并且公司名不为空  公司名选择的不是全部项
+    	else if((businessName!=null||!"".equals(businessName))&&(company.length==1)) {
+    		
+    		System.out.println("第四个if");
+    		
+       		List<String> list1=intRegisteService.queryAllBusinessNameByLike(businessName,company[0]);//通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中
+        	for (int i = 0; i < list1.size(); i++) {
+        		intRegisteService.upaApplicationNumber(commodityFootprintService.queryCount(list1.get(i),company[0]),list1.get(i));//将商家的被申请人数字段进行修改
+    		}
+        	int totalCount=intRegisteService.pageCountByLike(businessName,company[0]);//该方法是模糊查询的贷款商家总数量
+        	pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -250,8 +306,15 @@ public class RegisteController {
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
-        	list=intRegisteService.queryByNameLike(businessName,company,pageUtil.getPage(),pageUtil.getPageSize());
-    	}
+        	
+        	listto=intRegisteService.queryByNameLike(businessName,company[0],pageUtil.getPage(),pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,2,totalCount);
+        	for (int i = 0; i < list.size(); i++) {
+    			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
+    		}
+    		
+        }
+
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listLoanBusinByLike",list);
     	map.put("pageutil",pageUtil);

@@ -28,6 +28,9 @@ public interface SourceMapper {
     //后台管理---查询出所有渠道表信息，含分页
     List<Source> queryAllSource(String company,Integer page,Integer pagesize);
     
+    //后台管理---查询出所有渠道表信息，不含分页
+    List<Source> queryAllSource1(String company);
+    
     //后台管理---用于获取总页数
     int pageCount(String company);
     
@@ -36,6 +39,9 @@ public interface SourceMapper {
     
     //后台管理---模糊查询渠道信息,并且有分页功能
     List<Source> queryByLike(String sourceName,String company,Integer page,Integer pagesize);
+    
+    //后台管理---模糊查询渠道信息,并且没有分页功能
+    List<Source> queryByLike1(String sourceName,String company);
     
     //后台管理---添加渠道信息
     int addAll(Source source);

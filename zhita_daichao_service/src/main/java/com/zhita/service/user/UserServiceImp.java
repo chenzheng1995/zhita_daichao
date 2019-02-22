@@ -55,6 +55,12 @@ public class UserServiceImp implements UserService {
 		List<User> list=userMapper.queryAllUser(company,page,pagesize);
 		return list;
 	}
+	
+	//后台管理---查询出用户表所有信息，不含分页
+	public List<User> queryAllUser1(String company){
+		List<User> list=userMapper.queryAllUser1(company);
+		return list;
+	}
 
 	//后台管理---通过传过来的值，进行多种情况的模糊查询，含分页
 	public Map<String, Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page) {

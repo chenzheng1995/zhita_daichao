@@ -43,6 +43,12 @@ public class TypeServiceImp implements IntTypeService{
 		List<LoanClassification> list=loanClassificationMapper.queryAllPage(company,page,pagesize);
 		return list;
 	}
+	@Override
+    //后台管理---查询贷款分类所有信息，不含分页
+    public List<LoanClassification> queryAllNoPage(String company){
+		List<LoanClassification> list=loanClassificationMapper.queryAllNoPage(company);
+		return list;
+    }
     //后台管理---用于获取总页数
 	@Override
 	public int pageCount(String company) {
@@ -66,6 +72,11 @@ public class TypeServiceImp implements IntTypeService{
 		List<LoanClassification> list=loanClassificationMapper.queryByLike(businessClassification,company,page,pagesize);
 		return list;
 	}
+    //后台管理---模糊查询贷款分类信息,没有分页功能
+    public List<LoanClassification> queryByLike1(String businessClassification,String company){
+    	List<LoanClassification> list=loanClassificationMapper.queryByLike1(businessClassification,company);
+		return list;
+    }
     //后台管理---添加贷款分类信息
 	@Override
 	public int addAll(LoanClassification record) {

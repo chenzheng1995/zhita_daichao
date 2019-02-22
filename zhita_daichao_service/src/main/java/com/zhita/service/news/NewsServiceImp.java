@@ -29,6 +29,11 @@ public class NewsServiceImp implements IntNewsService{
     	List<Strategy> list=strategyMapper.queryAllNews(company,page,pagesize);
     	return list;
     }
+    //后台管理---查询攻略表所有信息，不含分页
+    public List<Strategy> queryAllNews1(String company){
+    	List<Strategy> list=strategyMapper.queryAllNews1(company);
+    	return list;
+    }
     //后台管理---查询攻略表总数量
     public int pageCount(String company) {
     	int count=strategyMapper.pageCount(company);
@@ -43,6 +48,11 @@ public class NewsServiceImp implements IntNewsService{
     //后台管理---根据标题字段模糊查询，攻略表信息，含分页
     public List<Strategy> queryNewsByLike(String title,String company,Integer page,Integer pagesize){
     	List<Strategy> list=strategyMapper.queryNewsByLike(title,company,page,pagesize);
+    	return list;
+    }
+    //后台管理---根据标题字段模糊查询，攻略表信息，不含分页
+    public List<Strategy> queryNewsByLike1(String title,String company){
+    	List<Strategy> list=strategyMapper.queryNewsByLike1(title,company);
     	return list;
     }
     //后台管理---添加攻略信息
