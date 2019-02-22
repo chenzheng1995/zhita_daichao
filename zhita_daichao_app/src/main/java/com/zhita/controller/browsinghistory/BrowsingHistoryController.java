@@ -41,7 +41,7 @@ public class BrowsingHistoryController {
 		 if(curPage<1){
 		   curPage = 1;
 		 }
-		 long recordNumber = cFootprintService.getRecordNumber(userId,company);//根据用户id和公司名称，查询出他有多少条足迹
+		 long recordNumber = cFootprintService.getRecordNumber(userId,company);//根据用户id和公司名称，查询出他有多少条唯一商品名称的足迹
 		 int largestPages = (int) (recordNumber/10)+1;//最大页数
 		 if(largestPages<curPage) {
 			 curPage = largestPages;

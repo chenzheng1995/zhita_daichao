@@ -95,17 +95,20 @@ public class LoginController {
 	@RequestMapping("/codelogin")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> codeLogin(String verificationCode, String phone,String nickName,String code,String company,String registrationType,Integer fatherId) {//verificationCode是验证码，phone是手机号，nickName是昵称
+	public Map<String, Object> codeLogin(String verificationCode, String phone,String nickName,String code,String company,
+			String registrationType,Integer fatherId) {//verificationCode是验证码，phone是手机号，nickName是昵称
 		int num = 0;
 		int number = 0;
 		Map<String, Object> map = new HashMap<>();
-		if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(nickName) || StringUtils.isEmpty(code) || StringUtils.isEmpty(company)) {
+		if (StringUtils.isEmpty(verificationCode) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(nickName) 
+				|| StringUtils.isEmpty(code) || StringUtils.isEmpty(company)) {
 			map.put("msg", "verificationCode,phone,nickName,code或company不能为空");
 			map.put("SCode", "401");
 			return map;
 			}else {
 				PostAndGet pGet = new PostAndGet();
-				String string = pGet.sendGet("https://api.weixin.qq.com/sns/jscode2session?js_code=" + code + "&appid=wxdea525a189135ccf" + "&secret=2810bb3053465c58e68125f41d3ca9b9" + "&grant_type=authorization_code");
+				String string = pGet.sendGet("https://api.weixin.qq.com/sns/jscode2session?js_code=" + code + "&appid=wxdea525a189135ccf" +
+				"&secret=2810bb3053465c58e68125f41d3ca9b9" + "&grant_type=authorization_code");
 				JSONObject jsonObject = JSON.parseObject(string);
 				String openId =  (String) jsonObject.get("openid");   //获取openid
 				RedisClientUtil redisClientUtil = new RedisClientUtil();

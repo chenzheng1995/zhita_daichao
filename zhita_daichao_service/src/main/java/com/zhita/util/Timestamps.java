@@ -1,5 +1,6 @@
 package com.zhita.util;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,6 +35,7 @@ public class Timestamps {
 		Long nextMonthlyZeroTimestamps = last - (last + 60 * 60 * 8 * 1000) % oneDayTimestamps+86400000;
 		return nextMonthlyZeroTimestamps;
 	}
+	
 
 	//把时间戳转换成时间格式(年 月 日 时 分 秒)
 	 public static String stampToDate(String s){
