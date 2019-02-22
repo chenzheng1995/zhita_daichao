@@ -9,6 +9,8 @@ import com.zhita.model.manage.LoansBusinesses;
 public interface IntRegisteService{
 	//后台管理---查询贷款商家部分字段信息，含分页
 	public List<LoansBusinesses> queryAllAdmain(String company,Integer page,Integer pagesize) ;
+	//后台管理---查询贷款商家部分字段信息，不含分页
+	public List<LoansBusinesses> queryAllAdmain1(String company) ;
   	//后台管理---查询贷款商家总条数
   	public int pageCount(String company);
   	//后台管理---通过模糊查询的条件查询贷款商家总条数
@@ -17,6 +19,8 @@ public interface IntRegisteService{
     public int insert(LoansBusinesses record);
   	//后台管理---通过商家名称模糊查询，并且有分页功能
   	public List<LoansBusinesses> queryByNameLike(String businessName,String company,Integer page,Integer pagesize);
+  	//后台管理---通过商家名称模糊查询，没有分页功能
+  	public List<LoansBusinesses> queryByNameLike1(String businessName,String company);
   	//后台管理---通过商家主键id修改假删除字段的值
   	public int upaFalseDel(Integer id);
     //后台管理---通过主键id查询出贷款商家信息

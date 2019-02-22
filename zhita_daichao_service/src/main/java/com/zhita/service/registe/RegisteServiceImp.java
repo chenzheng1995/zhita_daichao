@@ -33,9 +33,15 @@ public class RegisteServiceImp implements IntRegisteService{
 		System.out.println("打印则没有走缓存");
 		return list;
 	}
-*/	//后台管理---查询贷款商家部分字段信息，含分页
+*/	
+	//后台管理---查询贷款商家部分字段信息，含分页
   	public List<LoansBusinesses> queryAllAdmain(String company,Integer page,Integer pagesize) {
 		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain(company,page,pagesize);
+		return list;
+	}
+	//后台管理---查询贷款商家部分字段信息，不含分页
+  	public List<LoansBusinesses> queryAllAdmain1(String company) {
+		List<LoansBusinesses> list=loansBusinessesMapper.queryAllAdmain1(company);
 		return list;
 	}
   	//后台管理---查询贷款商家总条数
@@ -57,6 +63,11 @@ public class RegisteServiceImp implements IntRegisteService{
   	//后台管理---通过商家名称模糊查询，并且有分页功能
   	public List<LoansBusinesses> queryByNameLike(String businessName,String company,Integer page,Integer pagesize){
   		List<LoansBusinesses> list=loansBusinessesMapper.queryByNameLike(businessName,company,page,pagesize);
+  		return list;
+  	}
+  	//后台管理---通过商家名称模糊查询，没有分页功能
+  	public List<LoansBusinesses> queryByNameLike1(String businessName,String company){
+  		List<LoansBusinesses> list=loansBusinessesMapper.queryByNameLike1(businessName,company);
   		return list;
   	}
   	//后台管理---通过商家主键id修改假删除字段的值

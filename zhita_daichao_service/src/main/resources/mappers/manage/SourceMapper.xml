@@ -134,6 +134,10 @@
   <select id="queryAllSource" resultType="com.zhita.model.manage.Source">
   	select id,sourceName,account,link,state,company from source where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
+  <!-- 后台管理 查询出所有渠道表信息，不含分页-->
+  <select id="queryAllSource1" resultType="com.zhita.model.manage.Source">
+  	select id,sourceName,account,link,state,company from source where deleted='0' and company=#{arg0}
+  </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
    select count(sourceName) from source where deleted='0' and company=#{company}
@@ -144,7 +148,11 @@
  </select>
  <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.Source">
- 	select id,sourceName,account,link,state,company from source where deleted='0' and sourceName like "%"#{arg0}"%" and company=#{arg1}limit #{arg2},#{arg3}
+ 	select id,sourceName,account,link,state,company from source where deleted='0' and sourceName like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ </select>
+  <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且没有分页功能 -->
+  <select id="queryByLike1" resultType="com.zhita.model.manage.Source">
+ 	select id,sourceName,account,link,state,company from source where deleted='0' and sourceName like "%"#{arg0}"%" and company=#{arg1}
  </select>
  <!--后台管理 添加渠道信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.Source" >

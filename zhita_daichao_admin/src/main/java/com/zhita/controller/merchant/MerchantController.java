@@ -15,6 +15,7 @@ import com.zhita.model.manage.Advertising;
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.service.merchant.IntMerchantService;
+import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
 
 @Controller
@@ -32,6 +33,7 @@ public class MerchantController {
 		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<Source> list=new ArrayList<>();
+		List<Source> listto=new ArrayList<>();
 		if(company.length==1) {
 			
 			System.out.println("company.length==1");
@@ -50,50 +52,72 @@ public class MerchantController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intMerchantService.queryAllSource(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	listto=intMerchantService.queryAllSource(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
 		}
 		else if(company.length>1) {
 			
 			System.out.println("company.length>1");
 			
-    		int totalCountfor=0;
     		List<Source> listfor=null;
 			for (int i = 0; i < company.length; i++) {
-		    	int totalCountfor1=intMerchantService.pageCount(company[i]);//该方法是查询渠道表总数量
-            	totalCountfor=totalCountfor+totalCountfor1;
-            	
-            	System.out.println("totalCountfor："+totalCountfor);
-		    	pageUtil=new PageUtil(page,2,totalCountfor);
-		    	if(page<1) {
-		    		page=1;
-		    	}
-		    	else if(page>pageUtil.getTotalPageCount()) {
-		    		if(totalCountfor==0) {
-		    			page=pageUtil.getTotalPageCount()+1;
-		    		}else {
-		    			page=pageUtil.getTotalPageCount();
-		    		}
-		    	}
-		    	int pages=(page-1)*pageUtil.getPageSize();
-		    	pageUtil.setPage(pages);
-		    	listfor=intMerchantService.queryAllSource(company[i],pageUtil.getPage(),pageUtil.getPageSize());
+		    	listfor=intMerchantService.queryAllSource1(company[i]);
             	list.addAll(listfor);
 			}
+			
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
 		}
     	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listsource",list);
+    	map.put("listsource",listto);
     	map.put("pageutil", pageUtil);
+    	map.put("company", company);
     	return map;
     }
 	
 	//后台管理---根据渠道名称字段模糊查询渠道表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/querySourceByLike")
-    public Map<String,Object> querySourceByLike(String sourceName,Integer page,String company){
-		List<Source> list=null;
+    public Map<String,Object> querySourceByLike(String sourceName,Integer page,String[] company){
 		PageUtil pageUtil=null;
-		if(sourceName==null||"".equals(sourceName)) {
-	    	int totalCount=intMerchantService.pageCount(company);//该方法是查询渠道表总数量
+		List<Source> list=new ArrayList<>();
+		List<Source> listto=new ArrayList<>();
+		//渠道名称为空并且公司名不为空  公司名选择的是  全部项
+		if((sourceName==null||"".equals(sourceName))&&(company.length>1)) {
+			
+			System.out.println("第一个if");
+			
+    		List<Source> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	listfor=intMerchantService.queryAllSource1(company[i]);
+            	list.addAll(listfor);
+			}
+			
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+		}
+		//渠道名称为空并且公司名不为空  公司名选择的不是  全部项
+		else if((sourceName==null||"".equals(sourceName))&&(company.length==1)) {
+			
+			System.out.println("第二个if");
+			
+	    	int totalCount=intMerchantService.pageCount(company[0]);//该方法是查询渠道表总数量
 	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -107,9 +131,39 @@ public class MerchantController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intMerchantService.queryAllSource(company,pageUtil.getPage(),pageUtil.getPageSize());
-		}else {
-	    	int totalCount=intMerchantService.pageCountByLike(sourceName,company);//该方法是模糊查询的攻略总数量
+	    	listto=intMerchantService.queryAllSource(company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
+			
+		}
+		//渠道名称不为空并且公司名不为空  公司名选择的是  全部项
+		else if((sourceName!=null||!"".equals(sourceName))&&(company.length>1)) {
+			
+			System.out.println("第三个if");
+			
+    		List<Source> listfor=null;
+			for (int i = 0; i < company.length; i++) {
+		    	listfor=intMerchantService.queryByLike1(sourceName,company[i]);
+            	list.addAll(listfor);
+			}
+			
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i)+"整合后的集合");
+			}
+			
+			System.out.println("传进工具类的page"+page);
+			
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			listto.addAll(listPageUtil.getData());
+			
+			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+			
+		}
+		//渠道名称不为空并且公司名不为空  公司名选择的不是  全部项
+		else if((sourceName!=null||!"".equals(sourceName))&&(company.length==1)){
+			
+			System.out.println("第四个if");
+			
+	    	int totalCount=intMerchantService.pageCountByLike(sourceName,company[0]);//该方法是模糊查询的攻略总数量
 	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -123,10 +177,12 @@ public class MerchantController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=intMerchantService.queryByLike(sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	listto=intMerchantService.queryByLike(sourceName,company[0],pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
+			
 		}
     	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listsourceByLike",list);
+    	map.put("listsourceByLike",listto);
     	map.put("pageutil", pageUtil);
     	return map;
     }

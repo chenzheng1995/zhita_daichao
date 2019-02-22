@@ -42,9 +42,21 @@ public class AdvServiceImp implements IntAdvService{
     	return list;
     }
     
+    //后台管理---查询广告表全部信息,不含分页
+    public List<Advertising> queryAll1(String company){
+    	List<Advertising> list=advertisingMapper.queryAll1(company);
+    	return list;
+    }
+    
     //后台管理---根据标题字段模糊查询广告表信息，含分页
     public List<Advertising> queryAllByLike(String title,String company,Integer page,Integer pagesize){
     	List<Advertising> list=advertisingMapper.queryAllByLike(title,company,page,pagesize);
+    	return list;
+    }
+    
+    //后台管理---根据标题字段模糊查询广告表信息，不含分页
+    public List<Advertising> queryAllByLike1(String title,String company){
+    	List<Advertising> list=advertisingMapper.queryAllByLike1(title,company);
     	return list;
     }
     

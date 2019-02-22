@@ -181,6 +181,10 @@
   <select id="queryAllNews" resultType="com.zhita.model.manage.Strategy">
   	select id,title,cover,synopsis,type,isstick,state,company from strategy where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
+    <!-- 后台管理   查询攻略表所有信息，不含分页 -->
+  <select id="queryAllNews1" resultType="com.zhita.model.manage.Strategy">
+  	select id,title,cover,synopsis,type,isstick,state,company from strategy where deleted='0' and company=#{arg0}
+  </select>
   <!-- 后台管理   查询攻略表总数量-->
   <select id="pageCount" resultType="java.lang.Integer">
   	select count(cover) from strategy where deleted='0' and company=#{arg0}
@@ -189,9 +193,13 @@
   <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
   	select count(cover) from strategy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
   </select>
-    <!-- 后台管理   查询攻略表所有信息，含分页 -->
+  <!-- 后台管理   查询攻略表所有信息，含分页 -->
   <select id="queryNewsByLike" resultType="com.zhita.model.manage.Strategy">
-  	select id,title,cover,synopsis,type,isstick,state,company from strategy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1} limit #{arg1},#{arg2}
+  	select id,title,cover,synopsis,type,isstick,state,company from strategy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+  </select>
+  <!-- 后台管理   查询攻略表所有信息，不含分页 -->
+  <select id="queryNewsByLike1" resultType="com.zhita.model.manage.Strategy">
+  	select id,title,cover,synopsis,type,isstick,state,company from strategy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
   </select>
   <!-- 后台管理 添加攻略信息 -->
    <insert id="addAll" parameterType="com.zhita.model.manage.Strategy" >

@@ -37,9 +37,19 @@ public class BannerServiceImp implements IntBannerService{
     	List<ShufflingFigure> list=shufflingFigureMapper.queryAll(company,page,pagesize);
     	return list;
     }
+    //后台管理---查询轮播图全部信息,不含分页
+    public List<ShufflingFigure> queryAll1(String company){
+    	List<ShufflingFigure> list=shufflingFigureMapper.queryAll1(company);
+    	return list;
+    }
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
     public List<ShufflingFigure> queryAllByLike(String title,String company,Integer page,Integer pagesize){
     	List<ShufflingFigure> list=shufflingFigureMapper.queryAllByLike(title,company,page,pagesize);
+    	return list;
+    }
+    //后台管理---根据标题字段模糊查询轮播图信息，不含分页
+    public List<ShufflingFigure> queryAllByLike1(String title,String company){
+    	List<ShufflingFigure> list=shufflingFigureMapper.queryAllByLike1(title,company);
     	return list;
     }
     //后台管理---添加轮播图信息

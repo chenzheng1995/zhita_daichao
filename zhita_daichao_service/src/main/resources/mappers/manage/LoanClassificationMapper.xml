@@ -89,6 +89,12 @@
    	 <include refid="Base_Column_List" />
      from loan_classification where company=#{arg0} limit #{arg1},#{arg2}
   </select>
+    <!--后台管理  查询贷款分类所有信息，不含分页 -->
+  <select id="queryAllNoPage" resultType="com.zhita.model.manage.LoanClassification">
+  	select 
+   	 <include refid="Base_Column_List" />
+     from loan_classification where company=#{arg0}
+  </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
    select count(businessClassification) from loan_classification where company=#{arg0}
@@ -106,6 +112,12 @@
  	select 
    	 <include refid="Base_Column_List" />
     from loan_classification where businessClassification like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ </select>
+  <!-- 后台管理 模糊查询贷款分类信息没有分页功能 -->
+ <select id="queryByLike1" resultType="com.zhita.model.manage.LoanClassification">
+ 	select 
+   	 <include refid="Base_Column_List" />
+    from loan_classification where businessClassification like "%"#{arg0}"%" and company=#{arg1}
  </select>
  <!-- 后台管理   添加贷款分类信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.LoanClassification">

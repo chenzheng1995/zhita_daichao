@@ -8,6 +8,8 @@ import com.zhita.model.manage.LoansBusinesses;
 public interface IntTypeService{
     //后台管理---查询贷款分类所有信息，含分页
     public List<LoanClassification> queryAllPage(String company,Integer page,Integer pagesize);
+    //后台管理---查询贷款分类所有信息，不含分页
+    public List<LoanClassification> queryAllNoPage(String company);
     //后台管理---用于获取总页数
     public int pageCount(String company);
     //后台管理---用于获取模糊查询总页数
@@ -16,6 +18,8 @@ public interface IntTypeService{
     public int pageCountByBusinessClassification(String businessClassification, String company);
     //后台管理---模糊查询贷款分类信息,并且有分页功能
     public List<LoanClassification> queryByLike(String businessClassification,String company,Integer page,Integer pagesize);
+    //后台管理---模糊查询贷款分类信息,没有分页功能
+    public List<LoanClassification> queryByLike1(String businessClassification,String company);
     //后台管理---添加贷款分类信息
     public int addAll(LoanClassification record);
     //后台管理---通过主键id查询出贷款分类信息

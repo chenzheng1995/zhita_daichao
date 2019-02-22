@@ -27,10 +27,10 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
         <!-- 登录页面 -->
-<!--         <property name="loginUrl" value="/login.jsp" /> -->
+        <property name="loginUrl" value="/login.jsp" />
         
         <!--在此处配置无权限的跳转路径-->
-        <property name="unauthorizedUrl" value="/1.jsp"/>
+        <property name="unauthorizedUrl" value="/1s.jsp"/>
         <!--
         	配置哪些页面需要受保护.
         	以及访问这些页面需要的权限.
@@ -41,14 +41,10 @@
         -->
         <property name="filterChainDefinitions">
 			<value>
-<!-- 				/sysUser/checkLogin = anon
-				/login = anon
-				/index = anon
-				/page/** = anon -->
-				<!-- 要拦截的url -->
-				/admin_login/sendSMS = anon
-				/admin_login/logintest = anon
-				
+				<!-- 说明访问该接口不需要任何权限 -->
+				/admin_login/sendSMS=anon   
+				<!-- 说明访问该接口不需要任何权限 -->
+				/admin_login/logintest=anon
 				<!-- 贷款商家权限拦截 -->
 				/registe/queryAllAdmin = perms["贷款商家-查询所有"]
 				/registe/queryByNameLike = perms["贷款商家-模糊查询"]
@@ -101,22 +97,9 @@
 				/merchant/upaFalseDelById = perms["渠道-删除"]
 				/merchant/upaState = perms["渠道-状态修改"]
 				<!-- 统计权限拦截 -->
-				/tongji/queryAllPage = perms["统计-查询所有"]
-				/tongji/queryAllPageBySourceName = perms["统计-模糊查询"]
-				
+				/tongji/queryAllPage = perms["统计-查询所有me"]
+				/tongji/queryAllPageBySourceName = perms["统计-模糊查询me"]
 
-<!-- 				角色权限拦截
-				/sysRole/list=perms["role:serch"]
-				/sysUser/toAdd = perms["role:add"]
-				/sysUser/toEdit = perms["role:update"]
-				部门权限拦截
-				/sysDept/list = perms["dept:serch"]
-				/sysDept/toAdd = perms["dpt:add"]
-				/sysDept/toEdit = perms["dept:edit"]
-				资源权限拦截
-				/sysRes/list = perms["res:serch"]
-				/sysRes/toAdd = perms["res:add"]
-				/sysRest/toEdit = perms["res:edit"] -->
 			</value>
         </property>
     </bean>

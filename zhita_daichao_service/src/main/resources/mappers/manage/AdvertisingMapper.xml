@@ -148,9 +148,17 @@
   <select id="queryAll" resultType="com.zhita.model.manage.Advertising">
   	select * from advertising where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
+  <!--后台管理   查询广告表全部信息 不含分页 -->
+  <select id="queryAll1" resultType="com.zhita.model.manage.Advertising">
+  	select * from advertising where deleted='0' and company=#{arg0}
+  </select>
   <!-- 后台管理   根据标题字段模糊查询广告表信息，含分页 -->
   <select id="queryAllByLike" resultType="com.zhita.model.manage.Advertising">
   	select * from advertising where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+  </select>
+  <!-- 后台管理   根据标题字段模糊查询广告表信息，不含分页 -->
+  <select id="queryAllByLike1" resultType="com.zhita.model.manage.Advertising">
+  	select * from advertising where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
   </select>
   <!-- 后台管理   添加广告表信息 -->
   <insert id="AddAll" parameterType="com.zhita.model.manage.Advertising">

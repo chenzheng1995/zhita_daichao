@@ -348,6 +348,10 @@
 	<select id="queryAllUser" resultMap="userSource">
 		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id and u.company=#{arg0} limit #{arg1},#{arg2}
 	</select>
+	<!-- 后台管理    查询出用户表所有信息，不含分页 -->
+	<select id="queryAllUser1" resultMap="userSource">
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id and u.company=#{arg0}
+	</select>
 	<!-- 后台管理   通过手机号模糊查询，含分页 -->
 	<select id="queryByPhone" resultMap="userSource">
 		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and u.company=#{arg1} limit #{arg2},#{arg3}
