@@ -19,6 +19,7 @@ import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
+import com.zhita.util.TuoMinUtil;
 
 @Controller
 @RequestMapping("/merchant")
@@ -276,6 +277,20 @@ public class MerchantController {
 	@RequestMapping("/queryAllUserByLikeAll")
     public Map<String,Object> queryAllUserByLikeAll(Integer SourceId,String registrationTimeStart,String registrationTimeEnd,String phone,Integer page){
 		Map<String,Object> map=intMerchantService.queryAllUserByLikeAll(SourceId, registrationTimeStart, registrationTimeEnd, phone, page);
+		String phoneNumber = (String) map.get("phone");
+		String name = (String) map.get("name");
+		String idCard = (String) map.get("idCard");
+		TuoMinUtil tuoMinUtil = new TuoMinUtil();
+		phoneNumber = tuoMinUtil.mobileEncrypt(phoneNumber);
+		if(name!=null) {
+			name = tuoMinUtil.nameEncrypt(name);
+		}
+		if(idCard!=null) {
+			idCard = tuoMinUtil.nameEncrypt(idCard);
+		}
+		map.put("phone",phoneNumber);
+		map.put("name",name);
+		map.put("idCard",idCard);
 		return map;
 	}
 }

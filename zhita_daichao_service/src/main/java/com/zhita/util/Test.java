@@ -100,23 +100,25 @@ public class Test {
 //			System.out.println(stringArr[i]);
 //			}
 		
-		RedisClientUtil redisClientUtil = new RedisClientUtil();
-		redisClientUtil.set("czkey", "2019/2/25");
-		System.out.println(redisClientUtil.getkeyAll());
-		String SourceClick =redisClientUtil.get("123");
-		if(SourceClick==null) {
-			System.out.println(redisClientUtil.getkeyAll());
-			redisClientUtil.set("啦啦拉key","0");
-			System.out.println(redisClientUtil.getkeyAll());
-			System.out.println(redisClientUtil.getSourceClick("啦啦拉key"));
-			redisClientUtil.set("啦啦拉key","1");
-			System.out.println(redisClientUtil.getSourceClick("啦啦拉key"));
-		}else {
-			System.out.println(2);
-		}
-		
-		System.out.println(redisClientUtil.getkeyAll());
-		
+//		RedisClientUtil redisClientUtil = new RedisClientUtil();
+//		redisClientUtil.set("czkey", "2019/2/25");
+//		System.out.println(redisClientUtil.getkeyAll());
+//		String SourceClick =redisClientUtil.get("123");
+//		if(SourceClick==null) {
+//			System.out.println(redisClientUtil.getkeyAll());
+//			redisClientUtil.set("啦啦拉key","0");
+//			System.out.println(redisClientUtil.getkeyAll());
+//			System.out.println(redisClientUtil.getSourceClick("啦啦拉key"));
+//			redisClientUtil.set("啦啦拉key","1");
+//			System.out.println(redisClientUtil.getSourceClick("啦啦拉key"));
+//		}else {
+//			System.out.println(2);
+//		}
+//		
+//		System.out.println(redisClientUtil.getkeyAll());
+	
+		TuoMinUtil tuoMinUtil = new TuoMinUtil();
+		System.out.println(tuoMinUtil.nameEncrypt("陈峥"));
 		
 	}
 }

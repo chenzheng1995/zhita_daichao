@@ -18,4 +18,35 @@ public class TuoMinUtil {
         }
         return id.replaceAll("(?<=\\w{3})\\w(?=\\w{4})", "*");
     }
+    
+    //名字脱敏
+//    public String formatToMask(int start ,int end ,String src){
+//    	if (StringUtils.isEmpty(src)) {
+//    		return "" ;
+//    	}
+//    	String regex = "(\\w{"+start+"})(\\w+)(\\w{"+end+"})";
+//    	src.replaceAll(regex, "$1**********$3");
+//    	return "";
+//    	       
+//    	    }
+    
+    public String nameEncrypt(String name) {  
+    	String aString ="*";
+    	if(name.length()==2) {
+    	return name.replaceAll(name.substring(1,2),"*");   	
+    	}
+    	if(name.length()>2) {
+        for(int i =1;i< name.length()-2;i++) {
+        	aString+=aString;
+        }
+        String first = name.substring(0,1);
+        String last =name.substring(name.length()-1,name.length());
+        String string = first+aString+last;
+        return string;
+    	}
+		return "";
+    }
+    
+
+    
 }
