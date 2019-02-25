@@ -1,4 +1,4 @@
-/*package com.zhita.controller.shiro;
+package com.zhita.controller.shiro;
 
 import java.io.Serializable;
 
@@ -23,4 +23,3 @@ public class MyWebSessionManager extends DefaultWebSessionManager {
     }
 
 }
-*/

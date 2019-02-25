@@ -1,15 +1,12 @@
 package com.zhita.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import com.zhita.util.ListPageUtil;
-
-import net.sf.json.JSONArray;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Test {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 /*	try {
 		int a=10/0;
 		System.out.println("没有异常");
@@ -127,13 +124,25 @@ public class Test {
 			System.out.println(listone.get(i));
 		}*/
 
-		float a=(float) 0.025;
+/*		float a=(float) 0.025;
 		float b=2;
 		String c=(a/b)+"%";
 		float d=a%b;
 		System.out.println(c);
 		System.out.println(d);
-		
+		*/
+	/*	String date="2019-02-25";
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		Date dates=sdf.parse(date);
+		Calendar calendar=Calendar.getInstance();
+    	calendar.setTime(dates);
+       	calendar.add(Calendar.DAY_OF_MONTH, +1);//+1今天的时间加一天
+       	Date nextdate = calendar.getTime();
+       	System.out.println(nextdate);*/
+		float a=1;
+		int b=2;
+		float c=a/b;
+		System.out.println(c);
 
 	}
 }

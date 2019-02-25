@@ -20,8 +20,8 @@ public class TongjiServiceImp implements IntTongjiService{
     	return list;
     }
     //后台管理---查询出统计表数据总数量
-    public int pageCount(String company) {
-    	int count=statisticalMapper.pageCount(company);
+    public int pageCount(String source) {
+    	int count=statisticalMapper.pageCount(source);
     	return count;
     }
     //后台管理---通过渠道名称   查询出统计表数据总数量
@@ -30,8 +30,8 @@ public class TongjiServiceImp implements IntTongjiService{
     	return count;
     }
     //后台管理---查询渠道统计所有信息，含分页
-    public List<SourceTongji> queryAllPage(String company,Integer page,Integer pagesize){
-    	List<SourceTongji> list=statisticalMapper.queryAllPage(company,page,pagesize);
+    public List<SourceTongji> queryAllPage(String source,Integer page,Integer pagesize){
+    	List<SourceTongji> list=statisticalMapper.queryAllPage(source,page,pagesize);
     	return list;
     }
     //后台管理---查询渠道统计所有信息，不含分页
@@ -55,13 +55,23 @@ public class TongjiServiceImp implements IntTongjiService{
     	return pv;
     }
     //后台管理---查询统计uv
-    public Integer queryUV(String company,String sourceName) {
-    	int uv=statisticalMapper.queryUV(company, sourceName);
+    public Integer queryUV(String company,String sourceName,String startTime,String endTime) {
+    	int uv=statisticalMapper.queryUV(company, sourceName,startTime,endTime);
+    	return uv;
+    }
+    //后台管理---查询统计uv1
+    public Integer queryUV1(String bussnname,String sourceName) {
+    	int uv=statisticalMapper.queryUV1(bussnname, sourceName);
     	return uv;
     }
     //后台管理---查询统计申请数
-    public Integer queryApplicationNumber(String company,String sourceName) {
-    	int appnum=statisticalMapper.queryApplicationNumber(company, sourceName);
+    public Integer queryApplicationNumber(String company,String sourceName,String startTime,String endTime) {
+    	int appnum=statisticalMapper.queryApplicationNumber(company, sourceName,startTime,endTime);
     	return appnum;
+    }
+    //后台管理---查询当前渠道的折扣率
+    public String queryDiscount(String source,String company) {
+    	String discount=statisticalMapper.queryDiscount(source, company);
+    	return discount;
     }
 }
