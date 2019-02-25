@@ -12,7 +12,7 @@
                         http://www.springframework.org/schema/mvc    
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
                         http://www.springframework.org/schema/aop
-                        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+                        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 						http://www.springframework.org/schema/tx
 						http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">  
     <!-- 自动扫描 -->  
@@ -24,6 +24,7 @@
     <bean id="propertyConfigurer"  
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
         <property name="location" value="classpath:jdbc.properties" />  
+        <property name="ignoreUnresolvablePlaceholders" value="true" /> 
     </bean>  
   
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"  
@@ -64,7 +65,8 @@
 			value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
 		<!--属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有： 监控统计用的filter:stat 日志用的filter:log4j 防御SQL注入的filter:wall -->
 		<property name="filters" value="${druid.filters}" />
-	</bean>  
+	</bean>
+
   
     <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->  
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  

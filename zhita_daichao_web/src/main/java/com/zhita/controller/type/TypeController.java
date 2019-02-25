@@ -1,4 +1,4 @@
-package com.zhita.controller.daichao;
+package com.zhita.controller.type;
 
 
 import java.util.HashMap;
@@ -9,14 +9,11 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
-import com.zhita.service.loanclassificationcopy.LCFicationCopyService;
 import com.zhita.service.type.IntTypeService;
 import com.zhita.util.PageUtil;
 
@@ -37,25 +34,9 @@ public class TypeController {
 	@Autowired
 	CommodityFootprintService cFootprintService;
 	
-	@Autowired
-	LCFicationCopyService lCFicationCopyService;
-	
-	//小程序（为了审核），获取全部的贷款分类	
-    @ResponseBody
-    @RequestMapping("/queryLoanClass")
-    @Transactional
-    public List<LoanClassificationCopy> queryLoanClass(String company){
-    	List<LoanClassificationCopy> list = lCFicationCopyService.queryLoanClass(company);
-		return list;
-   	
-    }
-
-	
-	
 	//小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
     @ResponseBody
     @RequestMapping("/queryLoanbusinByLoanClass")
-    @Transactional
     public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page,String company){
     	int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification,company);
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);

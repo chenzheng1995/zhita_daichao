@@ -1,4 +1,4 @@
-package com.zhita.controller.daichao;
+package com.zhita.controller.qrcode;
 
 import java.util.HashMap;
 import java.util.Map;

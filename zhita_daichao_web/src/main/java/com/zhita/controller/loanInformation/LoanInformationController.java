@@ -1,4 +1,4 @@
-package com.zhita.controller.daichao;
+package com.zhita.controller.loanInformation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,7 +21,7 @@ public class LoanInformationController {
 	@Autowired
 	LoanInformationService loanInformationService;
 	
-	//添加贷款信息
+	//添加和更新贷款信息
 	@RequestMapping("/setloaninformation")
 	@ResponseBody
 	@Transactional
@@ -44,15 +45,29 @@ public class LoanInformationController {
 			,String educationalBackground,String sesamePoints,String cellPhoneTime,String isCreditCard,String isAccumulationFund
 			,String isSocialSecurity,String isCar,String isHouse,String company) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		int number = loanInformationService.setloanInformation(userId,name,idCard,professionalIdentity,monthlyIncomeRange,educationalBackground,
-				sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse,company);
-		if(number == 1) {
-			map.put("msg", "更新成功");
-			map.put("SCode", "200");
+		LoanInformation loanInformation = loanInformationService.getloanInformation(userId,company); //查找该用户的贷款信息
+		if (loanInformation == null) {	
+			int number = loanInformationService.setloanInformation(userId,name,idCard,professionalIdentity,monthlyIncomeRange,educationalBackground,
+					sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse,company);
+			if(number==1) {
+				map.put("msg", "插入成功");
+				map.put("SCode", "200");
+			}else {
+				map.put("msg", "插入失败");
+				map.put("SCode", "405");
+			}
 		}else {
-			map.put("msg", "更新失败");
-			map.put("SCode", "405");
+			int number = loanInformationService.updateloanInformation(userId,name,idCard,professionalIdentity,monthlyIncomeRange,educationalBackground,
+					sesamePoints,cellPhoneTime,isCreditCard,isAccumulationFund,isSocialSecurity,isCar,isHouse,company);
+			if(number == 1) {
+				map.put("msg", "更新成功");
+				map.put("SCode", "200");
+			}else {
+				map.put("msg", "更新失败");
+				map.put("SCode", "405");
+			}
 		}
+
 		return map; 
 		
 	}
@@ -64,7 +79,8 @@ public class LoanInformationController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		LoanInformation loanInformation = loanInformationService.getloanInformation(userId,company); //查找该用户的贷款信息
 		if (loanInformation == null) {	
-			map.put("msg","不存在该用户，请检查userId和company是否传对");
+			map.put("msg","该用户还没添加过信息");
+			map.put("Scode","201");
 		}else {
 			map.put("loanInformation", loanInformation);
 		}
