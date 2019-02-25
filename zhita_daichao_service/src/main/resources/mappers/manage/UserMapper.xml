@@ -340,7 +340,7 @@
        <result property="registrationtime" column="registrationTime"/> 
        <!-- ofType指定Source对象-->
        <collection property="source" ofType="com.zhita.model.manage.Source">
-       		<result property="sourceName" column="sourceName"/>      
+       		<result property="sourcename" column="sourceName"/>      
        </collection>
 	</resultMap>
 	

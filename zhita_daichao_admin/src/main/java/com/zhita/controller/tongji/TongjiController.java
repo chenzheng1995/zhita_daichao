@@ -43,26 +43,26 @@ public class TongjiController {
 	@RequestMapping("/queryAllTongji")
 	public Object queryAllTongji(String company,String source,String date) throws ParseException{
     	RedisClientUtil redisClientUtil = new RedisClientUtil();
-    	String SourceClick = redisClientUtil.get(company+source+"Key");//通过key得到value,就是得到uv
+    	String SourceClick = redisClientUtil.get(company+source+date+"Key");//通过key得到value,就是得到uv
     	if(SourceClick==null) {
-    		redisClientUtil.set(company+source+"Key","1");
-    		System.out.println(redisClientUtil.getSourceClick(company+source+"Key"));
+    		redisClientUtil.set(company+source+date+"Key","1");
+    		System.out.println(redisClientUtil.getSourceClick(company+source+date+"Key"));
     	}else {
-    		redisClientUtil.set(company+source+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company+source+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
-    		System.out.println(redisClientUtil.getSourceClick(company+source+"Key"));
-		}
+    		redisClientUtil.set(company+source+date+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company+source+date+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
+    		System.out.println(redisClientUtil.getSourceClick(company+source+date+"Key"));
+    	}
     	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
     	Calendar calendar = Calendar.getInstance();
-		calendar.setTime(sdf.parse(date));
+		calendar.setTime(sdf.parse(date.replace("/", "-")));
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		Date newDate = calendar.getTime();
 		String nextDate=sdf.format(newDate);//传进来日期的后一天
        	
-    	String startTime=Timestamps.dateToStamp(date);//将传进来的时间转换为时间戳格式
+    	String startTime=Timestamps.dateToStamp(date.replace("/", "-"));//将传进来的时间转换为时间戳格式
     	String endTime=Timestamps.dateToStamp(nextDate);//将传进来的时间的后一天转换为时间戳格式
     	float appnum=intTongjiService.queryApplicationNumber(company, source,startTime,endTime);//得到申请数
     	String discount=intTongjiService.queryDiscount(source, company);//得到折扣率
-    	Integer uv=Integer.parseInt(SourceClick);
+    	Integer uv=Integer.parseInt(redisClientUtil.getSourceClick(company+source+date+"Key"));
     	String cvr=(appnum/uv)+"%";//得到转化率
     	
 		TongjiSorce tongjiSorce=new TongjiSorce();
@@ -92,11 +92,11 @@ public class TongjiController {
 	  	
     	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
     	Calendar calendar = Calendar.getInstance();
-		calendar.setTime(sdf.parse(date));
+		calendar.setTime(sdf.parse(date.replace("/", "-")));
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		Date newDate = calendar.getTime();
 		String nextDate=sdf.format(newDate);//传进来日期的后一天
-    	String startTime=Timestamps.dateToStamp(date);//将传进来的时间转换为时间戳格式
+    	String startTime=Timestamps.dateToStamp(date.replace("/", "-"));//将传进来的时间转换为时间戳格式
     	String endTime=Timestamps.dateToStamp(nextDate);//将传进来的时间的后一天转换为时间戳格式
 	  	
     	if(company.length==1) {
@@ -118,6 +118,7 @@ public class TongjiController {
     	    	
     	    	float appnum=intTongjiService.queryApplicationNumber(company[0], source,startTime,endTime);//得到申请数
     	    	String discount=intTongjiService.queryDiscount(source, company[0]);//得到折扣率
+    	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
     	    	int sumappnum=intTongjiService.queryUV(company[0], source,startTime,endTime);//得到点过甲方贷款商家总的人数
     	    	Integer uv=Integer.parseInt(redisClientUtil.getSourceClick(company[0]+source+"Key"));
     	    	String cvr=(appnum/uv)+"%";//得到转化率
@@ -127,7 +128,7 @@ public class TongjiController {
     			tongjiSorce.setSourceName(source);//渠道名称
     			tongjiSorce.setUv(uv);//uv
     			tongjiSorce.setAppNum(appnum);//真实的申请数
-    			tongjiSorce.setAppNum1(appnum*Integer.parseInt(discount));//折扣后的申请数
+    			tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
     			tongjiSorce.setCvr(cvr);//转化率
     			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
     			listto.add(tongjiSorce);
@@ -155,6 +156,7 @@ public class TongjiController {
         			}
         	    	float appnum=intTongjiService.queryApplicationNumber(company[j], source,startTime,endTime);//得到申请数
         	    	String discount=intTongjiService.queryDiscount(source, company[j]);//得到折扣率
+        	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
         	    	int sumappnum=intTongjiService.queryUV(company[j], source,startTime,endTime);//得到甲方总申请数
         	    	Integer uv=Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+"Key"));
         	    	String cvr=(appnum/uv)+"%";//得到转化率
@@ -164,7 +166,7 @@ public class TongjiController {
         			tongjiSorce.setSourceName(source);//渠道名称
         			tongjiSorce.setUv(uv);//uv
         			tongjiSorce.setAppNum(appnum);//真实的申请数
-        			tongjiSorce.setAppNum1(appnum*Integer.parseInt(discount));//折扣后的申请数
+        			tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
         			tongjiSorce.setCvr(cvr);//转化率
         			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
         			listto.add(tongjiSorce);
@@ -172,7 +174,7 @@ public class TongjiController {
 			}
     	}
     	
-		ListPageUtil listPageUtil=new ListPageUtil(listto,page,2);
+		ListPageUtil listPageUtil=new ListPageUtil(listto,page,10);
 		listtopage.addAll(listPageUtil.getData());
 		
 		pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -189,12 +191,22 @@ public class TongjiController {
 	//后台管理---统计详情功能
 	@ResponseBody
 	@RequestMapping("/queryAllPageBySource")
-	public Map<String,Object> queryAllPageBySource(Integer page,String source,String date){
+	public Map<String,Object> queryAllPageBySource(Integer page,String source,String date) throws ParseException{
 	   	PageUtil pageUtil=null;
     	List<SourceTongji> listsourceTongji=new ArrayList<>();//刚开始查询出来的数据
     	List<SourceTongji> listsourceTongjito=new ArrayList<>();//经过处理后的数据
-	   	int totalCount=intTongjiService.pageCount(source);//该方法是查询统计总条数
-    	pageUtil=new PageUtil(page,2,totalCount);
+    	
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+    	Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sdf.parse(date.replace("/", "-")));
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		Date newDate = calendar.getTime();
+		String nextDate=sdf.format(newDate);//传进来日期的后一天
+    	String startTime=Timestamps.dateToStamp(date.replace("/", "-"));//将传进来的时间转换为时间戳格式
+    	String endTime=Timestamps.dateToStamp(nextDate);//将传进来的时间的后一天转换为时间戳格式
+    	
+	   	int totalCount=intTongjiService.pageCount(source,startTime,endTime);//该方法是查询统计总条数
+    	pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -208,9 +220,9 @@ public class TongjiController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
 		
-    	listsourceTongji=intTongjiService.queryAllPage(source,pageUtil.getPage(),pageUtil.getPageSize());
+    	listsourceTongji=intTongjiService.queryAllPage(source,startTime,endTime,pageUtil.getPage(),pageUtil.getPageSize());
 		for (int i = 0; i < listsourceTongji.size(); i++) {
-			int uv=intTongjiService.queryUV1(listsourceTongji.get(i).getBusinessName(), listsourceTongji.get(i).getSourceName());
+			int uv=intTongjiService.queryUV1(listsourceTongji.get(i).getBusinessName(), listsourceTongji.get(i).getSourceName(),startTime,endTime);
 			SourceTongji sourceTongji=new SourceTongji();
 			sourceTongji.setId(listsourceTongji.get(i).getId());
 			sourceTongji.setBusinessName(listsourceTongji.get(i).getBusinessName());
@@ -226,8 +238,70 @@ public class TongjiController {
 	
 	
 	
-	
-	
+	//后台管理---通过渠道名称   查询统计表所有信息，含分页
+   // @ResponseBody
+   // @RequestMapping("/queryAllPageBySourceName")
+ /*   public Map<String,Object> queryAllPageBySourceName(Integer page,String string,String string1,String date){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
+		string1 = string1.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] sourceName= string1.split(",");
+		
+		PageUtil pageUtil=null;
+	  	List<Source> listsource=new ArrayList<>();
+	  	List<TongjiSorce> listto=new ArrayList<>();
+	  	List<TongjiSorce> listtopage=new ArrayList<>();
+		
+	   	//公司名选择的是全部  渠道选择的是全部 
+    	if((company.length>1)&&(sourceName.length>1)) {
+    		List<Source> listsourcefor=null;
+    		RedisClientUtil redisClientUtil = new RedisClientUtil();
+    		for (int j = 0; j < company.length; j++) {
+    			listsourcefor=intMerchantService.queryAll(company[j]);//查询出所有的渠道信息
+    			listsource.addAll(listsourcefor);
+    			
+    			for (int i = 0; i < listsourcefor.size(); i++) {
+        			String source=listsourcefor.get(i).getSourcename();
+        	    	String SourceClick = redisClientUtil.get(company[j]+source+"Key");//通过key得到value,就是得到uv
+        	    	if(SourceClick==null) {
+        	    		redisClientUtil.set(company[j]+source+"Key","1");
+        	    		System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
+        	    	}else {
+        	    		redisClientUtil.set(company[j]+source+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
+        	    		System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
+        			}
+        	    	float appnum=intTongjiService.queryApplicationNumber(company[j], source,startTime,endTime);//得到申请数
+        	    	String discount=intTongjiService.queryDiscount(source, company[j]);//得到折扣率
+        	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
+        	    	int sumappnum=intTongjiService.queryUV(company[j], source,startTime,endTime);//得到甲方总申请数
+        	    	Integer uv=Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+"Key"));
+        	    	String cvr=(appnum/uv)+"%";//得到转化率
+        	    	
+        			TongjiSorce tongjiSorce=new TongjiSorce();
+        			tongjiSorce.setDate(date);//日期
+        			tongjiSorce.setSourceName(source);//渠道名称
+        			tongjiSorce.setUv(uv);//uv
+        			tongjiSorce.setAppNum(appnum);//真实的申请数
+        			tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
+        			tongjiSorce.setCvr(cvr);//转化率
+        			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
+        			listto.add(tongjiSorce);
+    			}
+			}
+    	}
+    	//公司名选择的是全部   渠道选择的不是全部  
+    	else if((company.length>1)&&(sourceName.length==1)) {
+    		
+    	}
+    	//公司名选择的不是全部   渠道选择的是全部  
+    	else if((company.length==1)&&(sourceName.length>1)) {
+    		
+    	}
+       	//公司名选择的不是全部   渠道选择的不是全部  
+    	else if((company.length==1)&&(sourceName.length==1)) {
+    		
+    	}
+    }*/
 	
 	
 	

@@ -22,13 +22,13 @@ public interface StatisticalMapper {
     List<String> quereyAllLoansNameBySourceName(String sourceName);
     
     //后台管理---查询出统计表数据总数量
-    int pageCount(String source);
+    int pageCount(String source,String startTime,String endTime);
     
     //后台管理---通过渠道名称   查询出统计表数据总数量
     int pageCountBySourceName(String company,String sourceName);
     
     //后台管理---查询渠道统计所有信息，含分页
-    List<SourceTongji> queryAllPage(String source,Integer page,Integer pagesize);
+    List<SourceTongji> queryAllPage(String source,String startTime,String endTime,Integer page,Integer pagesize);
     
     //后台管理---查询渠道统计所有信息，不含分页
     List<SourceTongji> queryAllPage1(String company);
@@ -46,7 +46,7 @@ public interface StatisticalMapper {
     Integer queryUV(String company,String sourceName,String startTime,String endTime);
     
     //后台管理---查询统计uv1
-    Integer queryUV1(String bussnname,String sourceName);
+    Integer queryUV1(String bussnname,String sourceName,String startTime,String endTime);
     
     //后台管理---查询统计申请数
     Integer queryApplicationNumber(String company,String sourceName,String startTime,String endTime);

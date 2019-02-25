@@ -13,7 +13,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, sourcename, account, link, state, deleted,company
+    id, sourcename, account, link, state, deleted,company,discount
   </sql>
   <!-- 后台管理  通过渠道id，查询渠道信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -127,16 +127,17 @@
     update source
     set sourcename = #{sourcename,jdbcType=VARCHAR},
         account = #{account,jdbcType=VARCHAR},
-        link = #{link,jdbcType=VARCHAR}
+        link = #{link,jdbcType=VARCHAR},
+        discount = #{discount,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 后台管理 查询出所有渠道表信息，含分页-->
   <select id="queryAllSource" resultType="com.zhita.model.manage.Source">
-  	select id,sourcename,account,link,state,company from source where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
+  	select id,sourcename,account,link,state,company,discount from source where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理 查询出所有渠道表信息，不含分页-->
   <select id="queryAllSource1" resultType="com.zhita.model.manage.Source">
-  	select id,sourcename,account,link,state,company from source where deleted='0' and company=#{arg0}
+  	select id,sourcename,account,link,state,company,discount from source where deleted='0' and company=#{arg0}
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -148,15 +149,15 @@
  </select>
  <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且有分页功能 -->
   <select id="queryByLike" resultType="com.zhita.model.manage.Source">
- 	select id,sourcename,account,link,state,company from source where deleted='0' and sourcename like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ 	select id,sourcename,account,link,state,company,discount from source where deleted='0' and sourcename like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
  </select>
   <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且没有分页功能 -->
   <select id="queryByLike1" resultType="com.zhita.model.manage.Source">
- 	select id,sourcename,account,link,state,company from source where deleted='0' and sourcename like "%"#{arg0}"%" and company=#{arg1}
+ 	select id,sourcename,account,link,state,company,discount from source where deleted='0' and sourcename like "%"#{arg0}"%" and company=#{arg1}
  </select>
  <!--后台管理 添加渠道信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.Source">
- 	insert into source(sourcename,account,link,company) values(#{sourcename},#{account},#{link},#{company})
+ 	insert into source(sourcename,account,link,company,discount) values(#{sourcename},#{account},#{link},#{company},#{discount})
  </insert>
  <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">

@@ -17,6 +17,8 @@ public class Source implements Serializable{
     private String deleted;//假删除（删除：1，没删除：0）
     
     private String company;//公司名
+    
+    private String discount;//折扣率
 
     public Source(Integer id, String sourcename, String account, String link, String state, String deleted, String company) {
         this.id = id;
@@ -87,4 +89,12 @@ public class Source implements Serializable{
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
     }
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
 }
