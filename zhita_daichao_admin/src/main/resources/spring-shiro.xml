@@ -53,8 +53,8 @@
 				<!-- 说明访问该接口不需要任何权限 -->
 				<!-- /admin_login/sendSMS=anon    -->
 				<!-- 说明访问该接口不需要任何权限 -->
-				<!-- /admin_login/logintest=anon -->
-				/**=anon
+				<!-- /admin_login/logintest=anon
+				/**=authc -->
 				
 				<!-- /**=login -->
 				

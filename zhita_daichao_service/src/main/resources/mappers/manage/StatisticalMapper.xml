@@ -112,8 +112,8 @@
   
   <!-- 后台管理  查询统计表数据总数量 -->
   <select id="pageCount" parameterType="java.lang.String" resultType="java.lang.Integer">
-  	select count(f.cid) from (select c.id cid,c.footprintTime,c.footprint,c.userId,c.company,s.sourceName from commodity_footprint c,user u,source s
-	where c.userId=u.id and u.sourceId=s.id and c.deleted='0'and c.company=#{arg0}) f
+	select count(DISTINCT f.businessName) from (select c.id id,c.footprintTime date,c.footprint businessName,c.userId,c.company,s.sourceName sourceName from commodity_footprint c,user u,source s
+    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and s.deleted='0' and s.sourceName='网易ab') f
   </select>
   <!-- 后台管理  通过渠道名称   查询统计表数据总数量 -->
   <select id="pageCountBySourceName" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -123,7 +123,7 @@
   <!-- 后台管理  联合查询统计所有信息   含分页-->
   <select id="queryAllPage" resultType="com.zhita.model.manage.SourceTongji">
   	select c.id id,c.footprintTime date,c.footprint businessName,c.userId,c.company,s.sourceName sourceName from commodity_footprint c,user u,source s
-    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and c.company=#{arg0} limit #{arg1},#{arg2}
+    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and s.deleted='0' and s.sourceName=#{arg0} limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理  联合查询统计所有信息   不含分页-->
   <select id="queryAllPage1" resultType="com.zhita.model.manage.SourceTongji">
@@ -148,10 +148,18 @@
    <!-- 后台管理   查询统计uv -->
    <select id="queryUV" parameterType="java.lang.String" resultType="java.lang.Integer">
 	    select count(DISTINCT c.userId) from commodity_footprint c,user u,source s
-	    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and c.company=#{arg0} and s.sourceName=#{arg1}
+	    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and c.company=#{arg0} and s.sourceName=#{arg1} and registrationTime>=#{arg2} and registrationTime &lt;#{arg3}
    </select>
-   <!--     后台管理    查询统计申请数 -->
+   <select id="queryUV1" parameterType="java.lang.String" resultType="java.lang.Integer">
+	    select count(DISTINCT c.userId) from commodity_footprint c,user u,source s
+	    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and c.footprint=#{arg0} and s.sourceName=#{arg1}
+   </select>
+   <!--后台管理    查询统计申请数 -->
    <select id="queryApplicationNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(u.id) from user u,source s where u.sourceId=s.id and u.company=#{arg0} and s.sourceName=#{arg1}
+		select count(u.id) from user u,source s where u.sourceId=s.id and u.company=#{arg0} and s.sourceName=#{arg1} and footprintTime>=#{arg2} and footprintTime &lt;#{arg3}
+   </select>
+   <!-- 后台管理    得到当前渠道的折扣率 -->
+   <select id="queryDiscount" parameterType="java.lang.String" resultType="java.lang.String">
+   		select discount from source where sourceName=#{arg0} and company=#{arg1}
    </select>
 </mapper>

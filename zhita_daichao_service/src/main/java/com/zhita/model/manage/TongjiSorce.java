@@ -3,15 +3,25 @@ package com.zhita.model.manage;
 //渠道方看的统计数据
 public class TongjiSorce {
 	private Integer id;//将查询出来的渠道id  当做主键id
+	private String date;//日期
 	private String sourceName;//渠道名称
 	private Integer uv;//uv
-	private float appNum;//申请数
+	private float appNum;//真实的申请数
+	private float appNum1;//折扣后的申请数
 	private String cvr;//转化率
+	private Integer sumappnum;//点过甲方  用户的总数量
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 	public String getSourceName() {
 		return sourceName;
@@ -32,18 +42,30 @@ public class TongjiSorce {
 	public void setAppNum(float appNum) {
 		this.appNum = appNum;
 	}
+	
+	public float getAppNum1() {
+		return appNum1;
+	}
+	public void setAppNum1(float appNum1) {
+		this.appNum1 = appNum1;
+	}
 	public String getCvr() {
 		return cvr;
 	}
 	public void setCvr(String cvr) {
 		this.cvr = cvr;
 	}
+	
+	public Integer getSumappnum() {
+		return sumappnum;
+	}
+	public void setSumappnum(Integer sumappnum) {
+		this.sumappnum = sumappnum;
+	}
 	@Override
 	public String toString() {
 		return "TongjiSorce [id=" + id + ", sourceName=" + sourceName + ", uv=" + uv + ", appNum=" + appNum + ", cvr="
-				+ cvr + ", getId()=" + getId() + ", getSourceName()=" + getSourceName() + ", getUv()=" + getUv()
-				+ ", getAppNum()=" + getAppNum() + ", getCvr()=" + getCvr() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+				+ cvr + ", sumappnum=" + sumappnum + "]";
 	}
-	
+
 }
