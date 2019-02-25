@@ -205,7 +205,7 @@ public class LoginController {
 	@RequestMapping("/codelogin")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> codeLogin(String phone, String code,String company,String registrationType) {
+	public Map<String, Object> codeLogin(String phone, String code,String company,String registrationType,int sourceId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String loginStatus = "1";
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
@@ -225,7 +225,7 @@ public class LoginController {
 				String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
 				User user = loginService.findphone(phone,company); // 判断该用户是否存在
 				if (user == null) {
-					int number = loginService.insertUser(phone,loginStatus,company,registrationType,registrationTime);
+					int number = loginService.insertUser(phone,loginStatus,company,registrationType,registrationTime,sourceId);
 					if (number == 1) {								
 						int id = loginService.getId(phone,company); //获取该用户的id					
 							map.put("msg", "用户登录成功，数据插入成功，让用户添加密码");

@@ -318,8 +318,8 @@ public class LoginServiceImp implements IntLoginService{
 
 	@Override
 	public int insertUser(String phone, String loginStatus, String company, String registrationType,
-			String registrationTime) {
-		int number = userMapper.insertUser(phone,loginStatus,company,registrationType,registrationTime);
+			String registrationTime, int sourceId) {
+		int number = userMapper.insertUser(phone,loginStatus,company,registrationType,registrationTime,sourceId);
 		return number;
 	}
 

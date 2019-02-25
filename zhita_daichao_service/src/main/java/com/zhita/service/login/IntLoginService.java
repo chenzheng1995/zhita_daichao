@@ -82,7 +82,7 @@ public interface IntLoginService {
 
 	int setPwd(int userId, String md5Pwd);
 
-	int insertUser(String phone, String loginStatus, String company, String registrationType, String registrationTime);
+	int insertUser(String phone, String loginStatus, String company, String registrationType, String registrationTime, int sourceId);
 
 	//后台管理---根据用户名查询出当前用户所拥有的角色
 	public List<String> queryRoleByName(String username);

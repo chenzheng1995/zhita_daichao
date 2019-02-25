@@ -553,12 +553,13 @@
 	
 		  	<!--APP 插入用户信息 -->
 	<insert id="insertUser" parameterType="java.util.Map">
-		insert into user (phone,registrationTime,loginStatus,company,registrationType,loginTime)
+		insert into user (phone,registrationTime,loginStatus,company,registrationType,loginTime,sourceId)
 		values (#{phone},
 		#{registrationTime},
 		#{loginStatus},
 		#{company},
 		#{registrationType},
-		#{registrationTime})
+		#{registrationTime},
+		#{sourceId})
 	</insert>
 </mapper>

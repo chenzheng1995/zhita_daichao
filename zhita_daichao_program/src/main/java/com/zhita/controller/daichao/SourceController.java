@@ -24,17 +24,17 @@ public class SourceController {
 	@RequestMapping("/getSourceClick")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> getqrcode(String company,String source) {
+	public Map<String, Object> getqrcode(String company,String source,String date) {
 		Map<String, Object> map = new HashMap<>();
     	RedisClientUtil redisClientUtil = new RedisClientUtil();
-    	String SourceClick = redisClientUtil.get(company+source+"Key");
+    	String SourceClick = redisClientUtil.get(company+source+date+"Key");
     	if(SourceClick==null) {
-    		redisClientUtil.set(company+source+"Key","1");
-    		System.out.println(redisClientUtil.getSourceClick(company+source+"Key"));
+    		redisClientUtil.set(company+source+date+"Key","1");
+    		System.out.println(redisClientUtil.getSourceClick(company+source+date+"Key"));
     		map.put("msg","200");
     	}else {
-    		redisClientUtil.set(company+source+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company+source+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
-    		System.out.println(redisClientUtil.getSourceClick(company+source+"Key"));
+    		redisClientUtil.set(company+source+date+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company+source+date+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
+    		System.out.println(redisClientUtil.getSourceClick(company+source+date+"Key"));
     		map.put("msg","200");
 		}
     	return map;
