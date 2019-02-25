@@ -195,7 +195,9 @@ public class RegisteController {
 	//后台管理---通过商家名称模糊查询，并且有分页功能
     @ResponseBody
     @RequestMapping("/queryByNameLike")
-    public Map<String,Object> queryByNameLike(String businessName,Integer page,String[] company){
+    public Map<String,Object> queryByNameLike(String businessName,Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
     	PageUtil pageUtil=null;
     	List<LoansBusinesses> list=new ArrayList<>();
     	List<LoansBusinesses> listto=new ArrayList<>();

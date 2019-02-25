@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class Source implements Serializable{
     private Integer id;//渠道id
 
-    private String sourceName;//渠道名称
+    private String sourcename;//渠道名称
 
     private String account;//账户
 
@@ -18,9 +18,9 @@ public class Source implements Serializable{
     
     private String company;//公司名
 
-    public Source(Integer id, String sourceName, String account, String link, String state, String deleted, String company) {
+    public Source(Integer id, String sourcename, String account, String link, String state, String deleted, String company) {
         this.id = id;
-        this.sourceName = sourceName;
+        this.sourcename = sourcename;
         this.account = account;
         this.link = link;
         this.state = state;
@@ -40,15 +40,15 @@ public class Source implements Serializable{
         this.id = id;
     }
 
-    public String getSourceName() {
-        return sourceName;
-    }
+    public String getSourcename() {
+		return sourcename;
+	}
 
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName == null ? null : sourceName.trim();
-    }
+	public void setSourcename(String sourcename) {
+		this.sourcename = sourcename == null ? null : sourcename.trim();
+	}
 
-    public String getAccount() {
+	public String getAccount() {
         return account;
     }
 

@@ -62,6 +62,9 @@ public interface ManageLoginMapper {
 	//后台管理----修改管理登陆用户的假删除状态
 	int upaManageloginFalseDel(Integer id);
 	
+    //后台管理   通过手机号修改管理登陆用户的假删除状态
+	int upaMFalseDelByPhone(String phone);
+	
 	//后台管理---根据用户名查询出当前用户所拥有的角色
 	List<String> queryRoleByName(String username);
 	

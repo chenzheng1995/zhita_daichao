@@ -84,52 +84,56 @@ public class Test {
 		//System.out.println(list.subList(10, 17));
 
 		//ListPageUtil listPageUtil=new ListPageUtil(list,3,2);
-//		List<TestObj1> listone= new ArrayList<>();
-//		List<TestObj2> listtwo= new ArrayList<>();
-//		List<TestObj2> listtwo1= new ArrayList<>();
-//		
-//		TestObj2 a=new TestObj2();
-//		a.setName("a");
-//		a.setAge(0);
-//		TestObj2 a1=new TestObj2();
-//		a1.setName("a1");
-//		a1.setAge(1);
-//		TestObj2 a2=new TestObj2();
-//		a2.setName("a2");
-//		a2.setAge(2);
-//		
-//		TestObj2 s1=new TestObj2();
-//		s1.setName("s1");
-//		s1.setAge(1);
-//		TestObj2 s2=new TestObj2();
-//		s2.setName("s2");
-//		s2.setAge(2);
-//		
-//		listtwo.add(a);
-//		listtwo.add(a1);
-//		listtwo.add(a2);
-//		
-//		listtwo1.add(s1);
-//		listtwo1.add(s2);
-//		
-//		TestObj1 testobj1=new TestObj1();
-//		testobj1.setId(1);
-//		testobj1.setName("百度");
-//		testobj1.setListobj2(listtwo);
-//		
-//		TestObj1 testobj2=new TestObj1();
-//		testobj2.setId(2);
-//		testobj2.setName("谷歌");
-//		testobj2.setListobj2(listtwo1);
-//		
-//		listone.add(testobj1);
-//		listone.add(testobj2);
-//		for (int i = 0; i < listone.size(); i++) {
-//			System.out.println(listone.get(i));
-//		}
-//
-//		
-//		
-//		
+
+
+		
+/*		TestObj2 a=new TestObj2();
+		a.setName("a");
+		a.setAge(0);
+		TestObj2 a1=new TestObj2();
+		a1.setName("a1");
+		a1.setAge(1);
+		TestObj2 a2=new TestObj2();
+		a2.setName("a2");
+		a2.setAge(2);
+		
+		TestObj2 s1=new TestObj2();
+		s1.setName("s1");
+		s1.setAge(1);
+		TestObj2 s2=new TestObj2();
+		s2.setName("s2");
+		s2.setAge(2);
+		
+		listtwo.add(a);
+		listtwo.add(a1);
+		listtwo.add(a2);
+		
+		listtwo1.add(s1);
+		listtwo1.add(s2);
+		
+		TestObj1 testobj1=new TestObj1();
+		testobj1.setId(1);
+		testobj1.setName("百度");
+		testobj1.setListobj2(listtwo);
+		
+		TestObj1 testobj2=new TestObj1();
+		testobj2.setId(2);
+		testobj2.setName("谷歌");
+		testobj2.setListobj2(listtwo1);
+		
+		listone.add(testobj1);
+		listone.add(testobj2);
+		for (int i = 0; i < listone.size(); i++) {
+			System.out.println(listone.get(i));
+		}*/
+
+		float a=(float) 0.025;
+		float b=2;
+		String c=(a/b)+"%";
+		float d=a%b;
+		System.out.println(c);
+		System.out.println(d);
+		
+
 	}
 }

@@ -94,7 +94,9 @@ public class CardController {
 	//后台管理---根据标题模糊查询所有信用卡信息，含分页
     @ResponseBody
     @RequestMapping("/queryByLike")
-    public Map<String,Object> queryByLike(String title,Integer page,String[] company){
+    public Map<String,Object> queryByLike(String title,Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
     	PageUtil pageUtil=null;
     	List<CreditCard> list=new ArrayList<>();
     	List<CreditCard> listto=new ArrayList<>();

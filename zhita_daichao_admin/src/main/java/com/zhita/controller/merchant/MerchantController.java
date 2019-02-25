@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.Advertising;
+import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
+import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
@@ -23,6 +25,8 @@ import com.zhita.util.PageUtil;
 public class MerchantController {
 	@Autowired
 	private IntMerchantService intMerchantService;
+	@Autowired
+	IntLoginService loginService;
 	
 	
 	//后台管理---查询渠道表所有信息，含分页
@@ -86,7 +90,9 @@ public class MerchantController {
 	//后台管理---根据渠道名称字段模糊查询渠道表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/querySourceByLike")
-    public Map<String,Object> querySourceByLike(String sourceName,Integer page,String[] company){
+    public Map<String,Object> querySourceByLike(String sourceName,Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<Source> list=new ArrayList<>();
 		List<Source> listto=new ArrayList<>();
@@ -191,7 +197,15 @@ public class MerchantController {
 	@ResponseBody
 	@RequestMapping("/AddAll")
     public int AddAll(Source source){
-		int num=intMerchantService.addAll(source);
+		
+		int num=intMerchantService.addAll(source);//添加渠道表信息
+		
+		ManageLogin manageLogin=new ManageLogin();
+		manageLogin.setUsername("空");
+		manageLogin.setPhone(source.getAccount());
+		manageLogin.setCompany(source.getCompany());
+		manageLogin.setSourcename(source.getSourcename());
+	  	loginService.addManageLogin(manageLogin);//添加完一条渠道信息   往后台管理登陆表添加一条信息
 		return num;
 	}
     //后台管理---通过主键id查询出渠道信息
@@ -214,8 +228,9 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaFalseDelById")
-    public int upaFalseDelById(Integer id) {
-    	int num=intMerchantService.upaFalseDel(id);
+    public int upaFalseDelById(Integer id,String account) {
+    	int num=intMerchantService.upaFalseDel(id);//通过渠道id更新当前渠道表的假删除状态
+    	loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
     	return num;
     }
     //后台管理---修改渠道状态

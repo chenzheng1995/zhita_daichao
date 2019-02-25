@@ -14,6 +14,7 @@
     <bean id="realmDemo" class="com.zhita.controller.shiro.RealmShiro">
         <!-- <property name="credentialsMatcher" ref="credentialsMatcher"/> -->
     </bean>
+    
     <!-- 加密-->
 <!--     <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
         加密方式
@@ -26,11 +27,19 @@
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
-        <!-- 登录页面 -->
-        <property name="loginUrl" value="/login.jsp" />
         
-        <!--在此处配置无权限的跳转路径-->
-        <property name="unauthorizedUrl" value="/1s.jsp"/>
+	  <!-- loginUrl==>如果登录成功，跳转到哪个页面，或者执行哪个请求 -->
+        <property name="loginUrl" value="/loginTips" />
+        
+      <!--在此处配置无权限的跳转路径-->
+      <property name="unauthorizedUrl" value="/1.jsp"/>
+      
+<!--     <property name="filters">
+        <util:map>
+            <entry key="login" value-ref="loginFilter"></entry>
+        </util:map>
+    </property> -->
+        
         <!--
         	配置哪些页面需要受保护.
         	以及访问这些页面需要的权限.
@@ -42,9 +51,13 @@
         <property name="filterChainDefinitions">
 			<value>
 				<!-- 说明访问该接口不需要任何权限 -->
-				/admin_login/sendSMS=anon   
+				<!-- /admin_login/sendSMS=anon    -->
 				<!-- 说明访问该接口不需要任何权限 -->
-				/admin_login/logintest=anon
+				<!-- /admin_login/logintest=anon -->
+				/**=anon
+				
+				<!-- /**=login -->
+				
 				<!-- 贷款商家权限拦截 -->
 				/registe/queryAllAdmin = perms["贷款商家-查询所有"]
 				/registe/queryByNameLike = perms["贷款商家-模糊查询"]
@@ -96,6 +109,8 @@
 				/merchant/selectByPrimaryKey = perms["渠道-编辑"]
 				/merchant/upaFalseDelById = perms["渠道-删除"]
 				/merchant/upaState = perms["渠道-状态修改"]
+				<!--  渠道方统计-->
+				/tongji/queryAllTongji = perms[统计-渠道方查询]
 				<!-- 统计权限拦截 -->
 				/tongji/queryAllPage = perms["统计-查询所有me"]
 				/tongji/queryAllPageBySourceName = perms["统计-模糊查询me"]

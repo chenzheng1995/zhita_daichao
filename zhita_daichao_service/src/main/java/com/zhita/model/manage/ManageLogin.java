@@ -20,6 +20,7 @@ public class ManageLogin implements Serializable{
     private String deleted;//账号状态（ 1:已禁用 0:已启用）
     
     private String company;//公司名
+    private String sourcename;//渠道名
     private List<String> listcompany;//公司名list（添加后台管理用户的时候，复选框选值的时候使用的公司名字段）
     
     private List<Role> listRole;//一个用户有多个角色
@@ -85,6 +86,15 @@ public class ManageLogin implements Serializable{
 
 	public void setCompany(String company) {
 		this.company = company;
+	}
+	
+
+	public String getSourcename() {
+		return sourcename;
+	}
+
+	public void setSourcename(String sourcename) {
+		this.sourcename = sourcename;
 	}
 
 	public List<String> getListcompany() {

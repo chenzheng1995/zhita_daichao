@@ -1,9 +1,12 @@
 package com.zhita.controller.login;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -34,10 +37,20 @@ public class LoginController {
 	@Autowired
 	IntLoginService loginService;
 	
+	@RequestMapping("/loginTips")
+	public Map<String,String> loginTips(){
+		Map map = new HashMap();
+    	map.put("code",-3);
+    	map.put("msg","请您先登录");
+    	return map;
+	}
+	
+	
+	
 	//后台管理----登录验证  以及授权
 	@ResponseBody
 	@RequestMapping(value="/logintest", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public Map<String, Object> login(String phone,String code){
+	public Map<String, Object> login(String phone,String code,HttpServletResponse response){
 		Map<String, Object> map = new HashMap<String, Object>();
 		int a=0;
 		
@@ -53,6 +66,9 @@ public class LoginController {
 	        	try {
 	                //执行认证操作. 
 	                subject.login(token);
+	                Serializable id = subject.getSession().getId();
+	                response.setHeader("token",id.toString());//得到改状态的sessionId,返回给前端
+	                //ResultGenerator.getSuucessResult();
 	                a=1;
 	            }catch (UnknownAccountException e) {
 	            	map.put("msg", "没有此手机号");
@@ -75,6 +91,7 @@ public class LoginController {
 								ManageLogin manageLogin2 = loginService.getIdByPhone(phone);//通过手机号获取当前用户对象
 								int id=manageLogin2.getId();//获取用户id
 								String company=manageLogin2.getCompany();//获取用户公司名
+								String sourceName=manageLogin2.getSourcename();//获取用户渠道名称
 								
 								String[] listCompany=company.split(",");//该数组里面存了当前用户所有的公司名
 								//List<String> listcom=new ArrayList<>();//new集合  存通过公司id查询出来的公司名称
@@ -86,6 +103,7 @@ public class LoginController {
 								map.put("loginStatus", loginStatus);
 								map.put("userId", id);
 								map.put("company", listCompany);//集合里面存的是当前用户的所有公司名
+								map.put("sourceName", sourceName);
 							} else {
 								map.put("msg", "用户登录失败，登录状态修改失败");
 							}
@@ -119,47 +137,64 @@ public class LoginController {
 	 */
 	@RequestMapping("/login")
 	@ResponseBody
-	public Map<String, Object> login(String userName,String code,String phone) {
-		RedisClientUtil redisClientUtil = new RedisClientUtil();
+	public Map<String, Object> login(String code,String phone) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(code) || StringUtils.isEmpty(phone)) {
-			map.put("msg", "userName,code或phone不能为空");
-			return map;
-		} else {
-			String key = phone+"Key";
-			String redisCode = redisClientUtil.get(key);
-			if(redisCode==null) {
-				map.put("msg", "验证码已过期，请重新发送");
-				return map;
-			}
-			if(redisCode.equals(code)) {
-				redisClientUtil.delkey(key);//验证码正确就从redis里删除这个key
-				ManageLogin manageLogin = loginService.findFormatByLoginName(userName); // 判断该用户是否存在
-				if (manageLogin == null) {
-					map.put("msg", "用户名不存在");
-					return map;
-				}else {
-					String loginStatus = "1";
-					String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
-					int number = loginService.updateAdminLoginStatus(loginStatus,phone,userName,registrationTime);
-					if (number == 1) {	
-						int id = loginService.getAdminId(phone,userName); //获取该用户的id
-						map.put("msg", "用户登录成功，登录状态修改成功");
-						map.put("loginStatus", loginStatus);
-						map.put("userId", id);
-					} else {
-						map.put("msg", "用户登录失败，登录状态修改失败");
-					}
-				}
-
-			}else {
-				map.put("msg", "验证码输入错误");
-			}
-
+		int a=0;
+		
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		String key = phone+"Key";
+		String redisCode = redisClientUtil.get(key);
+		
+		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
+			map.put("msg", "phone或验证码不能为空");
+		}else {
+			 ManageLogin manageLogin1 = loginService.queryByPhone(phone);// 判断该用户是否存在
+			 if(manageLogin1==null) {
+				 System.out.println("手机号不存在");
+			 }else {
+				 a=1;
+			 }
+	        	System.out.println("最外层："+"a:"+a+"rediscode:"+redisCode+"code:"+code);
+	        	if(a==1) {
+	        		if(redisCode==null||"".equals(redisCode)){
+	        			map.put("msg", "验证码过期，请重新发送");
+	        		}else{
+	        			if(redisCode.equals(code)) {
+		                    String loginStatus="1";
+		                	String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
+		                	
+		                	ManageLogin manageLogin=new ManageLogin();
+		                	manageLogin.setLoginstatus(loginStatus);
+		                	manageLogin.setLogintime(registrationTime);
+		                	manageLogin.setPhone(phone);
+		                	int num=loginService.upaStateTime(manageLogin);
+							if (num == 1) {	
+								ManageLogin manageLogin2 = loginService.getIdByPhone(phone);//通过手机号获取当前用户对象
+								int id=manageLogin2.getId();//获取用户id
+								String company=manageLogin2.getCompany();//获取用户公司名
+								String sourceName=manageLogin2.getSourcename();//获取用户渠道名称
+								
+								String[] listCompany=company.split(",");//该数组里面存了当前用户所有的公司名
+								//List<String> listcom=new ArrayList<>();//new集合  存通过公司id查询出来的公司名称
+								/*for (int i = 0; i < listCompany.length; i++) {
+									listcom.add(company);
+								}*/
+								
+								map.put("msg", "用户登录成功，登录状态修改成功");
+								map.put("loginStatus", loginStatus);
+								map.put("userId", id);
+								map.put("company", listCompany);//集合里面存的是当前用户的所有公司名
+								map.put("sourceName", sourceName);
+							} else {
+								map.put("msg", "用户登录失败，登录状态修改失败");
+							}
+	        			}else {
+	        				map.put("msg2", "验证码错误");
+	        			}
+	        		}
+	        	}
 		}
-
 		return map;
-
 	}
 	
 	// 退出登录
