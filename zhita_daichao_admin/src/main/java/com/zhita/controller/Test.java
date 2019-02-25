@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.zhita.util.TuoMinUtil;
+
 public class Test {
 	public static void main(String[] args) throws ParseException {
 /*	try {
@@ -152,7 +154,9 @@ public class Test {
 		System.out.println(c);
 		
 */
-		String str="80%";
-		System.out.println(str.substring(0, str.length()-1));;
+		/*String str="80%";
+		System.out.println(str.substring(0, str.length()-1));;*/
+		TuoMinUtil u=new TuoMinUtil();
+		System.out.println(u.nameEncrypt("张三张三"));;
 	}
 }

@@ -11,6 +11,7 @@ import com.zhita.dao.manage.SourceMapper;
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.util.PageUtil;
+import com.zhita.util.TuoMinUtil;
 
 @Service
 public class MerchantServiceImp implements IntMerchantService{
@@ -184,6 +185,23 @@ public class MerchantServiceImp implements IntMerchantService{
         	pageUtil.setPage(pages);
         	list=sourceMapper.queryAllUserByRegistrationTimePhone(SourceId, registrationTimeStart, registrationTimeEnd, phone, pageUtil.getPage(),pageUtil.getPageSize());
     	}
+    	
+       	TuoMinUtil tuoMinUtil=new TuoMinUtil();
+    	for (int i = 0; i < list.size(); i++) {
+    		if(list.get(i).getName()!=null) {
+    			String tuomingname=tuoMinUtil.nameEncrypt(list.get(i).getName());//姓名脱名
+    			list.get(i).setName(tuomingname);
+    		}
+    		if(list.get(i).getPhone()!=null) {
+    			String tuomingphone=tuoMinUtil.mobileEncrypt(list.get(i).getPhone());//手机号脱名
+    			list.get(i).setPhone(tuomingphone);
+    		}
+    		if(list.get(i).getIdcard()!=null) {
+    			String tuomingidcard=tuoMinUtil.idEncrypt(list.get(i).getPhone());//身份证号脱名
+    			list.get(i).setIdcard(tuomingidcard);
+    		}
+		}
+    	
     	HashMap<String, Object> map=new HashMap();
     	map.put("listUserBySourceId",list);
     	map.put("pageutil",pageUtil);

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhita.model.manage.Advertising;
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
@@ -80,6 +79,15 @@ public class MerchantController {
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+		}
+		
+		TuoMinUtil tuoMinUtil=new TuoMinUtil();
+		
+		for (int i = 0; i < listto.size(); i++) {
+			if(listto.get(i).getAccount()!=null) {
+				String tuomingaccount=tuoMinUtil.mobileEncrypt(listto.get(i).getAccount());
+				listto.get(i).setAccount(tuomingaccount);
+			}
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listsource",listto);
@@ -188,6 +196,15 @@ public class MerchantController {
 	    	pageUtil=new PageUtil(page,2,totalCount);
 			
 		}
+		
+		TuoMinUtil tuoMinUtil=new TuoMinUtil();
+		
+		for (int i = 0; i < listto.size(); i++) {
+			if(listto.get(i).getAccount()!=null) {
+				String tuomingaccount=tuoMinUtil.mobileEncrypt(listto.get(i).getAccount());
+				listto.get(i).setAccount(tuomingaccount);
+			}
+		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listsourceByLike",listto);
     	map.put("pageutil", pageUtil);
@@ -267,6 +284,22 @@ public class MerchantController {
     	pageUtil.setPage(pages);
     	List<User> list=intMerchantService.queryAllUserBySourceId(sourceId,pageUtil.getPage(),pageUtil.getPageSize());
     	
+    	TuoMinUtil tuoMinUtil=new TuoMinUtil();
+    	for (int i = 0; i < list.size(); i++) {
+    		if(list.get(i).getName()!=null) {
+    			String tuomingname=tuoMinUtil.nameEncrypt(list.get(i).getName());//姓名脱名
+    			list.get(i).setName(tuomingname);
+    		}
+    		if(list.get(i).getPhone()!=null) {
+    			String tuomingphone=tuoMinUtil.mobileEncrypt(list.get(i).getPhone());//手机号脱名
+    			list.get(i).setPhone(tuomingphone);
+    		}
+    		if(list.get(i).getIdcard()!=null) {
+    			String tuomingidcard=tuoMinUtil.idEncrypt(list.get(i).getPhone());//身份证号脱名
+    			list.get(i).setIdcard(tuomingidcard);
+    		}
+		}
+    	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listuser",list);
     	map.put("pageutil", pageUtil);
@@ -277,20 +310,6 @@ public class MerchantController {
 	@RequestMapping("/queryAllUserByLikeAll")
     public Map<String,Object> queryAllUserByLikeAll(Integer SourceId,String registrationTimeStart,String registrationTimeEnd,String phone,Integer page){
 		Map<String,Object> map=intMerchantService.queryAllUserByLikeAll(SourceId, registrationTimeStart, registrationTimeEnd, phone, page);
-		String phoneNumber = (String) map.get("phone");
-		String name = (String) map.get("name");
-		String idCard = (String) map.get("idCard");
-		TuoMinUtil tuoMinUtil = new TuoMinUtil();
-		phoneNumber = tuoMinUtil.mobileEncrypt(phoneNumber);
-		if(name!=null) {
-			name = tuoMinUtil.nameEncrypt(name);
-		}
-		if(idCard!=null) {
-			idCard = tuoMinUtil.nameEncrypt(idCard);
-		}
-		map.put("phone",phoneNumber);
-		map.put("name",name);
-		map.put("idCard",idCard);
 		return map;
 	}
 }
