@@ -93,7 +93,9 @@ public class TypeController {
     //后台管理---模糊查询贷款分类信息,并且有分页功能
     @ResponseBody
     @RequestMapping("/queryByLike")
-    public Map<String,Object> queryByLike(String businessClassification,Integer page,String[] company){
+    public Map<String,Object> queryByLike(String businessClassification,Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
     	PageUtil pageUtil=null;
     	List<LoanClassification> list=new ArrayList<>();
     	List<LoanClassification> listto=new ArrayList<>();

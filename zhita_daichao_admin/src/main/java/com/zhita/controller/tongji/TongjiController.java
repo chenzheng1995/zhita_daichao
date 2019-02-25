@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.SourceTongji;
+import com.zhita.model.manage.TongjiSorce;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.service.registe.IntRegisteService;
 import com.zhita.service.tongji.IntTongjiService;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
+import com.zhita.util.RedisClientUtil;
 
 @Controller
 @RequestMapping("/tongji")
@@ -32,11 +34,36 @@ public class TongjiController {
 	private IntMerchantService intMerchantService;
 	
 	//后台管理----渠道方看的渠道统计，含分页
+	@ResponseBody
+	@RequestMapping("/queryAllTongji")
+	public Object queryAllTongji(String company,String source){
+    	RedisClientUtil redisClientUtil = new RedisClientUtil();
+    	String SourceClick = redisClientUtil.get(company+source+"Key");//通过key得到value,就是得到uv
+    	if(SourceClick==null) {
+    		redisClientUtil.set(company+source+"Key","1");
+    		System.out.println(redisClientUtil.getSourceClick(company+source+"Key"));
+    	}else {
+    		redisClientUtil.set(company+source+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company+source+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
+    		System.out.println(redisClientUtil.getSourceClick(company+source+"Key"));
+		}
+    	float appnum=intTongjiService.queryApplicationNumber(company, source);//得到申请数
+    	Integer uv=Integer.parseInt(SourceClick);
+    	String cvr=(appnum/uv)+"%";//得到转化率
+    	
+		TongjiSorce tongjiSorce=new TongjiSorce();
+		tongjiSorce.setSourceName(source);
+		tongjiSorce.setUv(Integer.valueOf(SourceClick));
+		tongjiSorce.setAppNum(appnum);
+		tongjiSorce.setCvr(cvr);
+		return tongjiSorce;
+	}
 	
 	//后台管理---关联查询统计所有信息，含分页    
     @ResponseBody
     @RequestMapping("/queryAllPage")
-    public Map<String,Object> queryAllPage(Integer page,String[] company){
+    public Map<String,Object> queryAllPage(Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
     	PageUtil pageUtil=null;
     	List<Source> listsource=new ArrayList<>();
     	List<SourceTongji> listsourceTongji=new ArrayList<>();//刚开始查询出来的数据
@@ -128,7 +155,11 @@ public class TongjiController {
 	//后台管理---通过渠道名称   查询统计表所有信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllPageBySourceName")
-    public Map<String,Object> queryAllPageBySourceName(Integer page,String[] company,String[] sourceName){
+    public Map<String,Object> queryAllPageBySourceName(Integer page,String string,String string1){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
+		string1 = string1.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] sourceName= string1.split(",");
     	PageUtil pageUtil=null;
     	List<SourceTongji> listSourceTongjione=new ArrayList<>();
     	List<SourceTongji> listSourceTongjitwo=new ArrayList<>();

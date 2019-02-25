@@ -158,6 +158,11 @@ public class LoginServiceImp implements IntLoginService{
 		int num=manageLoginMapper.upaManageloginFalseDel(id);
 		return num;
 	}
+    //后台管理   通过手机号修改管理登陆用户的假删除状态
+	public int upaMFalseDelByPhone(String phone) {
+		int num=manageLoginMapper.upaMFalseDelByPhone(phone);
+		return num;
+	}
     //后台管理---通过传过来的用户id和角色id   在中间表进行插入数据
     public int add(Integer loginuserid,Integer roleid) {
     	int num=manageloginRoleMapper.add(loginuserid, roleid);

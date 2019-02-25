@@ -94,7 +94,9 @@ public class BannerController {
     //后台管理---根据标题字段模糊查询轮播图信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllByLike")
-    public Map<String,Object> queryAllByLike(String title,Integer page,String[] company){
+    public Map<String,Object> queryAllByLike(String title,Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<ShufflingFigure> list=new ArrayList<>();
 		List<ShufflingFigure> listto=new ArrayList<>();

@@ -95,7 +95,9 @@ public class NewsController {
 	//后台管理---根据标题字段模糊查询攻略表所有信息，含分页
 	@ResponseBody
 	@RequestMapping("/queryNewsByLike")
-    public Map<String,Object> queryNewsByLike(String title,Integer page,String[] company){
+    public Map<String,Object> queryNewsByLike(String title,Integer page,String string){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<Strategy> list=new ArrayList<>();
 		List<Strategy> listto=new ArrayList<>();

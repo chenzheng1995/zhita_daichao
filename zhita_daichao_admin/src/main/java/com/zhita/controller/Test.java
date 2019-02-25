@@ -88,7 +88,7 @@ public class Test {
 		List<TestObj2> listtwo= new ArrayList<>();
 		List<TestObj2> listtwo1= new ArrayList<>();
 		
-		TestObj2 a=new TestObj2();
+/*		TestObj2 a=new TestObj2();
 		a.setName("a");
 		a.setAge(0);
 		TestObj2 a1=new TestObj2();
@@ -126,10 +126,14 @@ public class Test {
 		listone.add(testobj2);
 		for (int i = 0; i < listone.size(); i++) {
 			System.out.println(listone.get(i));
-		}
+		}*/
 
-		
-		
+		float a=(float) 0.025;
+		float b=2;
+		String c=(a/b)+"%";
+		float d=a%b;
+		System.out.println(c);
+		System.out.println(d);
 		
 	}
 }

@@ -16,7 +16,7 @@
   </sql>
   <!-- 后台管理   通过id查询出管理登陆用户信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="manageloginMap">
-	select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,u.company,
+	select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,u.company,u.sourceName,
 	GROUP_CONCAT(r.id) roleid, 
 	GROUP_CONCAT(r.roleName) rolename,
 	GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
@@ -155,7 +155,7 @@
 	</resultMap>
 	<!-- 后台管理     查询出所有用户信息   含用户信息  用户的角色含分页 -->
 	<select id="queryManageLogin" parameterType="java.lang.Integer" resultMap="manageloginMap">
-		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,u.sourceName,
 		GROUP_CONCAT(r.id) roleid, 
 		GROUP_CONCAT(r.roleName) rolename,
 		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
@@ -173,7 +173,7 @@
 	
 	<!-- 后台管理     根据用户名  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
 	<select id="queryManageLoginLike" resultMap="manageloginMap">
-		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,u.sourceName,
 		GROUP_CONCAT(r.id) roleid, 
 		GROUP_CONCAT(r.roleName) rolename,
 		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
@@ -190,7 +190,7 @@
 	
 	<!-- 后台管理  根据账号状态  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
 	<select id="queryManageLoginLike1" resultMap="manageloginMap">
-		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,u.sourceName,
 		GROUP_CONCAT(r.id) roleid, 
 		GROUP_CONCAT(r.roleName) rolename,
 		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
@@ -206,7 +206,7 @@
 	
 	<!-- 后台管理  根据用户名和账号状态  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
 	<select id="queryManageLoginLike2" resultMap="manageloginMap">
-		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,
+		select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,,u.sourceName,
 		GROUP_CONCAT(r.id) roleid, 
 		GROUP_CONCAT(r.roleName) rolename,
 		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
@@ -218,7 +218,7 @@
 	
 	<!-- 后台管理   添加后台管理用户 -->
 	<insert id="addManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
-		insert into manage_login(username,phone,company) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR})
+		insert into manage_login(username,phone,company,sourcename) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{sourcename,jdbcType=VARCHAR})
 	</insert>
 	<!--后台管理    将修改后的管理登陆用户   信息进行保存  -->
 	<update id="upaManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
@@ -228,12 +228,17 @@
 		      loginStatus = #{loginstatus,jdbcType=VARCHAR},
 		      loginTime = #{logintime,jdbcType=VARCHAR},
 		      deleted = #{deleted,jdbcType=VARCHAR},
-		      company = #{company,jdbcType=VARCHAR}
+		      company = #{company,jdbcType=VARCHAR},
+		      sourceName = #{sourceName,jdbcType=VARCHAR}
 		    where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 后台管理       修改管理登陆用户的假删除状态-->
 	<delete id="upaManageloginFalseDel" parameterType="java.lang.Integer">
 		update manage_login set deleted='1' where id=#{id}
+	</delete>
+	<!-- 后台管理   通过手机号修改管理登陆用户的假删除状态-->
+	<delete id="upaMFalseDelByPhone" parameterType="java.lang.Integer">
+		update manage_login set deleted='1' where phone=#{phone}
 	</delete>
 	<!-- 后台管理   根据用户名查询出当前用户所拥有的角色 -->
 	<select id="queryRoleByName" parameterType="java.lang.String" resultType="java.lang.String">
@@ -254,6 +259,6 @@
 	</update>
 	<!-- 后台管理   通过手机号获取用户的id -->
 	<select id="getIdByPhone" parameterType="java.lang.String" resultType="com.zhita.model.manage.ManageLogin">
-		select id,company from manage_login where phone = #{phone} and deleted ='0'
+		select id,company,sourcename from manage_login where phone = #{phone} and deleted ='0'
 	</select>
 </mapper>
