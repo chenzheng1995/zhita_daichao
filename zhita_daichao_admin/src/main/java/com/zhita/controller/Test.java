@@ -131,18 +131,28 @@ public class Test {
 		System.out.println(c);
 		System.out.println(d);
 		*/
-	/*	String date="2019-02-25";
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	/*	String date="2019/02/25";
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+    	Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sdf.parse(date.replace("/", "-")));
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		Date newDate = calendar.getTime();
+		String nextDate=sdf.format(newDate);//传进来日期的后一天
+		System.out.println(nextDate);*/
+		/*SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
 		Date dates=sdf.parse(date);
 		Calendar calendar=Calendar.getInstance();
     	calendar.setTime(dates);
        	calendar.add(Calendar.DAY_OF_MONTH, +1);//+1今天的时间加一天
        	Date nextdate = calendar.getTime();
        	System.out.println(nextdate);*/
-		float a=1;
+/*		float a=1;
 		int b=2;
 		float c=a/b;
 		System.out.println(c);
-
+		
+*/
+		String str="80%";
+		System.out.println(str.substring(0, str.length()-1));;
 	}
 }

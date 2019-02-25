@@ -20,8 +20,8 @@ public class TongjiServiceImp implements IntTongjiService{
     	return list;
     }
     //后台管理---查询出统计表数据总数量
-    public int pageCount(String source) {
-    	int count=statisticalMapper.pageCount(source);
+    public int pageCount(String source,String startTime,String endTime) {
+    	int count=statisticalMapper.pageCount(source,startTime,endTime);
     	return count;
     }
     //后台管理---通过渠道名称   查询出统计表数据总数量
@@ -30,8 +30,8 @@ public class TongjiServiceImp implements IntTongjiService{
     	return count;
     }
     //后台管理---查询渠道统计所有信息，含分页
-    public List<SourceTongji> queryAllPage(String source,Integer page,Integer pagesize){
-    	List<SourceTongji> list=statisticalMapper.queryAllPage(source,page,pagesize);
+    public List<SourceTongji> queryAllPage(String source,String startTime,String endTime,Integer page,Integer pagesize){
+    	List<SourceTongji> list=statisticalMapper.queryAllPage(source,startTime,endTime,page,pagesize);
     	return list;
     }
     //后台管理---查询渠道统计所有信息，不含分页
@@ -60,8 +60,8 @@ public class TongjiServiceImp implements IntTongjiService{
     	return uv;
     }
     //后台管理---查询统计uv1
-    public Integer queryUV1(String bussnname,String sourceName) {
-    	int uv=statisticalMapper.queryUV1(bussnname, sourceName);
+    public Integer queryUV1(String bussnname,String sourceName,String startTime,String endTime) {
+    	int uv=statisticalMapper.queryUV1(bussnname, sourceName,startTime,endTime);
     	return uv;
     }
     //后台管理---查询统计申请数
