@@ -268,56 +268,42 @@ public class TongjiController {
 	  	List<Source> listsource=new ArrayList<>();
 	  	List<TongjiSorce> listto=new ArrayList<>();
 	  	List<TongjiSorce> listtopage=new ArrayList<>();
-		
-	   	//公司名选择的是全部  渠道选择的是全部 
-    	if((company.length>1)&&(sourceName.length>1)) {
-    		List<Source> listsourcefor=null;
-    		RedisClientUtil redisClientUtil = new RedisClientUtil();
-    		for (int j = 0; j < company.length; j++) {
-    			listsourcefor=intMerchantService.queryAll(company[j]);//查询出所有的渠道信息
-    			listsource.addAll(listsourcefor);
-    			
-    			for (int i = 0; i < listsourcefor.size(); i++) {
-        			String source=listsourcefor.get(i).getSourcename();
-        	    	String SourceClick = redisClientUtil.get(company[j]+source+"Key");//通过key得到value,就是得到uv
-        	    	if(SourceClick==null) {
-        	    		redisClientUtil.set(company[j]+source+"Key","1");
-        	    		System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
-        	    	}else {
-        	    		redisClientUtil.set(company[j]+source+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
-        	    		System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
-        			}
-        	    	float appnum=intTongjiService.queryApplicationNumber(company[j], source,startTime,endTime);//得到申请数
-        	    	String discount=intTongjiService.queryDiscount(source, company[j]);//得到折扣率
-        	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
-        	    	int sumappnum=intTongjiService.queryUV(company[j], source,startTime,endTime);//得到甲方总申请数
-        	    	Integer uv=Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+"Key"));
-        	    	String cvr=(appnum/uv)+"%";//得到转化率
-        	    	
-        			TongjiSorce tongjiSorce=new TongjiSorce();
-        			tongjiSorce.setDate(date);//日期
-        			tongjiSorce.setSourceName(source);//渠道名称
-        			tongjiSorce.setUv(uv);//uv
-        			tongjiSorce.setAppNum(appnum);//真实的申请数
-        			tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
-        			tongjiSorce.setCvr(cvr);//转化率
-        			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
-        			listto.add(tongjiSorce);
-    			}
+		//不存在日期为空的情况
+	   	//日期为空 公司名选择的是全部  渠道选择的是全部 
+    	if((date==null||"".equals(date))&&(company.length>1)&&(sourceName.length>1)) {
+    		
+    	}
+    	//日期为空 公司名选择的是全部   渠道选择的不是全部  
+    	else if((date==null||"".equals(date))&&(company.length>1)&&(sourceName.length==1)) {
+    		
+    	}
+    	//日期为空 公司名选择的不是全部   渠道选择的是全部  
+    	else if((date==null||"".equals(date))&&(company.length==1)&&(sourceName.length>1)) {
+    		
+    	}
+       	//日期为空 公司名选择的不是全部   渠道选择的不是全部  
+    	else if((date==null||"".equals(date))&&(company.length==1)&&(sourceName.length==1)) {
+    		
+    	}
+    	//日期不为空 公司名选择的是全部  渠道选择的是全部 
+    	if((date!=null||!"".equals(date))&&(company.length>1)&&(sourceName.length>1)) {
+    		for (int i = 0; i < sourceName.length; i++) {
+				
 			}
     	}
-    	//公司名选择的是全部   渠道选择的不是全部  
-    	else if((company.length>1)&&(sourceName.length==1)) {
+    	//日期不为空 公司名选择的是全部   渠道选择的不是全部  
+    	else if((date!=null||!"".equals(date))&&(company.length>1)&&(sourceName.length==1)) {
     		
     	}
-    	//公司名选择的不是全部   渠道选择的是全部  
-    	else if((company.length==1)&&(sourceName.length>1)) {
+    	//日期不为空 公司名选择的不是全部   渠道选择的是全部  
+    	else if((date!=null||!"".equals(date))&&(company.length==1)&&(sourceName.length>1)) {
     		
     	}
-       	//公司名选择的不是全部   渠道选择的不是全部  
-    	else if((company.length==1)&&(sourceName.length==1)) {
+    	//日期不为空 公司名选择的不是全部   渠道选择的不是全部 
+    	else if((date!=null||!"".equals(date))&&(company.length==1)&&(sourceName.length==1)) {
     		
     	}
+    	
     }*/
 	
 	
