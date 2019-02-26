@@ -9,10 +9,11 @@
       <arg column="loginStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="loginTime" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, userName, phone, loginStatus, loginTime, deleted
+    id, userName, phone, loginStatus, loginTime, deleted,company
   </sql>
   <!-- 后台管理   通过id查询出管理登陆用户信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="manageloginMap">

@@ -20,7 +20,7 @@ public class Source implements Serializable{
     
     private String discount;//折扣率
 
-    public Source(Integer id, String sourcename, String account, String link, String state, String deleted, String company) {
+    public Source(Integer id, String sourcename, String account, String link, String state, String deleted, String company, String discount) {
         this.id = id;
         this.sourcename = sourcename;
         this.account = account;
@@ -28,6 +28,7 @@ public class Source implements Serializable{
         this.state = state;
         this.deleted = deleted;
         this.company = company;
+        this.discount = discount;
     }
 
     public Source() {
@@ -97,4 +98,5 @@ public class Source implements Serializable{
 	public void setDiscount(String discount) {
 		this.discount = discount;
 	}
+	
 }
