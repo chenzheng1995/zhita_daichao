@@ -117,8 +117,23 @@ public class Test {
 //		
 //		System.out.println(redisClientUtil.getkeyAll());
 	
-		TuoMinUtil tuoMinUtil = new TuoMinUtil();
-		System.out.println(tuoMinUtil.nameEncrypt("陈峥"));
+//		TuoMinUtil tuoMinUtil = new TuoMinUtil();
+//		System.out.println(tuoMinUtil.nameEncrypt("陈峥"));
+		
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		redisClientUtil.set("融51yunying12019/02/26key","123");
+		System.out.println(redisClientUtil.getkeyAll());
+		System.out.println(redisClientUtil.get("融51yunying12019/02/26key"));
+		
+		
+//		String[] x={"1","2","3","4"};
+//		String a = x[1] ;
+//		System.out.println(x[1]);
+//		if(a=="2") {
+//			System.out.println(1);
+//		}else {
+//			System.out.println(2);
+//		}
 		
 	}
 }
