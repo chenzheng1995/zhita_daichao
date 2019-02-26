@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.zhita.util.RedisClientUtil;
 import com.zhita.util.TuoMinUtil;
 
 public class Test {
@@ -148,15 +149,23 @@ public class Test {
        	calendar.add(Calendar.DAY_OF_MONTH, +1);//+1今天的时间加一天
        	Date nextdate = calendar.getTime();
        	System.out.println(nextdate);*/
-/*		float a=1;
-		int b=2;
-		float c=a/b;
-		System.out.println(c);
-		
+	/*	float a=1;
+		Integer b=2;
+		String c=(a/b)+"%";
+		System.out.println(c);*/
+	/*	float a=0;
+		double b=0;
+		if(a<0.000001)
+		{
+			System.out.println("float Equal 0!\n");
+		}
 */
+		RedisClientUtil redisClientUtil=new RedisClientUtil();
+		System.out.println(redisClientUtil.getSourceClick("多米记"+"yunying1"+"2019/2/26"+"Key"));
+
 		/*String str="80%";
 		System.out.println(str.substring(0, str.length()-1));;*/
-		TuoMinUtil u=new TuoMinUtil();
-		System.out.println(u.nameEncrypt("张三张三"));;
+		/*TuoMinUtil u=new TuoMinUtil();
+		System.out.println(u.nameEncrypt("张三张三"));;*/
 	}
 }

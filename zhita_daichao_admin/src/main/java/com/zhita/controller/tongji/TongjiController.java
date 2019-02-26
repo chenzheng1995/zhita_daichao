@@ -41,39 +41,42 @@ public class TongjiController {
 	// 后台管理----渠道方看的渠道统计，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllTongji")
-	public Object queryAllTongji(String company, String source, String date) throws ParseException {
-		RedisClientUtil redisClientUtil = new RedisClientUtil();
-		String SourceClick = redisClientUtil.get(company + source + date + "Key");// 通过key得到value,就是得到uv
-		if (SourceClick == null) {
-			redisClientUtil.set(company + source + date + "Key", "1");
-			System.out.println(redisClientUtil.getSourceClick(company + source + date + "Key"));
-		} else {
-			redisClientUtil.set(company + source + date + "Key",
-					Integer.parseInt(redisClientUtil.getSourceClick(company + source + date + "Key")) + 1 + ""); // 由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
-			System.out.println(redisClientUtil.getSourceClick(company + source + date + "Key"));
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar calendar = Calendar.getInstance();
+	public Object queryAllTongji(String company,String source,String date) throws ParseException{
+    	RedisClientUtil redisClientUtil = new RedisClientUtil();
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+    	Calendar calendar = Calendar.getInstance();
 		calendar.setTime(sdf.parse(date.replace("/", "-")));
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		Date newDate = calendar.getTime();
-		String nextDate = sdf.format(newDate);// 传进来日期的后一天
-
-		String startTime = Timestamps.dateToStamp(date.replace("/", "-"));// 将传进来的时间转换为时间戳格式
-		String endTime = Timestamps.dateToStamp(nextDate);// 将传进来的时间的后一天转换为时间戳格式
-		float appnum = intTongjiService.queryApplicationNumber(company, source, startTime, endTime);// 得到申请数
-		String discount = intTongjiService.queryDiscount(source, company);// 得到折扣率
-		Integer uv = Integer.parseInt(redisClientUtil.getSourceClick(company + source + date + "Key"));
-		String cvr = (appnum / uv) + "%";// 得到转化率
-
-		TongjiSorce tongjiSorce = new TongjiSorce();
-		tongjiSorce.setDate(date);// 日期
-		tongjiSorce.setSourceName(source);// 渠道名称
-		tongjiSorce.setUv(uv);// uv
-		if (appnum >= 100) {
-			tongjiSorce.setAppNum(appnum * Integer.parseInt(discount));// 申请数
-		} else {
-			tongjiSorce.setAppNum(appnum);// 申请数
+		String nextDate=sdf.format(newDate);//传进来日期的后一天
+       	
+    	String startTime=Timestamps.dateToStamp(date.replace("/", "-"));//将传进来的时间转换为时间戳格式
+    	String endTime=Timestamps.dateToStamp(nextDate);//将传进来的时间的后一天转换为时间戳格式
+    	float appnum=intTongjiService.queryApplicationNumber(company, source,startTime,endTime);//得到申请数
+    	String discount=intTongjiService.queryDiscount(source, company);//得到折扣率
+    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
+      	int uv=0;
+      	String cvr=null;
+    	if(redisClientUtil.getSourceClick(company+source+date+"Key")==null) {
+    		uv=0;
+    	}else {
+    		uv=Integer.parseInt(redisClientUtil.getSourceClick(company+source+date+"Key"));
+    		
+    	}
+    	if((appnum<0.000001)||(uv==0)) {
+    		cvr=0+"%";//得到转化率
+    	}else {
+    		cvr=(appnum/uv)+"%";//得到转化率
+    	}
+    	
+		TongjiSorce tongjiSorce=new TongjiSorce();
+		tongjiSorce.setDate(date);//日期
+		tongjiSorce.setSourceName(source);//渠道名称
+		tongjiSorce.setUv(uv);//uv
+		if(appnum>=100) {
+			tongjiSorce.setAppNum(appnum*discount1/100);//申请数
+		}else {
+			tongjiSorce.setAppNum(appnum);//申请数
 		}
 		tongjiSorce.setCvr(cvr);// 转化率
 		return tongjiSorce;
@@ -96,97 +99,108 @@ public class TongjiController {
 		calendar.setTime(sdf.parse(date.replace("/", "-")));
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		Date newDate = calendar.getTime();
-		String nextDate = sdf.format(newDate);// 传进来日期的后一天
-		String startTime = Timestamps.dateToStamp(date.replace("/", "-"));// 将传进来的时间转换为时间戳格式
-		String endTime = Timestamps.dateToStamp(nextDate);// 将传进来的时间的后一天转换为时间戳格式
-
-		if (company.length == 1) {
-
-			System.out.println("company.length==1");
-
-			listsource = intMerchantService.queryAll(company[0]);// 查询出所有的渠道信息
-			RedisClientUtil redisClientUtil = new RedisClientUtil();
-			for (int i = 0; i < listsource.size(); i++) {
-				String source = listsource.get(i).getSourcename();
-//    	    	String SourceClick = redisClientUtil.get(company[0]+source+date+"Key");//通过key得到value,就是得到uv
-//    	    	if(SourceClick==null) {
-//    	    		redisClientUtil.set(company[0]+source+date+"Key","1");
-//    	    		System.out.println(redisClientUtil.getSourceClick(company[0]+source+date+"Key"));
-//    	    	}else {
-//    	    		redisClientUtil.set(company[0]+source+date+"Key",Integer.parseInt(redisClientUtil.getSourceClick(company[0]+source+date+"Key"))+1+""); //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
-//    	    		System.out.println(redisClientUtil.getSourceClick(company[0]+source+date+"Key"));
-//    			}
-
-				float appnum = intTongjiService.queryApplicationNumber(company[0], source, startTime, endTime);// 得到申请数
-				String discount = intTongjiService.queryDiscount(source, company[0]);// 得到折扣率
-				int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
-				int sumappnum = intTongjiService.queryUV(company[0], source, startTime, endTime);// 得到点过甲方贷款商家总的人数
-				Integer uv = Integer.parseInt(redisClientUtil.getSourceClick(company[0]+source+date+"Key"));
-				String cvr = (appnum / uv) + "%";// 得到转化率
-
-				TongjiSorce tongjiSorce = new TongjiSorce();
-				tongjiSorce.setDate(date);// 日期
-				tongjiSorce.setSourceName(source);// 渠道名称
-				tongjiSorce.setUv(uv);// uv
-				tongjiSorce.setAppNum(appnum);// 真实的申请数
-				tongjiSorce.setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
-				tongjiSorce.setCvr(cvr);// 转化率
-				tongjiSorce.setSumappnum(sumappnum);// 点过甲方总的人数
-				listto.add(tongjiSorce);
+		String nextDate=sdf.format(newDate);//传进来日期的后一天
+    	String startTime=Timestamps.dateToStamp(date.replace("/", "-"));//将传进来的时间转换为时间戳格式
+    	String endTime=Timestamps.dateToStamp(nextDate);//将传进来的时间的后一天转换为时间戳格式
+	  	
+    	if(company.length==1) {
+    		
+    		System.out.println("company.length==1");
+    		
+    		listsource=intMerchantService.queryAll(company[0]);//查询出所有的渠道信息
+    		RedisClientUtil redisClientUtil = new RedisClientUtil();
+    		for (int i = 0; i < listsource.size(); i++) {
+    			String source=listsource.get(i).getSourcename();
+    	    	
+    	    	float appnum=intTongjiService.queryApplicationNumber(company[0], source,startTime,endTime);//得到申请数
+    	    	String discount=intTongjiService.queryDiscount(source, company[0]);//得到折扣率
+    	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
+    	    	int sumappnum=intTongjiService.queryUV(company[0], source,startTime,endTime);//得到点过甲方贷款商家总的人数
+    	    	int uv=0;
+    	    	String cvr=null;
+    	    	if(redisClientUtil.getSourceClick(company[0]+source+date+"Key")==null) {
+    	    		uv=0;
+    	    	}else {
+    	    		uv=Integer.parseInt(redisClientUtil.getSourceClick(company[0]+source+date+"Key"));
+    	    	}
+    	     	if((appnum<0.000001)||(uv==0)) {
+    	    		cvr=0+"%";//得到转化率
+    	    	}else {
+    	    		cvr=(appnum/uv)+"%";//得到转化率
+    	    	}
+    			TongjiSorce tongjiSorce=new TongjiSorce();
+    			tongjiSorce.setDate(date);//日期
+    			tongjiSorce.setSourceName(source);//渠道名称
+    			tongjiSorce.setUv(uv);//uv
+    			tongjiSorce.setAppNum(appnum);//真实的申请数
+    			if(appnum>=100) {
+    				tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
+    			}else {
+    				tongjiSorce.setAppNum1(appnum);
+    			}
+    			tongjiSorce.setCvr(cvr);//转化率
+    			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
+    			listto.add(tongjiSorce);
 			}
-		} else if (company.length > 1) {
-
-			System.out.println("company.length>1");
-
-			List<Source> listsourcefor = null;
-			RedisClientUtil redisClientUtil = new RedisClientUtil();
-			for (int j = 0; j < company.length; j++) {
-				listsourcefor = intMerchantService.queryAll(company[j]);// 查询出所有的渠道信息
-				listsource.addAll(listsourcefor);
-
-				for (int i = 0; i < listsourcefor.size(); i++) {
-					String source = listsourcefor.get(i).getSourcename();
-					String SourceClick = redisClientUtil.get(company[j] + source + "Key");// 通过key得到value,就是得到uv
-					if (SourceClick == null) {
-						redisClientUtil.set(company[j] + source + "Key", "1");
-						System.out.println(redisClientUtil.getSourceClick(company[j] + source + "Key"));
-					} else {
-						redisClientUtil.set(company[j] + source + "Key",
-								Integer.parseInt(redisClientUtil.getSourceClick(company[j] + source + "Key")) + 1 + ""); // 由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
-						System.out.println(redisClientUtil.getSourceClick(company[j] + source + "Key"));
-					}
-					float appnum = intTongjiService.queryApplicationNumber(company[j], source, startTime, endTime);// 得到申请数
-					String discount = intTongjiService.queryDiscount(source, company[j]);// 得到折扣率
-					int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
-					int sumappnum = intTongjiService.queryUV(company[j], source, startTime, endTime);// 得到甲方总申请数
-					Integer uv = Integer.parseInt(redisClientUtil.getSourceClick(company[j] + source + "Key"));
-					String cvr = (appnum / uv) + "%";// 得到转化率
-
-					TongjiSorce tongjiSorce = new TongjiSorce();
-					tongjiSorce.setDate(date);// 日期
-					tongjiSorce.setSourceName(source);// 渠道名称
-					tongjiSorce.setUv(uv);// uv
-					tongjiSorce.setAppNum(appnum);// 真实的申请数
-					tongjiSorce.setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
-					tongjiSorce.setCvr(cvr);// 转化率
-					tongjiSorce.setSumappnum(sumappnum);// 点过甲方总的人数
-					listto.add(tongjiSorce);
-				}
+    	}
+    	else if(company.length>1){
+    		
+    		System.out.println("company.length>1");
+    		
+    		List<Source> listsourcefor=null;
+    		RedisClientUtil redisClientUtil = new RedisClientUtil();
+    		for (int j = 0; j < company.length; j++) {
+    			listsourcefor=intMerchantService.queryAll(company[j]);//查询出所有的渠道信息
+    			listsource.addAll(listsourcefor);
+    			
+    			for (int i = 0; i < listsourcefor.size(); i++) {
+        			String source=listsourcefor.get(i).getSourcename();
+        	    	float appnum=intTongjiService.queryApplicationNumber(company[j], source,startTime,endTime);//得到申请数
+        	    	String discount=intTongjiService.queryDiscount(source, company[j]);//得到折扣率
+        	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
+        	    	int sumappnum=intTongjiService.queryUV(company[j], source,startTime,endTime);//得到甲方总申请数
+        	    	int uv=0;
+        	    	String cvr=null;
+        	     	if(redisClientUtil.getSourceClick(company[0]+source+date+"Key")==null) {
+        	    		uv=0;
+        	    	}else {
+        	    		uv=Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+date+"Key"));
+        	    	}
+        	     	if((appnum<0.000001)||(uv==0)) {
+        	    		cvr=0+"%";//得到转化率
+        	    	}else {
+        	    		cvr=(appnum/uv)+"%";//得到转化率
+        	    	}
+        	    	
+        			TongjiSorce tongjiSorce=new TongjiSorce();
+        			tongjiSorce.setDate(date);//日期
+        			tongjiSorce.setSourceName(source);//渠道名称
+        			tongjiSorce.setUv(uv);//uv
+        			tongjiSorce.setAppNum(appnum);//真实的申请数
+        			if(appnum>=100) {
+        				tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
+        			}else {
+        				tongjiSorce.setAppNum1(appnum);
+        			}
+        			tongjiSorce.setCvr(cvr);//转化率
+        			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
+        			listto.add(tongjiSorce);
+    			}
 			}
-		}
-
-		ListPageUtil listPageUtil = new ListPageUtil(listto, page, 10);
-		listtopage.addAll(listPageUtil.getData());
-
-		pageUtil = new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),
-				listPageUtil.getTotalCount());
-
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("listsource", listsource);
-		map.put("listtopage", listtopage);
-		map.put("pageUtil", pageUtil);
-		map.put("company", company);
-		return map;
+    	}
+    	if(listto.size()!=0) {
+    		ListPageUtil listPageUtil=new ListPageUtil(listto,page,10);
+    		listtopage.addAll(listPageUtil.getData());
+    		
+    		pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+        	
+    	}
+    	HashMap<String,Object> map=new HashMap<>();
+    	map.put("listsource", listsource);
+    	map.put("listtopage",listtopage);
+    	map.put("pageUtil",pageUtil);
+    	map.put("company", company);
+    	return map;
 	}
 
 	// 后台管理---统计详情功能
