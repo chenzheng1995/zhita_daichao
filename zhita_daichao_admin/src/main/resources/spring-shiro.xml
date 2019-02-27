@@ -48,7 +48,6 @@
 				/admin_login/sendSMS=anon   
 				<!-- 说明访问该接口不需要任何权限 -->
 				/admin_login/logintest=anon
-				/**=authc
 				<!-- 贷款商家权限拦截 -->
 				/registe/queryAllAdmin = perms["贷款商家-查询所有"]
 				/registe/queryByNameLike = perms["贷款商家-模糊查询"]
