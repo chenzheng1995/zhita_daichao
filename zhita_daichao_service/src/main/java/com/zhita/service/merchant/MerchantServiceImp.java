@@ -36,8 +36,8 @@ public class MerchantServiceImp implements IntMerchantService{
     }
     
     //后台管理  ----通过传过来的数据对管理登陆表进行修改
-    public int updateManageLogin(String phone,String source,String phone1) {
-    	int num=sourceMapper.updateManageLogin(phone, source, phone1);
+    public int updateManageLogin(String acount,String pwd,String source,String acount1) {
+    	int num=sourceMapper.updateManageLogin(acount, pwd,source, acount1);
     	return num;
     }
     

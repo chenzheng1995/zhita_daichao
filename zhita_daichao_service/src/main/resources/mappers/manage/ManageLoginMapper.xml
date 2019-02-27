@@ -221,6 +221,10 @@
 	<insert id="addManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
 		insert into manage_login(username,phone,company,sourcename) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{sourcename,jdbcType=VARCHAR})
 	</insert>
+	<!-- 后台管理   添加后台管理用户1-->
+	<insert id="addManageLogin1" parameterType="com.zhita.model.manage.ManageLogin">
+		insert into manage_login(phone,pwd,company,sourcename) values(#{phone,jdbcType=VARCHAR},#{pwd,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{sourcename,jdbcType=VARCHAR})
+	</insert>
 	<!--后台管理    将修改后的管理登陆用户   信息进行保存  -->
 	<update id="upaManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
 		    update manage_login
@@ -249,7 +253,7 @@
 	</select>
 	<!-- 后台管理   通过手机号查询用户信息 -->
 	<select id="queryByPhone" parameterType="java.lang.String" resultType="com.zhita.model.manage.ManageLogin">
-		select m.id,m.userName,m.phone,m.loginStatus,m.loginTime,m.deleted from manage_login m where phone=#{arg0} and deleted='0'
+		select m.id,m.userName,m.phone,m.pwd,m.loginStatus,m.loginTime,m.deleted from manage_login m where phone=#{arg0} and deleted='0'
 	</select>
 	<!-- 后后台理  通过手机号更新用户的登录状态和登录时间 -->
 	<update id="upaStateTime" parameterType="com.zhita.model.manage.ManageLogin">
@@ -260,6 +264,6 @@
 	</update>
 	<!-- 后台管理   通过手机号获取用户的id -->
 	<select id="getIdByPhone" parameterType="java.lang.String" resultType="com.zhita.model.manage.ManageLogin">
-		select id,company,sourcename from manage_login where phone = #{phone} and deleted ='0'
+		select id,company,sourcename from manage_login where phone = #{arg0} and deleted ='0'
 	</select>
 </mapper>

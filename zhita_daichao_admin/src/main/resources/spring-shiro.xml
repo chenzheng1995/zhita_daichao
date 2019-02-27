@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd">
+    
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="realmDemo"/>
+    </bean>
+    <!-- Realm -->
+    <bean id="realmDemo" class="com.zhita.controller.shiro.RealmShiro">
+        <!-- <property name="credentialsMatcher" ref="credentialsMatcher"/> -->
+    </bean>
+    
+    <!-- 加密-->
+<!--     <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        加密方式
+        <property name="hashAlgorithmName" value="MD5"/>
+        加密次数
+        <property name="hashIterations" value="1024"/>
+    </bean> -->
+    
+
+    <!-- Shiro的Web过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+        
+	  <!-- loginUrl==>如果登录成功，跳转到哪个页面，或者执行哪个请求 -->
+  <!--       <property name="loginUrl" value="/loginTips" /> -->
+        
+      <!--在此处配置无权限的跳转路径-->
+      <property name="unauthorizedUrl" value="/1.jsp"/>
+      
+        <!--
+        	配置哪些页面需要受保护.
+        	以及访问这些页面需要的权限.
+        	1). anon 可以被匿名访问
+        	2). authc 必须认证(即登录)后才可能访问的页面.
+        	3). logout 登出.
+        	4). roles 角色过滤器
+        -->
+        <property name="filterChainDefinitions">
+			<value>
+				<!-- 说明访问该接口不需要任何权限 -->
+				/admin_login/sendSMS=anon   
+				<!-- 说明访问该接口不需要任何权限 -->
+				/admin_login/logintest=anon
+				/**=authc
+				<!-- 贷款商家权限拦截 -->
+				/registe/queryAllAdmin = perms["贷款商家-查询所有"]
+				/registe/queryByNameLike = perms["贷款商家-模糊查询"]
+				/registe/insertAllAdmin = perms["贷款商家-添加"]
+				/registe/falsedeleteByPrimaryKey = perms["贷款商家-删除"]
+				/registe/selectByPrimaryKey = perms["贷款商家-编辑"]
+				/registe/upaState = perms["贷款商家-更新状态"]
+				<!-- 贷款分类权限拦截 -->
+				/type/queryAllPage = perms["贷款分类-查询所有"]
+				/type/queryByLike = perms["贷款分类-模糊查询"]
+				/type/insertAllfind = perms["贷款分类-添加"]
+				/type/selectByPrimaryKey = perms["贷款分类-编辑"]
+				<!-- 信用卡权限拦截 -->
+				/card/queryAllCard = perms["信用卡-查询所有"]
+				/card/queryByLike = perms["信用卡-模糊查询"]
+				/card/addAll = perms["信用卡-新增"]
+				/card/selectByPrimaryKey = perms["信用卡-编辑"]
+				/card/upaFalseDel = perms["信用卡-删除"]
+				/card/upaState = perms["信用卡-状态修改"]
+				<!-- 攻略权限拦截 -->
+				/news/queryAllNews = perms["攻略-查询所有"]
+				/news/queryNewsByLike = perms["攻略-模糊查询"]
+				/news/AddALL = perms["攻略-添加"]
+				/news/selectByPrimaryKey = perms["攻略-编辑"]
+				/news/upaFalseDelById = perms["攻略-删除"]
+				/news/upaState = perms["攻略-更新状态"]
+				<!--轮播图权限拦截  -->
+				/banner/queryAll = perms["轮播图-查询所有"]
+				/banner/queryAllByLike = perms["轮播图-模糊查询"]
+				/banner/AddAll = perms["轮播图-新增"]
+				/banner/selectByPrimaryKey = perms["轮播图-编辑"]
+				/banner/upaFalseDel = perms["轮播图-删除"]
+				/banner/upaState = perms["轮播图-状态修改"]
+				<!-- 广告权限拦截 -->
+				/adv/queryAll = perms["广告-查询所有"]
+				/adv/queryAllByLike = perms["广告-模糊查询"]
+				/adv/AddAll = perms["广告-新增"]
+				/adv/selectByPrimaryKey = perms["广告-编辑"]
+				/adv/upaFalseDel = perms["广告-删除"]
+				/adv/upaState = perms["广告-状态修改"]
+				<!-- 用户权限拦截 -->
+				/uer/queryAllUser = perms["用户-查询所有"]
+				/uer/queryByLike = perms["用户-模糊查询"]
+				/uer/queryAllButton = perms["用户-申请记录"]
+				<!-- 渠道权限拦截 -->
+				/merchant/queryAllSource = perms["渠道-查询所有"]
+				/merchant/querySourceByLike = perms["渠道-模糊查询"]
+				/merchant/AddAll = perms["渠道-新增"]
+				/merchant/selectByPrimaryKey = perms["渠道-编辑"]
+				/merchant/upaFalseDelById = perms["渠道-删除"]
+				/merchant/upaState = perms["渠道-状态修改"]
+				<!--  渠道方统计-->
+				/tongji/queryAllTongji = perms[统计-渠道方查询]
+				<!-- 统计权限拦截 -->
+				/tongji/queryAllPage = perms["统计-查询所有me"]
+				/tongji/queryAllPageBySourceName = perms["统计-模糊查询me"]
+
+			</value>
+        </property>
+    </bean>
+</beans>

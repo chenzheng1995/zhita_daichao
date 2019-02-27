@@ -12,6 +12,8 @@ public class ManageLogin implements Serializable{
     private String username;//用户名
 
     private String phone;//手机号
+    
+    private String pwd;//密码
 
     private String loginstatus;//登陆状态
 
@@ -59,7 +61,16 @@ public class ManageLogin implements Serializable{
         return phone;
     }
 
-    public void setPhone(String phone) {
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
     }
 

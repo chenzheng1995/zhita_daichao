@@ -1,4 +1,4 @@
-package com.zhita.controller.filter;
+/*package com.zhita.controller.filter;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -17,19 +17,19 @@ import org.apache.commons.lang.StringUtils;
 
 public class SessionFilter implements Filter {
 
-    /**
+    *//**
      * 要检查的 session 的名称
-     */
+     *//*
     private String sessionKey;
 
-    /**
+    *//**
      * 需要排除（不拦截）的URL的正则表达式
-     */
+     *//*
     private Pattern excepUrlPattern;
 
-    /**
+    *//**
      * 检查不通过时，转发的URL
-     */
+     *//*
     private String redirectUrl;
 
     @Override
@@ -100,4 +100,4 @@ public class SessionFilter implements Filter {
     public void destroy() {
     }
 
-}
+}*/

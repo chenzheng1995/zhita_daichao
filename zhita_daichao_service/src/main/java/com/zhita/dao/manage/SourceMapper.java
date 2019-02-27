@@ -26,7 +26,7 @@ public interface SourceMapper {
     int updateSource(Source source);
     
     //后台管理  ----通过传过来的数据对管理登陆表进行修改
-    int updateManageLogin(String phone,String source,String phone1);
+    int updateManageLogin(String acount,String pwd,String source,String acount1);
     
     //后台管理---查询出所有渠道表信息，含分页
     List<Source> queryAllSource(String company,Integer page,Integer pagesize);
