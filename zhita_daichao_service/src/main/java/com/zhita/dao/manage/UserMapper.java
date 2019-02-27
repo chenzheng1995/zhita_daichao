@@ -27,7 +27,7 @@ public interface UserMapper {
 	Long getmonthlyUsers(@Param("monthlyZeroTimestamps")long monthlyZeroTimestamps,@Param("nextMonthlyZeroTimestamps") long nextMonthlyZeroTimestamps);
 
 	User findphone(@Param("phone")String phone,@Param("company") String company);
-
+	
 	int insertfootprint(@Param("phone")String phone,@Param("nickName") String nickName,@Param("openId") String openId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus,@Param("company") String company,@Param("registrationType") String registrationType);
 	
 	//后台管理---查询出用户表总数量

@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhita.controller.shiro.PhoneToken;
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Role;
+import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
+import com.zhita.util.MD5Util;
 import com.zhita.util.PageUtil;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
@@ -114,7 +116,7 @@ public class LoginController {
 		return map;	
 	}
 
-	//通过验证码登录
+	//通过验证码登录或者用户名密码登陆
 	/**
 	 * 
 	 * @param userName 用户名
@@ -124,39 +126,89 @@ public class LoginController {
 	 */
 	@RequestMapping("/login")
 	@ResponseBody
-	public Map<String, Object> login(String code,String phone) {
+	public Map<String, Object> login(String code,String phone,String acount,String pwd) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int a=0;
 		
 		RedisClientUtil redisClientUtil = new RedisClientUtil();
 		String key = phone+"Key";
 		String redisCode = redisClientUtil.get(key);
-		
-		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
-			map.put("msg", "phone或验证码不能为空");
-		}else {
-			 ManageLogin manageLogin1 = loginService.queryByPhone(phone);// 判断该用户是否存在
-			 if(manageLogin1==null) {
-				 System.out.println("手机号不存在");
-			 }else {
-				 a=1;
-			 }
-	        	System.out.println("最外层："+"a:"+a+"rediscode:"+redisCode+"code:"+code);
-	        	if(a==1) {
-	        		if(redisCode==null||"".equals(redisCode)){
-	        			map.put("msg", "验证码过期，请重新发送");
-	        		}else{
-	        			if(redisCode.equals(code)) {
+		if((phone!=null||!"".equals(phone))&&(acount==null||"".equals(acount))&&(pwd==null||"".equals(pwd))) {
+			System.out.println("使用手机号登陆");
+			if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
+				map.put("msg", "phone或验证码不能为空");
+			}else {
+				 ManageLogin manageLogin1 = loginService.queryByPhone(phone);// 判断该用户是否存在
+				 if(manageLogin1==null) {
+					 map.put("msg", "手机号不存在");
+				 }else {
+					 a=1;
+				 }
+		        	System.out.println("最外层："+"a:"+a+"rediscode:"+redisCode+"code:"+code);
+		        	if(a==1) {
+		        		if(redisCode==null||"".equals(redisCode)){
+		        			map.put("msg", "验证码过期，请重新发送");
+		        		}else{
+		        			if(redisCode.equals(code)) {
+			                    String loginStatus="1";
+			                	String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
+			                	
+			                	ManageLogin manageLogin=new ManageLogin();
+			                	manageLogin.setLoginstatus(loginStatus);
+			                	manageLogin.setLogintime(registrationTime);
+			                	manageLogin.setPhone(phone);
+			                	int num=loginService.upaStateTime(manageLogin);
+								if (num == 1) {	
+									ManageLogin manageLogin2 = loginService.getIdByPhone(phone);//通过手机号获取当前用户对象
+									int id=manageLogin2.getId();//获取用户id
+									String company=manageLogin2.getCompany();//获取用户公司名
+									String sourceName=manageLogin2.getSourcename();//获取用户渠道名称
+									
+									String[] listCompany=company.split(",");//该数组里面存了当前用户所有的公司名
+									//List<String> listcom=new ArrayList<>();//new集合  存通过公司id查询出来的公司名称
+									/*for (int i = 0; i < listCompany.length; i++) {
+										listcom.add(company);
+									}*/
+									
+									map.put("msg", "用户登录成功，登录状态修改成功");
+									map.put("loginStatus", loginStatus);
+									map.put("userId", id);
+									map.put("company", listCompany);//集合里面存的是当前用户的所有公司名
+									map.put("sourceName", sourceName);
+								} else {
+									map.put("msg", "用户登录失败，登录状态修改失败");
+								}
+		        			}else {
+		        				map.put("msg2", "验证码错误");
+		        			}
+		        		}
+		        	}
+			}
+		}
+		if((phone==null||"".equals(phone))&&(acount!=null||!"".equals(acount)||(pwd!=null||!"".equals(pwd)))) {
+			System.out.println("使用账号密码登陆");
+			if (StringUtils.isEmpty(acount) || StringUtils.isEmpty(pwd)) {
+				map.put("msg", "账号或密码不能为空");
+			}else {
+				 ManageLogin manageLogin1 = loginService.queryByPhone(acount);// 判断该用户是否存在
+				 if(manageLogin1==null) {
+					 map.put("msg", "账号不存在");
+				 }else {
+					 a=1;
+				 }
+		        	//System.out.println("最外层："+"a:"+a+"rediscode:"+redisCode+"code:"+code);
+		        	if(a==1) {
+	        			if(pwd.equals(manageLogin1.getPwd())) {
 		                    String loginStatus="1";
 		                	String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
 		                	
 		                	ManageLogin manageLogin=new ManageLogin();
 		                	manageLogin.setLoginstatus(loginStatus);
 		                	manageLogin.setLogintime(registrationTime);
-		                	manageLogin.setPhone(phone);
+		                	manageLogin.setPhone(acount);
 		                	int num=loginService.upaStateTime(manageLogin);
 							if (num == 1) {	
-								ManageLogin manageLogin2 = loginService.getIdByPhone(phone);//通过手机号获取当前用户对象
+								ManageLogin manageLogin2 = loginService.getIdByPhone(acount);//通过手机号获取当前用户对象
 								int id=manageLogin2.getId();//获取用户id
 								String company=manageLogin2.getCompany();//获取用户公司名
 								String sourceName=manageLogin2.getSourcename();//获取用户渠道名称
@@ -176,13 +228,17 @@ public class LoginController {
 								map.put("msg", "用户登录失败，登录状态修改失败");
 							}
 	        			}else {
-	        				map.put("msg2", "验证码错误");
+	        				map.put("msg2", "密码错误");
 	        			}
-	        		}
-	        	}
+	        	
+		        	}
+			}
+		
 		}
+	
 		return map;
 	}
+	
 	
 	// 退出登录
 	@RequestMapping("/logOut")

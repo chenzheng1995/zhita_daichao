@@ -45,6 +45,8 @@ public interface IntLoginService {
 	public List<ManageLogin> queryManageLogin(Integer page,Integer pagesize);
 	//后台管理---添加后台管理用户
 	public int addManageLogin(ManageLogin manageLogin);
+	//后台管理---添加后台管理用户1
+	public int addManageLogin1(ManageLogin manageLogin);
     //后台管理---通过id查询出管理登陆用户信息
     public ManageLogin selectByPrimaryKey(Integer id);
 	//后台管理----将修改后的管理登陆用户   信息进行保存

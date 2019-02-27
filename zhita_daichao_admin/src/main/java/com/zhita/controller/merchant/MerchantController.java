@@ -219,11 +219,11 @@ public class MerchantController {
 		int num=intMerchantService.addAll(source);//添加渠道表信息
 		
 		ManageLogin manageLogin=new ManageLogin();
-		manageLogin.setUsername("空");
-		manageLogin.setPhone(source.getAccount());
 		manageLogin.setCompany(source.getCompany());
 		manageLogin.setSourcename(source.getSourcename());
-	  	loginService.addManageLogin(manageLogin);//添加完一条渠道信息   往后台管理登陆表添加一条信息
+		manageLogin.setPhone(source.getAccount());
+		manageLogin.setPwd(source.getAccount());
+	  	loginService.addManageLogin1(manageLogin);//添加完一条渠道信息   往后台管理登陆表添加一条信息
 		return num;
 	}
     //后台管理---通过主键id查询出渠道信息
@@ -240,7 +240,7 @@ public class MerchantController {
     public int updateSource(Source source){
 		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
 		int num=intMerchantService.updateSource(source);
-		intMerchantService.updateManageLogin(source.getAccount(), source.getSourcename(), source1.getAccount());
+		intMerchantService.updateManageLogin(source.getAccount(), source.getPwd(),source.getSourcename(), source1.getAccount());
 		return num;
 	}
 	

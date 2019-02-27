@@ -133,6 +133,11 @@ public class LoginServiceImp implements IntLoginService{
 		int num=manageLoginMapper.addManageLogin(manageLogin);
 		return num;
 	}
+	//后台管理---添加后台管理用户1
+	public int addManageLogin1(ManageLogin manageLogin) {
+		int num=manageLoginMapper.addManageLogin1(manageLogin);
+		return num;
+	}
     //后台管理---通过id查询出管理登陆用户信息
     public ManageLogin selectByPrimaryKey(Integer id) {
     	ManageLogin manageLogin=manageLoginMapper.selectByPrimaryKey(id);

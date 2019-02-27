@@ -9,6 +9,8 @@ public class Source implements Serializable{
     private String sourcename;//渠道名称
 
     private String account;//账户
+    
+    private String pwd;//密码
 
     private String link;//链接
 
@@ -58,8 +60,17 @@ public class Source implements Serializable{
     public void setAccount(String account) {
         this.account = account == null ? null : account.trim();
     }
+    
+    
+    public String getPwd() {
+		return pwd;
+	}
 
-    public String getLink() {
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public String getLink() {
         return link;
     }
 

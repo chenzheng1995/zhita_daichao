@@ -58,34 +58,22 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
   
-<!--   <filter>
-        <filter-name>SessionFilter</filter-name>
-        <filter-class>com.zhita.controller.filter.SessionFilter</filter-class>
-        <init-param>
-            <description>将当前登录的用户的信息保存在 session 中时使用的key，如果没有配置此参数，则该过滤器不起作用</description>
-            <param-name>sessionKey</param-name>
-            <param-value>user</param-value>
-        </init-param>
-        <init-param>
-            <description>未登录重定向地址</description>
-            <param-name>redirectUrl</param-name>
-            <param-value>/login.jsp</param-value>
-        </init-param>
-        <init-param>
-            <description>不需要进行拦截的 </description>
-            <param-name>excepUrlRegex</param-name>
-            <param-value>^.*(login|assert|favicon|js|img|css).*$</param-value>
-        </init-param>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <session-config>
-        <session-timeout>10</session-timeout>
-    </session-config> -->
+<!-- shiro配置 开始 -->
+<filter> 
+	<filter-name>shiroFilter</filter-name> 
+	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class> 
+	<async-supported>true</async-supported> 
+	<init-param> 
+		<!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 --> 
+		<param-name>targetFilterLifecycle</param-name> 
+		<param-value>true</param-value> 
+	</init-param> 
+</filter> 
+<filter-mapping>
+	<filter-name>shiroFilter</filter-name> 
+	<url-pattern>/*</url-pattern> 
+</filter-mapping>
+<!-- shiro配置 结束 -->
   
   
   <welcome-file-list>

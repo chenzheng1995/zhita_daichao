@@ -55,6 +55,8 @@ public interface ManageLoginMapper {
 	
 	//后台管理---添加后台管理用户
 	int addManageLogin(ManageLogin manageLogin);
+	//后台管理---添加后台管理用户1
+	int addManageLogin1(ManageLogin manageLogin);
 	
 	//后台管理----将修改后的管理登陆用户   信息进行保存
 	int upaManageLogin(ManageLogin manageLogin);
