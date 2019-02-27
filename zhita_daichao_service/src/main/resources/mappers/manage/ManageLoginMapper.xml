@@ -223,7 +223,7 @@
 	</insert>
 	<!-- 后台管理   添加后台管理用户1-->
 	<insert id="addManageLogin1" parameterType="com.zhita.model.manage.ManageLogin">
-		insert into manage_login(phone,pwd,company,sourcename) values(#{phone,jdbcType=VARCHAR},#{pwd,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{sourcename,jdbcType=VARCHAR})
+		insert into manage_login(phone,pwd,company,sourcename) values(#{phone,jdbcType=VARCHAR},#{pwd,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{sourcename,jdbcType=VARCHAR})
 	</insert>
 	<!--后台管理    将修改后的管理登陆用户   信息进行保存  -->
 	<update id="upaManageLogin" parameterType="com.zhita.model.manage.ManageLogin">

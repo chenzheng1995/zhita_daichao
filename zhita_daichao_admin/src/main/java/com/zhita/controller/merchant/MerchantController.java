@@ -238,9 +238,10 @@ public class MerchantController {
 	@ResponseBody
 	@RequestMapping("/updateSource")
     public int updateSource(Source source){
+		System.out.println(source);
 		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
 		int num=intMerchantService.updateSource(source);
-		intMerchantService.updateManageLogin(source.getAccount(), source.getPwd(),source.getSourcename(), source1.getAccount());
+		intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
 		return num;
 	}
 	

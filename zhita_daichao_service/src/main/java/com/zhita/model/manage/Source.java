@@ -109,5 +109,12 @@ public class Source implements Serializable{
 	public void setDiscount(String discount) {
 		this.discount = discount;
 	}
+
+	@Override
+	public String toString() {
+		return "Source [id=" + id + ", sourcename=" + sourcename + ", account=" + account + ", pwd=" + pwd + ", link="
+				+ link + ", state=" + state + ", deleted=" + deleted + ", company=" + company + ", discount=" + discount
+				+ "]";
+	}
 	
 }
