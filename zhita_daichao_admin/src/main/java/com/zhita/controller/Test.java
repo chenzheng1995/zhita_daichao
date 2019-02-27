@@ -1,12 +1,7 @@
 package com.zhita.controller;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import com.zhita.util.RedisClientUtil;
-import com.zhita.util.TuoMinUtil;
 
 public class Test {
 	public static void main(String[] args) throws ParseException {
@@ -160,12 +155,16 @@ public class Test {
 			System.out.println("float Equal 0!\n");
 		}
 */
-		RedisClientUtil redisClientUtil=new RedisClientUtil();
-		System.out.println(redisClientUtil.getSourceClick("多米记"+"yunying1"+"2019/2/26"+"Key"));
+	/*	RedisClientUtil redisClientUtil=new RedisClientUtil();
+		System.out.println(redisClientUtil.getSourceClick("多米记"+"yunying1"+"2019/2/26"+"Key"));*/
 
 		/*String str="80%";
 		System.out.println(str.substring(0, str.length()-1));;*/
 		/*TuoMinUtil u=new TuoMinUtil();
 		System.out.println(u.nameEncrypt("张三张三"));;*/
+		float a=16.66666f;
+		DecimalFormat df = new DecimalFormat("#.00");
+		System.out.println(df.format(a));
+		System.out.println(new DecimalFormat("#.00").format(a));
 	}
 }

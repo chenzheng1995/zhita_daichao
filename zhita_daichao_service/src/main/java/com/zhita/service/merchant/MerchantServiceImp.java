@@ -35,6 +35,12 @@ public class MerchantServiceImp implements IntMerchantService{
     	return num;
     }
     
+    //后台管理  ----通过传过来的数据对管理登陆表进行修改
+    public int updateManageLogin(String phone,String source,String phone1) {
+    	int num=sourceMapper.updateManageLogin(phone, source, phone1);
+    	return num;
+    }
+    
     //后台管理---查询出所有渠道表信息，含分页
     public List<Source> queryAllSource(String company,Integer page,Integer pagesize){
     	List<Source> list=sourceMapper.queryAllSource(company,page,pagesize);

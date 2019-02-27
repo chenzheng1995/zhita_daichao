@@ -1,5 +1,6 @@
 package com.zhita.controller.tongji;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -126,7 +127,7 @@ public class TongjiController {
     	     	if((appnum<0.000001)||(uv==0)) {
     	    		cvr=0+"%";//得到转化率
     	    	}else {
-    	    		cvr=(appnum/uv)+"%";//得到转化率
+    	    		cvr=(new DecimalFormat("#.00").format(appnum/uv*100))+"%";//得到转化率
     	    	}
     			TongjiSorce tongjiSorce=new TongjiSorce();
     			tongjiSorce.setDate(date);//日期
@@ -169,7 +170,7 @@ public class TongjiController {
         	     	if((appnum<0.000001)||(uv==0)) {
         	    		cvr=0+"%";//得到转化率
         	    	}else {
-        	    		cvr=(appnum/uv)+"%";//得到转化率
+        	    		cvr=(new DecimalFormat("#.00").format(appnum/uv*100))+"%";//得到转化率
         	    	}
         	    	
         			TongjiSorce tongjiSorce=new TongjiSorce();

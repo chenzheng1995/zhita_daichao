@@ -1,6 +1,5 @@
 package com.zhita.controller.login;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,15 +36,6 @@ public class LoginController {
 	@Autowired
 	IntLoginService loginService;
 	
-	@RequestMapping("/loginTips")
-	public Map<String,String> loginTips(){
-		Map map = new HashMap();
-    	map.put("code",-3);
-    	map.put("msg","请您先登录");
-    	return map;
-	}
-	
-	
 	
 	//后台管理----登录验证  以及授权
 	@ResponseBody
@@ -66,9 +56,6 @@ public class LoginController {
 	        	try {
 	                //执行认证操作. 
 	                subject.login(token);
-	                Serializable id = subject.getSession().getId();
-	                response.setHeader("token",id.toString());//得到改状态的sessionId,返回给前端
-	                //ResultGenerator.getSuucessResult();
 	                a=1;
 	            }catch (UnknownAccountException e) {
 	            	map.put("msg", "没有此手机号");

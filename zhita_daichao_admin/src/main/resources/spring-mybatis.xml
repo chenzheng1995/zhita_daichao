@@ -111,6 +111,4 @@
     	<tx:annotation-driven transaction-manager="txManager"
 		proxy-target-class="true" />
 
-
-<!-- 	  <import resource="spring-shiro.xml"/> -->
 </beans>  

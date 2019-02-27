@@ -16,6 +16,9 @@ public interface IntMerchantService {
     //后台管理---通过传过来的渠道对象，对当前对象进行修改保存
     public int updateSource(Source source);
     
+    //后台管理  ----通过传过来的数据对管理登陆表进行修改
+    public int updateManageLogin(String phone,String source,String phone1);
+    
     //后台管理---查询出所有渠道表信息，含分页
     public List<Source> queryAllSource(String company,Integer page,Integer pagesize);
     

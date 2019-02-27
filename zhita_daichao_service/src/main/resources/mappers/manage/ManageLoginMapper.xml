@@ -238,7 +238,7 @@
 		update manage_login set deleted='1' where id=#{id}
 	</delete>
 	<!-- 后台管理   通过手机号修改管理登陆用户的假删除状态-->
-	<delete id="upaMFalseDelByPhone" parameterType="java.lang.Integer">
+	<delete id="upaMFalseDelByPhone" parameterType="java.lang.String">
 		update manage_login set deleted='1' where phone=#{phone}
 	</delete>
 	<!-- 后台管理   根据用户名查询出当前用户所拥有的角色 -->
