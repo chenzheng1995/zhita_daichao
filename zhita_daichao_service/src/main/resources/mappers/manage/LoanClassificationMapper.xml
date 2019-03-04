@@ -78,7 +78,7 @@
   <!-- 后台管理  通过传过来的贷款分类对象，对当前对象进行修改保存 -->
   <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoanClassification">
     update loan_classification
-    set businessClassification = #{businessclassification,jdbcType=VARCHAR},
+    set businessClassification = #{businessClassification,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>

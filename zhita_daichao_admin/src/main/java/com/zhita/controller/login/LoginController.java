@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhita.controller.shiro.PhoneToken;
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Role;
-import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
-import com.zhita.util.MD5Util;
 import com.zhita.util.PageUtil;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
@@ -37,7 +35,6 @@ import com.zhita.util.Timestamps;
 public class LoginController {
 	@Autowired
 	IntLoginService loginService;
-	
 	
 	//后台管理----登录验证  以及授权
 	@ResponseBody
@@ -87,7 +84,7 @@ public class LoginController {
 								/*for (int i = 0; i < listCompany.length; i++) {
 									listcom.add(company);
 								}*/
-								
+								subject.getSession().setTimeout(3600000);
 								map.put("msg", "用户登录成功，登录状态修改成功");
 								map.put("loginStatus", loginStatus);
 								map.put("userId", id);

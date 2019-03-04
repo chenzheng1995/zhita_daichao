@@ -27,7 +27,7 @@ public interface UserService {
 	public List<User> queryAllUser1(String company);
 	
 	//后台管理---通过传过来的值，进行多种情况的模糊查询，含分页
-	public Map<String,Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page);
+	public Map<String,Object> queryByLike(String phone,String[] sourceName,String registrationTimeStart,String registrationTimeEnd,String[] company,Integer page);
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中，含分页
 	public List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize);

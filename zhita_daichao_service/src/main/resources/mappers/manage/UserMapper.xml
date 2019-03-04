@@ -321,7 +321,14 @@
 	</select>
 	<!-- 后台管理    通过手机号、渠道名称和注册时间模糊查询用户总数量  -->
 	<select id="pageCountByPhoneSourceNameAndRegistrationtime" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(phone) from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%"　and s.sourceName=#{arg1} and u.registrationTime between #{arg2} and #{arg3} and company=#{arg4}
+		select count(phone) from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%"　and s.sourceName in
+			<foreach collection="arg1" item="item" open="(" separator="," close=")">  
+            	#{item}  
+       		</foreach>  
+		and u.registrationTime between #{arg2} and #{arg3} and company in
+			<foreach collection="arg4" item="item" open="(" separator="," close=")">  
+            	#{item}  
+        	</foreach>  
 	</select>
 	<!-- 后台管理   根据用户id查询出按钮足迹  商品足迹和贷款分类足迹的总数量 -->
 	<select id="pageCountThreeFootprint" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -378,7 +385,14 @@
 	</select>
 	<!-- 后台管理   根据手机号、渠道名称和注册时间进行模糊查询，含分页 -->
 	<select id="queryByPhoneSourceNameAndRegistrationtime" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName=#{arg1} and u.registrationTime between #{arg2} and #{arg3} and company=#{arg4} limit #{arg5},#{arg6}
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName in
+			<foreach collection="arg1" item="item" open="(" separator="," close=")">  
+            	#{item}  
+        	</foreach>  
+		and u.registrationTime between #{arg2} and #{arg3} and company in
+			<foreach collection="arg4" item="item" open="(" separator="," close=")">  
+            	#{item}  
+        	</foreach>  
 	</select>
 	<!-- 后台管理 根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中  含分页-->
 	<select id="queryAllButton" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.ButtonFootprint">
@@ -417,7 +431,14 @@
 	</select>
 	<!-- 后台管理   根据手机号,渠道名称,注册时间和公司名查询出所有用户的手机号 -->
 	<select id="queryAllPhoneByPhoneSouNameTimeLike" resultType="com.zhita.model.manage.User">
-		select id,phone from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%"　and s.sourceName=#{arg1} and u.registrationTime between #{arg2} and #{arg3} and company=#{arg4}
+		select id,phone from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%"　and s.sourceName in
+		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
+            #{item}  
+        </foreach>  
+		and u.registrationTime between #{arg2} and #{arg3} and company in
+		<foreach collection="arg4" item="item" open="(" separator="," close=")">  
+            #{item}  
+        </foreach>  
 	</select>
 	<!-- 后台管理   根据渠道名称号和公司名查询出所有用户的手机号 -->
 	<select id="queryAllPhoneBySouNameLike" resultType="com.zhita.model.manage.User">

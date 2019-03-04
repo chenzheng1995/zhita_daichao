@@ -121,7 +121,13 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page){
-    	 Map<String,Object> map=userService.queryByLike(phone,sourceName,registrationTimeStart,registrationTimeEnd,company,page);
+		sourceName = sourceName.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] sourceNamein= sourceName.split(",");
+		
+		company = company.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] companyin= company.split(",");
+		
+    	 Map<String,Object> map=userService.queryByLike(phone,sourceNamein,registrationTimeStart,registrationTimeEnd,companyin,page);
     	 return map;
     }
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    并按足迹时间倒排序，含分页

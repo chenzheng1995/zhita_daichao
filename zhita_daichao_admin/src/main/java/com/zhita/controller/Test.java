@@ -162,9 +162,9 @@ public class Test {
 		System.out.println(str.substring(0, str.length()-1));;*/
 		/*TuoMinUtil u=new TuoMinUtil();
 		System.out.println(u.nameEncrypt("张三张三"));;*/
-		float a=16.66666f;
+	/*	float a=16.66666f;
 		DecimalFormat df = new DecimalFormat("#.00");
 		System.out.println(df.format(a));
-		System.out.println(new DecimalFormat("#.00").format(a));
+		System.out.println(new DecimalFormat("#.00").format(a));*/
 	}
 }
