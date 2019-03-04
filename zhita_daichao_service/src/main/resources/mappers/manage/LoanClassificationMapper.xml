@@ -157,11 +157,21 @@
              <result property="prepaidamount" column="prepaidAmount"/>
              <result property="deleted" column="deleted"/>
              <result property="applications" column="applications"/>
+             <result property="icon" column="icon"/>
        </collection>
  </resultMap>
  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClass" resultMap="loanCla">
  	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} and deleted='0' order by isStick desc limit #{arg1},#{arg2}
  </select>
+ <!-- 小程序  获取前四个贷款分类 -->
+   <select id="queryLoanClass" resultType="com.zhita.model.manage.LoanClassification">
+  	SELECT businessClassification , icon from loan_classification where company = #{company} limit 0,4
+  </select>
+  
+   <!-- 小程序  获取后三个贷款分类 -->
+   <select id="queryLoanClassAfter" resultType="com.zhita.model.manage.LoanClassification">
+  	SELECT businessClassification from loan_classification where company = #{company} limit 4,3
+  </select>
 
 </mapper>

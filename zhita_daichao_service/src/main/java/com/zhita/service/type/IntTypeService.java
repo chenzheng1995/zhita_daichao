@@ -31,6 +31,8 @@ public interface IntTypeService{
     public List<LoanClassification> queryAllLoanCla();
     //通过传过来的贷款分类对象，对当前对象进行修改保存
     public int updateByPrimaryKey(LoanClassification record);
+	public List<LoanClassification> queryLoanClass(String company);
+	public List<LoanClassification> queryLoanClassAfter(String company);
 
 
 }

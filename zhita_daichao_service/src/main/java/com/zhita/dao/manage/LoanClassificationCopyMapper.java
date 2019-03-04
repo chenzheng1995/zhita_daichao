@@ -2,6 +2,7 @@ package com.zhita.dao.manage;
 
 import java.util.List;
 
+import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoanClassificationCopy;
 
 public interface LoanClassificationCopyMapper {
@@ -17,5 +18,5 @@ public interface LoanClassificationCopyMapper {
 
     int updateByPrimaryKey(LoanClassificationCopy record);
 
-	List<LoanClassificationCopy> queryLoanClass(String company);
+	List<LoanClassification> queryLoanClass(String company);
 }

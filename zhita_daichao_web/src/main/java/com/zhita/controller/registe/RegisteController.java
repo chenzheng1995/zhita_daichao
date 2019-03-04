@@ -47,7 +47,7 @@ public class RegisteController {
     	pageUtil.setPage(pages); 	
     	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
         for (LoansBusinesses loansBusinesses : list) {
-	        String businessName = loansBusinesses.getBusinessname();
+	        String businessName = loansBusinesses.getBusinessname();	        
 	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
 	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
 	        loansBusinesses.setApplications(applications);

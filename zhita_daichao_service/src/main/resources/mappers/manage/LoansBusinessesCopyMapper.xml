@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.LoansBusinessesCopyMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.LoansBusinessesCopy">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="intro" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="loanLimit" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trademark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isStick" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sort" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="applicationNumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="busClaId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="loanLimitSmall" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="loanLimitBig" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="cycle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="interestRate" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="applicationRequirements" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applicationProcess" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="specialInstructions" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="successRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="lendingRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="registerLink" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
+    state, busClaId, loanLimitSmall, loanLimitBig, cycle, interestRate, applicationRequirements, 
+    applicationProcess, specialInstructions, successRate, lendingRate, registerLink, 
+    prepaidAmount, deleted, applications, company
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loans_businesses_copy_copy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loans_businesses_copy_copy
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
+    insert into loans_businesses_copy_copy (id, businessName, intro, 
+      loanLimit, trademark, isStick, 
+      sort, applicationNumber, state, 
+      busClaId, loanLimitSmall, loanLimitBig, 
+      cycle, interestRate, applicationRequirements, 
+      applicationProcess, specialInstructions, 
+      successRate, lendingRate, registerLink, 
+      prepaidAmount, deleted, applications, 
+      company)
+    values (#{id,jdbcType=INTEGER}, #{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
+      #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
+      #{busclaid,jdbcType=INTEGER}, #{loanlimitsmall,jdbcType=DECIMAL}, #{loanlimitbig,jdbcType=DECIMAL}, 
+      #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, #{applicationrequirements,jdbcType=VARCHAR}, 
+      #{applicationprocess,jdbcType=VARCHAR}, #{specialinstructions,jdbcType=VARCHAR}, 
+      #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, #{registerlink,jdbcType=VARCHAR}, 
+      #{prepaidamount,jdbcType=DECIMAL}, #{deleted,jdbcType=VARCHAR}, #{applications,jdbcType=INTEGER}, 
+      #{company,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
+    insert into loans_businesses_copy_copy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessname != null">
+        businessName,
+      </if>
+      <if test="intro != null">
+        intro,
+      </if>
+      <if test="loanlimit != null">
+        loanLimit,
+      </if>
+      <if test="trademark != null">
+        trademark,
+      </if>
+      <if test="isstick != null">
+        isStick,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="applicationnumber != null">
+        applicationNumber,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="busclaid != null">
+        busClaId,
+      </if>
+      <if test="loanlimitsmall != null">
+        loanLimitSmall,
+      </if>
+      <if test="loanlimitbig != null">
+        loanLimitBig,
+      </if>
+      <if test="cycle != null">
+        cycle,
+      </if>
+      <if test="interestrate != null">
+        interestRate,
+      </if>
+      <if test="applicationrequirements != null">
+        applicationRequirements,
+      </if>
+      <if test="applicationprocess != null">
+        applicationProcess,
+      </if>
+      <if test="specialinstructions != null">
+        specialInstructions,
+      </if>
+      <if test="successrate != null">
+        successRate,
+      </if>
+      <if test="lendingrate != null">
+        lendingRate,
+      </if>
+      <if test="registerlink != null">
+        registerLink,
+      </if>
+      <if test="prepaidamount != null">
+        prepaidAmount,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="applications != null">
+        applications,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="businessname != null">
+        #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="intro != null">
+        #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="loanlimit != null">
+        #{loanlimit,jdbcType=VARCHAR},
+      </if>
+      <if test="trademark != null">
+        #{trademark,jdbcType=VARCHAR},
+      </if>
+      <if test="isstick != null">
+        #{isstick,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="applicationnumber != null">
+        #{applicationnumber,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="busclaid != null">
+        #{busclaid,jdbcType=INTEGER},
+      </if>
+      <if test="loanlimitsmall != null">
+        #{loanlimitsmall,jdbcType=DECIMAL},
+      </if>
+      <if test="loanlimitbig != null">
+        #{loanlimitbig,jdbcType=DECIMAL},
+      </if>
+      <if test="cycle != null">
+        #{cycle,jdbcType=VARCHAR},
+      </if>
+      <if test="interestrate != null">
+        #{interestrate,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationrequirements != null">
+        #{applicationrequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationprocess != null">
+        #{applicationprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="specialinstructions != null">
+        #{specialinstructions,jdbcType=VARCHAR},
+      </if>
+      <if test="successrate != null">
+        #{successrate,jdbcType=INTEGER},
+      </if>
+      <if test="lendingrate != null">
+        #{lendingrate,jdbcType=INTEGER},
+      </if>
+      <if test="registerlink != null">
+        #{registerlink,jdbcType=VARCHAR},
+      </if>
+      <if test="prepaidamount != null">
+        #{prepaidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="applications != null">
+        #{applications,jdbcType=INTEGER},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
+    update loans_businesses_copy_copy
+    <set>
+      <if test="businessname != null">
+        businessName = #{businessname,jdbcType=VARCHAR},
+      </if>
+      <if test="intro != null">
+        intro = #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="loanlimit != null">
+        loanLimit = #{loanlimit,jdbcType=VARCHAR},
+      </if>
+      <if test="trademark != null">
+        trademark = #{trademark,jdbcType=VARCHAR},
+      </if>
+      <if test="isstick != null">
+        isStick = #{isstick,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="applicationnumber != null">
+        applicationNumber = #{applicationnumber,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="busclaid != null">
+        busClaId = #{busclaid,jdbcType=INTEGER},
+      </if>
+      <if test="loanlimitsmall != null">
+        loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
+      </if>
+      <if test="loanlimitbig != null">
+        loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
+      </if>
+      <if test="cycle != null">
+        cycle = #{cycle,jdbcType=VARCHAR},
+      </if>
+      <if test="interestrate != null">
+        interestRate = #{interestrate,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationrequirements != null">
+        applicationRequirements = #{applicationrequirements,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationprocess != null">
+        applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="specialinstructions != null">
+        specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
+      </if>
+      <if test="successrate != null">
+        successRate = #{successrate,jdbcType=INTEGER},
+      </if>
+      <if test="lendingrate != null">
+        lendingRate = #{lendingrate,jdbcType=INTEGER},
+      </if>
+      <if test="registerlink != null">
+        registerLink = #{registerlink,jdbcType=VARCHAR},
+      </if>
+      <if test="prepaidamount != null">
+        prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="applications != null">
+        applications = #{applications,jdbcType=INTEGER},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
+    update loans_businesses_copy_copy
+    set businessName = #{businessname,jdbcType=VARCHAR},
+      intro = #{intro,jdbcType=VARCHAR},
+      loanLimit = #{loanlimit,jdbcType=VARCHAR},
+      trademark = #{trademark,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      applicationNumber = #{applicationnumber,jdbcType=INTEGER},
+      state = #{state,jdbcType=VARCHAR},
+      busClaId = #{busclaid,jdbcType=INTEGER},
+      loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
+      loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
+      cycle = #{cycle,jdbcType=VARCHAR},
+      interestRate = #{interestrate,jdbcType=DECIMAL},
+      applicationRequirements = #{applicationrequirements,jdbcType=VARCHAR},
+      applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
+      specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
+      successRate = #{successrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=INTEGER},
+      registerLink = #{registerlink,jdbcType=VARCHAR},
+      prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
+      deleted = #{deleted,jdbcType=VARCHAR},
+      applications = #{applications,jdbcType=INTEGER},
+      company = #{company,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <!--后台管理   通过传过来的贷款商家对象，对当前对象进行修改保存  -->
+  <update id="updateLoansBusinesses1" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
+    update loans_businesses_copy_copy
+    set businessName = #{businessname,jdbcType=VARCHAR},
+      intro = #{intro,jdbcType=VARCHAR},
+      trademark = #{trademark,jdbcType=VARCHAR},
+      loanLimit = #{loanlimit,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      busClaId = #{busClaId,jdbcType=INTEGER},
+      loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
+      loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
+      cycle = #{cycle,jdbcType=VARCHAR},
+      interestRate = #{interestrate,jdbcType=DECIMAL},
+      applicationRequirements = #{applicationrequirements,jdbcType=VARCHAR},
+      applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
+      specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
+      successRate = #{successrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=INTEGER},
+      registerLink = #{registerlink,jdbcType=VARCHAR},
+      prepaidAmount = #{prepaidamount,jdbcType=DECIMAL}
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
+  <select id="queryAllAdmainpro1" parameterType="map" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,applications,state from loans_businesses_copy where deleted='0' and company = #{company} and state = 1 order by isStick desc limit #{page},#{pageSize}
+  </select>
+  <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
+  <select id="queryAllAdmain2" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses_copy where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
+  </select>
+  <!-- 后台管理  查询贷款商家部分字段信息，不含分页 -->
+  <select id="queryAllAdmain11" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses_copy where deleted='0' and company=#{arg0}
+  </select>
+  <!-- 后台管理 用于获取总页数 -->
+ <select id="pageCount1" resultType="java.lang.Integer">
+   select count(businessName) from loans_businesses_copy where deleted='0' and company = #{company}
+ </select>
+   <!-- 后台管理 用于模糊查询获取总页数 -->
+ <select id="pageCountByLike1" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select count(businessName) from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
+ </select>
+ <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
+ <select id="queryByNameLike2" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ </select>
+ <!-- 后台管理  通过商家名称模糊查询，没有分页功能 -->
+ <select id="queryByNameLike11" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
+ </select>
+ <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
+ <update id="upaFalseDel1" parameterType="java.lang.Integer">
+ 	update loans_businesses_copy set deleted='1' where id=#{id}
+ </update>
+ <!-- 后台管理  修改贷款商家状态 为开启-->
+ <update id="upaStateOpen1" parameterType="java.lang.Integer">
+ 	update loans_businesses_copy set state='1' where id=#{id}
+ </update>
+  <!-- 后台管理  修改贷款商家状态 为关闭-->
+ <update id="upaStateClose1" parameterType="java.lang.Integer">
+ 	update loans_businesses_copy set state='2' where id=#{id}
+ </update>
+ <!-- 后台管理    申请统计功能    查询当前商家每个月每一天的用户信息（用户流量）-->
+<!--  <select id="queryByFootprintTimeAndFootprint" parameterType="java.lang.String" resultType="com.zhita.model.manage.CommodityFootprint">
+ 	select * from commodity_footprint f where footprint='飞天猪' and deleted = 0 group by userId having footprintTime like '1548%';
+ </select> -->
+ 	<!-- 插入商标的URL -->
+	<insert id="insertPath1" parameterType="java.lang.String">
+		insert into loans_businesses_copy
+		(trademark)
+		values (#{ossPath})
+	</insert>
+	 <!-- 获取商品的所有信息 -->
+ <select id="getLoansBusinesses1" resultType="map" parameterType="java.lang.String">
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate,cycle,state from loans_businesses_copy where deleted='0' and businessName = #{businessName} and company = #{company}
+ </select>
+ <!-- 后台管理  查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中 -->
+ <select id="queryAllBusinessName1" resultType="java.lang.String">
+ 	select businessName from loans_businesses_copy where company=#{company} and deleted='0'
+ </select>
+ <!-- 后台管理  通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中 -->
+ <select id="queryAllBusinessNameByLike1" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select businessName from loans_businesses_copy where businessName like "%"#{arg0}"%" and company=#{arg1} and deleted=0
+ </select>
+ <!-- 后台管理    根据商家名称更新被申请次数字段 -->
+ <update id="upaApplicationNumber1">
+ 	update loans_businesses_copy set applicationNumber=#{arg0} where businessName=#{arg1}
+ </update>
+ <!--后台管理  根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间 -->
+ <select id="queryTime1" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select footprinttime from commodity_footprint where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ </select>
+ <!--后台管理   根据商品名称和传过来的年  月  日(例如：2019-01-01) 获取当前甲方商家这一天的足迹数量  -->
+ <select id="queryAmount1"  parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select count(DISTINCT f.userId) from commodity_footprint f where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ </select>
+  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
+ <select id="queryLoanbusinByLoanClass1" resultMap="BaseResultMap">
+ 	select * from loans_businesses_copy lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} and state = 1 order by isStick desc limit #{page},#{pageSize}
+ </select>
+ 
+   <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->
+ <select id="getTrademark1" resultType="java.lang.String" parameterType="java.lang.String">
+ 	select trademark  from loans_businesses_copy where businessName = #{businessname}
+ </select>
+</mapper>

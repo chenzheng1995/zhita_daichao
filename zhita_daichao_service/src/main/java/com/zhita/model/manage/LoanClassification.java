@@ -15,12 +15,15 @@ public class LoanClassification implements Serializable{
     private List<LoansBusinesses> listLoanBusiness;//一个贷款分类下有多个贷款商家----一对多的关系
     
     private String company;//公司名
+    
+    private String icon;//图标
 
-    public LoanClassification(Integer id, String businessClassification, BigDecimal amount,String company) {
+    public LoanClassification(Integer id, String businessClassification, BigDecimal amount,String company, String icon) {
         this.id = id;
         this.businessClassification = businessClassification;
         this.amount = amount;
         this.company = company;
+        this.icon = icon;
     }
 
     public LoanClassification() {
@@ -67,11 +70,19 @@ public class LoanClassification implements Serializable{
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
     }
+    
+    public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
 	@Override
 	public String toString() {
 		return "LoanClassification [id=" + id + ", businessClassification=" + businessClassification + ", amount="
-				+ amount + ", listLoanBusiness=" + listLoanBusiness + ", company=" + company + "]";
+				+ amount + ", listLoanBusiness=" + listLoanBusiness + ", company=" + company +", icon=" + icon + "]";
 	}
     
 }

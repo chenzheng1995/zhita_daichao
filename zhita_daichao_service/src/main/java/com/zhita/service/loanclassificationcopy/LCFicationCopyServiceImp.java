@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.LoanClassificationCopyMapper;
 import com.zhita.dao.manage.LoanClassificationFootprintMapper;
+import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoanClassificationCopy;
 
 @Service
@@ -16,8 +17,8 @@ public class LCFicationCopyServiceImp implements LCFicationCopyService{
 	LoanClassificationCopyMapper loanClassificationCopyMapper;
 
 	@Override
-	public List<LoanClassificationCopy> queryLoanClass(String company) {
-		List<LoanClassificationCopy> list = loanClassificationCopyMapper.queryLoanClass(company);
+	public List<LoanClassification> queryLoanClass(String company) {
+		List<LoanClassification> list = loanClassificationCopyMapper.queryLoanClass(company);
 		return list;
 	}
 

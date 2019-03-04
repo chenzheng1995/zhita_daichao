@@ -1,6 +1,7 @@
 package com.zhita.controller.daichao;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhita.model.manage.LoanClassificationCopy;
+import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.loanclassificationcopy.LCFicationCopyService;
@@ -40,17 +41,25 @@ public class TypeController {
 	@Autowired
 	LCFicationCopyService lCFicationCopyService;
 	
-	//小程序（为了审核），获取全部的贷款分类	
+	//小程序（为了审核），获取前4个贷款分类	
     @ResponseBody
-    @RequestMapping("/queryLoanClass")
+    @RequestMapping("/queryLoanClassBefore")
     @Transactional
-    public List<LoanClassificationCopy> queryLoanClass(String company){
-    	List<LoanClassificationCopy> list = lCFicationCopyService.queryLoanClass(company);
+    public List<LoanClassification> queryLoanClass(String company){
+    	List<LoanClassification> list = intTypeService.queryLoanClass(company);
 		return list;
    	
     }
 
-	
+	//小程序（为了审核），获取后3个贷款分类	
+    @ResponseBody
+    @RequestMapping("/queryLoanClassAfter")
+    @Transactional
+    public List<LoanClassification> queryLoanClassAfter(String company){
+    	List<LoanClassification> list = intTypeService.queryLoanClassAfter(company);
+		return list;
+   	
+    }
 	
 	//小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
     @ResponseBody
@@ -72,7 +81,8 @@ public class TypeController {
     	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize(),company);
     	 for (LoansBusinesses loansBusinesses : list) {
     	        String businessName = loansBusinesses.getBusinessname();
-    	        int applications = (int)cFootprintService.getApplications(businessName,company);//获取申请人数	  
+    	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
+    	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
     	        loansBusinesses.setApplications(applications);
     	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
     	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";

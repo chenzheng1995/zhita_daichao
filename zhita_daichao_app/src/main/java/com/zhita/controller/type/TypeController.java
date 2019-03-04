@@ -53,7 +53,8 @@ public class TypeController {
     	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize(),company);
     	 for (LoansBusinesses loansBusinesses : list) {
     	        String businessName = loansBusinesses.getBusinessname();
-    	        int applications = (int)cFootprintService.getApplications(businessName,company);//获取申请人数	  
+    	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
+    	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
     	        loansBusinesses.setApplications(applications);
     	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
     	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
