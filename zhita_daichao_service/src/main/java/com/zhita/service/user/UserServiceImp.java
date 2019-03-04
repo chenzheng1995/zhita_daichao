@@ -63,12 +63,67 @@ public class UserServiceImp implements UserService {
 	}
 
 	//后台管理---通过传过来的值，进行多种情况的模糊查询，含分页
-	public Map<String, Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page) {
+	public Map<String, Object> queryByLike(String phone,String[] sourceName,String registrationTimeStart,String registrationTimeEnd,String[] company,Integer page) {
 		List<Source> list1=null;
 		List<User> list=null;
 		PageUtil pageUtil=null;
 		
-		//所有条件都为空
+		//手机号为空  渠道  时间为空  公司
+		if((phone==null||"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
+			System.out.println("第一个if");
+			
+	    	List<User> list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间和模糊查询手机号
+	    	
+	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
+			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
+			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
+	    	
+	    	for (int i = 0; i < list2.size(); i++) {
+	    		for (int j = 0; j < company.length; j++) {
+	    			if(company.length==1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[0]), list2.get(i).getPhone());
+	    			}
+	    			if(company.length>1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone());
+	    			}
+				}
+			}
+			
+			int totalCount=userMapper.pageCountByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过电话、渠道名称和注册时间模糊查询出用户总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
+		}
+		
+		//手机号为空  渠道  时间不为空   公司
+		if((phone==null||"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
+			System.out.println("第二个if");
+		}
+		//手机号不为空   渠道   时间为空  公司
+		if((phone!=null||!"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
+			System.out.println("第三个if");
+		}
+		//手机号不为空    渠道   时间不为空  公司
+		if((phone!=null||!"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
+			System.out.println("第四个if");
+		}
+		
+		
+		
+/*		//所有条件都为空
 		if((phone==null||"".equals(phone))&&(sourceName==null||"".equals(sourceName))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))) {
 			System.out.println("第一个if");
 	    	list1=sourceMapper.queryAll(company);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
@@ -330,7 +385,7 @@ public class UserServiceImp implements UserService {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=userMapper.queryByRegistrationtime(registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
-	    }
+	    }*/
 		
 		HashMap<String, Object> map=new HashMap<>();
 		map.put("listSource", list1);

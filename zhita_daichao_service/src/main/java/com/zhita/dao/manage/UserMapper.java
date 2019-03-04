@@ -52,7 +52,7 @@ public interface UserMapper {
 	int pageCountBySourceNameAndRegistrationtime(String sourceName,String registrationtime1,String registrationtime2,String company);
 	
 	//后台管理---通过手机号、渠道名称和注册时间模糊查询用户总数量
-	int pageCountByPhoneSourceNameAndRegistrationtime(String phone,String sourceName,String registrationtime1,String registrationtime2,String company);
+	int pageCountByPhoneSourceNameAndRegistrationtime(String phone,String[] sourceName,String registrationtime1,String registrationtime2,String[] company);
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹的总数量
 	int pageCountThreeFootprint(Integer id);
@@ -82,7 +82,7 @@ public interface UserMapper {
 	List<User> queryBySourceNameAndRegistrationtime(String sourceName,String registrationtime1,String registrationtime2,Integer page,Integer pagesize);
 	
 	//后台管理--根据手机号、渠道名称和注册时间进行模糊查询，含分页
-	List<User> queryByPhoneSourceNameAndRegistrationtime(String phone,String sourceName,String registrationtime1,String registrationtime2,String company,Integer page,Integer pagesize);
+	List<User> queryByPhoneSourceNameAndRegistrationtime(String phone,String[] sourceName,String registrationtime1,String registrationtime2,String[] company,Integer page,Integer pagesize);
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中,含分页
 	List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize);
@@ -102,7 +102,7 @@ public interface UserMapper {
 	//后台管理   根据手机号,注册时间和公司名查询出所有用户的手机号 
 	List<User> queryAllPhoneByPhoneTimeLike(String phone,String registrationtime1,String registrationtime2,String company);
 	// 后台管理   根据手机号,渠道名称,注册时间和公司名查询出所有用户的手机号 
-	List<User> queryAllPhoneByPhoneSouNameTimeLike(String phone,String sourceName,String registrationtime1,String registrationtime2,String company);
+	List<User> queryAllPhoneByPhoneSouNameTimeLike(String phone,String[] sourceName,String registrationtime1,String registrationtime2,String[] company);
 	//后台管理   根据渠道名称号和公司名查询出所有用户的手机号
 	List<User> queryAllPhoneBySouNameLike(String sourceName,String company);
 	//后台管理   根据渠道名称,注册时间和公司名查询出所有用户的手机号
