@@ -1,10 +1,14 @@
 package com.zhita.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.OSSObject;
 
 public class OssUtil {
 	
@@ -61,6 +65,30 @@ public class OssUtil {
 			}
 		}
 		return URL + key;
+	}
+	
+//	文件流下载
+	public BufferedReader IoDownload(String objectName) throws IOException {
+		// 创建OSSClient实例。
+		OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+
+		// ossObject包含文件所在的存储空间名称、文件名称、文件元信息以及一个输入流。
+		OSSObject ossObject = ossClient.getObject(BUCKET_NAME, objectName);
+		// 读取文件内容。
+		System.out.println("Object content:");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(ossObject.getObjectContent()));
+		while (true) {
+		    String line = reader.readLine();
+		    if (line == null) break;
+
+		    System.out.println("\n" + line);
+		}
+		// 数据读取完成后，获取的流必须关闭，否则会造成连接泄漏，导致请求无连接可用，程序无法正常工作。
+		reader.close();
+
+		// 关闭OSSClient。
+		ossClient.shutdown();
+		return reader;
 	}
 	
 }

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.CommodityFootprintCopyMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.CommodityFootprintCopy">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="userId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="footprint" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="footprintTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, footprint, footprintTime, deleted, company
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from commodity_footprint_copy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from commodity_footprint_copy
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.CommodityFootprintCopy">
+    insert into commodity_footprint_copy (id, userId, footprint, 
+      footprintTime, deleted, company
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{footprint,jdbcType=VARCHAR}, 
+      #{footprinttime,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.CommodityFootprintCopy">
+    insert into commodity_footprint_copy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="footprint != null">
+        footprint,
+      </if>
+      <if test="footprinttime != null">
+        footprintTime,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="footprint != null">
+        #{footprint,jdbcType=VARCHAR},
+      </if>
+      <if test="footprinttime != null">
+        #{footprinttime,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.CommodityFootprintCopy">
+    update commodity_footprint_copy
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="footprint != null">
+        footprint = #{footprint,jdbcType=VARCHAR},
+      </if>
+      <if test="footprinttime != null">
+        footprintTime = #{footprinttime,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.CommodityFootprintCopy">
+    update commodity_footprint_copy
+    set userId = #{userid,jdbcType=INTEGER},
+      footprint = #{footprint,jdbcType=VARCHAR},
+      footprintTime = #{footprinttime,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 查找商品足迹表每天有多少条记录 -->
+	<select id="getDailyApplications1" resultType="java.lang.Long">
+		select
+		count(footprint) from commodity_footprint_copy where
+		footprintTime>=#{todayZeroTimestamps} and footprintTime &lt;
+		#{tomorrowZeroTimestamps} and deleted = 0
+	</select>
+	<!-- 查找商品足迹表中每天有多少用户 -->
+	<select id="getdailyApplicationsUsers1"
+		resultType="java.lang.Long">
+		select count(distinct userId) from commodity_footprint_copy
+		where
+		footprintTime>=#{todayZeroTimestamps} and footprintTime &lt;
+		#{tomorrowZeroTimestamps} and deleted = 0
+	</select>
+	<!-- 查找商品足迹表每月有多少条记录 -->
+	<select id="getmonthlyApplications1" resultType="java.lang.Long">
+		select
+		count(footprint) from commodity_footprint_copy where
+		footprintTime>=#{monthlyZeroTimestamps} and footprintTime &lt;
+		#{nextMonthlyZeroTimestamps} and deleted = 0
+	</select>
+	<!-- 查找商品足迹表中每月有多少用户 -->
+	<select id="getmonthlyApplicationsUsers1"
+		resultType="java.lang.Long">
+		select count(distinct userId) from commodity_footprint_copy
+		where
+		footprintTime>=#{monthlyZeroTimestamps} and footprintTime &lt;
+		#{nextMonthlyZeroTimestamps} and deleted = 0
+	</select>
+	<!-- 插入商品足迹 -->
+	<insert id="insertfootprint1"
+		parameterType="java.util.Map">
+		insert into commodity_footprint_copy (userId, footprint,
+		footprintTime,company)
+		values (#{userId,jdbcType=INTEGER},
+		#{footprintName,jdbcType=VARCHAR},
+		#{currentTimestamp,jdbcType=VARCHAR},
+		#{company,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 查找商品足迹表中的商品名称 -->
+	<select id="getbusinessName1" resultType="String" parameterType="map">
+	    select distinct c.footprint from commodity_footprint_copy c,loans_businesses_copy l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime desc limit #{startRow},#{pageSize}
+		<!-- select distinct footprint from commodity_footprint where userId = #{userId} and company = #{company} and deleted = 0 order by footprintTime desc limit #{startRow},#{pageSize} -->
+	</select>
+	
+	<!-- 查询出某个商品的申请人数 -->
+	<select id="getApplications1" resultType="long" parameterType="java.lang.String">
+		select count(distinct userId) from commodity_footprint_copy where footprint= #{businessName} and deleted = 0 and company= #{company}
+    </select>
+
+	<!-- 后台管理   根据传过来的足迹名称，查询出足迹的个数 -->
+	<select id="queryCount1" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(DISTINCT f.userId) from commodity_footprint_copy f where footprint=#{arg0} and company=#{arg1} and deleted = 0
+	</select>
+	<!-- 小程序   查询某个用户有多少条浏览记录 -->
+	<select id="getRecordNumber1" parameterType="java.lang.String" resultType="java.lang.Long">
+	select count(distinct c.footprint) from commodity_footprint_copy c,loans_businesses_copy l where c.footprint = l.businessName and userId=#{userId} and c.company=#{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.state = 1;
+		<!-- select count(userId) from commodity_footprint where userId=#{userId} and company=#{company} and deleted = 0 -->
+	</select>
+</mapper>

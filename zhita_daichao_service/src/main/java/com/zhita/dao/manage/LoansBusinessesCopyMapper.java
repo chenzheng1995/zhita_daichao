@@ -81,7 +81,7 @@ public interface LoansBusinessesCopyMapper {
   	int  queryAmount1(String businessName,String LikeTime1,String LikeTime2);
 
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
-    List<LoansBusinesses> queryLoanbusinByLoanClass1(@Param("businessClassification")String businessClassification,@Param("page")Integer page,@Param("pageSize") int pageSize,@Param("company") String company);
+    List<LoansBusinessesCopy> queryLoanbusinByLoanClass1(@Param("businessClassification")String businessClassification,@Param("page")Integer page,@Param("pageSize") int pageSize,@Param("company") String company);
 
 	String getTrademark1(String businessname);
 

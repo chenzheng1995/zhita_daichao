@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoansBusinesses;
+import com.zhita.model.manage.LoansBusinessesCopy;
 
 public interface IntTypeService{
     //后台管理---查询贷款分类所有信息，含分页
@@ -33,6 +34,8 @@ public interface IntTypeService{
     public int updateByPrimaryKey(LoanClassification record);
 	public List<LoanClassification> queryLoanClass(String company);
 	public List<LoanClassification> queryLoanClassAfter(String company);
+	public List<LoansBusinessesCopy> queryLoanbusinByLoanClass1(String businessClassification, int pages, int pageSize,
+			String company);
 
 
 }

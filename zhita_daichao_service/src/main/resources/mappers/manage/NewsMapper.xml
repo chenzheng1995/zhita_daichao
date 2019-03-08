@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.News">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="titleImage" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="date" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="viewed" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="author" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="contentURL" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isStick" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, titleImage, date, viewed, author, contentURL, isStick, company, deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from news
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from news
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.News">
+    insert into news (id, title, titleImage, 
+      date, viewed, author, 
+      contentURL, isStick, company, 
+      deleted)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{titleimage,jdbcType=VARCHAR}, 
+      #{date,jdbcType=VARCHAR}, #{viewed,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, 
+      #{contenturl,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.News">
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="titleimage != null">
+        titleImage,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="viewed != null">
+        viewed,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="contenturl != null">
+        contentURL,
+      </if>
+      <if test="isstick != null">
+        isStick,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="titleimage != null">
+        #{titleimage,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="viewed != null">
+        #{viewed,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="contenturl != null">
+        #{contenturl,jdbcType=VARCHAR},
+      </if>
+      <if test="isstick != null">
+        #{isstick,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.News">
+    update news
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="titleimage != null">
+        titleImage = #{titleimage,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="viewed != null">
+        viewed = #{viewed,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="contenturl != null">
+        contentURL = #{contenturl,jdbcType=VARCHAR},
+      </if>
+      <if test="isstick != null">
+        isStick = #{isstick,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.News">
+    update news
+    set title = #{title,jdbcType=VARCHAR},
+      titleImage = #{titleimage,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      viewed = #{viewed,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR},
+      contentURL = #{contenturl,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+<!-- 把新闻的数据插入数据库   -->
+	<insert id="setnews" parameterType="java.util.Map">
+		insert into news (title,titleImage,date,author,contentURL,isStick,company)
+		values (#{title},
+		#{ossimagePath},
+		#{registrationTime},
+		#{author},
+		#{ossarticlePath},
+		#{isStick},
+		#{company})
+	</insert>
+	
+	<!-- 把新闻的数据插入数据库(标题图片不传)   -->
+	<insert id="setNewsNotOssimagePath" parameterType="java.util.Map">
+		insert into news (title,date,author,contentURL,isStick,company)
+		values (#{title},
+		#{registrationTime},
+		#{author},
+		#{ossarticlePath},
+		#{isStick},
+		#{company})
+	</insert>
+	
+	  <!-- 获取文章总数 -->
+ <select id="pageCount1" resultType="java.lang.Integer">
+   select count(title) from news where deleted='0' and company = #{company}
+ </select>
+ 
+   <!-- 查询所有文章的所有信息，含分页 -->
+  <select id="getAllnews" parameterType="map" resultType="com.zhita.model.manage.News">
+  	select id,title,titleImage,date,viewed,author,contentURL,isStick,company from news where deleted='0' and company = #{company} order by isStick desc limit #{page},#{pageSize}
+  </select>
+</mapper>

@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zhita.dao.manage.LoanClassificationCopyMapper;
 import com.zhita.dao.manage.LoanClassificationMapper;
+import com.zhita.dao.manage.LoansBusinessesCopyMapper;
 import com.zhita.dao.manage.LoansBusinessesMapper;
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoansBusinesses;
+import com.zhita.model.manage.LoansBusinessesCopy;
 
 @Service(value="typeServiceImp")
 public class TypeServiceImp implements IntTypeService{
@@ -36,6 +39,9 @@ public class TypeServiceImp implements IntTypeService{
 	public void setLoansBusinessesMapper(LoansBusinessesMapper loansBusinessesMapper) {
 		this.loansBusinessesMapper = loansBusinessesMapper;
 	}
+	
+	@Autowired
+	LoansBusinessesCopyMapper loansBusinessesCopyMapper;
 	
     //后台管理---查询贷款分类所有信息，含分页
 	@Override
@@ -125,5 +131,13 @@ public class TypeServiceImp implements IntTypeService{
 		List<LoanClassification> list = loanClassificationMapper.queryLoanClassAfter(company);
 		return list;
 	}
+
+	@Override
+	public List<LoansBusinessesCopy> queryLoanbusinByLoanClass1(String businessClassification, int pages, int pageSize,String company) {
+		List<LoansBusinessesCopy> list=loansBusinessesCopyMapper.queryLoanbusinByLoanClass1(businessClassification,pages,pageSize,company);
+		return list;
+	}
+
+
 
 }

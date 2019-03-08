@@ -64,7 +64,7 @@ public class RegisteController {
 //        
 //		}	
 //    List<String> fixedWordList =new ArrayList<String>();
-//    fixedWordList.add("日%");
+//    fixedWordList.add("%日");
 //    fixedWordList.add("可贷额度");
 //    fixedWordList.add("参考利率");
 //    fixedWordList.add("人已申请");
@@ -108,7 +108,7 @@ public class RegisteController {
       
 		}
      List<String> fixedWordList =new ArrayList<String>();
-     fixedWordList.add("日%");
+     fixedWordList.add("%日");
      fixedWordList.add("可贷额度");
      fixedWordList.add("参考利率");
      fixedWordList.add("人已申请");

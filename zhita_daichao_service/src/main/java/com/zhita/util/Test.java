@@ -1,5 +1,7 @@
 package com.zhita.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 public class Test {
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 //	RedisClientUtil redisClientUtil = new RedisClientUtil();
 //	redisClientUtil.set("13586485199Key", "123456");
 //	System.out.println(redisClientUtil.get("13586485199Key"));
@@ -120,10 +122,10 @@ public class Test {
 //		TuoMinUtil tuoMinUtil = new TuoMinUtil();
 //		System.out.println(tuoMinUtil.nameEncrypt("陈峥"));
 		
-		RedisClientUtil redisClientUtil = new RedisClientUtil();
-		redisClientUtil.set("融51yunying12019/02/26key","123");
-		System.out.println(redisClientUtil.getkeyAll());
-		System.out.println(redisClientUtil.get("融51yunying12019/02/26key"));
+//		RedisClientUtil redisClientUtil = new RedisClientUtil();
+//		redisClientUtil.set("融51yunying12019/02/26key","123");
+//		System.out.println(redisClientUtil.getkeyAll());
+//		System.out.println(redisClientUtil.get("融51yunying12019/02/26key"));
 		
 		
 //		String[] x={"1","2","3","4"};
@@ -134,6 +136,27 @@ public class Test {
 //		}else {
 //			System.out.println(2);
 //		}
+		
+//		String content = "今天是周五";
+//		OssUtil ossUtil =new OssUtil();
+//		ByteArrayInputStream InputStringStream = new ByteArrayInputStream(content.getBytes());
+//		try {
+//			String ossPath = ossUtil.uploadFile(InputStringStream, "news/article/"+"文章"+".txt");
+//			System.out.println(ossPath);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+//		PostAndGet postAndGet = new PostAndGet();
+//		String aString = postAndGet.sendGet1("https://wx-dc.oss-cn-zhangjiakou.aliyuncs.com/news/article/标题5.txt");
+//		System.out.println(aString);
+		
+		String aString  = "a"+"\n"+"\r"+"\n"+"\r"+"a";
+		System.out.println(aString);
+		String bString = aString.replaceAll("\r|\n","@newline");
+		System.out.println(bString);
+
 		
 	}
 }

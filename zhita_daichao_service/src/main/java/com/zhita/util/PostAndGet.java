@@ -164,4 +164,36 @@ public class PostAndGet {
 		return result;
 	}
 
+	public  String sendGet1(String url) {
+		String result = "";
+		BufferedReader in = null;
+		try {
+			String urlName = url;
+			URL realUrl = new URL(urlName);
+			URLConnection conn = realUrl.openConnection();// 打开和URL之间的连接
+			conn.setRequestProperty("accept", "*/*");// 设置通用的请求属性
+			conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+			conn.setConnectTimeout(4000);
+			conn.connect();// 建立实际的连接
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));// 定义BufferedReader输入流来读取URL的响应
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line+System.lineSeparator();
+			}
+		} catch (Exception e) {
+			System.out.println("发送GET请求出现异常！" + e);
+		} finally {// 使用finally块来关闭输入流
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+				System.out.println("关闭流异常");
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
 }
