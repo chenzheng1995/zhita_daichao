@@ -37,19 +37,19 @@ public interface UserMapper {
 	int pageCountByPhone(String phone,String company);
 	
 	//后台管理---通过渠道名称模糊查询出用户总数量
-	int pageCountBySourceName(String sourceName,String company);
+	int pageCountBySourceName(String[] sourceName,String[] company);
 	
 	//后台管理---通过注册时间模糊查询出用户总数量
 	int pageCountByRegistrationtime(String registrationtime1,String registrationtime2,String company);
 	
 	//后台管理---通过手机号和渠道名称模糊查询用户总数量
-	int pageCountByPhoneAndSourceName(String phone,String sourceName,String company);
+	int pageCountByPhoneAndSourceName(String phone,String[] sourceName,String[] company);
 	
 	//后台管理---通过手机号和注册时间模糊查询用户总数量
 	int pageCountByPhoneAndRegistrationtime(String phone,String registrationtime1,String registrationtime2,String company);
 	
 	//后台管理---通过渠道名称和注册时间模糊查询用户总数量
-	int pageCountBySourceNameAndRegistrationtime(String sourceName,String registrationtime1,String registrationtime2,String company);
+	int pageCountBySourceNameAndRegistrationtime(String[] sourceName,String registrationtime1,String registrationtime2,String[] company);
 	
 	//后台管理---通过手机号、渠道名称和注册时间模糊查询用户总数量
 	int pageCountByPhoneSourceNameAndRegistrationtime(String phone,String[] sourceName,String registrationtime1,String registrationtime2,String[] company);
@@ -67,19 +67,19 @@ public interface UserMapper {
 	List<User> queryByPhone(String phone,String company,Integer page,Integer pagesize);
 	
 	//后台管理---通过渠道名称模糊查询，含分页
-	List<User> queryBySourceName(String sourceName,String company,Integer page,Integer pagesize);
+	List<User> queryBySourceName(String[] sourceName,String[] company,Integer page,Integer pagesize);
 	
 	//后台管理---通过注册时间模糊查询，含分页
 	List<User> queryByRegistrationtime(String registrationtime1,String registrationtime2,String company,Integer page,Integer pagesize);
 	
 	//后台管理--根据手机号和渠道名称进行模糊查询，含分页
-	List<User> queryByPhoneAndSourceName(String phone,String sourceName,String company,Integer page,Integer pagesize);
+	List<User> queryByPhoneAndSourceName(String phone,String[] sourceName,String[] company,Integer page,Integer pagesize);
 	
 	//后台管理--根据手机号和注册时间进行模糊查询，含分页
 	List<User> queryByPhoneAndRegistrationtime(String phone,String registrationtime1,String registrationtime2,Integer page,Integer pagesize);
 	
 	//后台管理--根据渠道名称和注册时间进行模糊查询，含分页
-	List<User> queryBySourceNameAndRegistrationtime(String sourceName,String registrationtime1,String registrationtime2,Integer page,Integer pagesize);
+	List<User> queryBySourceNameAndRegistrationtime(String[] sourceName,String registrationtime1,String registrationtime2,String[] company,Integer page,Integer pagesize);
 	
 	//后台管理--根据手机号、渠道名称和注册时间进行模糊查询，含分页
 	List<User> queryByPhoneSourceNameAndRegistrationtime(String phone,String[] sourceName,String registrationtime1,String registrationtime2,String[] company,Integer page,Integer pagesize);
@@ -91,24 +91,28 @@ public interface UserMapper {
 	int queryAmountByUserId(Integer id,String dayStateTime,String dayEndTime,String company);
 	
 	//后台管理---根据用户电话    更新用户表里的当日分发系数字段
-	int upaDayFen(Integer dayfen,String phone);
+	int upaDayFen(Integer dayfen,String phone,String company);
 	
 	//后台管理---查询出所有的用户手机号
 	List<User> queryAllPhone(String company);
 	//后台管理   根据手机号和公司名查询出所有用户的手机号 
 	List<User> queryAllPhoneByPhoneLike(String phone,String company);
 	//后台管理   根据手机号,渠道名称和公司名查询出所有用户的手机号 
-	List<User> queryAllPhoneByPhoneSouNameLike(String phone,String sourceName,String company);
+	List<User> queryAllPhoneByPhoneSouNameLike(String phone,String[] sourceName,String[] company);
 	//后台管理   根据手机号,注册时间和公司名查询出所有用户的手机号 
 	List<User> queryAllPhoneByPhoneTimeLike(String phone,String registrationtime1,String registrationtime2,String company);
 	// 后台管理   根据手机号,渠道名称,注册时间和公司名查询出所有用户的手机号 
 	List<User> queryAllPhoneByPhoneSouNameTimeLike(String phone,String[] sourceName,String registrationtime1,String registrationtime2,String[] company);
 	//后台管理   根据渠道名称号和公司名查询出所有用户的手机号
-	List<User> queryAllPhoneBySouNameLike(String sourceName,String company);
+	List<User> queryAllPhoneBySouNameLike(String[] sourceName,String[] company);
 	//后台管理   根据渠道名称,注册时间和公司名查询出所有用户的手机号
-	List<User> queryAllPhoneBySouNameTimeLike(String sourceName,String registrationtime1,String registrationtime2,String company);
+	List<User> queryAllPhoneBySouNameTimeLike(String[] sourceName,String registrationtime1,String registrationtime2,String[] company);
 	//后台管理   根据注册时间和公司名查询出所有用户的手机号 
 	List<User> queryAllPhoneByTimeLike(String registrationtime1,String registrationtime2,String company);
+  	//后台管理---根据userId和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前用户这个时间段的所有足迹时间
+  	List<String> queryDayFenByTime(Integer userId,String LikeTime1,String LikeTime2);
+  	//后台管理---根据userId和传过来的年  月  日(例如：2019-01-01) 获取当前用户这一天的足迹数量
+  	int  queryAmount(Integer userId,String LikeTime1,String LikeTime2);
 
 	int updateloginStatus(@Param("loginStatus")String loginStatus, @Param("openId")String openId,@Param("phone") String phone,@Param("company") String company,@Param("loginTime") String loginTime);
 

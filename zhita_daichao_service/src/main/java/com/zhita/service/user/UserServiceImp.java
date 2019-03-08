@@ -63,30 +63,150 @@ public class UserServiceImp implements UserService {
 	}
 
 	//后台管理---通过传过来的值，进行多种情况的模糊查询，含分页
-	public Map<String, Object> queryByLike(String phone,String[] sourceName,String registrationTimeStart,String registrationTimeEnd,String[] company,Integer page) {
-		List<Source> list1=null;
+	public Map<String, Object> ByLikeQuery(String phone,String[] sourceName,String registrationTimeStart,String registrationTimeEnd,String[] company,Integer page) {
+		List<User> list2=null;
 		List<User> list=null;
 		PageUtil pageUtil=null;
 		
 		//手机号为空  渠道  时间为空  公司
-		if((phone==null||"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
+		if((phone==null||"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null)) {
 			System.out.println("第一个if");
 			
-	    	List<User> list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间和模糊查询手机号
+	    	list2=userMapper.queryAllPhoneBySouNameLike(sourceName,company);//通过 渠道名称 ,公司名模糊查询手机号
 	    	
 	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
 			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
 			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
 	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-	    		for (int j = 0; j < company.length; j++) {
+			for (int j = 0; j < company.length; j++) {
+				for (int i = 0; i < list2.size(); i++) {
 	    			if(company.length==1) {
 	    				//将用户的当日分发系数字段进行修改
-	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[0]), list2.get(i).getPhone());
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[0]), list2.get(i).getPhone(),company[0]);
 	    			}
 	    			if(company.length>1) {
 	    				//将用户的当日分发系数字段进行修改
-	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone());
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
+	    			}
+				}
+			}
+			
+			int totalCount=userMapper.pageCountBySourceName(sourceName,company);//该方法是通过渠道名称模糊查询出用户总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryBySourceName(sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
+		}
+		
+		//手机号为空  渠道  时间不为空   公司
+		else if((phone==null||"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null)) {
+			System.out.println("第二个if");
+			
+	    	list2=userMapper.queryAllPhoneBySouNameTimeLike(sourceName, registrationTimeStart, registrationTimeEnd, company);//通过渠道名称  注册时间,公司名模糊查询手机号
+	    	
+	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
+			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
+			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
+	    	
+			for (int j = 0; j < company.length; j++) {
+				for (int i = 0; i < list2.size(); i++) {
+	    			if(company.length==1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[0]), list2.get(i).getPhone(),company[0]);
+	    			}
+	    			if(company.length>1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
+	    			}
+				}
+			}
+			
+			int totalCount=userMapper.pageCountBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过渠道名称,注册时间,公司名模糊查询出用户总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
+		}
+		//手机号不为空   渠道   时间为空  公司
+		else if((phone!=null||!"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null)) {
+			System.out.println("第三个if");
+			
+	    	list2=userMapper.queryAllPhoneByPhoneSouNameLike(phone, sourceName, company);//通过手机号，渠道名称，公司名模糊查询手机号
+	    	
+	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
+			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
+			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
+	    	
+			for (int j = 0; j < company.length; j++) {
+				for (int i = 0; i < list2.size(); i++) {
+	    			if(company.length==1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[0]), list2.get(i).getPhone(),company[0]);
+	    			}
+	    			if(company.length>1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
+	    			}
+				}
+			}
+	 		int totalCount=userMapper.pageCountByPhoneAndSourceName(phone,sourceName,company);//该方法是通过手机号，渠道名称，公司名模糊查询出用户总数量
+	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}
+	    	else if(page>pageUtil.getTotalPageCount()) {
+	    		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages);
+	    	list=userMapper.queryByPhoneAndSourceName(phone,sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
+		}
+		//手机号不为空    渠道   时间不为空  公司
+		else if((phone!=null||!"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null)) {
+			System.out.println("第四个if");
+			
+	    	list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间,公司名模糊查询手机号
+	    	
+	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
+			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
+			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
+	    	
+			for (int j = 0; j < company.length; j++) {
+				for (int i = 0; i < list2.size(); i++) {
+	    			if(company.length==1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[0]), list2.get(i).getPhone(),company[0]);
+	    			}
+	    			if(company.length>1) {
+	    				//将用户的当日分发系数字段进行修改
+	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
 	    			}
 				}
 			}
@@ -106,289 +226,10 @@ public class UserServiceImp implements UserService {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
-		}
-		
-		//手机号为空  渠道  时间不为空   公司
-		if((phone==null||"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
-			System.out.println("第二个if");
-		}
-		//手机号不为空   渠道   时间为空  公司
-		if((phone!=null||!"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
-			System.out.println("第三个if");
-		}
-		//手机号不为空    渠道   时间不为空  公司
-		if((phone!=null||!"".equals(phone))&&(sourceName!=null||sourceName.length!=0)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null||company.length!=0)) {
-			System.out.println("第四个if");
-		}
-		
-		
-		
-/*		//所有条件都为空
-		if((phone==null||"".equals(phone))&&(sourceName==null||"".equals(sourceName))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))) {
-			System.out.println("第一个if");
-	    	list1=sourceMapper.queryAll(company);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
-	    	
-	    	List<User> list2=userMapper.queryAllPhone(company);//查询出所有用户的手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-	    	
-	       	int totalCount=userMapper.pageCount(company);//该方法是查询出用户表总数量
 	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryAllUser(company,pageUtil.getPage(),pageUtil.getPageSize());
-	    
-	    	HashMap<String, Object> map=new HashMap<>();
-	    	map.put("listSource", list1);
-	    	map.put("listUser",list);
-	    	map.put("pageutil",pageUtil);
-			return map;
 		}
-
-		//通过电话模糊查询
-		else if((phone!=null||!"".equals(phone))&&(sourceName==null||"".equals(sourceName))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))) {
-			System.out.println("第二个if");
-	    	list1=sourceMapper.queryAll(company);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
-	    	
-	    	List<User> list2=userMapper.queryAllPhoneByPhoneLike(phone, company);//通过手机号模糊查询出手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-	    	
-			int totalCount=userMapper.pageCountByPhone(phone,company);//该方法是通过手机号模糊查询出用户总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryByPhone(phone,company,pageUtil.getPage(),pageUtil.getPageSize());
-		}
-		//通过电话和渠道名称模糊查询
-		else if((phone!=null||!"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))) {
-			System.out.println("第三个if");
-			
-	    	List<User> list2=userMapper.queryAllPhoneByPhoneSouNameLike(phone, sourceName, company);//通过电话和渠道名称模糊查询手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-	 		int totalCount=userMapper.pageCountByPhoneAndSourceName(phone,sourceName,company);//该方法是通过电话和渠道名称模糊查询出用户总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryByPhoneAndSourceName(phone,sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
-	    }
-		//通过电话和注册时间模糊查询
-		else if((phone!=null||!"".equals(phone))&&(sourceName==null||"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
-			System.out.println("第四个if");
-			
-	    	List<User> list2=userMapper.queryAllPhoneByPhoneTimeLike(phone, registrationTimeStart, registrationTimeEnd, company);//通过电话和注册时间模糊查询手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-			
-	    	list1=sourceMapper.queryAll(company);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
-			int totalCount=userMapper.pageCountByPhoneAndRegistrationtime(phone,registrationTimeStart,registrationTimeEnd,company);//该方法是通过电话和注册时间模糊查询出用户总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryByPhoneAndRegistrationtime(phone,registrationTimeStart,registrationTimeEnd,pageUtil.getPage(),pageUtil.getPageSize());
-	    }
-		//通过电话，渠道名称，注册时间模糊查询
-		else if((phone!=null||!"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
-			System.out.println("第五个if");
-	    	List<User> list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间模糊查询手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-			
-			int totalCount=userMapper.pageCountByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过电话、渠道名称和注册时间模糊查询出用户总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
-	    	
-		}
-		//通过渠道名称模糊查询
-		else if((phone==null||"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))) {
-			System.out.println("第六个if");
-	    	List<User> list2=userMapper.queryAllPhoneBySouNameLike(sourceName,company);//通过 渠道名称 模糊查询手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-			
-			int totalCount=userMapper.pageCountBySourceName(sourceName,company);//该方法是通过渠道名称模糊查询出用户总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryBySourceName(sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
-		}
-		//通过渠道名称，注册时间模糊查询
-		else if((phone==null||"".equals(phone))&&(sourceName!=null||!"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
-			System.out.println("第七个if");
-	    	List<User> list2=userMapper.queryAllPhoneBySouNameTimeLike(sourceName, registrationTimeStart, registrationTimeEnd, company);//通过 渠道名称   注册时间模糊查询手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-			
-			int totalCount=userMapper.pageCountBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过渠道名称和注册时间模糊查询出用户总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd, pageUtil.getPage(),pageUtil.getPageSize());
-		}
-		//通过注册时间模糊查询
-		else if((phone==null||"".equals(phone))&&(sourceName==null||"".equals(sourceName))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))) {
-			System.out.println("第八个if");
-	    	List<User> list2=userMapper.queryAllPhoneByTimeLike(registrationTimeStart, registrationTimeEnd, company);//通过 注册时间模糊查询手机号
-	    	
-	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
-			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
-			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
-	    	
-	    	for (int i = 0; i < list2.size(); i++) {
-				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
-				//将用户的当日分发系数字段进行修改
-	    		userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company), list2.get(i).getPhone());
-			}
-			
-	    	list1=sourceMapper.queryAll(company);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
-			int totalCount=userMapper.pageCountByRegistrationtime(registrationTimeStart,registrationTimeEnd,company);//该方法是通过注册时间模糊查询出用户总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryByRegistrationtime(registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
-	    }*/
-		
 		HashMap<String, Object> map=new HashMap<>();
-		map.put("listSource", list1);
+		map.put("listSource", list2);
 		map.put("listUser", list);
 		map.put("pageUtil", pageUtil);
 		return map;
@@ -417,8 +258,8 @@ public class UserServiceImp implements UserService {
 		return count;
 	}
 	//后台管理---根据用户电话    更新用户表里的当日分发系数字段
-	public int upaDayFen(Integer dayfen,String phone) {
-		int sum=userMapper.upaDayFen(dayfen, phone);
+	public int upaDayFen(Integer dayfen,String phone,String company) {
+		int sum=userMapper.upaDayFen(dayfen, phone,company);
 		return sum;
 	}
 	//后台管理---查询出所有的用户手机号
@@ -426,5 +267,14 @@ public class UserServiceImp implements UserService {
 		List<User> list=userMapper.queryAllPhone(company);
 		return list;
 	}
-
+  	//后台管理---根据userId和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前用户这个时间段的所有足迹时间
+  	public List<String> queryDayFenByTime(Integer userId,String LikeTime1,String LikeTime2){
+  		List<String> list=userMapper.queryDayFenByTime(userId, LikeTime1,LikeTime2);
+  		return list;
+  	}
+  	//后台管理---根据userId和传过来的年  月  日(例如：2019-01-01) 获取当前用户这一天的足迹数量
+  	public int queryAmount(Integer userId,String LikeTime1,String LikeTime2){
+  		int amount=userMapper.queryAmount(userId, LikeTime1, LikeTime2);
+  		return amount;
+  	}
 }

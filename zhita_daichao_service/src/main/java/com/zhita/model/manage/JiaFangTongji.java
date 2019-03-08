@@ -16,5 +16,9 @@ public class JiaFangTongji {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+	@Override
+	public String toString() {
+		return "JiaFangTongji [date=" + date + ", amount=" + amount + "]";
+	}
 	
 }

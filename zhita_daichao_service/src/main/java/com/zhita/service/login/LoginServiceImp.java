@@ -181,7 +181,7 @@ public class LoginServiceImp implements IntLoginService{
     	if((userName==null||"".equals(userName))&&(deleted==null||"".equals(deleted))) {
     		System.out.println("第一个if");
     	   	int totalCount=manageLoginMapper.pageCountManageLogin();//查询出管理登陆用户表一共有多少条数据
-        	pageUtil=new PageUtil(page,1,totalCount);
+        	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -195,6 +195,7 @@ public class LoginServiceImp implements IntLoginService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=manageLoginMapper.queryManageLogin(pageUtil.getPage(),pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,2,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getUsername());
     		}
@@ -217,6 +218,7 @@ public class LoginServiceImp implements IntLoginService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=manageLoginMapper.queryManageLoginLike(userName, pageUtil.getPage(), pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,2,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getUsername());
     		}
@@ -239,6 +241,7 @@ public class LoginServiceImp implements IntLoginService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=manageLoginMapper.queryManageLoginLike1(deleted, pageUtil.getPage(), pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,2,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getUsername());
     		}
@@ -260,6 +263,7 @@ public class LoginServiceImp implements IntLoginService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=manageLoginMapper.queryManageLoginLike2(userName, deleted, pageUtil.getPage(), pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,2,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getUsername());
     		}

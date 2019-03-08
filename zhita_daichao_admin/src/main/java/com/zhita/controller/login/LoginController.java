@@ -264,7 +264,7 @@ public class LoginController {
     @RequestMapping("/queryAllManageLogin")
     public Map<String,Object> queryAllManageLogin(Integer page){
     	int totalCount=loginService.pageCountManageLogin();//查询出管理登陆用户表一共有多少条数据
-    	PageUtil pageUtil=new PageUtil(page,1,totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -278,6 +278,7 @@ public class LoginController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
     	List<ManageLogin> list=loginService.queryManageLogin(pageUtil.getPage(),pageUtil.getPageSize());
+    	pageUtil=new PageUtil(page,2,totalCount);
     	for (int i = 0; i < list.size(); i++) {
     		list.get(i).setLogintime(Timestamps.stampToDate(list.get(i).getLogintime()));
 		}

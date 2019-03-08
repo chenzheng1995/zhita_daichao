@@ -51,6 +51,7 @@ public interface IntRegisteService{
 	public String getTrademark(String businessname);
   	//后台管理---根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间
   	public List<String> queryTime(String businessName,String LikeTime,String LikeTime2);
+
   	//后台管理---根据商品名称和传过来的年  月  日(例如：2019-01-01) 获取当前甲方商家这一天的足迹数量
   	public int  queryAmount(String businessName,String LikeTime1,String LikeTime2);
 
