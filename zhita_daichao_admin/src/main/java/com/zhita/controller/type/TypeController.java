@@ -33,7 +33,6 @@ public class TypeController {
 	//后台管理---查询贷款分类所有信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllPage")
-
     public Map<String,Object> queryAllPage(Integer page,String string){
 		string = string.replaceAll("\"", "").replace("[","").replace("]","");
 		String [] company= string.split(",");

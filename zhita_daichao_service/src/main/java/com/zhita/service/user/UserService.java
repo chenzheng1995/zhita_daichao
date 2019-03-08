@@ -27,7 +27,7 @@ public interface UserService {
 	public List<User> queryAllUser1(String company);
 	
 	//后台管理---通过传过来的值，进行多种情况的模糊查询，含分页
-	public Map<String,Object> queryByLike(String phone,String[] sourceName,String registrationTimeStart,String registrationTimeEnd,String[] company,Integer page);
+	public Map<String,Object> ByLikeQuery(String phone,String[] sourceName,String registrationTimeStart,String registrationTimeEnd,String[] company,Integer page);
 	
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中，含分页
 	public List<ButtonFootprint> queryAllButton(Integer id,Integer page,Integer pagesize);
@@ -38,8 +38,12 @@ public interface UserService {
 	//后台管理---根据用户id查询出当前用户   当天 在商品足迹表的数量
 	public int queryAmountByUserId(Integer id,String dayStateTime,String dayEndTime,String company);
 	//后台管理---根据用户电话    更新用户表里的当日分发系数字段
-	public int upaDayFen(Integer dayfen,String phone);
+	public int upaDayFen(Integer dayfen,String phone,String company);
 	//后台管理---查询出所有的用户手机号
 	public List<User> queryAllPhone(String company);
+  	//后台管理---根据userId和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前用户这个时间段的所有足迹时间
+  	public List<String> queryDayFenByTime(Integer userId,String LikeTime1,String LikeTime2);
+  	//后台管理---根据userId和传过来的年  月  日(例如：2019-01-01) 获取当前用户这一天的足迹数量
+  	public int queryAmount(Integer userId,String LikeTime1,String LikeTime2);
 	
 }

@@ -17,7 +17,7 @@
   </sql>
   <!-- 后台管理   通过id查询出管理登陆用户信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="manageloginMap">
-	select u.id,u.userName,u.phone,u.loginStatus,u.loginTime,u.deleted,u.company,u.sourceName,
+	select u.id,u.userName,u.phone,u.pwd,u.loginStatus,u.loginTime,u.deleted,u.company,u.sourceName,
 	GROUP_CONCAT(r.id) roleid, 
 	GROUP_CONCAT(r.roleName) rolename,
 	GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
@@ -137,17 +137,19 @@
 	
 	<!-- 后台管理      查询出管理登陆用户表一共有多少条数据 -->
 	<select id="pageCountManageLogin" resultType="java.lang.Integer">
-		select count(username) from manage_login;
+		select count(phone) from manage_login;
 	</select>
 	
 	<resultMap type="com.zhita.model.manage.ManageLogin" id="manageloginMap">
 		<id property="id" column="id" />
         <result property="username" column="userName" />
         <result property="phone" column="phone" />
+        <result property="pwd" column="pwd" />
         <result property="loginstatus" column="loginStatus" />
         <result property="logintime" column="loginTime" />
         <result property="deleted" column="deleted" />
         <result property="company" column="company" />
+        <result property="sourcename" column="sourceName" />
 	    <collection  property="listRole"  ofType="com.zhita.model.manage.Role">
             <id property="id" column="id" />
             <result property="rolename" column="roleName" />    
@@ -169,7 +171,7 @@
 	
 	<!-- 后台管理     根据用户名  模糊查询出管理登陆用户表一共有多少条数据 -->
 	<select id="pageCountManageLoginLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(username) from manage_login where userName like #{arg0}"%";
+		select count(phone) from manage_login where userName like #{arg0}"%";
 	</select>
 	
 	<!-- 后台管理     根据用户名  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
@@ -186,7 +188,7 @@
 	
 	<!-- 后台管理   根据账号状态  模糊查询出管理登陆用户表一共有多少条数据 -->
 	<select id="pageCountManageLoginLike1" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(username) from manage_login where deleted=#{arg0}
+		select count(phone) from manage_login where deleted=#{arg0}
 	</select>
 	
 	<!-- 后台管理  根据账号状态  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
@@ -202,7 +204,7 @@
 	</select>
 		<!-- 后台管理   根据用户名和账号状态  模糊查询出管理登陆用户表一共有多少条数据 -->
 	<select id="pageCountManageLoginLike2" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(username) from manage_login where userName like #{arg0}"%" and deleted=#{arg1}
+		select count(phone) from manage_login where userName like #{arg0}"%" and deleted=#{arg1}
 	</select>
 	
 	<!-- 后台管理  根据用户名和账号状态  模糊查询出所有用户信息   含用户信息  用户的角色含分页 -->
@@ -219,7 +221,7 @@
 	
 	<!-- 后台管理   添加后台管理用户 -->
 	<insert id="addManageLogin" parameterType="com.zhita.model.manage.ManageLogin">
-		insert into manage_login(username,phone,company,sourcename) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{sourcename,jdbcType=VARCHAR})
+		insert into manage_login(username,phone,pwd,company,sourcename) values(#{username,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{pwd,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},#{sourcename,jdbcType=VARCHAR})
 	</insert>
 	<!-- 后台管理   添加后台管理用户1-->
 	<insert id="addManageLogin1" parameterType="com.zhita.model.manage.ManageLogin">
@@ -230,6 +232,7 @@
 		    update manage_login
 		    set userName = #{username,jdbcType=VARCHAR},
 		      phone = #{phone,jdbcType=VARCHAR},
+		      pwd = #{pwd,jdbcType=VARCHAR},
 		      loginStatus = #{loginstatus,jdbcType=VARCHAR},
 		      loginTime = #{logintime,jdbcType=VARCHAR},
 		      deleted = #{deleted,jdbcType=VARCHAR},

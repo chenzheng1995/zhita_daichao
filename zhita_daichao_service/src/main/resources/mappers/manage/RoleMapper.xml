@@ -63,11 +63,11 @@
   </update>
   <!-- 后台管理  查询出所有的角色信息  不含分页-->
   <select id="queryAllRole" resultType="com.zhita.model.manage.Role">
-  	select id,roleName from role;
+  	select id,roleName from role where deleted='0';
   </select>
   <!-- 后台管理   查询出角色表一共有多少条数据 -->
   <select id="pageCount" resultType="java.lang.Integer">
-  	select count(roleName) from role
+  	select count(roleName) from role where deleted='0'
   </select>
     <!-- 后台管理   查询出所有的角色信息  含分页 -->
   <select id="queryAllRolePage" resultType="com.zhita.model.manage.Role">

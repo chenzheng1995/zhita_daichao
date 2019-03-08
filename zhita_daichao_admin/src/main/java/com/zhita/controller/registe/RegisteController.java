@@ -28,6 +28,7 @@ import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.registe.IntRegisteService;
 import com.zhita.service.type.IntTypeService;
+import com.zhita.util.DateListUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
@@ -411,6 +412,7 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryTime")
 	public List<JiaFangTongji> queryTime(String businessName,String LikeTime1,String LikeTime2) throws ParseException {
+    	List<String> daysList=DateListUtil.getDays(LikeTime1,LikeTime2);//获取传进来时间段里的所有日期集合
 	    String timeStart=Timestamps.dateToStamp(LikeTime1);//将开始时间转换为时间戳
 	
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
@@ -435,11 +437,21 @@ public class RegisteController {
         list1.addAll(h);   
     	
     	for (int i = 0; i < list1.size(); i++) {
-    		System.out.println("输出data类型的时间："+list1.get(i));
+    		System.out.println("输出data类型的时间："+list1.get(i));//list1里面存的是传进来这个时间段里有的日期
 		}
+    	
+       	List<String> list2=DateListUtil.getDiffrent2(daysList, list1);//list2里面存的是传进来这个时间段里没有的日期，要将数量设为0
     	
     	List<JiaFangTongji> listjia=new ArrayList<>();
     	JiaFangTongji jia=null;
+    	
+    	for (int i = 0; i < list2.size(); i++) {
+    		jia=new JiaFangTongji();
+    		jia.setDate(list2.get(i));
+      	    jia.setAmount(0);
+      	    listjia.add(jia);
+		}
+    	
     	for (int i = 0; i <list1.size(); i++) {
     		jia=new JiaFangTongji();
     	    Date dti = sdf.parse(list1.get(i));  
@@ -457,7 +469,7 @@ public class RegisteController {
     	    jia.setAmount(count);
     	    listjia.add(jia);
 		}
-    	
+    	DateListUtil.ListSort(listjia);//将集合按照日期进行排序
     	for (int i = 0; i < listjia.size(); i++) {
 			System.out.println("date:::"+listjia.get(i).getDate()+"count:::"+listjia.get(i).getAmount());
 		}

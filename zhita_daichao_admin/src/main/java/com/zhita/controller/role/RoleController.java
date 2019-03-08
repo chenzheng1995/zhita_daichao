@@ -29,7 +29,7 @@ public class RoleController {
 	@RequestMapping("/queryAllRolePage")
     public Map<String, Object> queryAllRolePage(Integer page){
 		int totalCount=intRoleService.pageCount();//查询出角色表一共有多少数据
-    	PageUtil pageUtil=new PageUtil(page,1,totalCount);
+    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
     	if(page<1) {
     		page=1;
     	}

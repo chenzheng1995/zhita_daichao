@@ -7,7 +7,7 @@
     <!--导入属性配置-->
     <properties resource="jdbc.properties"/>
     <!--指定特定数据库的jdbc驱动jar包的位置-->
-    <classPathEntry location="E:\repo\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar"/>
+    <classPathEntry location="E:\repo\mysql\mysql-connector-java\5.1.46\mysql-connector-java-5.1.46.jar"/>
 
     <!-- 选择运行的mybatis版本 -->
     <context id="default" targetRuntime="MyBatis3">
@@ -21,7 +21,7 @@
         <!--jdbc的数据库连接 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://localhost:3306/daichao?characterEncoding=utf-8"
+                connectionURL="jdbc:mysql://192.168.0.189:3306/daichao?characterEncoding=utf-8"
                 userId="root"
                 password="123456">
         </jdbcConnection>

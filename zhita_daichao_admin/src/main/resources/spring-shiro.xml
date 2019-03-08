@@ -29,7 +29,7 @@
 		<property name="loginUrl" value="/login.jsp" />
 
 		<!--在此处配置无权限的跳转路径 -->
-		<property name="unauthorizedUrl" value="/1.jsp" />
+		<property name="unauthorizedUrl" value="/error.jsp" />
 
 		<!-- 配置哪些页面需要受保护. 以及访问这些页面需要的权限. 
 		1). anon 可以被匿名访问 
@@ -48,17 +48,20 @@
 				/registe/insertAllAdmin = perms["贷款商家-添加"]
 				/registe/falsedeleteByPrimaryKey = perms["贷款商家-删除"]
 				/registe/selectByPrimaryKey = perms["贷款商家-编辑"]
+				/registe/upaBaocunByPrimaryKey = perms["贷款商家-更新保存"]
 				/registe/upaState = perms["贷款商家-更新状态"]
 				<!-- 贷款分类权限拦截 -->
 				/type/queryAllPage = perms["贷款分类-查询所有"]
 				/type/queryByLike = perms["贷款分类-模糊查询"]
 				/type/insertAllfind = perms["贷款分类-添加"]
 				/type/selectByPrimaryKey = perms["贷款分类-编辑"]
+				/type/updateByPrimaryKey = perms["贷款分类-更新保存"]
 				<!-- 信用卡权限拦截 -->
 				/card/queryAllCard = perms["信用卡-查询所有"]
 				/card/queryByLike = perms["信用卡-模糊查询"]
 				/card/addAll = perms["信用卡-新增"]
 				/card/selectByPrimaryKey = perms["信用卡-编辑"]
+				/card/updateCreditCard = perms["信用卡-更新保存"]
 				/card/upaFalseDel = perms["信用卡-删除"]
 				/card/upaState = perms["信用卡-状态修改"]
 				<!-- 攻略权限拦截 -->
@@ -66,6 +69,7 @@
 				/news/queryNewsByLike = perms["攻略-模糊查询"]
 				/news/AddALL = perms["攻略-添加"]
 				/news/selectByPrimaryKey = perms["攻略-编辑"]
+				/news/updateStrategy = perms["攻略-更新保存"]
 				/news/upaFalseDelById = perms["攻略-删除"]
 				/news/upaState = perms["攻略-更新状态"]
 				<!--轮播图权限拦截 -->
@@ -73,6 +77,7 @@
 				/banner/queryAllByLike = perms["轮播图-模糊查询"]
 				/banner/AddAll = perms["轮播图-新增"]
 				/banner/selectByPrimaryKey = perms["轮播图-编辑"]
+				/banner/updateShufflingFigure = perms["轮播图-更新保存"]
 				/banner/upaFalseDel = perms["轮播图-删除"]
 				/banner/upaState = perms["轮播图-状态修改"]
 				<!-- 广告权限拦截 -->
@@ -80,24 +85,41 @@
 				/adv/queryAllByLike = perms["广告-模糊查询"]
 				/adv/AddAll = perms["广告-新增"]
 				/adv/selectByPrimaryKey = perms["广告-编辑"]
+				/adv/updateAdvertising = perms["广告-更新保存"]
 				/adv/upaFalseDel = perms["广告-删除"]
 				/adv/upaState = perms["广告-状态修改"]
 				<!-- 用户权限拦截 -->
-				/uer/queryAllUser = perms["用户-查询所有"]
-				/uer/queryByLike = perms["用户-模糊查询"]
-				/uer/queryAllButton = perms["用户-申请记录"]
+				/user/queryAllUser = perms["用户-查询所有"]
+				/user/queryByLike = perms["用户-模糊查询"]
+				/user/queryAllButton = perms["用户-申请记录"]
 				<!-- 渠道权限拦截 -->
 				/merchant/queryAllSource = perms["渠道-查询所有"]
 				/merchant/querySourceByLike = perms["渠道-模糊查询"]
 				/merchant/AddAll = perms["渠道-新增"]
 				/merchant/selectByPrimaryKey = perms["渠道-编辑"]
+				/merchant/updateSource= perms["渠道-更新保存"]
 				/merchant/upaFalseDelById = perms["渠道-删除"]
 				/merchant/upaState = perms["渠道-状态修改"]
-				<!-- 渠道方统计 -->
+				/merchant/queryAllUserBySourceId = perms["渠道-注册信息"]
+				/merchant/queryAllUserByLikeAll = perms["渠道-注册信息模糊查询"]
+				<!-- 渠道方统计权限拦截 -->
 				/tongji/queryAllTongji = perms[统计-渠道方查询]
 				<!-- 统计权限拦截 -->
 				/tongji/queryAllPage = perms["统计-查询所有me"]
 				/tongji/queryAllPageBySourceName = perms["统计-模糊查询me"]
+				<!-- 后台管理用户权限拦截-->
+				/admin_login/queryAllManageLogin = perms["后台管理-查询所有"]
+				/admin_login/queryManageloginByLike = perms["后台管理-模糊查询"]
+				/admin_login/addManageLogin = perms["后台管理-添加"]
+				/admin_login/selectByPrimaryKey = perms["后台管理-编辑"]
+				/admin_login/upaManageLogin = perms["后台管理-更新保存"]
+				<!-- 角色 权限拦截-->
+				/role/queryAllRolePage = perms["角色-查询所有"]
+				/role/queryAllRolePage = perms["角色-模糊查询"]
+				/role/queryAllRolePage = perms["角色-添加"]
+				/role/queryAllRolePage = perms["角色-编辑"]
+				/role/upaBaocun = perms["角色-更新保存"]
+				/role/queryAllRolePage = perms["角色-查询权限"]
 			</value>
 		</property>
 	</bean>
