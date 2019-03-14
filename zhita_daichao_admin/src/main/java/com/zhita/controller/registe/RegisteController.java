@@ -117,6 +117,7 @@ public class RegisteController {
 				System.out.println(list.get(i)+"整合后的集合");
 			}
 			
+			
 			System.out.println("传进工具类的page"+page);
 			
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
