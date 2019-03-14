@@ -213,4 +213,9 @@ public class MerchantServiceImp implements IntMerchantService{
     	map.put("pageutil",pageUtil);
     	return map;
     }
+	@Override
+	public int getsourceId(String sourceId) {
+		int merchantId = sourceMapper.getsourceId(sourceId);
+		return merchantId;
+	}
 }

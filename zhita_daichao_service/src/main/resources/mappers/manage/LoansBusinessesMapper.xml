@@ -397,7 +397,7 @@
 	</insert>
 	 <!-- 获取商品的所有信息 -->
  <select id="getLoansBusinesses" resultType="map" parameterType="java.lang.String">
- 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate,cycle,state from loans_businesses where deleted='0' and businessName = #{businessName} and company = #{company}
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate,cycle,state,applications from loans_businesses where deleted='0' and businessName = #{businessName} and company = #{company}
  </select>
  <!-- 后台管理  查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中 -->
  <select id="queryAllBusinessName" resultType="java.lang.String">

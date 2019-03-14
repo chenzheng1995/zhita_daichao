@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zhita.model.manage.LoanClassification;
+import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
 
 public interface LoanClassificationMapper {
@@ -52,7 +53,7 @@ public interface LoanClassificationMapper {
     //后台管理---查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用
     List<LoanClassification> queryAllLoanCla();
 
-	List<LoanClassification> queryLoanClass(String company);
+	List<LoanClassificationCopy> queryLoanClass(String company);
 
 	List<LoanClassification> queryLoanClassAfter(String company);
 

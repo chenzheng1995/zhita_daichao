@@ -7,10 +7,11 @@
       <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="icon" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, businessClassification, amount, company
+    id, businessClassification, amount, company,icon
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -83,9 +84,22 @@
   </update> 
 
 <!-- ============================================================ -->
-  <select id="queryLoanClass" resultType="com.zhita.model.manage.LoanClassificationCopy">
-  	SELECT businessClassification from loan_classification_copy where company = #{company}
+<!--  小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
+ <select id="queryLoanbusinByLoanClass" parameterType="java.util.Map"  resultType="com.zhita.model.manage.LoanClassificationCopy">
+ 	select * from loans_businesses_copy lobus inner join loan_classification_copy locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} and deleted='0' order by isStick desc limit #{arg1},#{arg2}
+ </select>
+ <!-- 小程序  获取前四个贷款分类 -->
+   <select id="queryLoanClass" parameterType="java.lang.String" resultType="com.zhita.model.manage.LoanClassificationCopy">
+  	SELECT businessClassification , icon from loan_classification_copy where company = #{company} limit 0,4
   </select>
   
+   <!-- 小程序  获取后三个贷款分类 -->
+   <select id="queryLoanClassAfter" parameterType="java.lang.String" resultType="com.zhita.model.manage.LoanClassificationCopy">
+  	SELECT businessClassification ,icon from loan_classification_copy where company = #{company} limit 4,3
+  </select>
   
+   <!-- 小程序    用于获取通过贷款分类的名称查询出贷款商家的个数 -->
+ <select id="pageCountByBusinessClassification" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select count(businessClassification) from loans_businesses_copy lb inner join loan_classification_copy lc on lb.busClaId=lc.id where deleted='0' and businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
+ </select>
 </mapper>

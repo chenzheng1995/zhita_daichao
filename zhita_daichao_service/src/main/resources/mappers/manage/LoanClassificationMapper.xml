@@ -7,10 +7,11 @@
       <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="icon" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, businessClassification, amount,company
+    id, businessClassification, amount,company,icon
   </sql>
   <!-- 后台管理  通过主键id查询出贷款分类信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -161,7 +162,7 @@
        </collection>
  </resultMap>
  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
- <select id="queryLoanbusinByLoanClass" resultMap="loanCla">
+ <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap">
  	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} and deleted='0' order by isStick desc limit #{arg1},#{arg2}
  </select>
  <!-- 小程序  获取前四个贷款分类 -->
@@ -171,7 +172,7 @@
   
    <!-- 小程序  获取后三个贷款分类 -->
    <select id="queryLoanClassAfter" resultType="com.zhita.model.manage.LoanClassification">
-  	SELECT businessClassification from loan_classification where company = #{company} limit 4,3
+  	SELECT businessClassification ,icon from loan_classification where company = #{company} limit 4,3
   </select>
 
 </mapper>

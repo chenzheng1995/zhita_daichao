@@ -219,4 +219,9 @@
  <select id="queryAllUserByRegistrationTimePhone" resultType="com.zhita.model.manage.User">
  	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} and u.phone like "%"#{arg3}"%" limit #{arg4},#{arg5}
  </select>
+ 
+   <!-- 通过渠道名字获取它的id -->
+  <select id="getsourceId" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select id from source where sourcename = #{sourceId}
+  </select>
 </mapper>

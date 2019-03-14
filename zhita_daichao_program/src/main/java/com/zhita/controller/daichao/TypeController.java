@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.LoanClassification;
+import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.model.manage.LoansBusinessesCopy;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
@@ -46,8 +47,8 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryLoanClassBefore")
     @Transactional
-    public List<LoanClassification> queryLoanClass(String company){
-    	List<LoanClassification> list = intTypeService.queryLoanClass(company);
+    public List<LoanClassificationCopy> queryLoanClass(String company){
+    	List<LoanClassificationCopy> list = intTypeService.queryLoanClass(company);
 		return list;
    	
     }
@@ -56,8 +57,8 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryLoanClassAfter")
     @Transactional
-    public List<LoanClassification> queryLoanClassAfter(String company){
-    	List<LoanClassification> list = intTypeService.queryLoanClassAfter(company);
+    public List<LoanClassificationCopy> queryLoanClassAfter(String company){
+    	List<LoanClassificationCopy> list = intTypeService.queryLoanClassAfter(company);
 		return list;
    	
     }
@@ -132,11 +133,11 @@ public class TypeController {
     	        loansBusinesses.setLoanlimit(loanlimit);
     			}
     	 List<String> fixedWordList =new ArrayList<String>();
-         fixedWordList.add("%日");
-         fixedWordList.add("可贷额度");
-         fixedWordList.add("参考利率");
-         fixedWordList.add("人已申请");
-         fixedWordList.add("立即申请");
+         fixedWordList.add("%次");
+         fixedWordList.add("人均消费");
+         fixedWordList.add("折扣率");
+         fixedWordList.add("人已领取");
+         fixedWordList.add("立即领取");
          
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listLoansBusinByLike",list);

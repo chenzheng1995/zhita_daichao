@@ -2,7 +2,8 @@ package com.zhita.dao.manage;
 
 import java.util.List;
 
-import com.zhita.model.manage.LoanClassification;
+import org.apache.ibatis.annotations.Param;
+
 import com.zhita.model.manage.LoanClassificationCopy;
 
 public interface LoanClassificationCopyMapper {
@@ -17,6 +18,10 @@ public interface LoanClassificationCopyMapper {
     int updateByPrimaryKeySelective(LoanClassificationCopy record);
 
     int updateByPrimaryKey(LoanClassificationCopy record);
+	
+	List<LoanClassificationCopy> queryLoanClass(String company);
+	
+	List<LoanClassificationCopy> queryLoanClassAfter(String company);
 
-	List<LoanClassification> queryLoanClass(String company);
+	int pageCountByBusinessClassification(@Param("businessClassification")String businessClassification,@Param("company") String company);
 }

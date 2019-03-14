@@ -20,8 +20,10 @@ public class News {
     private String company;
 
     private String deleted;
+    
+    private Integer typeid;
 
-    public News(Integer id, String title, String titleimage, String date, Integer viewed, String author, String contenturl, String isstick, String company, String deleted) {
+    public News(Integer id, String title, String titleimage, String date, Integer viewed, String author, String contenturl, String isstick, String company, String deleted, Integer typeid) {
         this.id = id;
         this.title = title;
         this.titleimage = titleimage;
@@ -32,6 +34,7 @@ public class News {
         this.isstick = isstick;
         this.company = company;
         this.deleted = deleted;
+        this.typeid = typeid;
     }
 
     public News() {
@@ -116,5 +119,13 @@ public class News {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted == null ? null : deleted.trim();
+    }
+    
+    public Integer getTypeid() {
+        return typeid;
+    }
+
+    public void setTypeid(Integer typeid) {
+        this.typeid = typeid;
     }
 }

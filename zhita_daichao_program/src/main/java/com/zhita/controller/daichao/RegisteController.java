@@ -76,12 +76,10 @@ public class RegisteController {
 //	    map.put("fixedWordList", fixedWordList);
 //    	return map;
 //    }
-	
 	//小程序---查询所有贷款商家信息,含分页(为了审核用的)
   @ResponseBody
   @RequestMapping("/queryAll")
   public Map<String,Object> queryAll(Integer page,String company){    	
-
   	int totalCount=intRegisteCopyService.pageCount1(company);//该方法是查询贷款商家总条数
   	PageUtil pageUtil=new PageUtil(page,10,totalCount);
   	if(page<1) {
@@ -108,11 +106,11 @@ public class RegisteController {
       
 		}
      List<String> fixedWordList =new ArrayList<String>();
-     fixedWordList.add("%日");
-     fixedWordList.add("可贷额度");
-     fixedWordList.add("参考利率");
-     fixedWordList.add("人已申请");
-     fixedWordList.add("立即申请");
+     fixedWordList.add("%次");
+     fixedWordList.add("人均消费");
+     fixedWordList.add("折扣率");
+     fixedWordList.add("人已领取");
+     fixedWordList.add("立即领取");
 	
   	HashMap<String,Object> map=new HashMap<>();
   	map.put("listLoansBusin",list);

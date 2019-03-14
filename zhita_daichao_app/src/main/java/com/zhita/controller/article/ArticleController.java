@@ -1,4 +1,4 @@
-package com.zhita.controller.daichao;
+package com.zhita.controller.article;
 
 
 import java.util.ArrayList;

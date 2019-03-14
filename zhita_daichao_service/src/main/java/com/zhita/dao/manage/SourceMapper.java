@@ -81,4 +81,6 @@ public interface SourceMapper {
     
     //后台 管理---通过注册时间 。。手机号    查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
     List<User> queryAllUserByRegistrationTimePhone(Integer SourceId,String registrationTime,String registrationTime1,String phone,Integer page,Integer pagesize);
+
+	int getsourceId(String sourceId);
 }

@@ -13,10 +13,11 @@
       <arg column="isStick" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="typeId" javaType="java.lang.Integer" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, titleImage, date, viewed, author, contentURL, isStick, company, deleted
+    id, title, titleImage, date, viewed, author, contentURL, isStick, company, deleted, typeId
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -32,11 +33,11 @@
     insert into news (id, title, titleImage, 
       date, viewed, author, 
       contentURL, isStick, company, 
-      deleted)
+      deleted,typeId)
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{titleimage,jdbcType=VARCHAR}, 
       #{date,jdbcType=VARCHAR}, #{viewed,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, 
       #{contenturl,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
-      #{deleted,jdbcType=VARCHAR})
+      #{deleted,jdbcType=VARCHAR},#{typeId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.News">
     insert into news
@@ -71,6 +72,9 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="deleted != null">
+        typeId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -102,6 +106,9 @@
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=VARCHAR},
+      </if>     
+      <if test="deleted != null">
+        #{typeId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -135,6 +142,9 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=VARCHAR},
       </if>
+      <if test="deleted != null">
+        typeId = #{typeId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -148,40 +158,114 @@
       contentURL = #{contenturl,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
       company = #{company,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=VARCHAR}
+      deleted = #{deleted,jdbcType=VARCHAR},
+      typeId = #{typeId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
 <!-- 把新闻的数据插入数据库   -->
 	<insert id="setnews" parameterType="java.util.Map">
-		insert into news (title,titleImage,date,author,contentURL,isStick,company)
+		insert into news (title,titleImage,date,author,contentURL,isStick,company,typeId)
 		values (#{title},
 		#{ossimagePath},
 		#{registrationTime},
 		#{author},
 		#{ossarticlePath},
 		#{isStick},
-		#{company})
+		#{company},
+		#{typeId})
 	</insert>
 	
 	<!-- 把新闻的数据插入数据库(标题图片不传)   -->
 	<insert id="setNewsNotOssimagePath" parameterType="java.util.Map">
-		insert into news (title,date,author,contentURL,isStick,company)
+		insert into news (title,date,author,contentURL,isStick,company,typeId)
 		values (#{title},
 		#{registrationTime},
 		#{author},
 		#{ossarticlePath},
 		#{isStick},
-		#{company})
+		#{company},
+		#{typeId})
 	</insert>
 	
 	  <!-- 获取文章总数 -->
- <select id="pageCount1" resultType="java.lang.Integer">
+ <select id="pageCount1" parameterType="map" resultType="java.lang.Integer">
+   select count(title) from news where deleted='0' and company = #{company} and typeId =#{typeId}
+ </select>
+ 
+ 	  <!-- 当类型为全部时，获取文章总数 -->
+ <select id="pageCountAll1" parameterType="java.lang.String" resultType="java.lang.Integer">
    select count(title) from news where deleted='0' and company = #{company}
  </select>
  
-   <!-- 查询所有文章的所有信息，含分页 -->
+   <!-- 查询某个类型的文章的所有信息，含分页 -->
   <select id="getAllnews" parameterType="map" resultType="com.zhita.model.manage.News">
-  	select id,title,titleImage,date,viewed,author,contentURL,isStick,company from news where deleted='0' and company = #{company} order by isStick desc limit #{page},#{pageSize}
+  	select id,title,titleImage,date,viewed,isStick from news where deleted='0' and company = #{company} and typeId =#{typeId} order by isStick desc limit #{page},#{pageSize}
+  </select>
+  
+     <!--admin 查询某个类型的文章的所有信息，含分页 -->
+  <select id="getAdminAllnews" parameterType="map" resultType="com.zhita.model.manage.News">
+  	select id,title,titleImage,date,viewed,isStick,author,company from news where deleted='0' and company = #{company} and typeId =#{typeId} order by isStick desc limit #{page},#{pageSize}
+  </select>
+  
+     <!-- 查询类型为全部的文章的所有信息，含分页 -->
+  <select id="getNewsByAll" parameterType="map" resultType="com.zhita.model.manage.News">
+  	select id,title,titleImage,date,viewed,isStick from news where deleted='0' and company = #{company} order by isStick desc limit #{page},#{pageSize}
+  </select>
+  
+       <!--admin 查询类型为全部的文章的所有信息，含分页 -->
+  <select id="getAdminNewsByAll" parameterType="map" resultType="com.zhita.model.manage.News">
+  	select id,title,titleImage,date,viewed,isStick,author,company from news where deleted='0' and company = #{company} order by isStick desc limit #{page},#{pageSize}
+  </select>
+  
+<!--   根据id修改文章数据 -->
+    <update id="updatenews" parameterType="java.util.Map">
+    update news
+    set title = #{title,jdbcType=VARCHAR},
+      titleImage = #{ossimagePath,jdbcType=VARCHAR},
+      date = #{registrationTime,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      contentURL = #{ossarticlePath,jdbcType=VARCHAR},
+      isStick = #{isStick,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      company = #{typeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!--   根据id修改文章数据 -->
+    <update id="deletenews" parameterType="java.lang.Integer">
+    update news
+    set deleted = 1 where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+     <!-- 根据id查询浏览次数 -->
+  <select id="getviewed" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select viewed from news where deleted='0' and id = #{id}
+  </select>
+  
+    <!--   根据id修改文章的浏览次数 -->
+    <update id="setviewed" parameterType="java.lang.Integer">
+    update news
+    set viewed =#{newViewed}  where id = #{id}
+  </update>
+  
+  	  <!-- 获取文章总数，模糊查询 -->
+ <select id="pageCount2" parameterType="java.util.Map" resultType="java.lang.Integer">
+   select count(title) from news where deleted='0' and company = #{company} and title like "%"#{title}"%"
+ </select>
+ 
+    <!-- 模糊查询所有文章的所有信息，含分页 -->
+  <select id="getfuzzynews" parameterType="map" resultType="com.zhita.model.manage.News">
+  	select id,title,titleImage,date,viewed,author,contentURL,isStick,company from news where deleted='0' and company = #{company} and title like "%"#{title}"%" order by isStick desc limit #{page},#{pageSize}
+  </select>
+  
+      <!-- 查询某篇文章的文章内容 -->
+  <select id="getnewscontent" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.News">
+  	select title,date,viewed,author,contentURL from news where deleted='0' and id = #{id}
+  </select>
+  
+        <!-- 更加id查询文章内容 -->
+  <select id="getcontent" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select contentURL from news where deleted='0' and id = #{id}
   </select>
 </mapper>

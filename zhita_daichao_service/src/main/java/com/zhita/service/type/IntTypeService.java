@@ -3,6 +3,7 @@ package com.zhita.service.type;
 import java.util.List;
 
 import com.zhita.model.manage.LoanClassification;
+import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.model.manage.LoansBusinessesCopy;
 
@@ -32,8 +33,8 @@ public interface IntTypeService{
     public List<LoanClassification> queryAllLoanCla();
     //通过传过来的贷款分类对象，对当前对象进行修改保存
     public int updateByPrimaryKey(LoanClassification record);
-	public List<LoanClassification> queryLoanClass(String company);
-	public List<LoanClassification> queryLoanClassAfter(String company);
+	public List<LoanClassificationCopy> queryLoanClass(String company);
+	public List<LoanClassificationCopy> queryLoanClassAfter(String company);
 	public List<LoansBusinessesCopy> queryLoanbusinByLoanClass1(String businessClassification, int pages, int pageSize,
 			String company);
 

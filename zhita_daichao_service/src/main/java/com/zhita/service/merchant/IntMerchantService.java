@@ -57,4 +57,6 @@ public interface IntMerchantService {
     
     //后台 管理---通过注册时间 。。手机号    查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
     public Map<String,Object> queryAllUserByLikeAll(Integer SourceId,String registrationTimeStart,String registrationTimeEnd,String phone,Integer page);
+
+	public int getsourceId(String sourceId);
 }

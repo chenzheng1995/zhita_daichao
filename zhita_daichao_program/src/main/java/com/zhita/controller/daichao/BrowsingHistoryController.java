@@ -56,15 +56,18 @@ public class BrowsingHistoryController {
 //		Map<String, Object> map = new HashMap<String, Object>();
 //		List<Map<String, Object>> goodslist=new ArrayList<Map<String, Object>>();
 //		List<String> list =	(List<String>) cFootprintService.getbusinessName(userId,pageSize,startRow,company);//获取商品名称
-//	    for (String businessName : list) {	
-//	    	long applications = cFootprintService.getApplications(businessName,company); //获取申请人数	    	
-//	    	map = intRegisteService.getLoansBusinesses(businessName,company); //获取商品的所有信息
-//	    	if(map==null) {
-//            continue;
-//	    	}
-//	    	map.put("applications", applications);
-//	    	goodslist.add(map);
-//		}
+//	    for (String businessName : list) {	  	
+//	map = intRegisteService.getLoansBusinesses(businessName,company); //获取商品的所有信息
+// 	if(map!=null) {
+//         fakeApplications = (int) map.get("applications"); //假的申请人数
+//	}
+//	long applications = cFootprintService.getApplications(businessName,company)+fakeApplications; //获取申请人数	 
+//	if(map==null) {
+//    continue;
+//	}
+//	map.put("applications", applications);
+//	goodslist.add(map);
+//}	
 //    List<String> fixedWordList =new ArrayList<String>();
 //    fixedWordList.add("%日");
 //    fixedWordList.add("可贷额度");
@@ -84,6 +87,7 @@ public class BrowsingHistoryController {
 
 	public Map<String,Object> insertFootprint(String userId,int curPage,String company) { //userId是用户的id，curPage是页码
 		 Map<String,Object> map1 = new HashMap<String,Object>();
+		 int fakeApplications = 0;
 		if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(curPage) || StringUtils.isEmpty(company)) {
 			map1.put("msg", "userId,curPage或company不能为空");
 			map1.put("SCode", "401");
@@ -102,9 +106,12 @@ public class BrowsingHistoryController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Map<String, Object>> goodslist=new ArrayList<Map<String, Object>>();
 		List<String> list =	(List<String>) commodityFootprintCopyService.getbusinessName1(userId,pageSize,startRow,company);//获取商品名称
-	    for (String businessName : list) {	
-	    	long applications = commodityFootprintCopyService.getApplications1(businessName,company); //获取申请人数	    	
-	    	map = intRegisteCopyService.getLoansBusinesses1(businessName,company); //获取商品的所有信息
+		for (String businessName : list) {	  	
+	    	map = intRegisteService.getLoansBusinesses(businessName,company); //获取商品的所有信息
+ 	    	if(map!=null) {
+		         fakeApplications = (int) map.get("applications"); //假的申请人数
+	    	}
+	    	long applications = cFootprintService.getApplications(businessName,company)+fakeApplications; //获取申请人数	 
 	    	if(map==null) {
             continue;
 	    	}
@@ -113,11 +120,11 @@ public class BrowsingHistoryController {
 		}	
 	    
 	     List<String> fixedWordList =new ArrayList<String>();
-	     fixedWordList.add("%日");
-	     fixedWordList.add("可贷额度");
-	     fixedWordList.add("参考利率");
-	     fixedWordList.add("人已申请");
-	     fixedWordList.add("立即申请");
+	     fixedWordList.add("%次");
+	     fixedWordList.add("人均消费");
+	     fixedWordList.add("折扣率");
+	     fixedWordList.add("人已领取");
+	     fixedWordList.add("立即领取");
 	    map1.put("goodslist", goodslist);
 	    map1.put("largestPages", largestPages);
 	    map1.put("fixedWordList", fixedWordList);

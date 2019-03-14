@@ -13,6 +13,7 @@ import com.zhita.dao.manage.LoanClassificationMapper;
 import com.zhita.dao.manage.LoansBusinessesCopyMapper;
 import com.zhita.dao.manage.LoansBusinessesMapper;
 import com.zhita.model.manage.LoanClassification;
+import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.model.manage.LoansBusinessesCopy;
 
@@ -43,6 +44,9 @@ public class TypeServiceImp implements IntTypeService{
 	@Autowired
 	LoansBusinessesCopyMapper loansBusinessesCopyMapper;
 	
+	@Autowired
+	LoanClassificationCopyMapper loanClassificationCopyMapper;
+	
     //后台管理---查询贷款分类所有信息，含分页
 	@Override
 	public List<LoanClassification> queryAllPage(String company,Integer page,Integer pagesize) {
@@ -68,7 +72,7 @@ public class TypeServiceImp implements IntTypeService{
     }
     //小程序---通过贷款分类的名称查询出贷款商家的个数
     public int pageCountByBusinessClassification(String businessClassification,String conpany) {
-    	int count=loanClassificationMapper.pageCountByBusinessClassification(businessClassification,conpany);
+    	int count=loanClassificationCopyMapper.pageCountByBusinessClassification(businessClassification,conpany);
     	System.out.println(count+"----");
     	return count;
     }
@@ -121,14 +125,14 @@ public class TypeServiceImp implements IntTypeService{
     }
 
 	@Override
-	public List<LoanClassification> queryLoanClass(String company) {
-		List<LoanClassification> list = loanClassificationMapper.queryLoanClass(company);
+	public List<LoanClassificationCopy> queryLoanClass(String company) {
+		List<LoanClassificationCopy> list = loanClassificationCopyMapper.queryLoanClass(company);
 		return list;
 	}
 
 	@Override
-	public List<LoanClassification> queryLoanClassAfter(String company) {
-		List<LoanClassification> list = loanClassificationMapper.queryLoanClassAfter(company);
+	public List<LoanClassificationCopy> queryLoanClassAfter(String company) {
+		List<LoanClassificationCopy> list = loanClassificationCopyMapper.queryLoanClassAfter(company);
 		return list;
 	}
 

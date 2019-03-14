@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
+import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.util.MD5Util;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
@@ -21,6 +22,9 @@ import com.zhita.util.SMSUtil;
 public class LoginController {
 	@Autowired
 	IntLoginService loginService;
+	
+	@Autowired
+	IntMerchantService intMerchantService;
 
 	// 发送验证码
 	@RequestMapping("/sendSMS")
@@ -37,7 +41,7 @@ public class LoginController {
 	/**
 	 * @param phone    手机号
 	 * @param pwd      密码
-	 * @param sourceId 渠道id
+	 * @param sourceId 渠道名字（本来是渠道id，但是为了审核，前端不能改）
 	 * @param code     验证码
 	 * @param registrationType  软件类型
 	 * @return
@@ -45,7 +49,7 @@ public class LoginController {
 	@RequestMapping("/registered")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> registered(String phone, String pwd, int sourceId, String code,String company,String registrationType) {
+	public Map<String, Object> registered(String phone, String pwd, String sourceId, String code,String company,String registrationType) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(pwd) || StringUtils.isEmpty(sourceId)
 				|| StringUtils.isEmpty(code)) {
@@ -53,6 +57,7 @@ public class LoginController {
 			map.put("SCode", "401");
 			return map;
 		} else {
+			int merchantId = intMerchantService.getsourceId(sourceId);
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
 			String redisCode = redisClientUtil.get(key);
@@ -69,7 +74,7 @@ public class LoginController {
 				User user = loginService.findphone(phone,company); // 判断该用户是否存在
 				if (user == null) {
 					String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-					int number = loginService.setAPPUser(phone, md5Pwd, sourceId, registrationTime, loginStatus,registrationType,company);
+					int number = loginService.setAPPUser(phone, md5Pwd, merchantId, registrationTime, loginStatus,registrationType,company);
 					if (number == 1) {
 						int id = loginService.getId(phone,company); // 获取该用户的id
 						map.put("msg", "用户注册成功，数据插入成功");
@@ -205,7 +210,7 @@ public class LoginController {
 	@RequestMapping("/codelogin")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> codeLogin(String phone, String code,String company,String registrationType,int sourceId) {
+	public Map<String, Object> codeLogin(String phone, String code,String company,String registrationType,String sourceId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String loginStatus = "1";
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
@@ -225,7 +230,8 @@ public class LoginController {
 				String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
 				User user = loginService.findphone(phone,company); // 判断该用户是否存在
 				if (user == null) {
-					int number = loginService.insertUser(phone,loginStatus,company,registrationType,registrationTime,sourceId);
+					int merchantId = intMerchantService.getsourceId(sourceId);
+					int number = loginService.insertUser(phone,loginStatus,company,registrationType,registrationTime,merchantId);
 					if (number == 1) {								
 						int id = loginService.getId(phone,company); //获取该用户的id					
 							map.put("msg", "用户登录成功，数据插入成功，让用户添加密码");

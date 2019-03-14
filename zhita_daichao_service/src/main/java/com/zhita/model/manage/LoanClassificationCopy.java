@@ -1,56 +1,86 @@
 package com.zhita.model.manage;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class LoanClassificationCopy {
-    private Integer id;
+	 private Integer id;//贷款分类id
 
-    private String businessclassification;
+	    private String businessClassification;//贷款分类
 
-    private BigDecimal amount;
+	    private BigDecimal amount;//金额
+	    
+	    private List<LoansBusinesses> listLoanBusiness;//一个贷款分类下有多个贷款商家----一对多的关系
+	    
+	    private String company;//公司名
+	    
+	    private String icon;//图标
 
-    private String company;
+	    public LoanClassificationCopy(Integer id, String businessClassification, BigDecimal amount,String company, String icon) {
+	        this.id = id;
+	        this.businessClassification = businessClassification;
+	        this.amount = amount;
+	        this.company = company;
+	        this.icon = icon;
+	    }
 
-    public LoanClassificationCopy(Integer id, String businessclassification, BigDecimal amount, String company) {
-        this.id = id;
-        this.businessclassification = businessclassification;
-        this.amount = amount;
-        this.company = company;
-    }
+	    public LoanClassificationCopy() {
+	        super();
+	    }
 
-    public LoanClassificationCopy() {
-        super();
-    }
+	    public Integer getId() {
+	        return id;
+	    }
 
-    public Integer getId() {
-        return id;
-    }
+	    public void setId(Integer id) {
+	        this.id = id;
+	    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
-    public String getBusinessclassification() {
-        return businessclassification;
-    }
+	    public String getBusinessClassification() {
+			return businessClassification;
+		}
 
-    public void setBusinessclassification(String businessclassification) {
-        this.businessclassification = businessclassification == null ? null : businessclassification.trim();
-    }
+		public void setBusinessClassification(String businessClassification) {
+			this.businessClassification = businessClassification;
+		}
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+		public BigDecimal getAmount() {
+	        return amount;
+	    }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+	    public void setAmount(BigDecimal amount) {
+	        this.amount = amount;
+	    }
 
-    public String getCompany() {
-        return company;
-    }
+		public List<LoansBusinesses> getListLoanBusiness() {
+			return listLoanBusiness;
+		}
 
-    public void setCompany(String company) {
-        this.company = company == null ? null : company.trim();
-    }
-}
+		public void setListLoanBusiness(List<LoansBusinesses> listLoanBusiness) {
+			this.listLoanBusiness = listLoanBusiness;
+		}
+		
+	    public String getCompany() {
+	        return company;
+	    }
+
+	    public void setCompany(String company) {
+	        this.company = company == null ? null : company.trim();
+	    }
+	    
+	    public String getIcon() {
+			return icon;
+		}
+
+		public void setIcon(String icon) {
+			this.icon = icon;
+		}
+
+		@Override
+		public String toString() {
+			return "LoanClassification [id=" + id + ", businessClassification=" + businessClassification + ", amount="
+					+ amount + ", listLoanBusiness=" + listLoanBusiness + ", company=" + company +", icon=" + icon + "]";
+		}
+	    
+	}
