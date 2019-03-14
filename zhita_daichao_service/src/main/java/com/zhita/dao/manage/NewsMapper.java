@@ -45,7 +45,7 @@ public interface NewsMapper {
 
 	News getnewscontent(int id);
 
-	List<News> getAdminNewsByAll(int page, int pageSize, String company);
+	List<News> getAdminNewsByAll(@Param("page")int page,@Param("pageSize") int pageSize,@Param("company") String company);
 
 	List<News> getAdminAllnews(@Param("page")int page,@Param("pageSize") int pageSize,@Param("company") String company,@Param("typeId") Integer typeId);
 
