@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,6 +44,7 @@ public class RoleController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
     	List<Role> list=intRoleService.queryAllRolePage(pageUtil.getPage(), pageUtil.getPageSize());
+    	pageUtil=new PageUtil(page,2,totalCount);
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listRole",list);
@@ -58,7 +60,7 @@ public class RoleController {
 		PageUtil pageUtil=null;
 		if(deleted==null||"".equals(deleted)) {
 			int totalCount=intRoleService.pageCount();//查询出角色表一共有多少数据
-	    	pageUtil=new PageUtil(page,1,totalCount);
+	    	pageUtil=new PageUtil(page,2,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -72,9 +74,10 @@ public class RoleController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=intRoleService.queryAllRolePage(pageUtil.getPage(), pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,2,totalCount);
 		}else {
 			int totalCount=intRoleService.pageCountLike(deleted);//根据角色状态  模糊查询出角色表一共有多少数据
-			pageUtil=new PageUtil(page,1,totalCount);
+			pageUtil=new PageUtil(page,2,totalCount);
 			if(page<1) {
 				page=1;
 			}
@@ -88,8 +91,8 @@ public class RoleController {
 			int pages=(page-1)*pageUtil.getPageSize();
 			pageUtil.setPage(pages);
 			list=intRoleService.queryAllRolePageLike(deleted, pageUtil.getPage(), pageUtil.getPageSize());
+			pageUtil=new PageUtil(page,2,totalCount);
 		}
-    	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listRolelike",list);
     	map.put("pageutil", pageUtil);
@@ -127,14 +130,16 @@ public class RoleController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/addRole")
-    public void addRole(Role role){
+    public void addRole(@RequestBody Role role){
     	int num=intRoleService.addRole(role);
-    	List<Functions> listfunction=role.getListfunction();
-    	for (int i = 0; i < listfunction.size(); i++) {
-    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
-    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
-			}
-		}
+    	if(role.getListfunction()!=null&&role.getListfunction().size()!=0){
+    		List<Functions> listfunction=role.getListfunction();
+    		for (int i = 0; i < listfunction.size(); i++) {
+    			for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
+    				intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
+    			}
+    		}
+    	}
     }
 	//后台管理----查看权限功能--通过角色id查询出  当前角色的所有权限
 	@ResponseBody
@@ -210,8 +215,6 @@ public class RoleController {
     		lists1.add(functions);
 		}
     	
-    	
-    	
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("role",role);
     	map.put("listall",list1);
@@ -222,20 +225,36 @@ public class RoleController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaBaocun")
-	public int upaBaocun(Role role){
+	public int upaBaocun(@RequestBody Role role){
 		List<Integer> list=intRoleService.queryAllIdByRoleid(role.getId());
 		if(list.size()!=0) {
-			for (int i = 0; i < list.size(); i++) {
-				intRoleService.delFunctionByid(list.get(i));
+			if(role.getListfunction()!=null&&role.getListfunction().size()!=0){
+				//进入当前   代表当前角色之前有权限   现在传进来的有权限
+				for (int i = 0; i < list.size(); i++) {
+					intRoleService.delFunctionByid(list.get(i));
+				}
+				List<Functions> listfunction=role.getListfunction();
+		    	for (int i = 0; i < listfunction.size(); i++) {
+		    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
+		    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
+					}
+				}
+			}else{
+				//进入当前   代表当前角色之前有权限   现在传进来的没有权限
+				for (int i = 0; i < list.size(); i++) {
+					intRoleService.delFunctionByid(list.get(i));
+				}
+			}
+		}else{
+			//进入当前   代表当前角色之前没有权限   现在传进来的有权限
+			List<Functions> listfunction=role.getListfunction();
+	    	for (int i = 0; i < listfunction.size(); i++) {
+	    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
+	    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
+				}
 			}
 		}
-		
-	  	List<Functions> listfunction=role.getListfunction();
-    	for (int i = 0; i < listfunction.size(); i++) {
-    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
-    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
-			}
-		}
+	  
 		int num=intRoleService.upaRole(role);
 		return num;
 	}

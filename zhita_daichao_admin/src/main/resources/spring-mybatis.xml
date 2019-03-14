@@ -22,6 +22,7 @@
     <bean id="propertyConfigurer"  
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
         <property name="location" value="classpath:jdbc.properties" />  
+        <property name="ignoreUnresolvablePlaceholders" value="true" /> 
     </bean>  
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"  
         destroy-method="close">  
@@ -75,40 +76,6 @@
         <property name="basePackage" value="com.zhita.dao" />  
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
     </bean>  
-  
-    	<!-- 配置事务管理器 -->
-	<bean id="txManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	<!-- 拦截器方式配置事务 -->
-	<tx:advice id="txAdvice" transaction-manager="txManager">
-		<tx:attributes>
-			 <!--定义查询方法都是只读的 -->  
-            <tx:method name="query*" read-only="true" />  
-            <tx:method name="find*" read-only="true" />  
-            <tx:method name="get*" read-only="true" />  
-  
-            <!-- 主库执行操作，事务传播行为定义为默认行为 -->  
-            <tx:method name="save*" propagation="REQUIRED" />  
-            <tx:method name="update*" propagation="REQUIRED" />  
-            <tx:method name="deleted*" propagation="REQUIRED" />
-            <tx:method name="insert*" propagation="REQUIRED" /> 
-  			<tx:method name="set" propagation="REQUIRED" /> 
-  			
-            <!--其他方法使用默认事务策略 -->  
-            <tx:method name="*" />  
-		</tx:attributes>
-	</tx:advice> 
-	
-	<aop:config proxy-target-class="true">  
-        <!-- 定义切面，所有的service的所有方法 -->  
-        <aop:pointcut id="txPointcut" expression="execution(* com.zhita.service..*.*(..))" />  
-        <!-- 应用事务策略到Service切面 -->  
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>  
-    </aop:config>
-    
-    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
-    	
+ 
 <!-- 	<import resource="spring-shiro.xml"/> -->
 </beans>  

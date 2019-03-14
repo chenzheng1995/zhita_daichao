@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -80,6 +81,7 @@ public class MyBillController {
     }
     
     //小程序---记账页面----添加收入账单
+    @Transactional
     @ResponseBody
     @RequestMapping("/addIncomeBill")
     public int addIncomeBill(IncomeBill incomeBill) {

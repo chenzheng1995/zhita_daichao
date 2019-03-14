@@ -45,11 +45,13 @@
 				<!-- 贷款商家权限拦截 -->
 				/registe/queryAllAdmin = perms["贷款商家-查询所有"]
 				/registe/queryByNameLike = perms["贷款商家-模糊查询"]
+				/registe/selAllName = perms["贷款商家-添加"]
 				/registe/insertAllAdmin = perms["贷款商家-添加"]
 				/registe/falsedeleteByPrimaryKey = perms["贷款商家-删除"]
 				/registe/selectByPrimaryKey = perms["贷款商家-编辑"]
 				/registe/upaBaocunByPrimaryKey = perms["贷款商家-更新保存"]
 				/registe/upaState = perms["贷款商家-更新状态"]
+				/registe/queryTime = perms["贷款商家-申请统计"]
 				<!-- 贷款分类权限拦截 -->
 				/type/queryAllPage = perms["贷款分类-查询所有"]
 				/type/queryByLike = perms["贷款分类-模糊查询"]
@@ -92,6 +94,7 @@
 				/user/queryAllUser = perms["用户-查询所有"]
 				/user/queryByLike = perms["用户-模糊查询"]
 				/user/queryAllButton = perms["用户-申请记录"]
+				/user/queryDayFenByTime = perms["用户-日分布系数"]
 				<!-- 渠道权限拦截 -->
 				/merchant/queryAllSource = perms["渠道-查询所有"]
 				/merchant/querySourceByLike = perms["渠道-模糊查询"]
@@ -110,6 +113,7 @@
 				<!-- 后台管理用户权限拦截-->
 				/admin_login/queryAllManageLogin = perms["后台管理-查询所有"]
 				/admin_login/queryManageloginByLike = perms["后台管理-模糊查询"]
+				/admin_login/queryAllRole = perms["后台管理-添加"]
 				/admin_login/addManageLogin = perms["后台管理-添加"]
 				/admin_login/selectByPrimaryKey = perms["后台管理-编辑"]
 				/admin_login/upaManageLogin = perms["后台管理-更新保存"]

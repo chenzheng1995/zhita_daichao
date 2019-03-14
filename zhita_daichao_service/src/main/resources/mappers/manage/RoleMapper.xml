@@ -67,7 +67,7 @@
   </select>
   <!-- 后台管理   查询出角色表一共有多少条数据 -->
   <select id="pageCount" resultType="java.lang.Integer">
-  	select count(roleName) from role where deleted='0'
+  	select count(roleName) from role
   </select>
     <!-- 后台管理   查询出所有的角色信息  含分页 -->
   <select id="queryAllRolePage" resultType="com.zhita.model.manage.Role">
@@ -90,7 +90,7 @@
   
   <!--后台管理   查看权限功能   通过角色id查询出  当前角色的所有权限  -->
   <select id="queryFunctionByRoleid" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Functions">
-	select id,functionFirst,GROUP_CONCAT(functionSecond) functionSecond from functions where id in (select functionId from role_function where roleId=#{arg0}) 
+	select GROUP_CONCAT(id) id,functionFirst,GROUP_CONCAT(functionSecond) functionSecond from functions where id in (select functionId from role_function where roleId=#{arg0}) 
 	group by functionFirst
   </select>
   <!-- 后台管理  查询出功能表所有的信息 -->

@@ -134,9 +134,9 @@ public class ManageLogin implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ManageLogin [id=" + id + ", username=" + username + ", phone=" + phone + ", loginstatus=" + loginstatus
-				+ ", logintime=" + logintime + ", deleted=" + deleted + ", company=" + company + ", listcompany="
-				+ listcompany + ", listRole=" + listRole + "]";
+		return "ManageLogin [id=" + id + ", username=" + username + ", phone=" + phone + ", pwd=" + pwd
+				+ ", loginstatus=" + loginstatus + ", logintime=" + logintime + ", deleted=" + deleted + ", company="
+				+ company + ", sourcename=" + sourcename + ", listcompany=" + listcompany + ", listRole=" + listRole
+				+ "]";
 	}
-    
 }
