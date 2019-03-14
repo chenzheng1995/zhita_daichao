@@ -61,5 +61,5 @@ public Map<String, Object> setnews(Integer page,String company){
       map.put("AllNewsList", list);
 	return map;
 	
-}
+	}
 }

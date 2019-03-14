@@ -204,7 +204,7 @@ public class LoginServiceImp implements IntLoginService{
     	else if((userName!=null||!"".equals(userName))&&(deleted==null||"".equals(deleted))) {
     		System.out.println("第二个if");
            	int totalCount=manageLoginMapper.pageCountManageLoginLike(userName);//通过用户名查询出管理登陆用户表一共有多少条数据
-        	pageUtil=new PageUtil(page,1,totalCount);
+        	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -227,7 +227,7 @@ public class LoginServiceImp implements IntLoginService{
     	else if((userName==null||"".equals(userName))&&(deleted!=null||!"".equals(deleted))) {
     		System.out.println("第三个if");
            	int totalCount=manageLoginMapper.pageCountManageLoginLike1(deleted);//通过用户状态查询出管理登陆用户表一共有多少条数据
-        	pageUtil=new PageUtil(page,1,totalCount);
+        	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -246,10 +246,11 @@ public class LoginServiceImp implements IntLoginService{
     			System.out.println(list.get(i).getUsername());
     		}
     	}
+    	//通过用户名，账号状态模糊查询
     	else if((userName!=null||!"".equals(userName))&&(deleted!=null||!"".equals(deleted))) {
     		System.out.println("第四个if");
            	int totalCount=manageLoginMapper.pageCountManageLoginLike2(userName, deleted);//通过用户名和用户状态查询出管理登陆用户表一共有多少条数据
-        	pageUtil=new PageUtil(page,1,totalCount);
+        	pageUtil=new PageUtil(page,2,totalCount);
         	if(page<1) {
         		page=1;
         	}

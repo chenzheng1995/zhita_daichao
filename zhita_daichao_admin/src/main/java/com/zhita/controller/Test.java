@@ -16,7 +16,7 @@ public class Test {
 		System.out.println(b);*/
 		//List<String> dayslist=DateListUtil.getDays("2019-03-01", "2019-03-07");
 		
-		JiaFangTongji jia=new JiaFangTongji();
+/*		JiaFangTongji jia=new JiaFangTongji();
 		jia.setDate("2019-03-07");
 		jia.setAmount(0);
 		
@@ -62,9 +62,11 @@ public class Test {
 		
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i));
-		}
+		}*/
 
 		//System.out.println(DateListUtil.getDiffrent2(dayslist,list));
-		
+		for (TestEnum e : TestEnum.values()) {
+		    System.out.println(e);
+		}
 	}
 }

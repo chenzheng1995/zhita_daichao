@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,9 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryAllPage")
     public Map<String,Object> queryAllPage(Integer page,String string){
+    	Long currentUserId = (Long) SecurityUtils.getSubject().getSession().getAttribute("currentUserId"); 
+    	System.out.println("currentUserId"+currentUserId);
+    	
 		string = string.replaceAll("\"", "").replace("[","").replace("]","");
 		String [] company= string.split(",");
     	System.out.println("刚进来时候的page"+page);  	
