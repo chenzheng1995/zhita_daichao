@@ -112,6 +112,13 @@ public class ArticleServiceImp implements ArticleService{
 		return contentUrl;
 	}
 
+	@Override
+	public List<News> getNewsById(Integer id) {
+		List<News> list = null;
+		list =newsMapper.getNewsById(id);
+		return list;
+	}
+
 
 
 }

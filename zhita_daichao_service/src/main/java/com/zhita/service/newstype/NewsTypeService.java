@@ -8,4 +8,6 @@ public interface NewsTypeService {
 
 	List<String> getnewstype(String company);
 
+	String gettypename(int typeid);
+
 }

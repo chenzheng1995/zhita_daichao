@@ -228,7 +228,7 @@
       contentURL = #{ossarticlePath,jdbcType=VARCHAR},
       isStick = #{isStick,jdbcType=VARCHAR},
       company = #{company,jdbcType=VARCHAR},
-      company = #{typeId,jdbcType=INTEGER}
+      typeId = #{typeId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -267,5 +267,10 @@
         <!-- 更加id查询文章内容 -->
   <select id="getcontent" parameterType="java.lang.Integer" resultType="java.lang.String">
   	select contentURL from news where deleted='0' and id = #{id}
+  </select>
+  
+          <!-- 更加id查询文章的所有信息 -->
+  <select id="getNewsById" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.News">
+  	select title,contentURL,titleImage,author,isStick,company,typeId from news where deleted='0' and id = #{id}
   </select>
 </mapper>

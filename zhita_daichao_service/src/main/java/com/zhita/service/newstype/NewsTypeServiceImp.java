@@ -27,4 +27,10 @@ public class NewsTypeServiceImp implements NewsTypeService{
 		return typelist;
 	}
 
+	@Override
+	public String gettypename(int typeid) {
+		String typename = newsTypeMapper.gettypename(typeid);
+		return typename;
+	}
+
 }

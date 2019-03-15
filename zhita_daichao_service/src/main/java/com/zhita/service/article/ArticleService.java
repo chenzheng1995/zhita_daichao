@@ -40,4 +40,6 @@ public interface ArticleService {
 
 	String getcontent(Integer id);
 
+	List<News> getNewsById(Integer id);
+
 }

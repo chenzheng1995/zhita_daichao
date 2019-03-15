@@ -78,4 +78,8 @@
     <select id="getnewstype" parameterType="java.lang.String" resultType="java.util.Map">
     select type from news_type where company = #{company}
   </select>
+  
+      <select id="gettypename" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select type from news_type where id = #{typeid}
+  </select>
 </mapper>

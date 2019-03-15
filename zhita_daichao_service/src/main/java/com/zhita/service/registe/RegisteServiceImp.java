@@ -149,4 +149,10 @@ public class RegisteServiceImp implements IntRegisteService{
   		int count=loansBusinessesMapper.queryAmount(businessName, LikeTime1, LikeTime2);
   		return count;
   	}
+
+	@Override
+	public List<String> BusinessesName(String company) {
+		List<String> loansBusinesses = loansBusinessesMapper.BusinessesName(company);
+		return loansBusinesses;
+	}
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.map.jsontype.impl.TypeNameIdResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,8 +157,10 @@ public class ArticleController {
 		  	String date = null;
 		  	if("全部".equals(typename)) {
 		  	    list=articleService.getAdminNewsByAll(pageUtil.getPage(),pageUtil.getPageSize(),company);
+		  	    pageUtil=new PageUtil(page,10,totalCount);
 		  	}else {
 		  	    list=articleService.getAdminAllnews(pageUtil.getPage(),pageUtil.getPageSize(),company,typeId);	
+		  	  pageUtil=new PageUtil(page,10,totalCount);
 		  	} 	
 		      for (News news : list) {   	  
 		       date  = news.getDate(); //获取时间戳
@@ -185,6 +188,31 @@ public class ArticleController {
 			return map;
 			
 		}	
+		
+		//根据id获取文章的全部信息
+		@ResponseBody
+		@RequestMapping("/getnewsbyid")
+		@Transactional
+		public Map<String, Object> getNewsById(Integer id){
+			List<News> list = null;
+			Map<String, Object> map = new HashMap<>();		
+		  	PostAndGet postAndGet =new PostAndGet();
+		    ArticleUtil articleUtil = new ArticleUtil();
+			list =articleService.getNewsById(id);
+			int typeid = list.get(0).getTypeid();
+			String typename = newsTypeService.gettypename(typeid);
+			
+			 String contentUrl  = list.get(0).getContenturl(); //获取内容的URL
+			    String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+			    String result = articleUtil.txt2String(content);
+			    list.get(0).setContenturl(result);      
+			map.put("list", list);
+			map.put("typename", typename);
+			return map;
+			
+		}
+		
+		
 		
 
 	

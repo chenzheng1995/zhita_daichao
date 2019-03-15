@@ -22,4 +22,6 @@ public interface NewsTypeMapper {
 	Integer getTypeId(@Param("typename")String typename,@Param("company") String company);
 
 	List<String> getnewstype(@Param("company") String company);
+
+	String gettypename(int typeid);
 }

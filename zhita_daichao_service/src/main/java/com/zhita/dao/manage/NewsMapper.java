@@ -51,4 +51,6 @@ public interface NewsMapper {
 
 	String getcontent(Integer id);
 
+	List<News> getNewsById(Integer id);
+
 }

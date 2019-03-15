@@ -87,4 +87,6 @@ public interface LoansBusinessesMapper {
 
 	String getTrademark(String businessname);
 
+	List<String> BusinessesName(String company);
+
 }

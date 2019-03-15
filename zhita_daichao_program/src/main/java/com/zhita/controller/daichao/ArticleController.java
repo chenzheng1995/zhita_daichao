@@ -61,8 +61,10 @@ public Map<String, Object> getAllnews(Integer page,String company,String typenam
   	String date = null;
   	if("全部".equals(typename)) {
   	    list=articleService.getNewsByAll(pageUtil.getPage(),pageUtil.getPageSize(),company);
+  	    pageUtil=new PageUtil(page,10,totalCount);
   	}else {
   	    list=articleService.getAllnews(pageUtil.getPage(),pageUtil.getPageSize(),company,typeId);	
+  	    pageUtil=new PageUtil(page,10,totalCount);
   	} 	
       for (News news : list) {   	  
        date  = news.getDate(); //获取时间戳
