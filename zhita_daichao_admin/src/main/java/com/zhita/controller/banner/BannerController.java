@@ -61,7 +61,7 @@ public class BannerController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intBannerService.queryAll(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		else if(company.length>1) {
 			
@@ -80,7 +80,7 @@ public class BannerController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -95,11 +95,13 @@ public class BannerController {
 	@ResponseBody
 	@RequestMapping("/queryAllByLike")
     public Map<String,Object> queryAllByLike(String title,Integer page,String string){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<ShufflingFigure> list=new ArrayList<>();
 		List<ShufflingFigure> listto=new ArrayList<>();
+		if(string!=null&&!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			String [] company=string.split(",");
+		
 		//标题为空并且公司名不为空  公司名选择的是  全部项
 		if((title==null||"".equals(title))&&(company.length>1)) {
 			
@@ -117,7 +119,7 @@ public class BannerController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -129,7 +131,7 @@ public class BannerController {
 			System.out.println("第二个if");
 			
 	    	int totalCount=intBannerService.pageCount(company[0]);//该方法是查询轮播图总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -143,7 +145,7 @@ public class BannerController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intBannerService.queryAll(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		//标题不为空并且公司名不为空  公司名选择的是  全部项
 		else if((title!=null||!"".equals(title))&&(company.length>1)) {
@@ -162,7 +164,7 @@ public class BannerController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -174,7 +176,7 @@ public class BannerController {
 			System.out.println("第四个if");
 			
 	    	int totalCount=intBannerService.pageCountByLike(title,company[0]);//该方法是根据标题模糊查询轮播图总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -188,9 +190,10 @@ public class BannerController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intBannerService.queryAllByLike(title,company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 			
 		}
+	}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listshuffByLike",listto);
     	map.put("pageutil", pageUtil);

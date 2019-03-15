@@ -42,6 +42,8 @@
 				/admin_login/sendSMS = anon
 				<!-- 说明访问该接口不需要任何权限 -->
 				/admin_login/logintest = anon
+				<!-- 首页权限拦截 -->
+				/home/gethome = perms["首页-查询"]
 				<!-- 贷款商家权限拦截 -->
 				/registe/queryAllAdmin = perms["贷款商家-查询所有"]
 				/registe/queryByNameLike = perms["贷款商家-模糊查询"]
@@ -119,11 +121,12 @@
 				/admin_login/upaManageLogin = perms["后台管理-更新保存"]
 				<!-- 角色 权限拦截-->
 				/role/queryAllRolePage = perms["角色-查询所有"]
-				/role/queryAllRolePage = perms["角色-模糊查询"]
-				/role/queryAllRolePage = perms["角色-添加"]
-				/role/queryAllRolePage = perms["角色-编辑"]
+				/role/queryAllRolePageLike = perms["角色-模糊查询"]
+				/role/queryFunctions = perms["角色-添加"]
+				/role/addRole = perms["角色-添加"]
+				/role/selectByPrimaryKey = perms["角色-编辑"]
 				/role/upaBaocun = perms["角色-更新保存"]
-				/role/queryAllRolePage = perms["角色-查询权限"]
+				/role/queryFunctionByRoleid = perms["角色-查询权限"]
 			</value>
 		</property>
 	</bean>

@@ -122,7 +122,7 @@ public class MerchantServiceImp implements IntMerchantService{
     	//不带条件，查询所有
     	if((SourceId!=null||!"".equals(SourceId))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(phone==null||"".equals(phone))) {
     		int totalCount=sourceMapper.pageCountBySourceId(SourceId);
-        	pageUtil=new PageUtil(page,2,totalCount);
+        	pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -136,11 +136,12 @@ public class MerchantServiceImp implements IntMerchantService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=sourceMapper.queryAllUserBySourceId(SourceId, pageUtil.getPage(), pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,10,totalCount);
     	}
     	//通过注册时间模糊查询
     	else if((SourceId!=null||!"".equals(SourceId))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(phone==null||"".equals(phone))) {
     		int totalCount=sourceMapper.pageCountByRegistrationTime(SourceId, registrationTimeStart, registrationTimeEnd);
-        	pageUtil=new PageUtil(page,2,totalCount);
+        	pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -154,11 +155,12 @@ public class MerchantServiceImp implements IntMerchantService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=sourceMapper.queryAllUserByRegistrationTime(SourceId, registrationTimeStart, registrationTimeEnd, pageUtil.getPage(),pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,10,totalCount);
     	}
     	//通过电话模糊查询
     	else if((SourceId!=null||!"".equals(SourceId))&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(phone!=null||!"".equals(phone))) {
     		int totalCount=sourceMapper.pageCountByPhone(SourceId, phone);
-    		pageUtil=new PageUtil(page,2,totalCount);
+    		pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -172,11 +174,12 @@ public class MerchantServiceImp implements IntMerchantService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=sourceMapper.queryAllUserByPhone(SourceId, phone,pageUtil.getPage(),pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,10,totalCount);
     	}
     	//通过注册时间和电话模糊查询
     	else if((SourceId!=null||!"".equals(SourceId))&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(phone!=null||!"".equals(phone))) {
     		int totalCount=sourceMapper.pageCountByRegistrationTimePhone(SourceId, registrationTimeStart, registrationTimeEnd, phone);
-    		pageUtil=new PageUtil(page,2,totalCount);
+    		pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
         		page=1;
         	}
@@ -190,6 +193,7 @@ public class MerchantServiceImp implements IntMerchantService{
         	int pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages);
         	list=sourceMapper.queryAllUserByRegistrationTimePhone(SourceId, registrationTimeStart, registrationTimeEnd, phone, pageUtil.getPage(),pageUtil.getPageSize());
+        	pageUtil=new PageUtil(page,10,totalCount);
     	}
     	
        	TuoMinUtil tuoMinUtil=new TuoMinUtil();

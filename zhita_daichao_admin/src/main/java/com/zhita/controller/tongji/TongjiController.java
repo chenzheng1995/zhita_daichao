@@ -235,8 +235,8 @@ public class TongjiController {
 		int pages = (page - 1) * pageUtil.getPageSize();
 		pageUtil.setPage(pages);
 
-		listsourceTongji = intTongjiService.queryAllPage(source, startTime, endTime, pageUtil.getPage(),
-				pageUtil.getPageSize());
+		listsourceTongji = intTongjiService.queryAllPage(source, startTime, endTime, pageUtil.getPage(),pageUtil.getPageSize());
+		pageUtil = new PageUtil(page, 10, totalCount);
 		for (int i = 0; i < listsourceTongji.size(); i++) {
 			int uv = intTongjiService.queryUV1(listsourceTongji.get(i).getBusinessName(),
 					listsourceTongji.get(i).getSourceName(), startTime, endTime);

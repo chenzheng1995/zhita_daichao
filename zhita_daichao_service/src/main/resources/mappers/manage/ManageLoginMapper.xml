@@ -128,9 +128,16 @@
 	<select id="getAdminId" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select id from manage_login where phone = #{phone} and userName = #{userName} and deleted ='0'
 	</select>
-			<!-- 退出时，修改登录状态修改 -->
+	<!-- 退出时，修改登录状态修改     user表-->
 	<update id="updateAdminLogOutStatus" parameterType="map" >
 		update user
+		set loginStatus = #{loginStatus}
+		where id = #{userId} and deleted = '0'
+	</update>
+	
+	<!-- 退出时，修改登录状态修改     managerlogin表-->
+	<update id="updateAdminLogOutStatus1" parameterType="map" >
+		update manage_login
 		set loginStatus = #{loginStatus}
 		where id = #{userId} and deleted = '0'
 	</update>

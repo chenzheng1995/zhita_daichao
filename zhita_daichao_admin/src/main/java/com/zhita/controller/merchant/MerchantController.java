@@ -43,7 +43,7 @@ public class MerchantController {
 			System.out.println("company.length==1");
 			
 	    	int totalCount=intMerchantService.pageCount(company[0]);//该方法是查询渠道表总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -57,7 +57,7 @@ public class MerchantController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intMerchantService.queryAllSource(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		else if(company.length>1) {
 			
@@ -75,7 +75,7 @@ public class MerchantController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -100,11 +100,13 @@ public class MerchantController {
 	@ResponseBody
 	@RequestMapping("/querySourceByLike")
     public Map<String,Object> querySourceByLike(String sourceName,Integer page,String string){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
 		PageUtil pageUtil=null;
 		List<Source> list=new ArrayList<>();
 		List<Source> listto=new ArrayList<>();
+		if(string!=null&&!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			String [] company=string.split(",");
+		
 		//渠道名称为空并且公司名不为空  公司名选择的是  全部项
 		if((sourceName==null||"".equals(sourceName))&&(company.length>1)) {
 			
@@ -122,7 +124,7 @@ public class MerchantController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -133,7 +135,7 @@ public class MerchantController {
 			System.out.println("第二个if");
 			
 	    	int totalCount=intMerchantService.pageCount(company[0]);//该方法是查询渠道表总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -147,7 +149,7 @@ public class MerchantController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intMerchantService.queryAllSource(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 			
 		}
 		//渠道名称不为空并且公司名不为空  公司名选择的是  全部项
@@ -167,7 +169,7 @@ public class MerchantController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -179,7 +181,7 @@ public class MerchantController {
 			System.out.println("第四个if");
 			
 	    	int totalCount=intMerchantService.pageCountByLike(sourceName,company[0]);//该方法是模糊查询的攻略总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -193,10 +195,10 @@ public class MerchantController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intMerchantService.queryByLike(sourceName,company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 			
 		}
-		
+	}
 		TuoMinUtil tuoMinUtil=new TuoMinUtil();
 		
 		for (int i = 0; i < listto.size(); i++) {
@@ -272,7 +274,7 @@ public class MerchantController {
 	@RequestMapping("/queryAllUserBySourceId")
     public Map<String,Object> queryAllUserBySourceId(Integer sourceId,Integer page){
     	int totalCount=intMerchantService.pageCountBySourceId(sourceId);//该方法是查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量
-    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -286,6 +288,7 @@ public class MerchantController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
     	List<User> list=intMerchantService.queryAllUserBySourceId(sourceId,pageUtil.getPage(),pageUtil.getPageSize());
+    	pageUtil=new PageUtil(page,10,totalCount);
     	
     	TuoMinUtil tuoMinUtil=new TuoMinUtil();
     	for (int i = 0; i < list.size(); i++) {

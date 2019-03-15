@@ -52,6 +52,9 @@ public interface LoanClassificationMapper {
 
     //后台管理---查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用
     List<LoanClassification> queryAllLoanCla();
+    
+    //后台管理---  根据分类id   查询当前分类的图标
+    String queryIconById(Integer id);
 
 	List<LoanClassificationCopy> queryLoanClass(String company);
 

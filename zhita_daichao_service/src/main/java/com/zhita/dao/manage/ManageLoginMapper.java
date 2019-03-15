@@ -28,6 +28,7 @@ public interface ManageLoginMapper {
 	int getAdminId(@Param("phone")String phone,@Param("userName") String userName);
 	
 	int updateAdminLogOutStatus(@Param("loginStatus")String loginStatus,@Param("userId") int userId);
+	int updateAdminLogOutStatus1(@Param("loginStatus")String loginStatus,@Param("userId") int userId);
 	
 	//后台管理---查询出管理登陆用户表一共有多少条数据
 	int pageCountManageLogin();
