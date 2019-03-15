@@ -80,7 +80,8 @@
   <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.LoanClassification">
     update loan_classification
     set businessClassification = #{businessClassification,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=DECIMAL}
+      amount = #{amount,jdbcType=DECIMAL},
+      icon = #{icon,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -122,13 +123,17 @@
  </select>
  <!-- 后台管理   添加贷款分类信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.LoanClassification">
- 	insert into loan_classification(businessClassification,amount,company) values(#{businessClassification},#{amount},#{company})
+ 	insert into loan_classification(businessClassification,amount,company,icon) values(#{businessClassification},#{amount},#{company},#{icon})
  </insert>
  <!-- 后台管理    查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用-->
   <select id="queryAllLoanCla" resultType="com.zhita.model.manage.LoanClassification">
   	select 
    	 <include refid="Base_Column_List" />
      from loan_classification
+  </select>
+  <!-- 后台管理     根据分类id   查询当前分类的图标 -->
+  <select id="queryIconById" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select icon from loan_classification where id=#{arg0}
   </select>
  <resultMap type="com.zhita.model.manage.LoanClassification" id="loanCla">
  	   <id property="id" column="id"/>

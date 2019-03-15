@@ -48,7 +48,7 @@ public class NewsController {
 			System.out.println("company.length==1");
 			
 	    	int totalCount=intNewsService.pageCount(company[0]);//该方法是查询攻略总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -62,7 +62,7 @@ public class NewsController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intNewsService.queryAllNews(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		else if(company.length>1) {
 			
@@ -80,7 +80,7 @@ public class NewsController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -96,8 +96,11 @@ public class NewsController {
 	@ResponseBody
 	@RequestMapping("/queryNewsByLike")
     public Map<String,Object> queryNewsByLike(String title,Integer page,String string){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
+		String [] company=null;
+		if(string!=null||!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			company=string.split(",");
+		}
 		PageUtil pageUtil=null;
 		List<Strategy> list=new ArrayList<>();
 		List<Strategy> listto=new ArrayList<>();
@@ -119,7 +122,7 @@ public class NewsController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -131,7 +134,7 @@ public class NewsController {
 			System.out.println("第二个if");
 			
 	    	int totalCount=intNewsService.pageCount(company[0]);//该方法是查询攻略总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -145,7 +148,7 @@ public class NewsController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intNewsService.queryAllNews(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		//标题不为空并且公司名不为空   公司名选择的是  全部项
 		else if((title!=null||!"".equals(title))&&(company.length>1)) {
@@ -164,7 +167,7 @@ public class NewsController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -176,7 +179,7 @@ public class NewsController {
 			System.out.println("第四个if");
 			
 	    	int totalCount=intNewsService.pageCountByLike(title,company[0]);//该方法是模糊查询的攻略总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -190,7 +193,7 @@ public class NewsController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intNewsService.queryNewsByLike(title,company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 			
 		}
     	HashMap<String,Object> map=new HashMap<>();

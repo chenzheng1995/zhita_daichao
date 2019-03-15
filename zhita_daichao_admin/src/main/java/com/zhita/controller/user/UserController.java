@@ -26,6 +26,7 @@ import com.zhita.util.DateListUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
 import com.zhita.util.Timestamps;
+import com.zhita.util.TuoMinUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -63,7 +64,7 @@ public class UserController {
 			}
 	    	
 	       	int totalCount=userService.pageCount(company[0]);//该方法是查询出用户表总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -82,7 +83,7 @@ public class UserController {
 	    		listto.get(i).setRegistrationtime(Timestamps.stampToDate(listto.get(i).getRegistrationtime()));
 	    		listto.get(i).setLoginTime(Timestamps.stampToDate(listto.get(i).getLoginTime()));
 			}
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
     	}
     	else if(company.length>1){
     		
@@ -113,12 +114,18 @@ public class UserController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
 	    	
     	}
+    	TuoMinUtil tuoMinUtil=new TuoMinUtil();//将用户模块的手机号进行脱名
+    	for (int i = 0; i < listto.size(); i++) {
+    		String tuomingphone=tuoMinUtil.mobileEncrypt(listto.get(i).getPhone());
+    		listto.get(i).setPhone(tuomingphone);
+			
+		}
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listSource", list1);
     	map.put("listUser",listto);
@@ -130,12 +137,16 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page) throws ParseException{
-		sourceName = sourceName.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] sourceNamein= sourceName.split(",");
-		
-		company = company.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] companyin= company.split(",");
-		
+    	String [] sourceNamein=null;
+    	if(sourceName!=null||!"".equals(sourceName)){
+    		sourceName = sourceName.replaceAll("\"", "").replace("[","").replace("]","");
+    		sourceNamein= sourceName.split(",");
+    	}
+    	String [] companyin=null;
+		if(company!=null||!"".equals(company)){
+			company = company.replaceAll("\"", "").replace("[","").replace("]","");
+			companyin= company.split(",");
+		}
 		 String timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
 		 String timeEnd=Timestamps.dateToStamp(registrationTimeEnd);//将结束时间转换为时间戳
 		
@@ -147,7 +158,7 @@ public class UserController {
     @RequestMapping("/queryAllButton")
 	public Map<String,Object> queryAllButton(Integer userId,Integer page){
        	int totalCount=userService.pageCountThreeFootprint(userId);//该方法是根据用户id查询出按钮足迹  商品足迹和贷款分类足迹的总数量
-    	PageUtil pageUtil=new PageUtil(page,20,totalCount);
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -161,7 +172,7 @@ public class UserController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
     	List<ButtonFootprint> list=userService.queryAllButton(userId,pageUtil.getPage(),pageUtil.getPageSize());
-    	pageUtil=new PageUtil(page,20,totalCount);
+    	pageUtil=new PageUtil(page,10,totalCount);
     	for (int i = 0; i < list.size(); i++) {
 			list.get(i).setFootprinttime(Timestamps.stampToDate(list.get(i).getFootprinttime()));//把时间戳转换成时间格式(年 月 日 时 分 秒)
 		}

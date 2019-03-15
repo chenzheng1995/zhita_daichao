@@ -30,7 +30,7 @@ public class RoleController {
 	@RequestMapping("/queryAllRolePage")
     public Map<String, Object> queryAllRolePage(Integer page){
 		int totalCount=intRoleService.pageCount();//查询出角色表一共有多少数据
-    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -44,7 +44,7 @@ public class RoleController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
     	List<Role> list=intRoleService.queryAllRolePage(pageUtil.getPage(), pageUtil.getPageSize());
-    	pageUtil=new PageUtil(page,2,totalCount);
+    	pageUtil=new PageUtil(page,10,totalCount);
     	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listRole",list);
@@ -60,7 +60,7 @@ public class RoleController {
 		PageUtil pageUtil=null;
 		if(deleted==null||"".equals(deleted)) {
 			int totalCount=intRoleService.pageCount();//查询出角色表一共有多少数据
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -74,10 +74,10 @@ public class RoleController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=intRoleService.queryAllRolePage(pageUtil.getPage(), pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 		}else {
 			int totalCount=intRoleService.pageCountLike(deleted);//根据角色状态  模糊查询出角色表一共有多少数据
-			pageUtil=new PageUtil(page,2,totalCount);
+			pageUtil=new PageUtil(page,10,totalCount);
 			if(page<1) {
 				page=1;
 			}
@@ -91,7 +91,7 @@ public class RoleController {
 			int pages=(page-1)*pageUtil.getPageSize();
 			pageUtil.setPage(pages);
 			list=intRoleService.queryAllRolePageLike(deleted, pageUtil.getPage(), pageUtil.getPageSize());
-			pageUtil=new PageUtil(page,2,totalCount);
+			pageUtil=new PageUtil(page,10,totalCount);
 		}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listRolelike",list);

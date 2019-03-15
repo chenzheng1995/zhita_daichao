@@ -48,7 +48,7 @@ public class CardController {
 			System.out.println("company.length==1");
 			
 	    	int totalCount=intCardService.pageCount(company[0]);//该方法是查询信用卡总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -62,7 +62,7 @@ public class CardController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intCardService.queryAllCard(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		else if(company.length>1) {
 			
@@ -80,7 +80,7 @@ public class CardController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -95,8 +95,11 @@ public class CardController {
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(String title,Integer page,String string){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
+		String [] company=null;
+		if(string!=null||!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			company=string.split(",");
+		}
     	PageUtil pageUtil=null;
     	List<CreditCard> list=new ArrayList<>();
     	List<CreditCard> listto=new ArrayList<>();
@@ -117,7 +120,7 @@ public class CardController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -128,7 +131,7 @@ public class CardController {
     		System.out.println("第二个if");
     		
 	    	int totalCount=intCardService.pageCount(company[0]);//该方法是查询信用卡总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -142,7 +145,7 @@ public class CardController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intCardService.queryAllCard(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
     	}
        	//标题不为空并且公司名不为空  公司名选择的是  全部项
     	else if((title!=null||!"".equals(title))&&(company.length>1)) {
@@ -161,7 +164,7 @@ public class CardController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -172,7 +175,7 @@ public class CardController {
     		System.out.println("第四个if");
     		
 	    	int totalCount=intCardService.pageCountByLike(title,company[0]);//该方法是模糊查询的信用卡总数量
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
 	    	}
@@ -186,7 +189,7 @@ public class CardController {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	listto=intCardService.queryByLike(title,company[0],pageUtil.getPage(),pageUtil.getPageSize());
-	    	pageUtil=new PageUtil(page,2,totalCount);
+	    	pageUtil=new PageUtil(page,10,totalCount);
     		
     	}
     	HashMap<String,Object> map=new HashMap<>();

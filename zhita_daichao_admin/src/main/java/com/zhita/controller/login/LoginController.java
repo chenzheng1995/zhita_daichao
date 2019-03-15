@@ -260,26 +260,24 @@ public class LoginController {
 		if (StringUtils.isEmpty(userId)) {
 			map.put("msg", "userId不能为空");
 			return map;
-			}else {
-				String loginStatus = "0";
-				int number = loginService.updateAdminLogOutStatus(loginStatus,userId);
-				if (number == 1) {														
-					map.put("msg", "用户退出成功，登录状态修改成功");
-					map.put("loginStatus", loginStatus);
-				} else {
-					map.put("msg", "用户退出失败，登录状态修改失败");
-				}
+		}else {
+			String loginStatus = "0";
+			int number = loginService.updateAdminLogOutStatus1(loginStatus,userId);
+			if (number == 1) {														
+				map.put("msg", "用户退出成功，登录状态修改成功");
+				map.put("loginStatus", loginStatus);
+			} else {
+				map.put("msg", "用户退出失败，登录状态修改失败");
 			}
-
+		}
 		return map;
-
 	}
 	//后台管理----查询出所有用户信息——含用户信息  用户的角色 含分页
     @ResponseBody
     @RequestMapping("/queryAllManageLogin")
     public Map<String,Object> queryAllManageLogin(Integer page){
     	int totalCount=loginService.pageCountManageLogin();//查询出管理登陆用户表一共有多少条数据
-    	PageUtil pageUtil=new PageUtil(page,2,totalCount);
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -293,7 +291,7 @@ public class LoginController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages);
     	List<ManageLogin> list=loginService.queryManageLogin(pageUtil.getPage(),pageUtil.getPageSize());
-    	pageUtil=new PageUtil(page,2,totalCount);
+    	pageUtil=new PageUtil(page,10,totalCount);
     	for (int i = 0; i < list.size(); i++) {
     		list.get(i).setLogintime(Timestamps.stampToDate(list.get(i).getLogintime()));
 		}
@@ -323,7 +321,7 @@ public class LoginController {
     @ResponseBody
     @RequestMapping("/addManageLogin")
     @Transactional
-    public int addManageLogin(ManageLogin manageLogin){
+    public int addManageLogin(@RequestBody ManageLogin manageLogin){
     	if(manageLogin.getListcompany()!=null&&manageLogin.getListcompany().size()!=0){
     		List<String> list=manageLogin.getListcompany();//得到前端传过来的公司名的集合
     		String str="";

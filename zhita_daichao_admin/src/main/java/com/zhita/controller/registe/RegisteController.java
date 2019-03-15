@@ -64,8 +64,11 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryAllAdmin")
     public Map<String,Object> queryAll(Integer page,String string){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
+		String [] company=null;
+		if(string!=null||!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			company=string.split(",");
+		}
 		PageUtil pageUtil=null;
 		List<LoansBusinesses> list=new ArrayList<>();
 		List<LoansBusinesses> listto=new ArrayList<>();
@@ -93,7 +96,7 @@ public class RegisteController {
         	pageUtil.setPage(pages);
         	
         	listto=intRegisteService.queryAllAdmain(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-        	pageUtil=new PageUtil(page,2,totalCount);
+        	pageUtil=new PageUtil(page,10,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
     		}
@@ -120,7 +123,7 @@ public class RegisteController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -225,7 +228,7 @@ public class RegisteController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -255,7 +258,7 @@ public class RegisteController {
         	pageUtil.setPage(pages);
         	
         	listto=intRegisteService.queryAllAdmain(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-        	pageUtil=new PageUtil(page,2,totalCount);
+        	pageUtil=new PageUtil(page,10,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
     		}
@@ -283,7 +286,7 @@ public class RegisteController {
 			
 			System.out.println("传进工具类的page"+page);
 			
-			ListPageUtil listPageUtil=new ListPageUtil(list,page,2);
+			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());    		
@@ -314,7 +317,7 @@ public class RegisteController {
         	pageUtil.setPage(pages);
         	
         	listto=intRegisteService.queryByNameLike(businessName,company[0],pageUtil.getPage(),pageUtil.getPageSize());
-        	pageUtil=new PageUtil(page,2,totalCount);
+        	pageUtil=new PageUtil(page,10,totalCount);
         	for (int i = 0; i < list.size(); i++) {
     			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
     		}

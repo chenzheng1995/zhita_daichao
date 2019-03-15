@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.zhita.model.manage.JiaFangTongji;
 import com.zhita.util.DateListUtil;
+import com.zhita.util.TuoMinUtil;
 
 public class Test {
 	public static void main(String[] args) throws ParseException {
@@ -65,8 +66,10 @@ public class Test {
 		}*/
 
 		//System.out.println(DateListUtil.getDiffrent2(dayslist,list));
-		for (TestEnum e : TestEnum.values()) {
+		/*for (TestEnum e : TestEnum.values()) {
 		    System.out.println(e);
-		}
+		}*/
+		TuoMinUtil t=new TuoMinUtil();
+		System.out.println(t.mobileEncrypt("18871552652"));;
 	}
 }

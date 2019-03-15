@@ -99,6 +99,12 @@ public class TypeServiceImp implements IntTypeService{
 		LoanClassification loanClassification=loanClassificationMapper.selectByPrimaryKey(id);
 		return loanClassification;
 	}
+	
+	//后台管理---  根据分类id   查询当前分类的图标
+    public String queryIconById(Integer id){
+    	String icon=loanClassificationMapper.queryIconById(id);
+    	return icon;
+    }
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
 //	@Override
 //	public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page,Integer pageSize) {
