@@ -95,14 +95,13 @@ public class BannerController {
 	@ResponseBody
 	@RequestMapping("/queryAllByLike")
     public Map<String,Object> queryAllByLike(String title,Integer page,String string){
-		String [] company=null;
-		if(string!=null||!"".equals(string)){
-			string = string.replaceAll("\"", "").replace("[","").replace("]","");
-			company=string.split(",");
-		}
 		PageUtil pageUtil=null;
 		List<ShufflingFigure> list=new ArrayList<>();
 		List<ShufflingFigure> listto=new ArrayList<>();
+		if(string!=null&&!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			String [] company=string.split(",");
+		
 		//标题为空并且公司名不为空  公司名选择的是  全部项
 		if((title==null||"".equals(title))&&(company.length>1)) {
 			
@@ -194,6 +193,7 @@ public class BannerController {
 	    	pageUtil=new PageUtil(page,10,totalCount);
 			
 		}
+	}
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listshuffByLike",listto);
     	map.put("pageutil", pageUtil);

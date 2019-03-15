@@ -101,14 +101,13 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(String businessClassification,Integer page,String string){
-		String [] company=null;
-		if(string!=null||!"".equals(string)){
-			string = string.replaceAll("\"", "").replace("[","").replace("]","");
-			company=string.split(",");
-		}
     	PageUtil pageUtil=null;
     	List<LoanClassification> list=new ArrayList<>();
     	List<LoanClassification> listto=new ArrayList<>();
+		if(string!=null||!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			String [] company=string.split(",");
+		
     	//类型为空并且公司名不为空    公司名选择的是 全部项
     	if((businessClassification==null||"".equals(businessClassification))&&(company.length>1)) {
     		
@@ -198,6 +197,7 @@ public class TypeController {
 	    	listto=intTypeService.queryByLike(businessClassification,company[0],pageUtil.getPage(),pageUtil.getPageSize());
 	    	pageUtil=new PageUtil(page,10,totalCount);
     	}
+	}
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listLoanClaByLike", listto);
     	map.put("pageutil",pageUtil);

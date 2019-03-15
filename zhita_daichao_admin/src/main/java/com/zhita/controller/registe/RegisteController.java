@@ -64,11 +64,8 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryAllAdmin")
     public Map<String,Object> queryAll(Integer page,String string){
-		String [] company=null;
-		if(string!=null||!"".equals(string)){
-			string = string.replaceAll("\"", "").replace("[","").replace("]","");
-			company=string.split(",");
-		}
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String[] company=string.split(",");
 		PageUtil pageUtil=null;
 		List<LoansBusinesses> list=new ArrayList<>();
 		List<LoansBusinesses> listto=new ArrayList<>();
@@ -201,11 +198,12 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryByNameLike")
     public Map<String,Object> queryByNameLike(String businessName,Integer page,String string){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
     	PageUtil pageUtil=null;
     	List<LoansBusinesses> list=new ArrayList<>();
     	List<LoansBusinesses> listto=new ArrayList<>();
+    	if(string!=null&&!"".equals(string)){
+		string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
     	//商家名称为空并且公司名不为空    公司名选择的是 全部项
     	if((businessName==null||"".equals(businessName))&&(company.length>1)){
     		
@@ -323,7 +321,7 @@ public class RegisteController {
     		}
     		
         }
-
+    }
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listLoanBusinByLike",list);
     	map.put("pageutil",pageUtil);

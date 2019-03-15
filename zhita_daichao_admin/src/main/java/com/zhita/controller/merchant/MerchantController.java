@@ -100,14 +100,13 @@ public class MerchantController {
 	@ResponseBody
 	@RequestMapping("/querySourceByLike")
     public Map<String,Object> querySourceByLike(String sourceName,Integer page,String string){
-		String [] company=null;
-		if(string!=null||!"".equals(string)){
-			string = string.replaceAll("\"", "").replace("[","").replace("]","");
-			company=string.split(",");
-		}
 		PageUtil pageUtil=null;
 		List<Source> list=new ArrayList<>();
 		List<Source> listto=new ArrayList<>();
+		if(string!=null&&!"".equals(string)){
+			string = string.replaceAll("\"", "").replace("[","").replace("]","");
+			String [] company=string.split(",");
+		
 		//渠道名称为空并且公司名不为空  公司名选择的是  全部项
 		if((sourceName==null||"".equals(sourceName))&&(company.length>1)) {
 			
@@ -199,7 +198,7 @@ public class MerchantController {
 	    	pageUtil=new PageUtil(page,10,totalCount);
 			
 		}
-		
+	}
 		TuoMinUtil tuoMinUtil=new TuoMinUtil();
 		
 		for (int i = 0; i < listto.size(); i++) {

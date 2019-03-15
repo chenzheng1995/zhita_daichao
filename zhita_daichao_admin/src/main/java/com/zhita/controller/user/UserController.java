@@ -138,12 +138,12 @@ public class UserController {
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page) throws ParseException{
     	String [] sourceNamein=null;
-    	if(sourceName!=null||!"".equals(sourceName)){
+    	if(sourceName!=null&&!"".equals(sourceName)){
     		sourceName = sourceName.replaceAll("\"", "").replace("[","").replace("]","");
     		sourceNamein= sourceName.split(",");
     	}
     	String [] companyin=null;
-		if(company!=null||!"".equals(company)){
+		if(company!=null&&!"".equals(company)){
 			company = company.replaceAll("\"", "").replace("[","").replace("]","");
 			companyin= company.split(",");
 		}
