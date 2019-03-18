@@ -316,14 +316,14 @@ public class RegisteController {
         	
         	listto=intRegisteService.queryByNameLike(businessName,company[0],pageUtil.getPage(),pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
-        	for (int i = 0; i < list.size(); i++) {
-    			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
+        	for (int i = 0; i < listto.size(); i++) {
+    			System.out.println(listto.get(i).getBusinessname()+"***"+listto.get(i).getApplicationnumber());
     		}
     		
         }
     }
     	HashMap<String, Object> map=new HashMap<>();
-    	map.put("listLoanBusinByLike",list);
+    	map.put("listLoanBusinByLike",listto);
     	map.put("pageutil",pageUtil);
 		return map;
     }

@@ -137,21 +137,20 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page) throws ParseException{
-    	String [] sourceNamein=null;
-    	if(sourceName!=null&&!"".equals(sourceName)){
-    		sourceName = sourceName.replaceAll("\"", "").replace("[","").replace("]","");
-    		sourceNamein= sourceName.split(",");
-    	}
-    	String [] companyin=null;
-		if(company!=null&&!"".equals(company)){
-			company = company.replaceAll("\"", "").replace("[","").replace("]","");
-			companyin= company.split(",");
-		}
-		 String timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
-		 String timeEnd=Timestamps.dateToStamp(registrationTimeEnd);//将结束时间转换为时间戳
+    	sourceName = sourceName.replaceAll("\"", "").replace("[","").replace("]","");
+    	String [] sourceNamein= sourceName.split(",");
+		company = company.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] companyin= company.split(",");
 		
-    	 Map<String,Object> map=userService.ByLikeQuery(phone,sourceNamein,timeStart,timeEnd,companyin,page);
-    	 return map;
+		String timeStart=null;
+		String timeEnd=null;
+		if(timeStart!=null&&!"".equals(timeStart)&&(timeEnd!=null&&!"".equals(timeEnd))){
+			timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
+			timeEnd=Timestamps.dateToStamp(registrationTimeEnd);//将结束时间转换为时间戳
+		}
+		
+    	Map<String,Object> map=userService.ByLikeQuery(phone,sourceNamein,timeStart,timeEnd,companyin,page);
+    	return map;
     }
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    并按足迹时间倒排序，含分页（申请记录）
     @ResponseBody
