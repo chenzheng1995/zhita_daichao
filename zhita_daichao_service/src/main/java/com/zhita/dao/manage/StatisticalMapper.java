@@ -54,4 +54,10 @@ public interface StatisticalMapper {
     //后台管理---查询当前渠道的折扣率
     String queryDiscount(String source,String company);
     
+    //后台管理---查询当前渠道在user表的所有注册时间
+    List<String> queryTime(String company,String sourceName);
+    
+    //后台管理---查询在user表的所有注册时间
+    List<String> queryTimeme1(String company);
+    
 }

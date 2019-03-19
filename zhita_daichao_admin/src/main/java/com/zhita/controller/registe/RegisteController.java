@@ -412,19 +412,12 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryTime")
 	public List<JiaFangTongji> queryTime(String businessName,String LikeTime1,String LikeTime2) throws ParseException {
+    	String LikeTime1add=LikeTime1+" "+"00:00:00";
+    	String LikeTime2add=LikeTime2+" "+"24:00:00";
     	List<String> daysList=DateListUtil.getDays(LikeTime1,LikeTime2);//获取传进来时间段里的所有日期集合
-	    String timeStart=Timestamps.dateToStamp(LikeTime1);//将开始时间转换为时间戳
-	
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
-	    Date dt = sdf.parse(LikeTime2);  
-	    Calendar rightNow = Calendar.getInstance();  
-	    rightNow.setTime(dt);  
-	    rightNow.add(rightNow.DATE, 1);
-	    Date dt1 = rightNow.getTime();  
-	    String timeend = sdf.format(dt1);  
-	    
-	    String timeEnd=Timestamps.dateToStamp(timeend);//将结束时间转换为时间戳
-	    System.out.println("LikeTime1:"+LikeTime1+"LikeTime2:"+timeend);
+	    String timeStart=Timestamps.dateToStamp1(LikeTime1add);//将开始时间转换为时间戳
+	    String timeEnd=Timestamps.dateToStamp1(LikeTime2add);//将结束时间转换为时间戳
+	    System.out.println("LikeTime1add:"+LikeTime1add+"LikeTime2add:"+LikeTime2add);
 
     	List<String> list=intRegisteService.queryTime(businessName,timeStart,timeEnd);//查询出  时间段里  当前商家所有的足迹时间
     	List<String> list1=new ArrayList<>();//将时间戳类型的时间转换为data类型  存入list1集合
@@ -454,15 +447,11 @@ public class RegisteController {
     	
     	for (int i = 0; i <list1.size(); i++) {
     		jia=new JiaFangTongji();
-    	    Date dti = sdf.parse(list1.get(i));  
-    	    Calendar calendar = Calendar.getInstance();  
-    	    calendar.setTime(dti);  
-    	    calendar.add(calendar.DATE, 1);
-    	    Date dt1i = calendar.getTime();  
-    	    String list1i = sdf.format(dt1i);  
+    		String startDay1=list1.get(i)+" "+"00:00:00";
+    		String endDay1=list1.get(i)+" "+"24:00:00";
     	    
-    	    String startDay=Timestamps.dateToStamp(list1.get(i));
-    	    String endDay=Timestamps.dateToStamp(list1i);
+    	    String startDay=Timestamps.dateToStamp1(startDay1);
+    	    String endDay=Timestamps.dateToStamp1(endDay1);
     	    
     	    int count=intRegisteService.queryAmount(businessName, startDay, endDay);//查询出当前商家某一天的用户数量
     	    jia.setDate(list1.get(i));
@@ -475,10 +464,6 @@ public class RegisteController {
 		}
     	return listjia;
     }
-    
-    
-    
-    
     
     
 	// 上传贷款商家的商标

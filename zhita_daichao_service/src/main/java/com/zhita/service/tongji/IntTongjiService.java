@@ -31,4 +31,8 @@ public interface IntTongjiService {
     public Integer queryApplicationNumber(String company,String sourceName,String startTime,String endTime);
     //后台管理---查询当前渠道的折扣率
     public String queryDiscount(String source,String company);
+    //后台管理---查询当前渠道在user表的所有注册时间
+    public List<String> queryTime(String company,String sourceName);
+    //后台管理---查询在user表的所有注册时间
+    public List<String> queryTimeme1(String company);
 }

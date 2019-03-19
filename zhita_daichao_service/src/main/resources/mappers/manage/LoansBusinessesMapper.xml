@@ -22,7 +22,7 @@
       <arg column="applicationProcess" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="specialInstructions" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="successRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="lendingRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="lendingRate" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="registerLink" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -61,10 +61,10 @@
     values (#{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
       #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER},
-      #{busClaId,jdbcType=INTEGER}, #{loanlimitsmall,jdbcType=DECIMAL}, 
+      #{busClaId,jdbcType=VARCHAR}, #{loanlimitsmall,jdbcType=DECIMAL}, 
       #{loanlimitbig,jdbcType=DECIMAL}, #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, 
       #{applicationrequirements,jdbcType=VARCHAR}, #{applicationprocess,jdbcType=VARCHAR}, 
-      #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, 
+      #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=VARCHAR}, 
       #{registerlink,jdbcType=VARCHAR}, #{prepaidamount,jdbcType=DECIMAL},
       #{applications,jdbcType=INTEGER},#{company,jdbcType=INTEGER})
   </insert>
@@ -313,7 +313,7 @@
       applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
       specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
       successRate = #{successrate,jdbcType=INTEGER},
-      lendingRate = #{lendingrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=VARCHAR},
       registerLink = #{registerlink,jdbcType=VARCHAR},
       prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
       deleted = #{deleted,jdbcType=VARCHAR},
@@ -331,7 +331,7 @@
       loanLimit = #{loanlimit,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
-      busClaId = #{busClaId,jdbcType=INTEGER},
+      busClaId = #{busClaId,jdbcType=VARCHAR},
       loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
       loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
       cycle = #{cycle,jdbcType=VARCHAR},
@@ -340,7 +340,7 @@
       applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
       specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
       successRate = #{successrate,jdbcType=INTEGER},
-      lendingRate = #{lendingrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=VARCHAR},
       registerLink = #{registerlink,jdbcType=VARCHAR},
       prepaidAmount = #{prepaidamount,jdbcType=DECIMAL}
       where id = #{id,jdbcType=INTEGER}
@@ -351,11 +351,11 @@
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} order by sort limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，不含分页 -->
   <select id="queryAllAdmain1" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0}
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} order by sort
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -367,11 +367,11 @@
  </select>
  <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
  <select id="queryByNameLike" resultType="com.zhita.model.manage.LoansBusinesses">
- 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by sort limit #{arg2},#{arg3}
  </select>
  <!-- 后台管理  通过商家名称模糊查询，没有分页功能 -->
  <select id="queryByNameLike1" resultType="com.zhita.model.manage.LoansBusinesses">
- 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by sort
  </select>
  <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">

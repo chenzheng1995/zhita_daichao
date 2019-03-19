@@ -77,7 +77,7 @@ public class UserController {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	listto=userService.queryAllUser1(company[0]);
+	    	listto=userService.queryAllUser(company[0],pageUtil.getPage(),pageUtil.getPageSize());
 	    	
 	    	for (int i = 0; i < listto.size(); i++) {
 	    		listto.get(i).setRegistrationtime(Timestamps.stampToDate(listto.get(i).getRegistrationtime()));
@@ -144,9 +144,20 @@ public class UserController {
 		
 		String timeStart=null;
 		String timeEnd=null;
-		if(timeStart!=null&&!"".equals(timeStart)&&(timeEnd!=null&&!"".equals(timeEnd))){
-			timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
-			timeEnd=Timestamps.dateToStamp(registrationTimeEnd);//将结束时间转换为时间戳
+		if(registrationTimeStart!=null&&!"".equals(registrationTimeStart)&&(registrationTimeEnd!=null&&!"".equals(registrationTimeEnd))){
+			if(registrationTimeStart.equals(registrationTimeEnd)){
+		    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		    	Calendar calendar = Calendar.getInstance();
+				calendar.setTime(sdf.parse(registrationTimeStart.replace("/", "-")));
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+				Date newDate = calendar.getTime();
+				String nextDate=sdf.format(newDate);//传进来日期的后一天
+				timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
+				timeEnd=Timestamps.dateToStamp(nextDate);//将结束时间转换为时间戳
+			}else{
+				timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
+				timeEnd=Timestamps.dateToStamp(registrationTimeEnd);//将结束时间转换为时间戳
+			}
 		}
 		
     	Map<String,Object> map=userService.ByLikeQuery(phone,sourceNamein,timeStart,timeEnd,companyin,page);
