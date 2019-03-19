@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.UnitPriceMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.UnitPrice">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="account" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="accountType" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="firmType" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="firm" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="modifyTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, account, price, accountType, firmType, firm,deleted,modifyTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from unit_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from unit_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.UnitPrice">
+    insert into unit_price (id, account, price, 
+      accountType, firmType, firm
+      )
+    values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+      #{accounttype,jdbcType=VARCHAR}, #{firmtype,jdbcType=VARCHAR}, #{firm,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.UnitPrice">
+    insert into unit_price
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="accounttype != null">
+        accountType,
+      </if>
+      <if test="firmtype != null">
+        firmType,
+      </if>
+      <if test="firm != null">
+        firm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="accounttype != null">
+        #{accounttype,jdbcType=VARCHAR},
+      </if>
+      <if test="firmtype != null">
+        #{firmtype,jdbcType=VARCHAR},
+      </if>
+      <if test="firm != null">
+        #{firm,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.UnitPrice">
+    update unit_price
+    <set>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="accounttype != null">
+        accountType = #{accounttype,jdbcType=VARCHAR},
+      </if>
+      <if test="firmtype != null">
+        firmType = #{firmtype,jdbcType=VARCHAR},
+      </if>
+      <if test="firm != null">
+        firm = #{firm,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.UnitPrice">
+    update unit_price
+    set account = #{account,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      accountType = #{accounttype,jdbcType=VARCHAR},
+      firmType = #{firmtype,jdbcType=VARCHAR},
+      firm = #{firm,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+ <!--  ===================================================================== -->
+ 		  	<!--单价设置中的插入数据 -->
+	<insert id="setunitprice" parameterType="java.util.Map">
+    insert into unit_price (account, price, 
+      accountType, firmType, firm,modifyTime
+      )
+    values ( #{account,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+      #{accountType,jdbcType=VARCHAR}, #{firmType,jdbcType=VARCHAR}, #{firm,jdbcType=VARCHAR},#{registrationTime,jdbcType=VARCHAR}
+      )
+	</insert>
+ 
+ 			<!--单价设置中的更新数据 -->
+	<update id="updateUnitPrice" parameterType="java.util.Map" >
+		update unit_price
+		set account = #{account},
+		price = #{price},
+		accountType = #{accountType},
+		firmType = #{firmType},
+		firm = #{firm},
+		modifyTime = #{registrationTime}
+		where id = #{id} and deleted = '0'
+	</update>
+</mapper>
