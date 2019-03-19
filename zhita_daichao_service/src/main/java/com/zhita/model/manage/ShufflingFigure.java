@@ -98,4 +98,12 @@ public class ShufflingFigure implements Serializable{
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
     }
+
+	@Override
+	public String toString() {
+		return "ShufflingFigure [id=" + id + ", title=" + title + ", cover=" + cover + ", link=" + link
+				+ ", businessname=" + businessname + ", state=" + state + ", deleted=" + deleted + ", company="
+				+ company + "]";
+	}
+    
 }

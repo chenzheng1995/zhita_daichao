@@ -374,11 +374,11 @@
 	
 	<!-- 后台管理    查询出用户表所有信息，含分页 -->
 	<select id="queryAllUser" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id and u.company=#{arg0} limit #{arg1},#{arg2}
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id and u.company=#{arg0} order by u.registrationTime desc limit #{arg1},#{arg2}
 	</select>
 	<!-- 后台管理    查询出用户表所有信息，不含分页 -->
 	<select id="queryAllUser1" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id and u.company=#{arg0}
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id and u.company=#{arg0} order by u.registrationTime desc
 	</select>
 	<!-- 后台管理   通过手机号模糊查询，含分页 -->
 	<select id="queryByPhone" resultMap="userSource">
@@ -394,6 +394,7 @@
 		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach>  
+        order by u.registrationTime desc
 		limit #{arg2},#{arg3}
 	</select>
 	<!-- 后台管理  通过注册时间模糊查询，含分页 -->
@@ -410,6 +411,7 @@
 		<foreach collection="arg2" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach> 
+         order by u.registrationTime desc
         limit #{arg3},#{arg4} 
 	</select>
 	<!-- 后台管理   根据手机号和注册时间进行模糊查询，含分页 -->
@@ -426,6 +428,7 @@
 		<foreach collection="arg3" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach>  
+         order by u.registrationTime desc
         limit #{arg4},#{arg5}
 	</select>
 	<!-- 后台管理   根据手机号、渠道名称和注册时间进行模糊查询，含分页 -->
@@ -438,6 +441,7 @@
 		<foreach collection="arg4" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach> 
+         order by u.registrationTime desc
         limit #{arg5},#{arg6} 
 	</select>
 	<!-- 后台管理 根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    将其封装到按钮足迹实体类中  含分页-->

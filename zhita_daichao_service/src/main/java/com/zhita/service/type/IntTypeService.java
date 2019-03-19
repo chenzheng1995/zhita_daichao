@@ -30,7 +30,7 @@ public interface IntTypeService{
 
     public List<LoansBusinesses> queryLoanbusinByLoanClass(String businessClassification,Integer page,Integer pagesize, String company);
     //后台管理---查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用
-    public List<LoanClassification> queryAllLoanCla();
+    public List<LoanClassification> queryAllLoanCla(String company);
     //后台管理---  根据分类id   查询当前分类的图标
     public String queryIconById(Integer id);
     //通过传过来的贷款分类对象，对当前对象进行修改保存

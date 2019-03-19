@@ -120,8 +120,8 @@ public class TypeServiceImp implements IntTypeService{
 	}
 	
     //后台管理---查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用
-    public List<LoanClassification> queryAllLoanCla(){
-    	List<LoanClassification> list=loanClassificationMapper.queryAllLoanCla();
+    public List<LoanClassification> queryAllLoanCla(String company){
+    	List<LoanClassification> list=loanClassificationMapper.queryAllLoanCla(company);
     	return list;
     }
     //通过传过来的贷款分类对象，对当前对象进行修改保存

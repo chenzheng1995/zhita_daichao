@@ -81,6 +81,9 @@ public interface LoansBusinessesMapper {
   	
   	//后台管理---根据商品名称和传过来的年  月  日(例如：2019-01-01) 获取当前甲方商家这一天的足迹数量
   	int  queryAmount(String businessName,String LikeTime1,String LikeTime2);
+  	
+  	//后台管理---根据id  修改商家的排序字段
+  	int upaSortByLoanId(Integer sort,Integer id);
 
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
     List<LoansBusinesses> queryLoanbusinByLoanClass(@Param("businessClassification")String businessClassification,@Param("page")Integer page,@Param("pageSize") int pageSize,@Param("company") String company);

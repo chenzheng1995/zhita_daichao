@@ -1,6 +1,9 @@
 package com.zhita.controller.merchant;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,7 @@ import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
+import com.zhita.util.Timestamps;
 import com.zhita.util.TuoMinUtil;
 
 @Controller
@@ -312,8 +316,21 @@ public class MerchantController {
     //后台管理---通过条件做各种模糊查询   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
 	@ResponseBody
 	@RequestMapping("/queryAllUserByLikeAll")
-    public Map<String,Object> queryAllUserByLikeAll(Integer SourceId,String registrationTimeStart,String registrationTimeEnd,String phone,Integer page){
-		Map<String,Object> map=intMerchantService.queryAllUserByLikeAll(SourceId, registrationTimeStart, registrationTimeEnd, phone, page);
+    public Map<String,Object> queryAllUserByLikeAll(Integer SourceId,String registrationTimeStart,String registrationTimeEnd,String phone,Integer page) throws ParseException{
+		String timeStart=null;
+		String timeEnd=null;
+		if((registrationTimeStart!=null&&!"".equals(registrationTimeStart))&&(registrationTimeEnd==null&&"".equals(registrationTimeEnd))){
+			timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
+			Date dateDay=new Date();
+			timeEnd=Timestamps.dateToStamp1(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(dateDay));//将结束时间转换为时间戳
+		}
+		else if((registrationTimeStart!=null&&!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null&&!"".equals(registrationTimeEnd))){
+			String LikeTime1add=registrationTimeStart+" "+"00:00:00";
+	    	String LikeTime2add=registrationTimeEnd+" "+"24:00:00";
+	    	timeStart=Timestamps.dateToStamp1(LikeTime1add);//将开始时间转换为时间戳
+	    	timeEnd=Timestamps.dateToStamp1(LikeTime2add);//将开始时间转换为时间戳
+		}
+		Map<String,Object> map=intMerchantService.queryAllUserByLikeAll(SourceId, timeStart, timeEnd, phone, page);
 		return map;
 	}
 }

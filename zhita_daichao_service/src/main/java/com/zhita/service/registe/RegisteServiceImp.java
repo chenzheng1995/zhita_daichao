@@ -155,4 +155,9 @@ public class RegisteServiceImp implements IntRegisteService{
 		List<String> loansBusinesses = loansBusinessesMapper.BusinessesName(company);
 		return loansBusinesses;
 	}
+	//后台管理---根据id  修改商家的排序字段
+  	public int upaSortByLoanId(Integer sort,Integer id){
+  		int num=loansBusinessesMapper.upaSortByLoanId(sort, id);
+  		return num;
+  	}
 }

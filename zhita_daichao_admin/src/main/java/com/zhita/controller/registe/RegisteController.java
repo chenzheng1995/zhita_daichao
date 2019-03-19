@@ -135,9 +135,16 @@ public class RegisteController {
 	//后台管理---查询贷款分类的所有分类名称
     @ResponseBody
     @RequestMapping("/selAllName")
-    public List<LoanClassification> selAllName(){
-    	List<LoanClassification> loanlist=intTypeService.queryAllLoanCla();//添加贷款商家信息时，先查询出贷款分类的所有类型
-    	return loanlist;
+    public List<LoanClassification> selAllName(String string){
+    	string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String[] company=string.split(",");
+		List<LoanClassification> loanlist=null;
+		List<LoanClassification> loanlistto=new ArrayList<>();
+		for (int i = 0; i < company.length; i++) {
+			loanlist=intTypeService.queryAllLoanCla(company[i]);//添加贷款商家信息时，先查询出贷款分类的所有类型
+			loanlistto.addAll(loanlist);
+		}
+    	return loanlistto;
     }
     
 	//后台管理---添加贷款商家信息
@@ -180,8 +187,6 @@ public class RegisteController {
 			map.put("msg", "请上传图片");
 			return map;
 		} 
-    	List<LoanClassification> loanlist=intTypeService.queryAllLoanCla();//添加贷款商家信息时，先查询出贷款分类的所有类型,用于下拉框
-    	map.put("loanlist", loanlist);
 
     	BigDecimal limitsmall=loansBusinesses.getLoanlimitsmall();//得到输入框的借款额度（小）
     	BigDecimal limitbig=loansBusinesses.getLoanlimitbig();//得到输入框的借款额度（大）
@@ -464,7 +469,13 @@ public class RegisteController {
 		}
     	return listjia;
     }
-    
+	//后台管理---根据id  修改商家的排序字段
+    @ResponseBody
+    @RequestMapping("upaSortByLoanId")
+  	public int upaSortByLoanId(Integer sort,Integer id){
+    	int num=intRegisteService.upaSortByLoanId(sort, id);
+    	return num;
+    }
     
 	// 上传贷款商家的商标
 	@ResponseBody

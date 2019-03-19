@@ -258,8 +258,9 @@ public class BannerController {
 	@ResponseBody
 	@RequestMapping("/updateShufflingFigure")
     public Map<String, Object> updateShufflingFigure(ShufflingFigure shufflingFigure,MultipartFile file) throws Exception{
+		System.out.println(shufflingFigure+"------------");
 		Map<String, Object> map = new HashMap<>();
-		if (file != null) {// 判断上传的文件是否为空
+		if (file.getSize()!=0) {// 判断上传的文件是否为空
 			String path = null;// 文件路径
 			String type = null;// 文件类型
 			InputStream iStream = file.getInputStream();

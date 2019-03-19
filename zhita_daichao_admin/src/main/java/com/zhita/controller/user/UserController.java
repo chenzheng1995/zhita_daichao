@@ -144,20 +144,16 @@ public class UserController {
 		
 		String timeStart=null;
 		String timeEnd=null;
-		if(registrationTimeStart!=null&&!"".equals(registrationTimeStart)&&(registrationTimeEnd!=null&&!"".equals(registrationTimeEnd))){
-			if(registrationTimeStart.equals(registrationTimeEnd)){
-		    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		    	Calendar calendar = Calendar.getInstance();
-				calendar.setTime(sdf.parse(registrationTimeStart.replace("/", "-")));
-				calendar.add(Calendar.DAY_OF_MONTH, 1);
-				Date newDate = calendar.getTime();
-				String nextDate=sdf.format(newDate);//传进来日期的后一天
-				timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
-				timeEnd=Timestamps.dateToStamp(nextDate);//将结束时间转换为时间戳
-			}else{
-				timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
-				timeEnd=Timestamps.dateToStamp(registrationTimeEnd);//将结束时间转换为时间戳
-			}
+		if((registrationTimeStart!=null&&!"".equals(registrationTimeStart))&&(registrationTimeEnd==null&&"".equals(registrationTimeEnd))){
+			timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
+			Date dateDay=new Date();
+			timeEnd=Timestamps.dateToStamp1(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(dateDay));//将结束时间转换为时间戳
+		}
+		else if((registrationTimeStart!=null&&!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null&&!"".equals(registrationTimeEnd))){
+			String LikeTime1add=registrationTimeStart+" "+"00:00:00";
+	    	String LikeTime2add=registrationTimeEnd+" "+"24:00:00";
+	    	timeStart=Timestamps.dateToStamp1(LikeTime1add);//将开始时间转换为时间戳
+	    	timeEnd=Timestamps.dateToStamp1(LikeTime2add);//将开始时间转换为时间戳
 		}
 		
     	Map<String,Object> map=userService.ByLikeQuery(phone,sourceNamein,timeStart,timeEnd,companyin,page);

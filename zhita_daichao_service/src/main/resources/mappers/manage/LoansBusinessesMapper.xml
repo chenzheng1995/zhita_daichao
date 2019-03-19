@@ -37,9 +37,11 @@
     registerLink, prepaidAmount, deleted, applications,company
   </sql>
   <!--后台管理  通过主键id查询出贷款商家信息  -->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinesses">
+    select  id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
+    state, busClaId as busClaIdString, loanLimitSmall, loanLimitBig, cycle, interestRate, 
+    applicationRequirements, applicationProcess, specialInstructions, successRate, lendingRate, 
+    registerLink, prepaidAmount, deleted, applications,company
     from loans_businesses
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -61,7 +63,7 @@
     values (#{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
       #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER},
-      #{busClaId,jdbcType=VARCHAR}, #{loanlimitsmall,jdbcType=DECIMAL}, 
+      #{busClaIdString,jdbcType=VARCHAR}, #{loanlimitsmall,jdbcType=DECIMAL}, 
       #{loanlimitbig,jdbcType=DECIMAL}, #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, 
       #{applicationrequirements,jdbcType=VARCHAR}, #{applicationprocess,jdbcType=VARCHAR}, 
       #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=VARCHAR}, 
@@ -331,7 +333,7 @@
       loanLimit = #{loanlimit,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
-      busClaId = #{busClaId,jdbcType=VARCHAR},
+      busClaId = #{busClaIdString,jdbcType=VARCHAR},
       loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
       loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
       cycle = #{cycle,jdbcType=VARCHAR},
@@ -428,7 +430,10 @@
  <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.String">
  	select trademark  from loans_businesses where businessName = #{businessname}
  </select>
- 
+ 	<!-- 后台管理    根据id  修改商家的排序字段 -->
+ 	<update id="upaSortByLoanId" parameterType="java.lang.Integer">
+ 		update loans_businesses set sort=#{arg0} where id=#{arg1}
+ 	</update>
  
    <!-- 根据公司名查询所有的贷款商家的名字 -->
  <select id="BusinessesName" resultType="com.zhita.model.manage.LoansBusinesses" parameterType="java.lang.String">
