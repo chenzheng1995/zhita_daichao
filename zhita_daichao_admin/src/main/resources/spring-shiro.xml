@@ -126,7 +126,15 @@
 				/role/addRole = perms["角色-添加"]
 				/role/selectByPrimaryKey = perms["角色-编辑"]
 				/role/upaBaocun = perms["角色-更新保存"]
-				/role/queryFunctionByRoleid = perms["角色-查询权限"]
+				/role/queryFunctionByRoleid = perms["角色-查看权限"]
+				<!--文章权限控制  -->
+				/news/getAllnews = perms["文章-查询"]
+				/news/setnews = perms["文章-添加"]
+				/news/getnewstype = perms["文章-添加"]
+				/news/getnewsbyid = perms["文章-编辑"]
+				/news/updatenews = perms["文章-更新保存"]
+				/news/deletenews = perms["文章-删除"]
+				/news/getcontent = perms["文章-内容"]
 			</value>
 		</property>
 	</bean>

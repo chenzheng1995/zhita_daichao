@@ -130,16 +130,18 @@ public class RoleController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/addRole")
-    public void addRole(@RequestBody Role role){
-    	int num=intRoleService.addRole(role);
-    	if(role.getListfunction()!=null&&role.getListfunction().size()!=0){
-    		List<Functions> listfunction=role.getListfunction();
-    		for (int i = 0; i < listfunction.size(); i++) {
-    			for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
-    				intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
-    			}
-    		}
-    	}
+    public Integer addRole(Role role){
+		int num=intRoleService.addRole(role);
+		
+		String listfunctionIdString=role.getListfunctionIdString();
+		if(listfunctionIdString!=null&&!"".equals(listfunctionIdString)){
+			String[] strSplit=listfunctionIdString.split(",");
+			role.setListfunctionId(Arrays.asList(strSplit));
+	    	for (int i = 0; i < role.getListfunctionId().size(); i++) {
+	    		intRoleService.add(role.getId(),Integer.parseInt(role.getListfunctionId().get(i)));
+	    	}
+		}
+		return num;
     }
 	//后台管理----查看权限功能--通过角色id查询出  当前角色的所有权限
 	@ResponseBody
@@ -225,19 +227,22 @@ public class RoleController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaBaocun")
-	public int upaBaocun(@RequestBody Role role){
+	public int upaBaocun(Role role){
+		int num=intRoleService.upaRole(role);
+		
+		String listfunctionIdString=role.getListfunctionIdString();
 		List<Integer> list=intRoleService.queryAllIdByRoleid(role.getId());
 		if(list.size()!=0) {
-			if(role.getListfunction()!=null&&role.getListfunction().size()!=0){
+			if(listfunctionIdString!=null&&!"".equals(listfunctionIdString)){
+				String[] strSplit=listfunctionIdString.split(",");
+				role.setListfunctionId(Arrays.asList(strSplit));
 				//进入当前   代表当前角色之前有权限   现在传进来的有权限
 				for (int i = 0; i < list.size(); i++) {
 					intRoleService.delFunctionByid(list.get(i));
 				}
-				List<Functions> listfunction=role.getListfunction();
+				List<String> listfunction=role.getListfunctionId();
 		    	for (int i = 0; i < listfunction.size(); i++) {
-		    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
-		    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
-					}
+		    		intRoleService.add(role.getId(),Integer.parseInt(listfunction.get(i)));
 				}
 			}else{
 				//进入当前   代表当前角色之前有权限   现在传进来的没有权限
@@ -246,16 +251,16 @@ public class RoleController {
 				}
 			}
 		}else{
-			//进入当前   代表当前角色之前没有权限   现在传进来的有权限
-			List<Functions> listfunction=role.getListfunction();
-	    	for (int i = 0; i < listfunction.size(); i++) {
-	    		for (int j = 0; j < listfunction.get(i).getSecondlist().size(); j++) {
-	    			intRoleService.add(role.getId(),listfunction.get(i).getSecondlist().get(j).getId());
+			if(listfunctionIdString!=null&&!"".equals(listfunctionIdString)){
+				String[] strSplit=listfunctionIdString.split(",");
+				role.setListfunctionId(Arrays.asList(strSplit));
+				//进入当前   代表当前角色之前没有权限   现在传进来的有权限
+				List<String> listfunction=role.getListfunctionId();
+				for (int i = 0; i < listfunction.size(); i++) {
+					intRoleService.add(role.getId(),Integer.parseInt(listfunction.get(i)));
 				}
 			}
 		}
-	  
-		int num=intRoleService.upaRole(role);
 		return num;
 	}
 }

@@ -201,7 +201,6 @@ public class RegisteController {
     	PageUtil pageUtil=null;
     	List<LoansBusinesses> list=new ArrayList<>();
     	List<LoansBusinesses> listto=new ArrayList<>();
-    	if(string!=null&&!"".equals(string)){
 		string = string.replaceAll("\"", "").replace("[","").replace("]","");
 		String [] company= string.split(",");
     	//商家名称为空并且公司名不为空    公司名选择的是 全部项
@@ -321,7 +320,6 @@ public class RegisteController {
     		}
     		
         }
-    }
     	HashMap<String, Object> map=new HashMap<>();
     	map.put("listLoanBusinByLike",listto);
     	map.put("pageutil",pageUtil);

@@ -16,6 +16,10 @@ public class Role {
     
     private List<Functions> listfunction;//一个角色对应多个功能
     
+    private List<String> listfunctionId;//做添加操作时   存权限id的集合
+    
+    private String listfunctionIdString;//做添加操作时   存权限id的字符串
+    
     public Integer getId() {
         return id;
     }
@@ -63,5 +67,22 @@ public class Role {
 	public void setListfunction(List<Functions> listfunction) {
 		this.listfunction = listfunction;
 	}
+
+	public List<String> getListfunctionId() {
+		return listfunctionId;
+	}
+
+	public void setListfunctionId(List<String> listfunctionId) {
+		this.listfunctionId = listfunctionId;
+	}
+
+	public String getListfunctionIdString() {
+		return listfunctionIdString;
+	}
+
+	public void setListfunctionIdString(String listfunctionIdString) {
+		this.listfunctionIdString = listfunctionIdString;
+	}
+
     
 }
