@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import com.zhita.dao.manage.SourceMapper;
 import com.zhita.dao.manage.UserMapper;
 import com.zhita.model.manage.ButtonFootprint;
-import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.util.PageUtil;
 import com.zhita.util.Timestamps;
+import com.zhita.util.TuoMinUtil;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -227,6 +227,13 @@ public class UserServiceImp implements UserService {
 	    	pageUtil.setPage(pages);
 	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
 	    	pageUtil=new PageUtil(page,10,totalCount);
+		}
+		TuoMinUtil tuoMinUtil=new TuoMinUtil();//将用户模块的手机号进行脱名
+		for (int i = 0; i < list.size(); i++) {
+			String tuomingphone=tuoMinUtil.mobileEncrypt(list.get(i).getPhone());
+    		list.get(i).setPhone(tuomingphone);
+    		list.get(i).setRegistrationtime(Timestamps.stampToDate(list.get(i).getRegistrationtime()));
+			list.get(i).setLoginTime(Timestamps.stampToDate(list.get(i).getLoginTime()));
 		}
 		HashMap<String, Object> map=new HashMap<>();
 		map.put("listSource", list2);
