@@ -1,6 +1,7 @@
 package com.zhita.controller.login;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -91,15 +92,12 @@ public class LoginController {
 									listcom.add(company);
 								}*/
 								List<Functions> list1 = intRoleService.queryFunctionByName(phone);//查询当前用户所拥有的权限
-								Set<String> function=new HashSet<>();//存当前登录的用户所拥有的的权限
+								List<String> listFunctionId=new ArrayList<>();//存当前登录人员的所有权限id
 								for (int i = 0; i < list1.size(); i++) {
-									String functionFirst=list1.get(i).getFunctionFirst();
-									String functionSecond=list1.get(i).getFunctionSecond();
-									String hebing=functionFirst+"-"+functionSecond;
-									function.add(hebing);
+									listFunctionId.add(list1.get(i).getId());
 								}
 								subject.getSession().setTimeout(3600000);
-								map.put("functions", function);
+								map.put("functionsId",listFunctionId );
 								map.put("msg", "用户登录成功，登录状态修改成功");
 								map.put("loginStatus", loginStatus);
 								map.put("userId", id);
@@ -278,7 +276,7 @@ public class LoginController {
     public Map<String,Object> queryAllManageLogin(Integer page){
     	int totalCount=loginService.pageCountManageLogin();//查询出管理登陆用户表一共有多少条数据
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
-    	if(page<1) {
+    	if(page<1) {                                                            
     		page=1;
     	}
     	else if(page>pageUtil.getTotalPageCount()) {
@@ -321,8 +319,12 @@ public class LoginController {
     @ResponseBody
     @RequestMapping("/addManageLogin")
     @Transactional
-    public int addManageLogin(@RequestBody ManageLogin manageLogin){
-    	if(manageLogin.getListcompany()!=null&&manageLogin.getListcompany().size()!=0){
+    public int addManageLogin(ManageLogin manageLogin){
+    	String listcompanyString=manageLogin.getListcompanyString();
+    	if(listcompanyString!=null&&!"".equals(listcompanyString)){
+    		String[] strSplit1=listcompanyString.split(",");
+    		manageLogin.setListcompany(Arrays.asList(strSplit1));
+
     		List<String> list=manageLogin.getListcompany();//得到前端传过来的公司名的集合
     		String str="";
     		for (int i = 0; i < list.size(); i++) {
@@ -333,13 +335,19 @@ public class LoginController {
     			}
     		}
     		manageLogin.setCompany(str);
+    	
     	}else{
     		manageLogin.setCompany(null);
     	}
+    	
     	int num=loginService.addManageLogin(manageLogin);
-    	if(manageLogin.getListRole()!=null&&manageLogin.getListRole().size()!=0){
-    		for (int i = 0; i < manageLogin.getListRole().size(); i++) {
-    			int num1=loginService.add(manageLogin.getId(), manageLogin.getListRole().get(i).getId());
+    	
+    	String listRoleIdString=manageLogin.getListRoleIdString();
+    	if(listRoleIdString!=null&&!"".equals(listRoleIdString)){
+    		String[] strSplit=listRoleIdString.split(",");
+    		manageLogin.setListRoleId(Arrays.asList(strSplit)); 
+      		for (int i = 0; i < manageLogin.getListRoleId().size(); i++) {
+    			int num1=loginService.add(manageLogin.getId(), Integer.parseInt(manageLogin.getListRoleId().get(i)));
     		}
     	}
     	return num;
@@ -371,17 +379,41 @@ public class LoginController {
     @Transactional
     @ResponseBody
     @RequestMapping("/upaManageLogin")
-    public int upaManageLogin(@RequestBody ManageLogin manageLogin){
-    	System.out.println(manageLogin);
+    public int upaManageLogin(ManageLogin manageLogin){
+       	String listcompanyString=manageLogin.getListcompanyString();
+    	if(listcompanyString!=null&&!"".equals(listcompanyString)){
+    		String[] strSplit1=listcompanyString.split(",");
+    		manageLogin.setListcompany(Arrays.asList(strSplit1));
+
+    		List<String> list=manageLogin.getListcompany();//得到前端传过来的公司名的集合
+    		String str="";
+    		for (int i = 0; i < list.size(); i++) {
+    			if(i==0) {
+    				str=list.get(i)+",";
+    			}else {
+    				str=str+list.get(i)+",";
+    			}
+    		}
+    		manageLogin.setCompany(str);
+    	
+    	}else{
+    		manageLogin.setCompany(null);
+    	}
+    	
+    	int num=loginService.upaManageLogin(manageLogin);
+    	
+    	String listRoleIdString=manageLogin.getListRoleIdString();
     	List<Integer> list=loginService.queryByManageloginId(manageLogin.getId());//保存修改信息时   先查询出当前用户在中间表的数据id集合（因为一个用户可能有多个角色）
     	if(list.size()!=0) {
-    		if(manageLogin.getListRole()!=null&&manageLogin.getListRole().size()!=0){
+    		if(listRoleIdString!=null&&!"".equals(listRoleIdString)){
+    			String[] strSplit=listRoleIdString.split(",");
+    			manageLogin.setListRoleId(Arrays.asList(strSplit));
     			//进入当前  代表当前用户之前有角色   现在传进来的有角色
     			for (int i = 0; i < list.size(); i++) {
     				loginService.delManageloginRole(list.get(i));//修改保存信息时   先删除中间表的信息
     			}
-    			for (int i = 0; i < manageLogin.getListRole().size(); i++) {
-    	    		loginService.add(manageLogin.getId(), manageLogin.getListRole().get(i).getId());
+    			for (int i = 0; i < manageLogin.getListRoleId().size(); i++) {
+    	    		loginService.add(manageLogin.getId(), Integer.parseInt(manageLogin.getListRoleId().get(i)));
     	    	}
     		}else{
     			//进入当前   代表当前用户之前有角色   现在传进来的没有角色
@@ -390,29 +422,15 @@ public class LoginController {
     			}
     		}
     	}else{
-    		if(manageLogin.getListRole()!=null&&manageLogin.getListRole().size()!=0){
+    		if(listRoleIdString!=null&&!"".equals(listRoleIdString)){
+    			String[] strSplit=listRoleIdString.split(",");
+    			manageLogin.setListRoleId(Arrays.asList(strSplit));
     			//进入当前   代表当前用户之前没有角色   现在传进来的有角色
-    			for (int i = 0; i < manageLogin.getListRole().size(); i++) {
-    	    		loginService.add(manageLogin.getId(), manageLogin.getListRole().get(i).getId());
+    			for (int i = 0; i < manageLogin.getListRoleId().size(); i++) {
+    	    		loginService.add(manageLogin.getId(), Integer.parseInt(manageLogin.getListRoleId().get(i)));
     	    	}
     		}
     	}
-    	
-    	if(manageLogin.getListcompany()!=null&&manageLogin.getListcompany().size()!=0){
-    		List<String> list1=manageLogin.getListcompany();//得到前端传过来的公司名的集合
-    		String str="";
-    		for (int i = 0; i < list1.size(); i++) {
-    			if(i==0) {
-    				str=list1.get(i)+",";
-    			}else {
-    				str=str+list1.get(i)+",";
-    			}
-    		}
-    		manageLogin.setCompany(str);
-    	}else{
-    		manageLogin.setCompany(null);
-    	}
-    	int num=loginService.upaManageLogin(manageLogin);
     	return num;
     }
 	//后台管理---删除用户(可有可无)

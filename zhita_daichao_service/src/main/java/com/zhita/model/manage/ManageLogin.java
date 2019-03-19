@@ -25,18 +25,14 @@ public class ManageLogin implements Serializable{
     private String sourcename;//渠道名
     private List<String> listcompany;//公司名list（添加后台管理用户的时候，复选框选值的时候使用的公司名字段）
     
+    private String listcompanyString;//公司名字符串
+    
     private List<Role> listRole;//一个用户有多个角色
+    
+    private List<String> listRoleId;//做添加操作时  存角色id的集合
 
-    public ManageLogin(Integer id, String username, String phone, String loginstatus, String logintime, String company,String deleted) {
-        this.id = id;
-        this.username = username;
-        this.phone = phone;
-        this.loginstatus = loginstatus;
-        this.logintime = logintime;
-        this.company=company;
-        this.deleted = deleted;
-    }
-
+    private String listRoleIdString;//做添加操作时  存角色id的字符串
+    
     public ManageLogin() {
         super();
     }
@@ -132,11 +128,28 @@ public class ManageLogin implements Serializable{
 		this.listRole = listRole;
 	}
 
-	@Override
-	public String toString() {
-		return "ManageLogin [id=" + id + ", username=" + username + ", phone=" + phone + ", pwd=" + pwd
-				+ ", loginstatus=" + loginstatus + ", logintime=" + logintime + ", deleted=" + deleted + ", company="
-				+ company + ", sourcename=" + sourcename + ", listcompany=" + listcompany + ", listRole=" + listRole
-				+ "]";
+	public List<String> getListRoleId() {
+		return listRoleId;
 	}
+
+	public void setListRoleId(List<String> listRoleId) {
+		this.listRoleId = listRoleId;
+	}
+
+	public String getListRoleIdString() {
+		return listRoleIdString;
+	}
+
+	public void setListRoleIdString(String listRoleIdString) {
+		this.listRoleIdString = listRoleIdString;
+	}
+
+	public String getListcompanyString() {
+		return listcompanyString;
+	}
+
+	public void setListcompanyString(String listcompanyString) {
+		this.listcompanyString = listcompanyString;
+	}
+
 }
