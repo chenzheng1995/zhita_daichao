@@ -262,7 +262,7 @@ public class TongjiController {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("listsource", listsource);
 		map.put("listtopage", listtopage);
-		map.put("pageUtil", pageUtil);
+		map.put("pageutil", pageUtil);
 		map.put("company", company);
 		return map;
 	}
