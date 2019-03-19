@@ -273,4 +273,8 @@
   <select id="getNewsById" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.News">
   	select title,contentURL,titleImage,author,isStick,company,typeId from news where deleted='0' and id = #{id}
   </select>
+  	<!-- 通过文章id查询出标题图片 -->
+  	<select id="getTitleImage" parameterType="java.lang.Integer" resultType="java.lang.String">
+  		select titleImage from news where id=1
+  	</select>
 </mapper>

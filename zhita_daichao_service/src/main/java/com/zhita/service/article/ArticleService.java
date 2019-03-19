@@ -41,5 +41,6 @@ public interface ArticleService {
 	String getcontent(Integer id);
 
 	List<News> getNewsById(Integer id);
-
+	//通过文章id查询出标题图片
+	public String getTitleImage(Integer id);
 }

@@ -118,7 +118,11 @@ public class ArticleServiceImp implements ArticleService{
 		list =newsMapper.getNewsById(id);
 		return list;
 	}
-
+	//通过文章id查询出标题图片
+	public String getTitleImage(Integer id){
+		String titleImage=newsMapper.getTitleImage(id);
+		return titleImage;
+	}
 
 
 }

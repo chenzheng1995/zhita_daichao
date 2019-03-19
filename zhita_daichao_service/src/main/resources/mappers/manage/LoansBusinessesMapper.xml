@@ -427,8 +427,8 @@
  </select>
  
    <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->
- <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.String">
- 	select trademark  from loans_businesses where businessName = #{businessname}
+ <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select trademark  from loans_businesses where id = #{id}
  </select>
  	<!-- 后台管理    根据id  修改商家的排序字段 -->
  	<update id="upaSortByLoanId" parameterType="java.lang.Integer">

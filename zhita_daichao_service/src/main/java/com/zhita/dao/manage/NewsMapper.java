@@ -28,6 +28,9 @@ public interface NewsMapper {
 	List<News> getAllnews(@Param("page")int page,@Param("pageSize") int pageSize,@Param("company") String company,@Param("typeId") int typeId);
 
 	int updatenews(@Param("title")String title,@Param("company") String company,@Param("ossimagePath") String ossimagePath,@Param("author") String author,@Param("ossarticlePath") String ossarticlePath,@Param("isStick")String isStick,@Param("registrationTime") String registrationTime,@Param("id") int id,@Param("typeId") Integer typeId);
+	
+	//通过文章id查询出标题图片
+	String getTitleImage(Integer id);
 
 	int deletenews(int id);
 

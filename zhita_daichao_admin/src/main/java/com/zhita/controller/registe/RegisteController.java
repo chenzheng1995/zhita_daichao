@@ -382,8 +382,8 @@ public class RegisteController {
 				return map;
 			}
 		}else {
-			String businessname = loansBusinesses.getBusinessname();
-			String trademark = intRegisteService.getTrademark(businessname); //通过传过来的贷款商家名字，查询商标的URL
+			Integer id = loansBusinesses.getId();
+			String trademark = intRegisteService.getTrademark(id); //通过传过来的贷款商家名字，查询商标的URL
 			loansBusinesses.setTrademark(trademark);
 		}	
     	BigDecimal limitsmall=loansBusinesses.getLoanlimitsmall();//得到输入框的借款额度（小）

@@ -88,7 +88,7 @@ public interface LoansBusinessesMapper {
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
     List<LoansBusinesses> queryLoanbusinByLoanClass(@Param("businessClassification")String businessClassification,@Param("page")Integer page,@Param("pageSize") int pageSize,@Param("company") String company);
 
-	String getTrademark(String businessname);
+	String getTrademark(Integer id);
 
 	List<String> BusinessesName(String company);
 

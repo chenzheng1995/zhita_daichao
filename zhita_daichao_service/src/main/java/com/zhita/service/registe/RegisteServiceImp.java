@@ -134,8 +134,8 @@ public class RegisteServiceImp implements IntRegisteService{
   	}
 
 	@Override
-	public String getTrademark(String businessname) {
-		String trademark = loansBusinessesMapper.getTrademark(businessname);
+	public String getTrademark(Integer id) {
+		String trademark = loansBusinessesMapper.getTrademark(id);
 		return trademark;
 	}
 	//后台管理---根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间

@@ -48,7 +48,7 @@ public interface IntRegisteService{
   	public List<LoansBusinesses> queryAllAdmainpro(Integer page,Integer pagesize, String company);
   	
   	//后台管理---通过传过来的贷款商家名字，查询商标的URL
-	public String getTrademark(String businessname);
+	public String getTrademark(Integer id);
   	//后台管理---根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间
   	public List<String> queryTime(String businessName,String LikeTime,String LikeTime2);
 

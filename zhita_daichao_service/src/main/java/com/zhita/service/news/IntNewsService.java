@@ -31,4 +31,5 @@ public interface IntNewsService{
     public int updateStrategy(Strategy strategy);
     
 	public String getCover(int id);
+	
 }

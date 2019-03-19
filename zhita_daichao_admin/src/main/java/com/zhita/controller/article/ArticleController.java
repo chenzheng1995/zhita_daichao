@@ -286,6 +286,8 @@ public class ArticleController {
 							map.put("SCode", "403");
 							return map;
 						}
+					}else{
+						ossimagePath=articleService.getTitleImage(id);
 					}
 				}
 
