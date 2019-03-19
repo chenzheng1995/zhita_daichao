@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -42,51 +43,248 @@ public class TongjiController {
 	// 后台管理----渠道方看的渠道统计，含分页
 	@ResponseBody
 	@RequestMapping("/queryAllTongji")
-	public Object queryAllTongji(String company,String source,String date) throws ParseException{
-    	RedisClientUtil redisClientUtil = new RedisClientUtil();
-    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-    	Calendar calendar = Calendar.getInstance();
+	public Map<String, Object> queryAllTongji(Integer page, String company, String sourceName) throws ParseException {
+		List<TongjiSorce> listsource = new ArrayList<>();
+		List<TongjiSorce> listsourceto = new ArrayList<>();
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		List<String> list = intTongjiService.queryTime(company, sourceName);// 查询出当前渠道所有的注册时间
+		List<String> list1 = new ArrayList<>();// 用来存时间戳转换后的时间
+		for (int i = 0; i < list.size(); i++) {
+			list1.add(Timestamps.stampToDate1(list.get(i)));
+		}
+		HashSet h = new HashSet(list1);
+		list1.clear();
+		list1.addAll(h);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+		}
+		for (int i = 0; i < list1.size(); i++) {
+			String startTime = list1.get(i) + " " + "00:00:00";
+			String endTime = list1.get(i) + " " + "24:00:00";
+			float appnum = intTongjiService.queryApplicationNumber(company, sourceName, startTime, endTime);// 得到申请数
+			String discount = intTongjiService.queryDiscount(sourceName, company);// 得到折扣率
+			int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+			int uv = 0;
+			String cvr = null;
+			if (redisClientUtil.getSourceClick(company + sourceName + list1.get(i) + "Key") == null) {
+				uv = 0;
+			} else {
+				uv = Integer.parseInt(redisClientUtil.getSourceClick(company + sourceName + list1.get(i) + "Key"));
+
+			}
+			if ((appnum < 0.000001) || (uv == 0)) {
+				cvr = 0 + "%";// 得到转化率
+			} else {
+				cvr = (appnum / uv) + "%";// 得到转化率
+			}
+
+			TongjiSorce tongjiSorce = new TongjiSorce();
+			tongjiSorce.setDate(list1.get(i));// 日期
+			tongjiSorce.setSourceName(sourceName);// 渠道名称
+			tongjiSorce.setUv(uv);// uv
+			if (appnum >= 100) {
+				tongjiSorce.setAppNum(appnum * discount1 / 100);// 申请数
+			} else {
+				tongjiSorce.setAppNum(appnum);// 申请数
+			}
+			tongjiSorce.setCvr(cvr);// 转化率
+			listsource.add(tongjiSorce);
+		}
+		ListPageUtil listPageUtil = new ListPageUtil(listsource, page, 10);
+		listsourceto.addAll(listPageUtil.getData());
+		PageUtil pageUtil = new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),
+				listPageUtil.getTotalCount());
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("listsourceto", listsourceto);
+		map.put("pageutil", pageUtil);
+		return map;
+	}
+
+	// 后台管理----渠道方看的渠道统计，通过时间查询，含分页
+	@ResponseBody
+	@RequestMapping("/queryAllTongjiByDate")
+	public Object queryAllTongjiByDate(String company, String source, String date) throws ParseException {
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(sdf.parse(date.replace("/", "-")));
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		Date newDate = calendar.getTime();
-		String nextDate=sdf.format(newDate);//传进来日期的后一天
-       	
-    	String startTime=Timestamps.dateToStamp(date.replace("/", "-"));//将传进来的时间转换为时间戳格式
-    	String endTime=Timestamps.dateToStamp(nextDate);//将传进来的时间的后一天转换为时间戳格式
-    	float appnum=intTongjiService.queryApplicationNumber(company, source,startTime,endTime);//得到申请数
-    	String discount=intTongjiService.queryDiscount(source, company);//得到折扣率
-    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
-      	int uv=0;
-      	String cvr=null;
-    	if(redisClientUtil.getSourceClick(company+source+date+"Key")==null) {
-    		uv=0;
-    	}else {
-    		uv=Integer.parseInt(redisClientUtil.getSourceClick(company+source+date+"Key"));
-    		
-    	}
-    	if((appnum<0.000001)||(uv==0)) {
-    		cvr=0+"%";//得到转化率
-    	}else {
-    		cvr=(appnum/uv)+"%";//得到转化率
-    	}
-    	
-		TongjiSorce tongjiSorce=new TongjiSorce();
-		tongjiSorce.setDate(date);//日期
-		tongjiSorce.setSourceName(source);//渠道名称
-		tongjiSorce.setUv(uv);//uv
-		if(appnum>=100) {
-			tongjiSorce.setAppNum(appnum*discount1/100);//申请数
-		}else {
-			tongjiSorce.setAppNum(appnum);//申请数
+		String nextDate = sdf.format(newDate);// 传进来日期的后一天
+
+		String startTime = Timestamps.dateToStamp(date.replace("/", "-"));// 将传进来的时间转换为时间戳格式
+		String endTime = Timestamps.dateToStamp(nextDate);// 将传进来的时间的后一天转换为时间戳格式
+		float appnum = intTongjiService.queryApplicationNumber(company, source, startTime, endTime);// 得到申请数
+		String discount = intTongjiService.queryDiscount(source, company);// 得到折扣率
+		int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+		int uv = 0;
+		String cvr = null;
+		if (redisClientUtil.getSourceClick(company + source + date + "Key") == null) {
+			uv = 0;
+		} else {
+			uv = Integer.parseInt(redisClientUtil.getSourceClick(company + source + date + "Key"));
+
+		}
+		if ((appnum < 0.000001) || (uv == 0)) {
+			cvr = 0 + "%";// 得到转化率
+		} else {
+			cvr = (appnum / uv) + "%";// 得到转化率
+		}
+
+		TongjiSorce tongjiSorce = new TongjiSorce();
+		tongjiSorce.setDate(date);// 日期
+		tongjiSorce.setSourceName(source);// 渠道名称
+		tongjiSorce.setUv(uv);// uv
+		if (appnum >= 100) {
+			tongjiSorce.setAppNum(appnum * discount1 / 100);// 申请数
+		} else {
+			tongjiSorce.setAppNum(appnum);// 申请数
 		}
 		tongjiSorce.setCvr(cvr);// 转化率
 		return tongjiSorce;
 	}
 
-	// 后台管理---我们自己看的统计数据
+	// 后台管理---我们自己看的统计数据------------------------------
 	@ResponseBody
 	@RequestMapping("/queryAllPage")
-	public Map<String, Object> queryAllPage(Integer page, String string, String date) throws ParseException {
+	public Map<String, Object> queryAllPage(Integer page, String string) throws ParseException {
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+
+		PageUtil pageUtil = null;
+		List<Source> listsource = new ArrayList<>();
+		List<TongjiSorce> listtofor = new ArrayList<>();
+		List<TongjiSorce> listto = new ArrayList<>();
+		List<TongjiSorce> listtopage = new ArrayList<>();
+
+		string = string.replaceAll("\"", "").replace("[", "").replace("]", "");
+		String[] company = string.split(",");
+
+		if (company.length == 1) {
+			System.out.println("company.length==1");
+			List<String> list = intTongjiService.queryTimeme1(company[0]);// 查询出所有的注册时间
+			List<String> list1 = new ArrayList<>();// 用来存时间戳转换后的时间
+			for (int i = 0; i < list.size(); i++) {
+				list1.add(Timestamps.stampToDate1(list.get(i)));
+			}
+			HashSet h = new HashSet(list1);
+			list1.clear();
+			list1.addAll(h);
+			for (int i = 0; i < list1.size(); i++) {
+				System.out.println(list1.get(i));
+			}
+			listsource = intMerchantService.queryAll(company[0]);// 查询出所有的渠道信息
+			for (int i = 0; i < list1.size(); i++) {
+				String startTime = list1.get(i) + " " + "00:00:00";
+				String endTime = list1.get(i) + " " + "24:00:00";
+				for (int j = 0; j < listsource.size(); j++) {
+					String source = listsource.get(j).getSourcename();
+					float appnum = intTongjiService.queryApplicationNumber(company[0], source, startTime, endTime);// 得到申请数
+					String discount = intTongjiService.queryDiscount(source, company[0]);// 得到折扣率
+					int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+					int sumappnum = intTongjiService.queryUV(company[0], source, startTime, endTime);// 得到点过甲方贷款商家总的人数
+					int uv = 0;
+					String cvr = null;
+					if (redisClientUtil.getSourceClick(company[0] + source + list1.get(i) + "Key") == null) {
+						uv = 0;
+					} else {
+						uv = Integer
+								.parseInt(redisClientUtil.getSourceClick(company[0] + source + list1.get(i) + "Key"));
+					}
+					if ((appnum < 0.000001) || (uv == 0)) {
+						cvr = 0 + "%";// 得到转化率
+					} else {
+						cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
+					}
+					TongjiSorce tongjiSorce = new TongjiSorce();
+					tongjiSorce.setDate(list1.get(i));// 日期
+					tongjiSorce.setSourceName(source);// 渠道名称
+					tongjiSorce.setUv(uv);// uv
+					tongjiSorce.setAppNum(appnum);// 真实的申请数
+					if (appnum >= 100) {
+						tongjiSorce.setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
+					} else {
+						tongjiSorce.setAppNum1(appnum);
+					}
+					tongjiSorce.setCvr(cvr);// 转化率
+					tongjiSorce.setSumappnum(sumappnum);// 点过甲方总的人数
+					listto.add(tongjiSorce);
+				}
+			}
+		} else if (company.length > 1) {
+			System.out.println("company.length>1");
+			for (int i = 0; i < company.length; i++) {
+				List<String> list = intTongjiService.queryTimeme1(company[i]);// 查询出所有的注册时间
+				List<String> list1 = new ArrayList<>();// 用来存时间戳转换后的时间
+				for (int i1 = 0; i1 < list.size(); i1++) {
+					list1.add(Timestamps.stampToDate1(list.get(i1)));
+				}
+				HashSet h = new HashSet(list1);
+				list1.clear();
+				list1.addAll(h);
+				for (int i2 = 0; i2 < list1.size(); i2++) {
+					System.out.println(list1.get(i2));
+				}
+				listsource = intMerchantService.queryAll(company[i]);// 查询出所有的渠道信息
+				for (int j = 0; j < list1.size(); j++) {
+					String startTime = list1.get(j) + " " + "00:00:00";
+					String endTime = list1.get(j) + " " + "24:00:00";
+					for (int k = 0; k < listsource.size(); k++) {
+						String source = listsource.get(k).getSourcename();
+						float appnum = intTongjiService.queryApplicationNumber(company[i], source, startTime, endTime);// 得到申请数
+						String discount = intTongjiService.queryDiscount(source, company[i]);// 得到折扣率
+						int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+						int sumappnum = intTongjiService.queryUV(company[i], source, startTime, endTime);// 得到点过甲方贷款商家总的人数
+						int uv = 0;
+						String cvr = null;
+						if (redisClientUtil.getSourceClick(company[i] + source + list1.get(j) + "Key") == null) {
+							uv = 0;
+						} else {
+							uv = Integer.parseInt(
+									redisClientUtil.getSourceClick(company[i] + source + list1.get(j) + "Key"));
+						}
+						if ((appnum < 0.000001) || (uv == 0)) {
+							cvr = 0 + "%";// 得到转化率
+						} else {
+							cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
+						}
+						TongjiSorce tongjiSorce = new TongjiSorce();
+						tongjiSorce.setDate(list1.get(j));// 日期
+						tongjiSorce.setSourceName(source);// 渠道名称
+						tongjiSorce.setUv(uv);// uv
+						tongjiSorce.setAppNum(appnum);// 真实的申请数
+						if (appnum >= 100) {
+							tongjiSorce.setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
+						} else {
+							tongjiSorce.setAppNum1(appnum);
+						}
+						tongjiSorce.setCvr(cvr);// 转化率
+						tongjiSorce.setSumappnum(sumappnum);// 点过甲方总的人数
+						listto.add(tongjiSorce);
+					}
+				}
+			}
+		}
+		
+		if (listto.size() != 0) {
+			ListPageUtil listPageUtil = new ListPageUtil(listto, page, 10);
+			listtopage.addAll(listPageUtil.getData());
+
+			pageUtil = new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),
+					listPageUtil.getTotalCount());
+
+		}
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("listsource", listsource);
+		map.put("listtopage", listtopage);
+		map.put("pageUtil", pageUtil);
+		map.put("company", company);
+		return map;
+	}
+
+	// 后台管理---我们自己看的统计数据 通过日期查询
+	@ResponseBody
+	@RequestMapping("/queryAllPageByTime")
+	public Map<String, Object> queryAllPageByTime(Integer page, String string, String date) throws ParseException {
 		string = string.replaceAll("\"", "").replace("[", "").replace("]", "");
 		String[] company = string.split(",");
 
@@ -100,108 +298,108 @@ public class TongjiController {
 		calendar.setTime(sdf.parse(date.replace("/", "-")));
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		Date newDate = calendar.getTime();
-		String nextDate=sdf.format(newDate);//传进来日期的后一天
-    	String startTime=Timestamps.dateToStamp(date.replace("/", "-"));//将传进来的时间转换为时间戳格式
-    	String endTime=Timestamps.dateToStamp(nextDate);//将传进来的时间的后一天转换为时间戳格式
-	  	
-    	if(company.length==1) {
-    		
-    		System.out.println("company.length==1");
-    		
-    		listsource=intMerchantService.queryAll(company[0]);//查询出所有的渠道信息
-    		RedisClientUtil redisClientUtil = new RedisClientUtil();
-    		for (int i = 0; i < listsource.size(); i++) {
-    			String source=listsource.get(i).getSourcename();
-    	    	
-    	    	float appnum=intTongjiService.queryApplicationNumber(company[0], source,startTime,endTime);//得到申请数
-    	    	String discount=intTongjiService.queryDiscount(source, company[0]);//得到折扣率
-    	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
-    	    	int sumappnum=intTongjiService.queryUV(company[0], source,startTime,endTime);//得到点过甲方贷款商家总的人数
-    	    	int uv=0;
-    	    	String cvr=null;
-    	    	if(redisClientUtil.getSourceClick(company[0]+source+date+"Key")==null) {
-    	    		uv=0;
-    	    	}else {
-    	    		uv=Integer.parseInt(redisClientUtil.getSourceClick(company[0]+source+date+"Key"));
-    	    	}
-    	     	if((appnum<0.000001)||(uv==0)) {
-    	    		cvr=0+"%";//得到转化率
-    	    	}else {
-    	    		cvr=(new DecimalFormat("#.00").format(appnum/uv*100))+"%";//得到转化率
-    	    	}
-    			TongjiSorce tongjiSorce=new TongjiSorce();
-    			tongjiSorce.setDate(date);//日期
-    			tongjiSorce.setSourceName(source);//渠道名称
-    			tongjiSorce.setUv(uv);//uv
-    			tongjiSorce.setAppNum(appnum);//真实的申请数
-    			if(appnum>=100) {
-    				tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
-    			}else {
-    				tongjiSorce.setAppNum1(appnum);
-    			}
-    			tongjiSorce.setCvr(cvr);//转化率
-    			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
-    			listto.add(tongjiSorce);
+		String nextDate = sdf.format(newDate);// 传进来日期的后一天
+		String startTime = Timestamps.dateToStamp(date.replace("/", "-"));// 将传进来的时间转换为时间戳格式
+		String endTime = Timestamps.dateToStamp(nextDate);// 将传进来的时间的后一天转换为时间戳格式
+
+		if (company.length == 1) {
+
+			System.out.println("company.length==1");
+
+			listsource = intMerchantService.queryAll(company[0]);// 查询出所有的渠道信息
+			RedisClientUtil redisClientUtil = new RedisClientUtil();
+			for (int i = 0; i < listsource.size(); i++) {
+				String source = listsource.get(i).getSourcename();
+
+				float appnum = intTongjiService.queryApplicationNumber(company[0], source, startTime, endTime);// 得到申请数
+				String discount = intTongjiService.queryDiscount(source, company[0]);// 得到折扣率
+				int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+				int sumappnum = intTongjiService.queryUV(company[0], source, startTime, endTime);// 得到点过甲方贷款商家总的人数
+				int uv = 0;
+				String cvr = null;
+				if (redisClientUtil.getSourceClick(company[0] + source + date + "Key") == null) {
+					uv = 0;
+				} else {
+					uv = Integer.parseInt(redisClientUtil.getSourceClick(company[0] + source + date + "Key"));
+				}
+				if ((appnum < 0.000001) || (uv == 0)) {
+					cvr = 0 + "%";// 得到转化率
+				} else {
+					cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
+				}
+				TongjiSorce tongjiSorce = new TongjiSorce();
+				tongjiSorce.setDate(date);// 日期
+				tongjiSorce.setSourceName(source);// 渠道名称
+				tongjiSorce.setUv(uv);// uv
+				tongjiSorce.setAppNum(appnum);// 真实的申请数
+				if (appnum >= 100) {
+					tongjiSorce.setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
+				} else {
+					tongjiSorce.setAppNum1(appnum);
+				}
+				tongjiSorce.setCvr(cvr);// 转化率
+				tongjiSorce.setSumappnum(sumappnum);// 点过甲方总的人数
+				listto.add(tongjiSorce);
 			}
-    	}
-    	else if(company.length>1){
-    		
-    		System.out.println("company.length>1");
-    		
-    		List<Source> listsourcefor=null;
-    		RedisClientUtil redisClientUtil = new RedisClientUtil();
-    		for (int j = 0; j < company.length; j++) {
-    			listsourcefor=intMerchantService.queryAll(company[j]);//查询出所有的渠道信息
-    			listsource.addAll(listsourcefor);
-    			
-    			for (int i = 0; i < listsourcefor.size(); i++) {
-        			String source=listsourcefor.get(i).getSourcename();
-        	    	float appnum=intTongjiService.queryApplicationNumber(company[j], source,startTime,endTime);//得到申请数
-        	    	String discount=intTongjiService.queryDiscount(source, company[j]);//得到折扣率
-        	    	int discount1=Integer.parseInt(discount.substring(0, discount.length()-1));
-        	    	int sumappnum=intTongjiService.queryUV(company[j], source,startTime,endTime);//得到甲方总申请数
-        	    	int uv=0;
-        	    	String cvr=null;
-        	     	if(redisClientUtil.getSourceClick(company[0]+source+date+"Key")==null) {
-        	    		uv=0;
-        	    	}else {
-        	    		uv=Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+date+"Key"));
-        	    	}
-        	     	if((appnum<0.000001)||(uv==0)) {
-        	    		cvr=0+"%";//得到转化率
-        	    	}else {
-        	    		cvr=(new DecimalFormat("#.00").format(appnum/uv*100))+"%";//得到转化率
-        	    	}
-        	    	
-        			TongjiSorce tongjiSorce=new TongjiSorce();
-        			tongjiSorce.setDate(date);//日期
-        			tongjiSorce.setSourceName(source);//渠道名称
-        			tongjiSorce.setUv(uv);//uv
-        			tongjiSorce.setAppNum(appnum);//真实的申请数
-        			if(appnum>=100) {
-        				tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
-        			}else {
-        				tongjiSorce.setAppNum1(appnum);
-        			}
-        			tongjiSorce.setCvr(cvr);//转化率
-        			tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
-        			listto.add(tongjiSorce);
-    			}
+		} else if (company.length > 1) {
+
+			System.out.println("company.length>1");
+
+			List<Source> listsourcefor = null;
+			RedisClientUtil redisClientUtil = new RedisClientUtil();
+			for (int j = 0; j < company.length; j++) {
+				listsourcefor = intMerchantService.queryAll(company[j]);// 查询出所有的渠道信息
+				listsource.addAll(listsourcefor);
+
+				for (int i = 0; i < listsourcefor.size(); i++) {
+					String source = listsourcefor.get(i).getSourcename();
+					float appnum = intTongjiService.queryApplicationNumber(company[j], source, startTime, endTime);// 得到申请数
+					String discount = intTongjiService.queryDiscount(source, company[j]);// 得到折扣率
+					int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+					int sumappnum = intTongjiService.queryUV(company[j], source, startTime, endTime);// 得到甲方总申请数
+					int uv = 0;
+					String cvr = null;
+					if (redisClientUtil.getSourceClick(company[0] + source + date + "Key") == null) {
+						uv = 0;
+					} else {
+						uv = Integer.parseInt(redisClientUtil.getSourceClick(company[j] + source + date + "Key"));
+					}
+					if ((appnum < 0.000001) || (uv == 0)) {
+						cvr = 0 + "%";// 得到转化率
+					} else {
+						cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
+					}
+
+					TongjiSorce tongjiSorce = new TongjiSorce();
+					tongjiSorce.setDate(date);// 日期
+					tongjiSorce.setSourceName(source);// 渠道名称
+					tongjiSorce.setUv(uv);// uv
+					tongjiSorce.setAppNum(appnum);// 真实的申请数
+					if (appnum >= 100) {
+						tongjiSorce.setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
+					} else {
+						tongjiSorce.setAppNum1(appnum);
+					}
+					tongjiSorce.setCvr(cvr);// 转化率
+					tongjiSorce.setSumappnum(sumappnum);// 点过甲方总的人数
+					listto.add(tongjiSorce);
+				}
 			}
-    	}
-    	if(listto.size()!=0) {
-    		ListPageUtil listPageUtil=new ListPageUtil(listto,page,10);
-    		listtopage.addAll(listPageUtil.getData());
-    		
-    		pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-        	
-    	}
-    	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listsource", listsource);
-    	map.put("listtopage",listtopage);
-    	map.put("pageUtil",pageUtil);
-    	map.put("company", company);
-    	return map;
+		}
+		if (listto.size() != 0) {
+			ListPageUtil listPageUtil = new ListPageUtil(listto, page, 10);
+			listtopage.addAll(listPageUtil.getData());
+
+			pageUtil = new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),
+					listPageUtil.getTotalCount());
+
+		}
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("listsource", listsource);
+		map.put("listtopage", listtopage);
+		map.put("pageUtil", pageUtil);
+		map.put("company", company);
+		return map;
 	}
 
 	// 后台管理---统计详情功能
@@ -235,7 +433,8 @@ public class TongjiController {
 		int pages = (page - 1) * pageUtil.getPageSize();
 		pageUtil.setPage(pages);
 
-		listsourceTongji = intTongjiService.queryAllPage(source, startTime, endTime, pageUtil.getPage(),pageUtil.getPageSize());
+		listsourceTongji = intTongjiService.queryAllPage(source, startTime, endTime, pageUtil.getPage(),
+				pageUtil.getPageSize());
 		pageUtil = new PageUtil(page, 10, totalCount);
 		for (int i = 0; i < listsourceTongji.size(); i++) {
 			int uv = intTongjiService.queryUV1(listsourceTongji.get(i).getBusinessName(),
@@ -253,639 +452,551 @@ public class TongjiController {
 		return map;
 	}
 }
-	
-	//后台管理---通过渠道名称   查询统计表所有信息，含分页
-   // @ResponseBody
-   // @RequestMapping("/queryAllPageBySourceName")
- /*   public Map<String,Object> queryAllPageBySourceName(Integer page,String string,String string1,String date){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
-		string1 = string1.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] sourceName= string1.split(",");
-		
-		PageUtil pageUtil=null;
-	  	List<Source> listsource=new ArrayList<>();
-	  	List<TongjiSorce> listto=new ArrayList<>();
-	  	List<TongjiSorce> listtopage=new ArrayList<>();
-		//不存在日期为空的情况
-	   	//日期为空 公司名选择的是全部  渠道选择的是全部 
-    	if((date==null||"".equals(date))&&(company.length>1)&&(sourceName.length>1)) {
-    		
-    	}
-    	//日期为空 公司名选择的是全部   渠道选择的不是全部  
-    	else if((date==null||"".equals(date))&&(company.length>1)&&(sourceName.length==1)) {
-    		
-    	}
-    	//日期为空 公司名选择的不是全部   渠道选择的是全部  
-    	else if((date==null||"".equals(date))&&(company.length==1)&&(sourceName.length>1)) {
-    		
-    	}
-       	//日期为空 公司名选择的不是全部   渠道选择的不是全部  
-    	else if((date==null||"".equals(date))&&(company.length==1)&&(sourceName.length==1)) {
-    		
-    	}
-    	//日期不为空 公司名选择的是全部  渠道选择的是全部 
-    	if((date!=null||!"".equals(date))&&(company.length>1)&&(sourceName.length>1)) {
-    		for (int i = 0; i < sourceName.length; i++) {
-				
-			}
-    	}
-    	//日期不为空 公司名选择的是全部   渠道选择的不是全部  
-    	else if((date!=null||!"".equals(date))&&(company.length>1)&&(sourceName.length==1)) {
-    		
-    	}
-    	//日期不为空 公司名选择的不是全部   渠道选择的是全部  
-    	else if((date!=null||!"".equals(date))&&(company.length==1)&&(sourceName.length>1)) {
-    		
-    	}
-    	//日期不为空 公司名选择的不是全部   渠道选择的不是全部 
-    	else if((date!=null||!"".equals(date))&&(company.length==1)&&(sourceName.length==1)) {
-    		
-    	}
-    	
-    }*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//后台管理---关联查询统计所有信息，含分页    
-  /*  @ResponseBody
-    @RequestMapping("/queryAllPage1")
-    public Map<String,Object> queryAllPage1(Integer page,String string){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
-    	PageUtil pageUtil=null;
-    	List<Source> listsource=new ArrayList<>();
-    	List<SourceTongji> listsourceTongji=new ArrayList<>();//刚开始查询出来的数据
-    	List<SourceTongji> listsourceTongjifor=new ArrayList<>();//经过封装后的数据
-    	List<SourceTongji> listsourceTongjitoListPage=new ArrayList<>();//最终的数据
-    	if(company.length==1) {
-    		
-    		System.out.println("company.length==1");
-    		
-    		listsource=intMerchantService.queryAll(company[0]);//查询出所有的渠道信息
-    		int totalCount=intTongjiService.pageCount(company[0]);//该方法是查询统计总条数
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-    		
-	    	listsourceTongji=intTongjiService.queryAllPage(company[0],pageUtil.getPage(),pageUtil.getPageSize());
-    		for (int i = 0; i < listsourceTongji.size(); i++) {
-				int pv=intTongjiService.queryPV(company[0], listsourceTongji.get(i).getSourceName());
-				int uv=intTongjiService.queryUV(company[0], listsourceTongji.get(i).getSourceName());
-				int appnum=intTongjiService.queryApplicationNumber(company[0], listsourceTongji.get(i).getSourceName());
-				SourceTongji sourceTongji=new SourceTongji();
-				sourceTongji.setId(listsourceTongji.get(i).getId());
-				sourceTongji.setDate(listsourceTongji.get(i).getDate());
-				sourceTongji.setBusinessName(listsourceTongji.get(i).getBusinessName());
-				sourceTongji.setSourceName(listsourceTongji.get(i).getSourceName());
-				sourceTongji.setPv(pv);
-				sourceTongji.setUv(uv);
-				sourceTongji.setApplicationNumber(appnum);
-				sourceTongji.setCvr(appnum/uv+"%");
-				listsourceTongjitoListPage.add(sourceTongji);
-			}
-    		pageUtil=new PageUtil(page,2,totalCount);
-    	}
-    	else if(company.length>1) {
-    		
-    		System.out.println("company.length>1");
-    		
-    		List<Source> listsourcefor=null;
-    		for (int i = 0; i < company.length; i++) {
-    			listsourcefor=intMerchantService.queryAll(company[i]);//查询出所有的渠道信息 
-    			listsource.addAll(listsourcefor);
-    			
-    			listsourceTongji=intTongjiService.queryAllPage1(company[i]);
-    			for (int j = 0; j < listsourceTongji.size(); j++) {
-    				int pv=intTongjiService.queryPV(company[i], listsourceTongji.get(j).getSourceName());
-    				int uv=intTongjiService.queryUV(company[i], listsourceTongji.get(j).getSourceName());
-    				int appnum=intTongjiService.queryApplicationNumber(company[i], listsourceTongji.get(j).getSourceName());
-    				SourceTongji sourceTongji=new SourceTongji();
-    				sourceTongji.setId(listsourceTongji.get(j).getId());
-    				sourceTongji.setDate(listsourceTongji.get(j).getDate());
-    				sourceTongji.setBusinessName(listsourceTongji.get(j).getBusinessName());
-    				sourceTongji.setSourceName(listsourceTongji.get(j).getSourceName());
-    				sourceTongji.setPv(pv);
-    				sourceTongji.setUv(uv);
-    				sourceTongji.setApplicationNumber(appnum);
-    				sourceTongji.setCvr(appnum/uv+"%");
-    				listsourceTongjifor.add(sourceTongji);
-				}
-			}
-    		
-			for (int i = 0; i < listsourceTongjifor.size(); i++) {
-				System.out.println(listsourceTongjifor.get(i)+"整合后的集合");
-			}
-			
-			System.out.println("传进工具类的page"+page);
-			
-			ListPageUtil listPageUtil=new ListPageUtil(listsourceTongjifor,page,2);
-			listsourceTongjitoListPage.addAll(listPageUtil.getData());
-			
-			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-    	}
-    	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listsource", listsource);
-    	map.put("listsourceTongjitoListPage",listsourceTongjitoListPage);
-    	map.put("pageutil", pageUtil);
-    	map.put("company", company);
-    	return map;
-    }
-	//后台管理---通过渠道名称   查询统计表所有信息，含分页
-    @ResponseBody
-    @RequestMapping("/queryAllPageBySourceName")
-    public Map<String,Object> queryAllPageBySourceName(Integer page,String string,String string1){
-		string = string.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] company= string.split(",");
-		string1 = string1.replaceAll("\"", "").replace("[","").replace("]","");
-		String [] sourceName= string1.split(",");
-    	PageUtil pageUtil=null;
-    	List<SourceTongji> listSourceTongjione=new ArrayList<>();
-    	List<SourceTongji> listSourceTongjitwo=new ArrayList<>();
-    	List<SourceTongji> listone=new ArrayList<>();
-    	List<SourceTongji> listtwo=new ArrayList<>();//对集合进行处理后的集合   最终集合
-       //	List<SourceTongji> listoneto=new ArrayList<>();
-    	//公司名选择的是全部  渠道选择的是全部 
-    	if((company.length>1)&&(sourceName.length>1)) {
-    		
-    		System.out.println("第一个if："+"company.length>1-----sourceName.length>1");
-    		
-    		for (int i = 0; i < company.length; i++) {
-    			for (int j = 0; j < sourceName.length; j++) {
-    				listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[j]);
-    				for (int k = 0; k < listone.size(); k++) {
-        				int pv=intTongjiService.queryPV(company[i], listone.get(k).getSourceName());
-        				int uv=intTongjiService.queryUV(company[i], listone.get(k).getSourceName());
-        				int appnum=intTongjiService.queryApplicationNumber(company[i], listone.get(k).getSourceName());
-        				SourceTongji sourceTongji=new SourceTongji();
-        				sourceTongji.setId(listone.get(k).getId());
-        				sourceTongji.setDate(listone.get(k).getDate());
-        				sourceTongji.setBusinessName(listone.get(k).getBusinessName());
-        				sourceTongji.setSourceName(listone.get(k).getSourceName());
-        				sourceTongji.setPv(pv);
-        				sourceTongji.setUv(uv);
-        				sourceTongji.setApplicationNumber(appnum);
-        				sourceTongji.setCvr(appnum/uv+"%");
-        				listSourceTongjione.add(sourceTongji);
-					}
-				}
-    			listSourceTongjitwo.addAll(listSourceTongjione);
-    		}	
-    		
-			for (int i = 0; i < listSourceTongjitwo.size(); i++) {
-				System.out.println(listSourceTongjitwo.get(i)+"整合后的集合");
-			}
-			
-			System.out.println("传进工具类的page"+page);
-			
-			ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjitwo,page,2);
-			listtwo.addAll(listPageUtil.getData());
-			
-			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-    		
-    	}
-    	//公司名选择的是全部   渠道选择的不是全部  
-    	else if((company.length>1)&&(sourceName.length==1)) {
-    	
-    		System.out.println("第二个if："+"company.length>1-----sourceName.length==1");
-    		
-    		for (int i = 0; i < company.length; i++) {
-				listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[0]);
-				
-    			for (int j = 0; j < listone.size(); j++) {
-    				int pv=intTongjiService.queryPV(company[i], listone.get(j).getSourceName());
-    				int uv=intTongjiService.queryUV(company[i], listone.get(j).getSourceName());
-    				int appnum=intTongjiService.queryApplicationNumber(company[i], listone.get(j).getSourceName());
-    				SourceTongji sourceTongji=new SourceTongji();
-    				sourceTongji.setId(listone.get(j).getId());
-    				sourceTongji.setDate(listone.get(j).getDate());
-    				sourceTongji.setBusinessName(listone.get(j).getBusinessName());
-    				sourceTongji.setSourceName(listone.get(j).getSourceName());
-    				sourceTongji.setPv(pv);
-    				sourceTongji.setUv(uv);
-    				sourceTongji.setApplicationNumber(appnum);
-    				sourceTongji.setCvr(appnum/uv+"%");
-    				listSourceTongjione.add(sourceTongji);
-				}
-			}
-    		
-			for (int i = 0; i < listSourceTongjione.size(); i++) {
-				System.out.println(listSourceTongjione.get(i)+"整合后的集合");
-			}
-			
-			System.out.println("传进工具类的page"+page);
-			
-			ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
-			listtwo.addAll(listPageUtil.getData());
-			
-			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-    		
-    	}
-    	//公司名选择的不是全部   渠道选择的是全部  
-    	else if((company.length==1)&&(sourceName.length>1)) {
-    		
-    		System.out.println("第三个if："+"company.length==1-----sourceName.length>1");
-    		
-    		for (int i = 0; i < sourceName.length; i++) {
-				listone=intTongjiService.queryAllPageBySourceName1(company[0],sourceName[i]);
-				
-    			for (int j = 0; j < listone.size(); j++) {
-    				int pv=intTongjiService.queryPV(company[0], listone.get(j).getSourceName());
-    				int uv=intTongjiService.queryUV(company[0], listone.get(j).getSourceName());
-    				int appnum=intTongjiService.queryApplicationNumber(company[0], listone.get(j).getSourceName());
-    				SourceTongji sourceTongji=new SourceTongji();
-    				sourceTongji.setId(listone.get(j).getId());
-    				sourceTongji.setDate(listone.get(j).getDate());
-    				sourceTongji.setBusinessName(listone.get(j).getBusinessName());
-    				sourceTongji.setSourceName(listone.get(j).getSourceName());
-    				sourceTongji.setPv(pv);
-    				sourceTongji.setUv(uv);
-    				sourceTongji.setApplicationNumber(appnum);
-    				sourceTongji.setCvr(appnum/uv+"%");
-    				listSourceTongjione.add(sourceTongji);
-				}
-			}
-    		
-			for (int i = 0; i < listSourceTongjione.size(); i++) {
-				System.out.println(listSourceTongjione.get(i)+"整合后的集合");
-			}
-			
-			System.out.println("传进工具类的page"+page);
-			
-			ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
-			listtwo.addAll(listPageUtil.getData());
-			
-			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-    		
-    	}
-    	//公司名选择的不是全部   渠道选择的不是全部  
-    	else if((company.length==1)&&(sourceName.length==1)) {
-    		
-    		System.out.println("第四个if："+"company.length==1-----sourceName.length==1");
-    		
-    		int totalCount=intTongjiService.pageCountBySourceName(company[0],sourceName[0]);//该方法是查询统计总条数
-	    	pageUtil=new PageUtil(page,2,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}
-	    	else if(page>pageUtil.getTotalPageCount()) {
-	    		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages);
-    		
-	    	listone=intTongjiService.queryAllPageBySourceName(company[0],sourceName[0],pageUtil.getPage(),pageUtil.getPageSize());
-    		for (int i = 0; i < listone.size(); i++) {
-				int pv=intTongjiService.queryPV(company[0], listone.get(i).getSourceName());
-				int uv=intTongjiService.queryUV(company[0], listone.get(i).getSourceName());
-				int appnum=intTongjiService.queryApplicationNumber(company[0], listone.get(i).getSourceName());
-				SourceTongji sourceTongji=new SourceTongji();
-				sourceTongji.setId(listone.get(i).getId());
-				sourceTongji.setDate(listone.get(i).getDate());
-				sourceTongji.setBusinessName(listone.get(i).getBusinessName());
-				sourceTongji.setSourceName(listone.get(i).getSourceName());
-				sourceTongji.setPv(pv);
-				sourceTongji.setUv(uv);
-				sourceTongji.setApplicationNumber(appnum);
-				sourceTongji.setCvr(appnum/uv+"%");
-				listtwo.add(sourceTongji);
-			}
-    		pageUtil=new PageUtil(page,2,totalCount);
-    	}
-    	
-    	HashMap<String, Object> map=new HashMap<>();
-        map.put("listSourceTongjitwo",listtwo);
-        map.put("pageutil", pageUtil);
-    	return map;
-    }*/
 
-	// 后台管理---通过渠道名称 查询统计表所有信息，含分页
-	// @ResponseBody
-	// @RequestMapping("/queryAllPageBySourceName")
-	/*
-	 * public Map<String,Object> queryAllPageBySourceName(Integer page,String
-	 * string,String string1,String date){ string = string.replaceAll("\"",
-	 * "").replace("[","").replace("]",""); String [] company= string.split(",");
-	 * string1 = string1.replaceAll("\"", "").replace("[","").replace("]","");
-	 * String [] sourceName= string1.split(",");
-	 * 
-	 * PageUtil pageUtil=null; List<Source> listsource=new ArrayList<>();
-	 * List<TongjiSorce> listto=new ArrayList<>(); List<TongjiSorce> listtopage=new
-	 * ArrayList<>();
-	 * 
-	 * //公司名选择的是全部 渠道选择的是全部 if((company.length>1)&&(sourceName.length>1)) {
-	 * List<Source> listsourcefor=null; RedisClientUtil redisClientUtil = new
-	 * RedisClientUtil(); for (int j = 0; j < company.length; j++) {
-	 * listsourcefor=intMerchantService.queryAll(company[j]);//查询出所有的渠道信息
-	 * listsource.addAll(listsourcefor);
-	 * 
-	 * for (int i = 0; i < listsourcefor.size(); i++) { String
-	 * source=listsourcefor.get(i).getSourcename(); String SourceClick =
-	 * redisClientUtil.get(company[j]+source+"Key");//通过key得到value,就是得到uv
-	 * if(SourceClick==null) { redisClientUtil.set(company[j]+source+"Key","1");
-	 * System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
-	 * }else {
-	 * redisClientUtil.set(company[j]+source+"Key",Integer.parseInt(redisClientUtil.
-	 * getSourceClick(company[j]+source+"Key"))+1+"");
-	 * //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
-	 * System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
-	 * } float appnum=intTongjiService.queryApplicationNumber(company[j],
-	 * source,startTime,endTime);//得到申请数 String
-	 * discount=intTongjiService.queryDiscount(source, company[j]);//得到折扣率 int
-	 * discount1=Integer.parseInt(discount.substring(0, discount.length()-1)); int
-	 * sumappnum=intTongjiService.queryUV(company[j],
-	 * source,startTime,endTime);//得到甲方总申请数 Integer
-	 * uv=Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+"Key"));
-	 * String cvr=(appnum/uv)+"%";//得到转化率
-	 * 
-	 * TongjiSorce tongjiSorce=new TongjiSorce(); tongjiSorce.setDate(date);//日期
-	 * tongjiSorce.setSourceName(source);//渠道名称 tongjiSorce.setUv(uv);//uv
-	 * tongjiSorce.setAppNum(appnum);//真实的申请数
-	 * tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
-	 * tongjiSorce.setCvr(cvr);//转化率 tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
-	 * listto.add(tongjiSorce); } } } //公司名选择的是全部 渠道选择的不是全部 else
-	 * if((company.length>1)&&(sourceName.length==1)) {
-	 * 
-	 * } //公司名选择的不是全部 渠道选择的是全部 else if((company.length==1)&&(sourceName.length>1)) {
-	 * 
-	 * } //公司名选择的不是全部 渠道选择的不是全部 else if((company.length==1)&&(sourceName.length==1))
-	 * {
-	 * 
-	 * } }
-	 */
+// 后台管理---通过渠道名称 查询统计表所有信息，含分页
+// @ResponseBody
+// @RequestMapping("/queryAllPageBySourceName")
+/*
+ * public Map<String,Object> queryAllPageBySourceName(Integer page,String
+ * string,String string1,String date){ string = string.replaceAll("\"",
+ * "").replace("[","").replace("]",""); String [] company= string.split(",");
+ * string1 = string1.replaceAll("\"", "").replace("[","").replace("]","");
+ * String [] sourceName= string1.split(",");
+ * 
+ * PageUtil pageUtil=null; List<Source> listsource=new ArrayList<>();
+ * List<TongjiSorce> listto=new ArrayList<>(); List<TongjiSorce> listtopage=new
+ * ArrayList<>(); //不存在日期为空的情况 //日期为空 公司名选择的是全部 渠道选择的是全部
+ * if((date==null||"".equals(date))&&(company.length>1)&&(sourceName.length>1))
+ * {
+ * 
+ * } //日期为空 公司名选择的是全部 渠道选择的不是全部 else
+ * if((date==null||"".equals(date))&&(company.length>1)&&(sourceName.length==1))
+ * {
+ * 
+ * } //日期为空 公司名选择的不是全部 渠道选择的是全部 else
+ * if((date==null||"".equals(date))&&(company.length==1)&&(sourceName.length>1))
+ * {
+ * 
+ * } //日期为空 公司名选择的不是全部 渠道选择的不是全部 else
+ * if((date==null||"".equals(date))&&(company.length==1)&&(sourceName.length==1)
+ * ) {
+ * 
+ * } //日期不为空 公司名选择的是全部 渠道选择的是全部
+ * if((date!=null||!"".equals(date))&&(company.length>1)&&(sourceName.length>1))
+ * { for (int i = 0; i < sourceName.length; i++) {
+ * 
+ * } } //日期不为空 公司名选择的是全部 渠道选择的不是全部 else
+ * if((date!=null||!"".equals(date))&&(company.length>1)&&(sourceName.length==1)
+ * ) {
+ * 
+ * } //日期不为空 公司名选择的不是全部 渠道选择的是全部 else
+ * if((date!=null||!"".equals(date))&&(company.length==1)&&(sourceName.length>1)
+ * ) {
+ * 
+ * } //日期不为空 公司名选择的不是全部 渠道选择的不是全部 else
+ * if((date!=null||!"".equals(date))&&(company.length==1)&&(sourceName.length==1
+ * )) {
+ * 
+ * }
+ * 
+ * }
+ */
 
-	// 后台管理---关联查询统计所有信息，含分页
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("/queryAllPage1") public Map<String,Object>
-	 * queryAllPage1(Integer page,String string){ string = string.replaceAll("\"",
-	 * "").replace("[","").replace("]",""); String [] company= string.split(",");
-	 * PageUtil pageUtil=null; List<Source> listsource=new ArrayList<>();
-	 * List<SourceTongji> listsourceTongji=new ArrayList<>();//刚开始查询出来的数据
-	 * List<SourceTongji> listsourceTongjifor=new ArrayList<>();//经过封装后的数据
-	 * List<SourceTongji> listsourceTongjitoListPage=new ArrayList<>();//最终的数据
-	 * if(company.length==1) {
-	 * 
-	 * System.out.println("company.length==1");
-	 * 
-	 * listsource=intMerchantService.queryAll(company[0]);//查询出所有的渠道信息 int
-	 * totalCount=intTongjiService.pageCount(company[0]);//该方法是查询统计总条数 pageUtil=new
-	 * PageUtil(page,2,totalCount); if(page<1) { page=1; } else
-	 * if(page>pageUtil.getTotalPageCount()) { if(totalCount==0) {
-	 * page=pageUtil.getTotalPageCount()+1; }else {
-	 * page=pageUtil.getTotalPageCount(); } } int
-	 * pages=(page-1)*pageUtil.getPageSize(); pageUtil.setPage(pages);
-	 * 
-	 * listsourceTongji=intTongjiService.queryAllPage(company[0],pageUtil.getPage(),
-	 * pageUtil.getPageSize()); for (int i = 0; i < listsourceTongji.size(); i++) {
-	 * int pv=intTongjiService.queryPV(company[0],
-	 * listsourceTongji.get(i).getSourceName()); int
-	 * uv=intTongjiService.queryUV(company[0],
-	 * listsourceTongji.get(i).getSourceName()); int
-	 * appnum=intTongjiService.queryApplicationNumber(company[0],
-	 * listsourceTongji.get(i).getSourceName()); SourceTongji sourceTongji=new
-	 * SourceTongji(); sourceTongji.setId(listsourceTongji.get(i).getId());
-	 * sourceTongji.setDate(listsourceTongji.get(i).getDate());
-	 * sourceTongji.setBusinessName(listsourceTongji.get(i).getBusinessName());
-	 * sourceTongji.setSourceName(listsourceTongji.get(i).getSourceName());
-	 * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
-	 * sourceTongji.setApplicationNumber(appnum);
-	 * sourceTongji.setCvr(appnum/uv+"%");
-	 * listsourceTongjitoListPage.add(sourceTongji); } pageUtil=new
-	 * PageUtil(page,2,totalCount); } else if(company.length>1) {
-	 * 
-	 * System.out.println("company.length>1");
-	 * 
-	 * List<Source> listsourcefor=null; for (int i = 0; i < company.length; i++) {
-	 * listsourcefor=intMerchantService.queryAll(company[i]);//查询出所有的渠道信息
-	 * listsource.addAll(listsourcefor);
-	 * 
-	 * listsourceTongji=intTongjiService.queryAllPage1(company[i]); for (int j = 0;
-	 * j < listsourceTongji.size(); j++) { int
-	 * pv=intTongjiService.queryPV(company[i],
-	 * listsourceTongji.get(j).getSourceName()); int
-	 * uv=intTongjiService.queryUV(company[i],
-	 * listsourceTongji.get(j).getSourceName()); int
-	 * appnum=intTongjiService.queryApplicationNumber(company[i],
-	 * listsourceTongji.get(j).getSourceName()); SourceTongji sourceTongji=new
-	 * SourceTongji(); sourceTongji.setId(listsourceTongji.get(j).getId());
-	 * sourceTongji.setDate(listsourceTongji.get(j).getDate());
-	 * sourceTongji.setBusinessName(listsourceTongji.get(j).getBusinessName());
-	 * sourceTongji.setSourceName(listsourceTongji.get(j).getSourceName());
-	 * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
-	 * sourceTongji.setApplicationNumber(appnum);
-	 * sourceTongji.setCvr(appnum/uv+"%"); listsourceTongjifor.add(sourceTongji); }
-	 * }
-	 * 
-	 * for (int i = 0; i < listsourceTongjifor.size(); i++) {
-	 * System.out.println(listsourceTongjifor.get(i)+"整合后的集合"); }
-	 * 
-	 * System.out.println("传进工具类的page"+page);
-	 * 
-	 * ListPageUtil listPageUtil=new ListPageUtil(listsourceTongjifor,page,2);
-	 * listsourceTongjitoListPage.addAll(listPageUtil.getData());
-	 * 
-	 * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
-	 * listPageUtil.getPageSize(),listPageUtil.getTotalCount()); }
-	 * HashMap<String,Object> map=new HashMap<>(); map.put("listsource",
-	 * listsource);
-	 * map.put("listsourceTongjitoListPage",listsourceTongjitoListPage);
-	 * map.put("pageutil", pageUtil); map.put("company", company); return map; }
-	 * //后台管理---通过渠道名称 查询统计表所有信息，含分页
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("/queryAllPageBySourceName") public Map<String,Object>
-	 * queryAllPageBySourceName(Integer page,String string,String string1){ string =
-	 * string.replaceAll("\"", "").replace("[","").replace("]",""); String []
-	 * company= string.split(","); string1 = string1.replaceAll("\"",
-	 * "").replace("[","").replace("]",""); String [] sourceName=
-	 * string1.split(","); PageUtil pageUtil=null; List<SourceTongji>
-	 * listSourceTongjione=new ArrayList<>(); List<SourceTongji>
-	 * listSourceTongjitwo=new ArrayList<>(); List<SourceTongji> listone=new
-	 * ArrayList<>(); List<SourceTongji> listtwo=new ArrayList<>();//对集合进行处理后的集合
-	 * 最终集合 // List<SourceTongji> listoneto=new ArrayList<>(); //公司名选择的是全部 渠道选择的是全部
-	 * if((company.length>1)&&(sourceName.length>1)) {
-	 * 
-	 * System.out.println("第一个if："+"company.length>1-----sourceName.length>1");
-	 * 
-	 * for (int i = 0; i < company.length; i++) { for (int j = 0; j <
-	 * sourceName.length; j++) {
-	 * listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[j]);
-	 * for (int k = 0; k < listone.size(); k++) { int
-	 * pv=intTongjiService.queryPV(company[i], listone.get(k).getSourceName()); int
-	 * uv=intTongjiService.queryUV(company[i], listone.get(k).getSourceName()); int
-	 * appnum=intTongjiService.queryApplicationNumber(company[i],
-	 * listone.get(k).getSourceName()); SourceTongji sourceTongji=new
-	 * SourceTongji(); sourceTongji.setId(listone.get(k).getId());
-	 * sourceTongji.setDate(listone.get(k).getDate());
-	 * sourceTongji.setBusinessName(listone.get(k).getBusinessName());
-	 * sourceTongji.setSourceName(listone.get(k).getSourceName());
-	 * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
-	 * sourceTongji.setApplicationNumber(appnum);
-	 * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
-	 * } listSourceTongjitwo.addAll(listSourceTongjione); }
-	 * 
-	 * for (int i = 0; i < listSourceTongjitwo.size(); i++) {
-	 * System.out.println(listSourceTongjitwo.get(i)+"整合后的集合"); }
-	 * 
-	 * System.out.println("传进工具类的page"+page);
-	 * 
-	 * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjitwo,page,2);
-	 * listtwo.addAll(listPageUtil.getData());
-	 * 
-	 * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
-	 * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-	 * 
-	 * } //公司名选择的是全部 渠道选择的不是全部 else if((company.length>1)&&(sourceName.length==1)) {
-	 * 
-	 * System.out.println("第二个if："+"company.length>1-----sourceName.length==1");
-	 * 
-	 * for (int i = 0; i < company.length; i++) {
-	 * listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[0]);
-	 * 
-	 * for (int j = 0; j < listone.size(); j++) { int
-	 * pv=intTongjiService.queryPV(company[i], listone.get(j).getSourceName()); int
-	 * uv=intTongjiService.queryUV(company[i], listone.get(j).getSourceName()); int
-	 * appnum=intTongjiService.queryApplicationNumber(company[i],
-	 * listone.get(j).getSourceName()); SourceTongji sourceTongji=new
-	 * SourceTongji(); sourceTongji.setId(listone.get(j).getId());
-	 * sourceTongji.setDate(listone.get(j).getDate());
-	 * sourceTongji.setBusinessName(listone.get(j).getBusinessName());
-	 * sourceTongji.setSourceName(listone.get(j).getSourceName());
-	 * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
-	 * sourceTongji.setApplicationNumber(appnum);
-	 * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
-	 * }
-	 * 
-	 * for (int i = 0; i < listSourceTongjione.size(); i++) {
-	 * System.out.println(listSourceTongjione.get(i)+"整合后的集合"); }
-	 * 
-	 * System.out.println("传进工具类的page"+page);
-	 * 
-	 * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
-	 * listtwo.addAll(listPageUtil.getData());
-	 * 
-	 * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
-	 * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-	 * 
-	 * } //公司名选择的不是全部 渠道选择的是全部 else if((company.length==1)&&(sourceName.length>1)) {
-	 * 
-	 * System.out.println("第三个if："+"company.length==1-----sourceName.length>1");
-	 * 
-	 * for (int i = 0; i < sourceName.length; i++) {
-	 * listone=intTongjiService.queryAllPageBySourceName1(company[0],sourceName[i]);
-	 * 
-	 * for (int j = 0; j < listone.size(); j++) { int
-	 * pv=intTongjiService.queryPV(company[0], listone.get(j).getSourceName()); int
-	 * uv=intTongjiService.queryUV(company[0], listone.get(j).getSourceName()); int
-	 * appnum=intTongjiService.queryApplicationNumber(company[0],
-	 * listone.get(j).getSourceName()); SourceTongji sourceTongji=new
-	 * SourceTongji(); sourceTongji.setId(listone.get(j).getId());
-	 * sourceTongji.setDate(listone.get(j).getDate());
-	 * sourceTongji.setBusinessName(listone.get(j).getBusinessName());
-	 * sourceTongji.setSourceName(listone.get(j).getSourceName());
-	 * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
-	 * sourceTongji.setApplicationNumber(appnum);
-	 * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
-	 * }
-	 * 
-	 * for (int i = 0; i < listSourceTongjione.size(); i++) {
-	 * System.out.println(listSourceTongjione.get(i)+"整合后的集合"); }
-	 * 
-	 * System.out.println("传进工具类的page"+page);
-	 * 
-	 * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
-	 * listtwo.addAll(listPageUtil.getData());
-	 * 
-	 * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
-	 * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
-	 * 
-	 * } //公司名选择的不是全部 渠道选择的不是全部 else if((company.length==1)&&(sourceName.length==1))
-	 * {
-	 * 
-	 * System.out.println("第四个if："+"company.length==1-----sourceName.length==1");
-	 * 
-	 * int
-	 * totalCount=intTongjiService.pageCountBySourceName(company[0],sourceName[0]);/
-	 * /该方法是查询统计总条数 pageUtil=new PageUtil(page,2,totalCount); if(page<1) { page=1; }
-	 * else if(page>pageUtil.getTotalPageCount()) { if(totalCount==0) {
-	 * page=pageUtil.getTotalPageCount()+1; }else {
-	 * page=pageUtil.getTotalPageCount(); } } int
-	 * pages=(page-1)*pageUtil.getPageSize(); pageUtil.setPage(pages);
-	 * 
-	 * listone=intTongjiService.queryAllPageBySourceName(company[0],sourceName[0],
-	 * pageUtil.getPage(),pageUtil.getPageSize()); for (int i = 0; i <
-	 * listone.size(); i++) { int pv=intTongjiService.queryPV(company[0],
-	 * listone.get(i).getSourceName()); int uv=intTongjiService.queryUV(company[0],
-	 * listone.get(i).getSourceName()); int
-	 * appnum=intTongjiService.queryApplicationNumber(company[0],
-	 * listone.get(i).getSourceName()); SourceTongji sourceTongji=new
-	 * SourceTongji(); sourceTongji.setId(listone.get(i).getId());
-	 * sourceTongji.setDate(listone.get(i).getDate());
-	 * sourceTongji.setBusinessName(listone.get(i).getBusinessName());
-	 * sourceTongji.setSourceName(listone.get(i).getSourceName());
-	 * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
-	 * sourceTongji.setApplicationNumber(appnum);
-	 * sourceTongji.setCvr(appnum/uv+"%"); listtwo.add(sourceTongji); } pageUtil=new
-	 * PageUtil(page,2,totalCount); }
-	 * 
-	 * HashMap<String, Object> map=new HashMap<>();
-	 * map.put("listSourceTongjitwo",listtwo); map.put("pageutil", pageUtil); return
-	 * map; }
-	 */
+// 后台管理---关联查询统计所有信息，含分页
+/*
+ * @ResponseBody
+ * 
+ * @RequestMapping("/queryAllPage1") public Map<String,Object>
+ * queryAllPage1(Integer page,String string){ string = string.replaceAll("\"",
+ * "").replace("[","").replace("]",""); String [] company= string.split(",");
+ * PageUtil pageUtil=null; List<Source> listsource=new ArrayList<>();
+ * List<SourceTongji> listsourceTongji=new ArrayList<>();//刚开始查询出来的数据
+ * List<SourceTongji> listsourceTongjifor=new ArrayList<>();//经过封装后的数据
+ * List<SourceTongji> listsourceTongjitoListPage=new ArrayList<>();//最终的数据
+ * if(company.length==1) {
+ * 
+ * System.out.println("company.length==1");
+ * 
+ * listsource=intMerchantService.queryAll(company[0]);//查询出所有的渠道信息 int
+ * totalCount=intTongjiService.pageCount(company[0]);//该方法是查询统计总条数 pageUtil=new
+ * PageUtil(page,2,totalCount); if(page<1) { page=1; } else
+ * if(page>pageUtil.getTotalPageCount()) { if(totalCount==0) {
+ * page=pageUtil.getTotalPageCount()+1; }else {
+ * page=pageUtil.getTotalPageCount(); } } int
+ * pages=(page-1)*pageUtil.getPageSize(); pageUtil.setPage(pages);
+ * 
+ * listsourceTongji=intTongjiService.queryAllPage(company[0],pageUtil.getPage(),
+ * pageUtil.getPageSize()); for (int i = 0; i < listsourceTongji.size(); i++) {
+ * int pv=intTongjiService.queryPV(company[0],
+ * listsourceTongji.get(i).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[0],
+ * listsourceTongji.get(i).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[0],
+ * listsourceTongji.get(i).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listsourceTongji.get(i).getId());
+ * sourceTongji.setDate(listsourceTongji.get(i).getDate());
+ * sourceTongji.setBusinessName(listsourceTongji.get(i).getBusinessName());
+ * sourceTongji.setSourceName(listsourceTongji.get(i).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%");
+ * listsourceTongjitoListPage.add(sourceTongji); } pageUtil=new
+ * PageUtil(page,2,totalCount); } else if(company.length>1) {
+ * 
+ * System.out.println("company.length>1");
+ * 
+ * List<Source> listsourcefor=null; for (int i = 0; i < company.length; i++) {
+ * listsourcefor=intMerchantService.queryAll(company[i]);//查询出所有的渠道信息
+ * listsource.addAll(listsourcefor);
+ * 
+ * listsourceTongji=intTongjiService.queryAllPage1(company[i]); for (int j = 0;
+ * j < listsourceTongji.size(); j++) { int
+ * pv=intTongjiService.queryPV(company[i],
+ * listsourceTongji.get(j).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[i],
+ * listsourceTongji.get(j).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[i],
+ * listsourceTongji.get(j).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listsourceTongji.get(j).getId());
+ * sourceTongji.setDate(listsourceTongji.get(j).getDate());
+ * sourceTongji.setBusinessName(listsourceTongji.get(j).getBusinessName());
+ * sourceTongji.setSourceName(listsourceTongji.get(j).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listsourceTongjifor.add(sourceTongji); }
+ * }
+ * 
+ * for (int i = 0; i < listsourceTongjifor.size(); i++) {
+ * System.out.println(listsourceTongjifor.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listsourceTongjifor,page,2);
+ * listsourceTongjitoListPage.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount()); }
+ * HashMap<String,Object> map=new HashMap<>(); map.put("listsource",
+ * listsource);
+ * map.put("listsourceTongjitoListPage",listsourceTongjitoListPage);
+ * map.put("pageutil", pageUtil); map.put("company", company); return map; }
+ * //后台管理---通过渠道名称 查询统计表所有信息，含分页
+ * 
+ * @ResponseBody
+ * 
+ * @RequestMapping("/queryAllPageBySourceName") public Map<String,Object>
+ * queryAllPageBySourceName(Integer page,String string,String string1){ string =
+ * string.replaceAll("\"", "").replace("[","").replace("]",""); String []
+ * company= string.split(","); string1 = string1.replaceAll("\"",
+ * "").replace("[","").replace("]",""); String [] sourceName=
+ * string1.split(","); PageUtil pageUtil=null; List<SourceTongji>
+ * listSourceTongjione=new ArrayList<>(); List<SourceTongji>
+ * listSourceTongjitwo=new ArrayList<>(); List<SourceTongji> listone=new
+ * ArrayList<>(); List<SourceTongji> listtwo=new ArrayList<>();//对集合进行处理后的集合
+ * 最终集合 // List<SourceTongji> listoneto=new ArrayList<>(); //公司名选择的是全部 渠道选择的是全部
+ * if((company.length>1)&&(sourceName.length>1)) {
+ * 
+ * System.out.println("第一个if："+"company.length>1-----sourceName.length>1");
+ * 
+ * for (int i = 0; i < company.length; i++) { for (int j = 0; j <
+ * sourceName.length; j++) {
+ * listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[j]);
+ * for (int k = 0; k < listone.size(); k++) { int
+ * pv=intTongjiService.queryPV(company[i], listone.get(k).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[i], listone.get(k).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[i],
+ * listone.get(k).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(k).getId());
+ * sourceTongji.setDate(listone.get(k).getDate());
+ * sourceTongji.setBusinessName(listone.get(k).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(k).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
+ * } listSourceTongjitwo.addAll(listSourceTongjione); }
+ * 
+ * for (int i = 0; i < listSourceTongjitwo.size(); i++) {
+ * System.out.println(listSourceTongjitwo.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjitwo,page,2);
+ * listtwo.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+ * 
+ * } //公司名选择的是全部 渠道选择的不是全部 else if((company.length>1)&&(sourceName.length==1)) {
+ * 
+ * System.out.println("第二个if："+"company.length>1-----sourceName.length==1");
+ * 
+ * for (int i = 0; i < company.length; i++) {
+ * listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[0]);
+ * 
+ * for (int j = 0; j < listone.size(); j++) { int
+ * pv=intTongjiService.queryPV(company[i], listone.get(j).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[i], listone.get(j).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[i],
+ * listone.get(j).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(j).getId());
+ * sourceTongji.setDate(listone.get(j).getDate());
+ * sourceTongji.setBusinessName(listone.get(j).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(j).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
+ * }
+ * 
+ * for (int i = 0; i < listSourceTongjione.size(); i++) {
+ * System.out.println(listSourceTongjione.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
+ * listtwo.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+ * 
+ * } //公司名选择的不是全部 渠道选择的是全部 else if((company.length==1)&&(sourceName.length>1)) {
+ * 
+ * System.out.println("第三个if："+"company.length==1-----sourceName.length>1");
+ * 
+ * for (int i = 0; i < sourceName.length; i++) {
+ * listone=intTongjiService.queryAllPageBySourceName1(company[0],sourceName[i]);
+ * 
+ * for (int j = 0; j < listone.size(); j++) { int
+ * pv=intTongjiService.queryPV(company[0], listone.get(j).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[0], listone.get(j).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[0],
+ * listone.get(j).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(j).getId());
+ * sourceTongji.setDate(listone.get(j).getDate());
+ * sourceTongji.setBusinessName(listone.get(j).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(j).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
+ * }
+ * 
+ * for (int i = 0; i < listSourceTongjione.size(); i++) {
+ * System.out.println(listSourceTongjione.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
+ * listtwo.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+ * 
+ * } //公司名选择的不是全部 渠道选择的不是全部 else if((company.length==1)&&(sourceName.length==1))
+ * {
+ * 
+ * System.out.println("第四个if："+"company.length==1-----sourceName.length==1");
+ * 
+ * int
+ * totalCount=intTongjiService.pageCountBySourceName(company[0],sourceName[0]);/
+ * /该方法是查询统计总条数 pageUtil=new PageUtil(page,2,totalCount); if(page<1) { page=1; }
+ * else if(page>pageUtil.getTotalPageCount()) { if(totalCount==0) {
+ * page=pageUtil.getTotalPageCount()+1; }else {
+ * page=pageUtil.getTotalPageCount(); } } int
+ * pages=(page-1)*pageUtil.getPageSize(); pageUtil.setPage(pages);
+ * 
+ * listone=intTongjiService.queryAllPageBySourceName(company[0],sourceName[0],
+ * pageUtil.getPage(),pageUtil.getPageSize()); for (int i = 0; i <
+ * listone.size(); i++) { int pv=intTongjiService.queryPV(company[0],
+ * listone.get(i).getSourceName()); int uv=intTongjiService.queryUV(company[0],
+ * listone.get(i).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[0],
+ * listone.get(i).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(i).getId());
+ * sourceTongji.setDate(listone.get(i).getDate());
+ * sourceTongji.setBusinessName(listone.get(i).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(i).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listtwo.add(sourceTongji); } pageUtil=new
+ * PageUtil(page,2,totalCount); }
+ * 
+ * HashMap<String, Object> map=new HashMap<>();
+ * map.put("listSourceTongjitwo",listtwo); map.put("pageutil", pageUtil); return
+ * map; }
+ */
+
+// 后台管理---通过渠道名称 查询统计表所有信息，含分页
+// @ResponseBody
+// @RequestMapping("/queryAllPageBySourceName")
+/*
+ * public Map<String,Object> queryAllPageBySourceName(Integer page,String
+ * string,String string1,String date){ string = string.replaceAll("\"",
+ * "").replace("[","").replace("]",""); String [] company= string.split(",");
+ * string1 = string1.replaceAll("\"", "").replace("[","").replace("]","");
+ * String [] sourceName= string1.split(",");
+ * 
+ * PageUtil pageUtil=null; List<Source> listsource=new ArrayList<>();
+ * List<TongjiSorce> listto=new ArrayList<>(); List<TongjiSorce> listtopage=new
+ * ArrayList<>();
+ * 
+ * //公司名选择的是全部 渠道选择的是全部 if((company.length>1)&&(sourceName.length>1)) {
+ * List<Source> listsourcefor=null; RedisClientUtil redisClientUtil = new
+ * RedisClientUtil(); for (int j = 0; j < company.length; j++) {
+ * listsourcefor=intMerchantService.queryAll(company[j]);//查询出所有的渠道信息
+ * listsource.addAll(listsourcefor);
+ * 
+ * for (int i = 0; i < listsourcefor.size(); i++) { String
+ * source=listsourcefor.get(i).getSourcename(); String SourceClick =
+ * redisClientUtil.get(company[j]+source+"Key");//通过key得到value,就是得到uv
+ * if(SourceClick==null) { redisClientUtil.set(company[j]+source+"Key","1");
+ * System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
+ * }else {
+ * redisClientUtil.set(company[j]+source+"Key",Integer.parseInt(redisClientUtil.
+ * getSourceClick(company[j]+source+"Key"))+1+"");
+ * //由于value是string类型的，所以先转换成int类型，+1之后在转换成string类型
+ * System.out.println(redisClientUtil.getSourceClick(company[j]+source+"Key"));
+ * } float appnum=intTongjiService.queryApplicationNumber(company[j],
+ * source,startTime,endTime);//得到申请数 String
+ * discount=intTongjiService.queryDiscount(source, company[j]);//得到折扣率 int
+ * discount1=Integer.parseInt(discount.substring(0, discount.length()-1)); int
+ * sumappnum=intTongjiService.queryUV(company[j],
+ * source,startTime,endTime);//得到甲方总申请数 Integer
+ * uv=Integer.parseInt(redisClientUtil.getSourceClick(company[j]+source+"Key"));
+ * String cvr=(appnum/uv)+"%";//得到转化率
+ * 
+ * TongjiSorce tongjiSorce=new TongjiSorce(); tongjiSorce.setDate(date);//日期
+ * tongjiSorce.setSourceName(source);//渠道名称 tongjiSorce.setUv(uv);//uv
+ * tongjiSorce.setAppNum(appnum);//真实的申请数
+ * tongjiSorce.setAppNum1(appnum*discount1/100);//折扣后的申请数
+ * tongjiSorce.setCvr(cvr);//转化率 tongjiSorce.setSumappnum(sumappnum);//点过甲方总的人数
+ * listto.add(tongjiSorce); } } } //公司名选择的是全部 渠道选择的不是全部 else
+ * if((company.length>1)&&(sourceName.length==1)) {
+ * 
+ * } //公司名选择的不是全部 渠道选择的是全部 else if((company.length==1)&&(sourceName.length>1)) {
+ * 
+ * } //公司名选择的不是全部 渠道选择的不是全部 else if((company.length==1)&&(sourceName.length==1))
+ * {
+ * 
+ * } }
+ */
+
+// 后台管理---关联查询统计所有信息，含分页
+/*
+ * @ResponseBody
+ * 
+ * @RequestMapping("/queryAllPage1") public Map<String,Object>
+ * queryAllPage1(Integer page,String string){ string = string.replaceAll("\"",
+ * "").replace("[","").replace("]",""); String [] company= string.split(",");
+ * PageUtil pageUtil=null; List<Source> listsource=new ArrayList<>();
+ * List<SourceTongji> listsourceTongji=new ArrayList<>();//刚开始查询出来的数据
+ * List<SourceTongji> listsourceTongjifor=new ArrayList<>();//经过封装后的数据
+ * List<SourceTongji> listsourceTongjitoListPage=new ArrayList<>();//最终的数据
+ * if(company.length==1) {
+ * 
+ * System.out.println("company.length==1");
+ * 
+ * listsource=intMerchantService.queryAll(company[0]);//查询出所有的渠道信息 int
+ * totalCount=intTongjiService.pageCount(company[0]);//该方法是查询统计总条数 pageUtil=new
+ * PageUtil(page,2,totalCount); if(page<1) { page=1; } else
+ * if(page>pageUtil.getTotalPageCount()) { if(totalCount==0) {
+ * page=pageUtil.getTotalPageCount()+1; }else {
+ * page=pageUtil.getTotalPageCount(); } } int
+ * pages=(page-1)*pageUtil.getPageSize(); pageUtil.setPage(pages);
+ * 
+ * listsourceTongji=intTongjiService.queryAllPage(company[0],pageUtil.getPage(),
+ * pageUtil.getPageSize()); for (int i = 0; i < listsourceTongji.size(); i++) {
+ * int pv=intTongjiService.queryPV(company[0],
+ * listsourceTongji.get(i).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[0],
+ * listsourceTongji.get(i).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[0],
+ * listsourceTongji.get(i).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listsourceTongji.get(i).getId());
+ * sourceTongji.setDate(listsourceTongji.get(i).getDate());
+ * sourceTongji.setBusinessName(listsourceTongji.get(i).getBusinessName());
+ * sourceTongji.setSourceName(listsourceTongji.get(i).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%");
+ * listsourceTongjitoListPage.add(sourceTongji); } pageUtil=new
+ * PageUtil(page,2,totalCount); } else if(company.length>1) {
+ * 
+ * System.out.println("company.length>1");
+ * 
+ * List<Source> listsourcefor=null; for (int i = 0; i < company.length; i++) {
+ * listsourcefor=intMerchantService.queryAll(company[i]);//查询出所有的渠道信息
+ * listsource.addAll(listsourcefor);
+ * 
+ * listsourceTongji=intTongjiService.queryAllPage1(company[i]); for (int j = 0;
+ * j < listsourceTongji.size(); j++) { int
+ * pv=intTongjiService.queryPV(company[i],
+ * listsourceTongji.get(j).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[i],
+ * listsourceTongji.get(j).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[i],
+ * listsourceTongji.get(j).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listsourceTongji.get(j).getId());
+ * sourceTongji.setDate(listsourceTongji.get(j).getDate());
+ * sourceTongji.setBusinessName(listsourceTongji.get(j).getBusinessName());
+ * sourceTongji.setSourceName(listsourceTongji.get(j).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listsourceTongjifor.add(sourceTongji); }
+ * }
+ * 
+ * for (int i = 0; i < listsourceTongjifor.size(); i++) {
+ * System.out.println(listsourceTongjifor.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listsourceTongjifor,page,2);
+ * listsourceTongjitoListPage.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount()); }
+ * HashMap<String,Object> map=new HashMap<>(); map.put("listsource",
+ * listsource);
+ * map.put("listsourceTongjitoListPage",listsourceTongjitoListPage);
+ * map.put("pageutil", pageUtil); map.put("company", company); return map; }
+ * //后台管理---通过渠道名称 查询统计表所有信息，含分页
+ * 
+ * @ResponseBody
+ * 
+ * @RequestMapping("/queryAllPageBySourceName") public Map<String,Object>
+ * queryAllPageBySourceName(Integer page,String string,String string1){ string =
+ * string.replaceAll("\"", "").replace("[","").replace("]",""); String []
+ * company= string.split(","); string1 = string1.replaceAll("\"",
+ * "").replace("[","").replace("]",""); String [] sourceName=
+ * string1.split(","); PageUtil pageUtil=null; List<SourceTongji>
+ * listSourceTongjione=new ArrayList<>(); List<SourceTongji>
+ * listSourceTongjitwo=new ArrayList<>(); List<SourceTongji> listone=new
+ * ArrayList<>(); List<SourceTongji> listtwo=new ArrayList<>();//对集合进行处理后的集合
+ * 最终集合 // List<SourceTongji> listoneto=new ArrayList<>(); //公司名选择的是全部 渠道选择的是全部
+ * if((company.length>1)&&(sourceName.length>1)) {
+ * 
+ * System.out.println("第一个if："+"company.length>1-----sourceName.length>1");
+ * 
+ * for (int i = 0; i < company.length; i++) { for (int j = 0; j <
+ * sourceName.length; j++) {
+ * listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[j]);
+ * for (int k = 0; k < listone.size(); k++) { int
+ * pv=intTongjiService.queryPV(company[i], listone.get(k).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[i], listone.get(k).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[i],
+ * listone.get(k).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(k).getId());
+ * sourceTongji.setDate(listone.get(k).getDate());
+ * sourceTongji.setBusinessName(listone.get(k).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(k).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
+ * } listSourceTongjitwo.addAll(listSourceTongjione); }
+ * 
+ * for (int i = 0; i < listSourceTongjitwo.size(); i++) {
+ * System.out.println(listSourceTongjitwo.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjitwo,page,2);
+ * listtwo.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+ * 
+ * } //公司名选择的是全部 渠道选择的不是全部 else if((company.length>1)&&(sourceName.length==1)) {
+ * 
+ * System.out.println("第二个if："+"company.length>1-----sourceName.length==1");
+ * 
+ * for (int i = 0; i < company.length; i++) {
+ * listone=intTongjiService.queryAllPageBySourceName1(company[i],sourceName[0]);
+ * 
+ * for (int j = 0; j < listone.size(); j++) { int
+ * pv=intTongjiService.queryPV(company[i], listone.get(j).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[i], listone.get(j).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[i],
+ * listone.get(j).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(j).getId());
+ * sourceTongji.setDate(listone.get(j).getDate());
+ * sourceTongji.setBusinessName(listone.get(j).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(j).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
+ * }
+ * 
+ * for (int i = 0; i < listSourceTongjione.size(); i++) {
+ * System.out.println(listSourceTongjione.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
+ * listtwo.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+ * 
+ * } //公司名选择的不是全部 渠道选择的是全部 else if((company.length==1)&&(sourceName.length>1)) {
+ * 
+ * System.out.println("第三个if："+"company.length==1-----sourceName.length>1");
+ * 
+ * for (int i = 0; i < sourceName.length; i++) {
+ * listone=intTongjiService.queryAllPageBySourceName1(company[0],sourceName[i]);
+ * 
+ * for (int j = 0; j < listone.size(); j++) { int
+ * pv=intTongjiService.queryPV(company[0], listone.get(j).getSourceName()); int
+ * uv=intTongjiService.queryUV(company[0], listone.get(j).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[0],
+ * listone.get(j).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(j).getId());
+ * sourceTongji.setDate(listone.get(j).getDate());
+ * sourceTongji.setBusinessName(listone.get(j).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(j).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listSourceTongjione.add(sourceTongji); }
+ * }
+ * 
+ * for (int i = 0; i < listSourceTongjione.size(); i++) {
+ * System.out.println(listSourceTongjione.get(i)+"整合后的集合"); }
+ * 
+ * System.out.println("传进工具类的page"+page);
+ * 
+ * ListPageUtil listPageUtil=new ListPageUtil(listSourceTongjione,page,2);
+ * listtwo.addAll(listPageUtil.getData());
+ * 
+ * pageUtil=new PageUtil(listPageUtil.getCurrentPage(),
+ * listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+ * 
+ * } //公司名选择的不是全部 渠道选择的不是全部 else if((company.length==1)&&(sourceName.length==1))
+ * {
+ * 
+ * System.out.println("第四个if："+"company.length==1-----sourceName.length==1");
+ * 
+ * int
+ * totalCount=intTongjiService.pageCountBySourceName(company[0],sourceName[0]);/
+ * /该方法是查询统计总条数 pageUtil=new PageUtil(page,2,totalCount); if(page<1) { page=1; }
+ * else if(page>pageUtil.getTotalPageCount()) { if(totalCount==0) {
+ * page=pageUtil.getTotalPageCount()+1; }else {
+ * page=pageUtil.getTotalPageCount(); } } int
+ * pages=(page-1)*pageUtil.getPageSize(); pageUtil.setPage(pages);
+ * 
+ * listone=intTongjiService.queryAllPageBySourceName(company[0],sourceName[0],
+ * pageUtil.getPage(),pageUtil.getPageSize()); for (int i = 0; i <
+ * listone.size(); i++) { int pv=intTongjiService.queryPV(company[0],
+ * listone.get(i).getSourceName()); int uv=intTongjiService.queryUV(company[0],
+ * listone.get(i).getSourceName()); int
+ * appnum=intTongjiService.queryApplicationNumber(company[0],
+ * listone.get(i).getSourceName()); SourceTongji sourceTongji=new
+ * SourceTongji(); sourceTongji.setId(listone.get(i).getId());
+ * sourceTongji.setDate(listone.get(i).getDate());
+ * sourceTongji.setBusinessName(listone.get(i).getBusinessName());
+ * sourceTongji.setSourceName(listone.get(i).getSourceName());
+ * sourceTongji.setPv(pv); sourceTongji.setUv(uv);
+ * sourceTongji.setApplicationNumber(appnum);
+ * sourceTongji.setCvr(appnum/uv+"%"); listtwo.add(sourceTongji); } pageUtil=new
+ * PageUtil(page,2,totalCount); }
+ * 
+ * HashMap<String, Object> map=new HashMap<>();
+ * map.put("listSourceTongjitwo",listtwo); map.put("pageutil", pageUtil); return
+ * map; }
+ */

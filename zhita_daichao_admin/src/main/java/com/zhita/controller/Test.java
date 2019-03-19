@@ -1,12 +1,11 @@
 package com.zhita.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-import com.zhita.model.manage.JiaFangTongji;
-import com.zhita.util.DateListUtil;
-import com.zhita.util.TuoMinUtil;
+import com.zhita.util.Timestamps;
 
 public class Test {
 	public static void main(String[] args) throws ParseException {
@@ -69,7 +68,15 @@ public class Test {
 		/*for (TestEnum e : TestEnum.values()) {
 		    System.out.println(e);
 		}*/
-		TuoMinUtil t=new TuoMinUtil();
-		System.out.println(t.mobileEncrypt("18871552652"));;
+	/*	TuoMinUtil t=new TuoMinUtil();
+		System.out.println(t.mobileEncrypt("18871552652"));;*/
+		
+		/*String date="2019-03-07";
+		String date1=date+" "+"00:00:00";
+		System.out.println(date1);
+		String timeStart=Timestamps.dateToStamp1(date1);//将开始时间转换为时间戳
+		System.out.println(timeStart);*/
+		System.out.println(Timestamps.dateToStamp1("2019-03-06 24:00:00"));
+		
 	}
 }

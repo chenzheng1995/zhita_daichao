@@ -74,4 +74,14 @@ public class TongjiServiceImp implements IntTongjiService{
     	String discount=statisticalMapper.queryDiscount(source, company);
     	return discount;
     }
+    //后台管理---查询当前渠道在user表的所有注册时间
+   public List<String> queryTime(String company,String sourceName){
+	   List<String> list=statisticalMapper.queryTime(company, sourceName);
+	   return list;
+   }
+   //后台管理---查询在user表的所有注册时间
+   public List<String> queryTimeme1(String company){
+	   List<String> list=statisticalMapper.queryTimeme1(company);
+	   return list;
+   }
 }

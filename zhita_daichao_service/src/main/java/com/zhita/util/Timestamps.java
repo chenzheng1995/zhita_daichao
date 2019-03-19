@@ -74,4 +74,13 @@ public class Timestamps {
 	      res = String.valueOf(ts);
 	      return res;
 	  }
+	//将时间转换为时间戳格式(年 月 日 时 分 秒)
+	  public static String dateToStamp1(String s) throws ParseException{
+	      String res;
+	      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	      Date date = simpleDateFormat.parse(s);
+	      long ts = date.getTime();
+	      res = String.valueOf(ts);
+	      return res;
+	  }
 }

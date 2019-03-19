@@ -24,6 +24,8 @@ public class LoansBusinesses implements Serializable{
     private String state;//状态(1开启，2关闭)
 
     private Integer busClaId;//商家分类id
+    
+    private String busClaIdString;//做添加操作时  商家分类id字符串
 
     private BigDecimal loanlimitsmall;//借款额度（小）
 
@@ -41,7 +43,7 @@ public class LoansBusinesses implements Serializable{
 
     private Integer successrate;//成功率
 
-    private Integer lendingrate;//放款速度
+    private String lendingrate;//放款速度
 
     private String registerlink;//注册链接
 
@@ -56,7 +58,7 @@ public class LoansBusinesses implements Serializable{
 
     
 
-    public LoansBusinesses(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications,String company) {
+    public LoansBusinesses(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, String lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications,String company) {
         this.id = id;
         this.businessname = businessname;
         this.intro = intro;
@@ -232,15 +234,16 @@ public class LoansBusinesses implements Serializable{
         this.successrate = successrate;
     }
 
-    public Integer getLendingrate() {
-        return lendingrate;
-    }
 
-    public void setLendingrate(Integer lendingrate) {
-        this.lendingrate = lendingrate;
-    }
+    public String getLendingrate() {
+		return lendingrate;
+	}
 
-    public String getRegisterlink() {
+	public void setLendingrate(String lendingrate) {
+		this.lendingrate = lendingrate;
+	}
+
+	public String getRegisterlink() {
         return registerlink;
     }
 
@@ -279,4 +282,13 @@ public class LoansBusinesses implements Serializable{
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
     }
+
+	public String getBusClaIdString() {
+		return busClaIdString;
+	}
+
+	public void setBusClaIdString(String busClaIdString) {
+		this.busClaIdString = busClaIdString;
+	}
+    
 }
