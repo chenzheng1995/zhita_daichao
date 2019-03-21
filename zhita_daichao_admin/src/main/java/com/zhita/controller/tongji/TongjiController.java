@@ -23,6 +23,7 @@ import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.service.registe.IntRegisteService;
 import com.zhita.service.tongji.IntTongjiService;
+import com.zhita.util.DateListUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
 import com.zhita.util.RedisClientUtil;
@@ -97,8 +98,13 @@ public class TongjiController {
 			tongjiSorce.setCvr(cvr);// 转化率
 			listsource.add(tongjiSorce);
 		}		
+		
+		DateListUtil.ListSort1(listsource);//将集合按照日期进行倒排序
+		
 		ListPageUtil listPageUtil = new ListPageUtil(listsource, page, 10);
 		listsourceto.addAll(listPageUtil.getData());
+		
+		
 		PageUtil pageUtil = new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),
 				listPageUtil.getTotalCount());
 		map.put("listsourceto", listsourceto);

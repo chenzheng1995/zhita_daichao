@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.zhita.model.manage.JiaFangTongji;
+import com.zhita.model.manage.TongjiSorce;
 
 public class DateListUtil {
 	
@@ -78,7 +79,7 @@ public class DateListUtil {
 
     }
     
-    //将集合按照集合里对象的日期属性进行排序
+    //将集合按照集合里对象的日期属性进行正排序
     public static void ListSort(List<JiaFangTongji> list) {
         Collections.sort(list, new Comparator<JiaFangTongji>() {
             @Override
@@ -90,6 +91,31 @@ public class DateListUtil {
                     if (dt1.getTime() > dt2.getTime()) {
                         return 1;
                     } else if (dt1.getTime() < dt2.getTime()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
+    }
+    
+    
+    //将集合按照集合里对象的日期属性进行倒排序
+    public static void ListSort1(List<TongjiSorce> list) {
+        Collections.sort(list, new Comparator<TongjiSorce>() {
+            @Override
+            public int compare(TongjiSorce o1, TongjiSorce o2) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date dt1 = format.parse(o1.getDate());
+                    Date dt2 = format.parse(o2.getDate());
+                    if (dt1.getTime() < dt2.getTime()) {
+                        return 1;
+                    } else if (dt1.getTime() > dt2.getTime()) {
                         return -1;
                     } else {
                         return 0;
