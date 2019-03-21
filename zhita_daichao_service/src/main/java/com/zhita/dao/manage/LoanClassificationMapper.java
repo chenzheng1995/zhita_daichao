@@ -60,6 +60,10 @@ public interface LoanClassificationMapper {
 
 	List<LoanClassification> queryLoanClassAfter(String company);
 
+	List<LoanClassification> queryLoanClass1(String company);
+
+	List<LoanClassification> queryLoanClassAfter1(String company);
+
 
     
 }

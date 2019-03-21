@@ -9,9 +9,12 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhita.model.manage.LoanClassification;
+import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.type.IntTypeService;
@@ -33,6 +36,26 @@ public class TypeController {
 	
 	@Autowired
 	CommodityFootprintService cFootprintService;
+	
+	//小程序，获取前4个贷款分类	
+    @ResponseBody
+    @RequestMapping("/queryLoanClassBefore")
+    @Transactional
+    public List<LoanClassification> queryLoanClass1(String company){
+    	List<LoanClassification> list = intTypeService.queryLoanClass1(company);
+		return list;
+   	
+    }
+
+	//小程序，获取后3个贷款分类	
+    @ResponseBody
+    @RequestMapping("/queryLoanClassAfter")
+    @Transactional
+    public List<LoanClassification> queryLoanClassAfter1(String company){
+    	List<LoanClassification> list = intTypeService.queryLoanClassAfter1(company);
+		return list;
+   	
+    }
 	
 	//小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
     @ResponseBody

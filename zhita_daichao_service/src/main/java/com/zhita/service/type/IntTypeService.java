@@ -40,6 +40,8 @@ public interface IntTypeService{
 	public List<LoansBusinessesCopy> queryLoanbusinByLoanClass1(String businessClassification, int pages, int pageSize,
 			String company);
 	public int pageCountByBusinessClassification1(String businessClassification, String company);
+	public List<LoanClassification> queryLoanClass1(String company);
+	public List<LoanClassification> queryLoanClassAfter1(String company);
 
 
 }

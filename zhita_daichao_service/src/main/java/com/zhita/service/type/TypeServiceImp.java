@@ -154,6 +154,18 @@ public class TypeServiceImp implements IntTypeService{
 		return totalCount;
 	}
 
+	@Override
+	public List<LoanClassification> queryLoanClass1(String company) {
+		List<LoanClassification> list = loanClassificationMapper.queryLoanClass1(company);
+		return list;
+	}
+
+	@Override
+	public List<LoanClassification> queryLoanClassAfter1(String company) {
+		List<LoanClassification> list = loanClassificationMapper.queryLoanClassAfter1(company);
+		return list;
+	}
+
 
 
 }
