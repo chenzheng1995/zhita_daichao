@@ -44,10 +44,13 @@ public class TongjiController {
 	@ResponseBody
 	@RequestMapping("/queryAllTongji")
 	public Map<String, Object> queryAllTongji(Integer page, String company, String sourceName) throws ParseException {
+		HashMap<String, Object> map = new HashMap<>();
 		List<TongjiSorce> listsource = new ArrayList<>();
-		List<TongjiSorce> listsourceto = new ArrayList<>();
+		List<TongjiSorce> listsourceto = new ArrayList<>(); 
 		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		Timestamps timestamps = new Timestamps();
 		List<String> list = intTongjiService.queryTime(company, sourceName);// 查询出当前渠道所有的注册时间
+		if(list!=null&&!list.isEmpty()) {
 		List<String> list1 = new ArrayList<>();// 用来存时间戳转换后的时间
 		for (int i = 0; i < list.size(); i++) {
 			list1.add(Timestamps.stampToDate1(list.get(i)));
@@ -58,10 +61,14 @@ public class TongjiController {
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i));
 		}
-		for (int i = 0; i < list1.size(); i++) {
-			String startTime = list1.get(i) + " " + "00:00:00";
-			String endTime = list1.get(i) + " " + "24:00:00";
-			float appnum = intTongjiService.queryApplicationNumber(company, sourceName, startTime, endTime);// 得到申请数
+		for (int i = 0; i < list1.size(); i++) {			
+//			String startTime = list1.get(i) + " " + "00:00:00";
+			String startTime = list1.get(i);
+			String startTimestamps = timestamps.dateToStamp(startTime);
+//			String endTime = list1.get(i) + " " + "23:59:59";
+			String endTime = list1.get(i);
+			String endTimestamps = (Long.parseLong(timestamps.dateToStamp(endTime))+86400000)+"";
+			float appnum = intTongjiService.queryApplicationNumber(company, sourceName, startTimestamps, endTimestamps);// 得到申请数  
 			String discount = intTongjiService.queryDiscount(sourceName, company);// 得到折扣率
 			int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
 			int uv = 0;
@@ -77,26 +84,26 @@ public class TongjiController {
 			} else {
 				cvr = (appnum / uv) + "%";// 得到转化率
 			}
-
+			
 			TongjiSorce tongjiSorce = new TongjiSorce();
 			tongjiSorce.setDate(list1.get(i));// 日期
 			tongjiSorce.setSourceName(sourceName);// 渠道名称
 			tongjiSorce.setUv(uv);// uv
 			if (appnum >= 100) {
-				tongjiSorce.setAppNum(appnum * discount1 / 100);// 申请数
+				tongjiSorce.setAppNum((int)(appnum * discount1 / 100));// 申请数
 			} else {
 				tongjiSorce.setAppNum(appnum);// 申请数
 			}
 			tongjiSorce.setCvr(cvr);// 转化率
 			listsource.add(tongjiSorce);
-		}
+		}		
 		ListPageUtil listPageUtil = new ListPageUtil(listsource, page, 10);
 		listsourceto.addAll(listPageUtil.getData());
 		PageUtil pageUtil = new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),
 				listPageUtil.getTotalCount());
-		HashMap<String, Object> map = new HashMap<>();
 		map.put("listsourceto", listsourceto);
 		map.put("pageutil", pageUtil);
+		}
 		return map;
 	}
 

@@ -349,7 +349,7 @@
   </update>
   <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmainpro" parameterType="map" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,applications,state from loans_businesses where deleted='0' and company = #{company} and state = 1 order by isStick desc limit #{page},#{pageSize}
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,applications,state from loans_businesses where deleted='0' and company = #{company} and state = 1 order by isStick desc,sort asc limit #{page},#{pageSize}
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" resultType="com.zhita.model.manage.LoansBusinesses">
@@ -423,7 +423,7 @@
  </select>
   <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap">
- 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId=locla.id where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} and state = 1 order by isStick desc limit #{page},#{pageSize}
+ 	select * from loans_businesses lobus inner join loan_classification locla on lobus.busClaId like concat('%',locla.id,'%') where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} and state = 1 order by isStick desc,sort asc limit #{page},#{pageSize}
  </select>
  
    <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->

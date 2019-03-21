@@ -72,7 +72,7 @@ public class TypeServiceImp implements IntTypeService{
     }
     //小程序---通过贷款分类的名称查询出贷款商家的个数
     public int pageCountByBusinessClassification(String businessClassification,String conpany) {
-    	int count=loanClassificationCopyMapper.pageCountByBusinessClassification(businessClassification,conpany);
+    	int count=loanClassificationMapper.pageCountByBusinessClassification(businessClassification,conpany);
     	System.out.println(count+"----");
     	return count;
     }
@@ -146,6 +146,12 @@ public class TypeServiceImp implements IntTypeService{
 	public List<LoansBusinessesCopy> queryLoanbusinByLoanClass1(String businessClassification, int pages, int pageSize,String company) {
 		List<LoansBusinessesCopy> list=loansBusinessesCopyMapper.queryLoanbusinByLoanClass1(businessClassification,pages,pageSize,company);
 		return list;
+	}
+
+	@Override
+	public int pageCountByBusinessClassification1(String businessClassification, String company) {
+		int totalCount=loanClassificationCopyMapper.pageCountByBusinessClassification1(businessClassification,company);
+		return totalCount;
 	}
 
 

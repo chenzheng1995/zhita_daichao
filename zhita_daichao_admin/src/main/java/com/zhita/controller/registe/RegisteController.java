@@ -192,7 +192,9 @@ public class RegisteController {
     	BigDecimal limitbig=loansBusinesses.getLoanlimitbig();//得到输入框的借款额度（大）
     	String limit=limitsmall+"~"+limitbig;//将两个额度拼接成一个字符串，赋给loansBusinesses的loanlimit的字段 	
     	loansBusinesses.setLoanlimit(limit);
-
+		String num=1+(((int)(Math.random()*8998)+1000+1)+"");
+		int applications = Integer.parseInt(num);   	
+    	loansBusinesses.setApplications(applications);
     	intRegisteService.insert(loansBusinesses);
     	
     	return map;

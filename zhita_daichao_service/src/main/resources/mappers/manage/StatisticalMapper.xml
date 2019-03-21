@@ -164,7 +164,7 @@
    </select>
    <!-- 后台管理     查询当前渠道在user表的所有注册时间 -->
    <select id="queryTime" parameterType="java.lang.String" resultType="java.lang.String">
-   		select registrationTime from user u,source s where u.sourceId=s.id and u.company=#{arg0} and s.sourceName=#{arg1}
+   		select registrationTime from user u,source s where u.sourceId=s.id and u.company=#{arg0} and s.sourceName=#{arg1} 
    </select>
    <!-- 后台管理     查询在user表的所有注册时间 -->
    <select id="queryTimeme1" parameterType="java.lang.String" resultType="java.lang.String">

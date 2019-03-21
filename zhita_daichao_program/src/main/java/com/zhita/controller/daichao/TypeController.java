@@ -109,7 +109,7 @@ public class TypeController {
     @RequestMapping("/queryLoanbusinByLoanClass")
     @Transactional
     public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page,String company){
-     	int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification,company);
+     	int totalCount=intTypeService.pageCountByBusinessClassification1(businessClassification,company);
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;

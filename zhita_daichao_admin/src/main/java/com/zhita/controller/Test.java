@@ -76,7 +76,16 @@ public class Test {
 		System.out.println(date1);
 		String timeStart=Timestamps.dateToStamp1(date1);//将开始时间转换为时间戳
 		System.out.println(timeStart);*/
-		System.out.println(Timestamps.dateToStamp1("2019-03-06 24:00:00"));
+//		System.out.println(Timestamps.dateToStamp1("2019-03-06 24:00:00"));
+//		String endTime = "2019-3-18";
+//		Timestamps timestamps = new Timestamps(); 
+//		String endtimestamps = timestamps.dateToStamp(endTime);
+//		long i = Long.parseLong(endtimestamps);
+//		String s = i+"";
+//System.out.println(i);
+		String num=1+(((int)(Math.random()*8998)+1000+1)+"");
+		int applications = Integer.parseInt(num);
+		System.out.println(applications);
 		
 	}
 }

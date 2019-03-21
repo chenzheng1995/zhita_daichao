@@ -23,5 +23,7 @@ public interface LoanClassificationCopyMapper {
 	
 	List<LoanClassificationCopy> queryLoanClassAfter(String company);
 
-	int pageCountByBusinessClassification(@Param("businessClassification")String businessClassification,@Param("company") String company);
+	int pageCountByBusinessClassification1(@Param("businessClassification")String businessClassification,@Param("company") String company);
+
+
 }
