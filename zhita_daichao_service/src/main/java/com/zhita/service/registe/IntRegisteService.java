@@ -57,7 +57,7 @@ public interface IntRegisteService{
 	public List<String> BusinessesName(String company);
 	//后台管理---根据id  修改商家的排序字段
   	public int upaSortByLoanId(Integer sort,Integer id);
-	public List<String> getTwoFirm(String company);
+	public List<Object> getTwoFirm(String company);
 	public int pageCount2(String company);
 
 

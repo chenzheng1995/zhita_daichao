@@ -162,8 +162,8 @@ public class RegisteServiceImp implements IntRegisteService{
   	}
 
 	@Override
-	public List<String> getTwoFirm(String company) {
-		List<String> firmList = loansBusinessesMapper.getTwoFirm(company);
+	public List<Object> getTwoFirm(String company) {
+		List<Object> firmList = loansBusinessesMapper.getTwoFirm(company);
 		return firmList;
 	}
 

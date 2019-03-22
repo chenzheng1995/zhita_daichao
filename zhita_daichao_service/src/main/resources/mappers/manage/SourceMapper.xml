@@ -226,7 +226,7 @@
   </select>
   
      <!-- 获取所有的渠道名称 -->
-  <select id="getOneFirm" parameterType="java.lang.String" resultType="java.lang.String">
-  	select sourcename from source where deleted ='0' and company =#{company}
+  <select id="getOneFirm" parameterType="java.lang.String" resultType="com.zhita.model.manage.Source">
+  	select sourcename,id from source where deleted ='0' and company =#{company}
   </select>
 </mapper>

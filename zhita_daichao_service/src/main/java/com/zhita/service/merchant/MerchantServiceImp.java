@@ -223,8 +223,8 @@ public class MerchantServiceImp implements IntMerchantService{
 		return merchantId;
 	}
 	@Override
-	public List<String> getOneFirm(String company) {
-		List<String> firmList = sourceMapper.getOneFirm(company);
+	public List<Object> getOneFirm(String company) {
+		List<Object> firmList = sourceMapper.getOneFirm(company);
 		return firmList;
 	}
 }

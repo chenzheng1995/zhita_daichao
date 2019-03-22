@@ -441,8 +441,8 @@
  </select>
  
     <!-- 获取所有的甲方的名称 -->
- <select id="getTwoFirm" resultType="java.lang.String">
- 	select businessName  from loans_businesses where company = #{company} and deleted = 0;
+ <select id="getTwoFirm" resultType="com.zhita.model.manage.LoansBusinesses">
+ 	select businessName,id  from loans_businesses where company = #{company} and deleted = 0;
  </select>
  
    <!-- 后台管理 用于获取总页数 -->

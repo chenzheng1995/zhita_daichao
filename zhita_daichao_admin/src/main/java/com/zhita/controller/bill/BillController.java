@@ -33,6 +33,8 @@ public class BillController {
     //单价设置里的添加
 	/**
 	 * 
+	 * @param sourceId 渠道id
+	 * @param businessesId  甲方id
 	 * @param firm  公司名
 	 * @param firmType 公司类型（渠道方为1，甲方为2）
 	 * @param account 账号
@@ -42,10 +44,10 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/setunitprice")
-    public Map<String,Object> setUnitPrice (String firm, String firmType, String account,int price,String accountType,String company){
+    public Map<String,Object> setUnitPrice (int sourceId,int businessesId,String firmType, String account,int price,String accountType,String company){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-		int number = UnitPriceService.setunitprice(firm,firmType,account,price,accountType,registrationTime,company);
+		int number = UnitPriceService.setunitprice(sourceId,businessesId,firmType,account,price,accountType,registrationTime,company);
 		if (number != 0) {								
 			map.put("msg", "数据插入成功");
 			map.put("SCode", "200");
@@ -68,10 +70,10 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/updateunitprice")
-    public Map<String,Object> updateUnitPrice (String firm, String firmType, String account,int price,String accountType,int id){
+    public Map<String,Object> updateUnitPrice (int sourceId,int businessesId, String firmType, String account,int price,String accountType,int id){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-		int number = UnitPriceService.updateUnitPrice(firm,firmType,account,price,accountType,id,registrationTime);
+		int number = UnitPriceService.updateUnitPrice(sourceId,businessesId,firmType,account,price,accountType,id,registrationTime);
 		if (number != 0) {								
 			map.put("msg", "数据修改成功");
 			map.put("SCode", "200");
@@ -108,10 +110,10 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/deletefirm")
-    public Map<String,Object> deleteFirm (String firm,String account,String company){
+    public Map<String,Object> deleteFirm (int sourceId,String account,String company){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-		int number = UnitPriceService.deleteFirm(firm,account,registrationTime,company);
+		int number = UnitPriceService.deleteFirm(sourceId,account,registrationTime,company);
 		if (number != 0) {								
 			map.put("msg", "数据删除成功");
 			map.put("SCode", "200");
@@ -151,9 +153,9 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getunitprice")
-    public Map<String,Object> getunitprice (String firm,String firmType,String company){
+    public Map<String,Object> getunitprice (int sourceId,String company){
 		HashMap<String,Object> map=new HashMap<>();
-		List<UnitPrice> accountList = UnitPriceService.getunitprice(firm,firmType,company);
+		List<UnitPrice> accountList = UnitPriceService.getunitprice(sourceId,company);
 		map.put("list", accountList);
 		return map;
 	}
@@ -163,7 +165,7 @@ public class BillController {
 	@RequestMapping("/getfirm")
     public Map<String,Object> getFirm (String firmType,String company){   //firmType（渠道方为1，甲方为2）
 		HashMap<String,Object> map=new HashMap<>();
-		List<String> firmList = null;
+		List<Object> firmList = null;
 		if(firmType.equals("1")) {
 			firmList = intMerchantService.getOneFirm(company);
 		}

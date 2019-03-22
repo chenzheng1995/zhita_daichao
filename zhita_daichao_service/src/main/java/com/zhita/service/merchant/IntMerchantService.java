@@ -60,5 +60,5 @@ public interface IntMerchantService {
 
 	public int getsourceId(String sourceId);
 
-	public List<String> getOneFirm(String company);
+	public List<Object> getOneFirm(String company);
 }

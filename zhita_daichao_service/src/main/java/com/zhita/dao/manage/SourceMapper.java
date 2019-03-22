@@ -84,5 +84,5 @@ public interface SourceMapper {
 
 	int getsourceId(String sourceId);
 
-	List<String> getOneFirm(String company);
+	List<Object> getOneFirm(String company);
 }

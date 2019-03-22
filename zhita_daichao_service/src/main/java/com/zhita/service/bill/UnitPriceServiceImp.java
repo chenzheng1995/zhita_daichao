@@ -14,14 +14,14 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	UnitPriceMapper unitPriceMapper;
 
 	@Override
-	public int setunitprice(String firm, String firmType, String account, int price, String accountType,String registrationTime,String company) {
-		int number = unitPriceMapper.setunitprice(firm,firmType,account,price,accountType,registrationTime,company);
+	public int setunitprice(int sourceId, int businessesId, String firmType, String account, int price, String accountType,String registrationTime,String company) {
+		int number = unitPriceMapper.setunitprice(sourceId,businessesId,firmType,account,price,accountType,registrationTime,company);
 		return number;
 	}
 
 	@Override
-	public int updateUnitPrice(String firm, String firmType, String account, int price, String accountType,int id,String registrationTime) {
-		int number = unitPriceMapper.updateUnitPrice(firm,firmType,account,price,accountType,id,registrationTime);
+	public int updateUnitPrice(int sourceId, int businessesId, String firmType, String account, int price, String accountType,int id,String registrationTime) {
+		int number = unitPriceMapper.updateUnitPrice(sourceId,businessesId,firmType,account,price,accountType,id,registrationTime);
 		return number;
 	}
 
@@ -32,8 +32,8 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	}
 
 	@Override
-	public int deleteFirm(String firm, String account, String registrationTime,String company) {
-		int number = unitPriceMapper.deleteFirm(firm,account,registrationTime,company);
+	public int deleteFirm(int sourceId, String account, String registrationTime,String company) {
+		int number = unitPriceMapper.deleteFirm(sourceId,account,registrationTime,company);
 		return number;
 	}
 
@@ -50,8 +50,8 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	}
 
 	@Override
-	public List<UnitPrice> getunitprice(String firm, String firmType,String company) {
-		List<UnitPrice> accountList = unitPriceMapper.getunitprice(firm,firmType,company);
+	public List<UnitPrice> getunitprice(int sourceId,String company) {
+		List<UnitPrice> accountList = unitPriceMapper.getunitprice(sourceId,company);
 		return accountList;
 	}
 
