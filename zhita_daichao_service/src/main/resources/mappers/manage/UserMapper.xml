@@ -293,7 +293,7 @@
 	</insert>
 	<!-- 后台管理   查询出用户表总数量 -->
 	<select id="pageCount" resultType="java.lang.Integer">
-		select count(phone) from user where company=#{arg0}
+		select count(phone) from user u inner join source s on u.sourceId=s.id where u.company=#{arg0}
 	</select>
 	<!-- 后台管理   通过手机号模糊查询用户总数量 -->
 	<select id="pageCountByPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
