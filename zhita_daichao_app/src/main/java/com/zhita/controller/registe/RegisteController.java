@@ -30,9 +30,9 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page,String company){    	
-
+    	PageUtil pageUtil=null;
     	int totalCount=intRegisteService.pageCount(company);//该方法是查询贷款商家总条数
-    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+    	pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;
     	}
@@ -46,6 +46,7 @@ public class RegisteController {
     	int pages=(page-1)*pageUtil.getPageSize();
     	pageUtil.setPage(pages); 	
     	List<LoansBusinesses> list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
+    	pageUtil=new PageUtil(page,10,totalCount);
         for (LoansBusinesses loansBusinesses : list) {
 	        String businessName = loansBusinesses.getBusinessname();
 	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
