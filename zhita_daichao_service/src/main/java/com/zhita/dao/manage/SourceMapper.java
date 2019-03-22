@@ -83,4 +83,6 @@ public interface SourceMapper {
     List<User> queryAllUserByRegistrationTimePhone(Integer SourceId,String registrationTime,String registrationTime1,String phone,Integer page,Integer pagesize);
 
 	int getsourceId(String sourceId);
+
+	List<String> getOneFirm(String company);
 }

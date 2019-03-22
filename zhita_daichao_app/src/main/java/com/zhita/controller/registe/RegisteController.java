@@ -31,7 +31,7 @@ public class RegisteController {
     @RequestMapping("/queryAll")
     public Map<String,Object> queryAll(Integer page,String company){    	
 
-    	int totalCount=intRegisteService.pageCount(company);//该方法是查询贷款商家总条数
+    	int totalCount=intRegisteService.pageCount2(company);//该方法是查询贷款商家总条数
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {
     		page=1;

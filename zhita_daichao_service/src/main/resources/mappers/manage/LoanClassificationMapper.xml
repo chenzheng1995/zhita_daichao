@@ -107,7 +107,7 @@
  </select>
  <!-- 小程序    用于获取通过贷款分类的名称查询出贷款商家的个数 -->
  <select id="pageCountByBusinessClassification" parameterType="java.lang.String" resultType="java.lang.Integer">
- 	select count(businessClassification) from loans_businesses lb inner join loan_classification lc on lb.busClaId like concat('%',lc.id,'%') where deleted='0' and businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
+ 	select count(businessClassification) from loans_businesses lb inner join loan_classification lc on lb.busClaId like concat('%',lc.id,'%') where deleted='0' and lb.state='1' and businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
  </select>
  <!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
  <select id="queryByLike" resultType="com.zhita.model.manage.LoanClassification">

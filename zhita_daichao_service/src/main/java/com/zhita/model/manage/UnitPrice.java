@@ -17,8 +17,14 @@ public class UnitPrice {
     
     private String modifyTime;
     
+    private String company;
 
-    public UnitPrice(Integer id, String account, Integer price, String accounttype, String firmtype, String firm,String deleted,String modifyTime) {
+    private Integer sourceId;
+    
+    private Integer businessesId;
+    
+
+    public UnitPrice(Integer id, String account, Integer price, String accounttype, String firmtype, String firm,String deleted,String modifyTime,String company,Integer sourceId,Integer businessesId) {
         this.id = id;
         this.account = account;
         this.price = price;
@@ -27,6 +33,9 @@ public class UnitPrice {
         this.firm = firm;
         this.deleted = deleted;
         this.modifyTime = modifyTime;
+        this.company = company;
+        this.sourceId = sourceId;
+        this.businessesId = businessesId;
     }
 
     public UnitPrice() {
@@ -96,4 +105,30 @@ public class UnitPrice {
     public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime == null ? null : modifyTime.trim();
     }
+    
+    public String getCompany() {
+        return company;
+    }
+    
+    public void setCompany(String company) {
+        this.company = company == null ? null : company.trim();
+    }
+    
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
+    }
+    
+    public Integer getBusinessesId() {
+        return businessesId;
+    }
+
+    public void setBusinessesId(Integer businessesId) {
+        this.businessesId = businessesId;
+    }
+    
+    
 }

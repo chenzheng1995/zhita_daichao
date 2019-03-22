@@ -92,4 +92,8 @@ public interface LoansBusinessesMapper {
 
 	List<String> BusinessesName(String company);
 
+	List<String> getTwoFirm(String company);
+
+	int pageCount2(String company);
+
 }

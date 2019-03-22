@@ -59,4 +59,6 @@ public interface IntMerchantService {
     public Map<String,Object> queryAllUserByLikeAll(Integer SourceId,String registrationTimeStart,String registrationTimeEnd,String phone,Integer page);
 
 	public int getsourceId(String sourceId);
+
+	public List<String> getOneFirm(String company);
 }

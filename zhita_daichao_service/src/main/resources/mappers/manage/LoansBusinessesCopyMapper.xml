@@ -356,7 +356,7 @@
   </select> 
    <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount1" resultType="java.lang.Integer">
-   select count(businessName) from loans_businesses_copy where deleted='0' and company = #{company}
+   select count(businessName) from loans_businesses_copy where deleted='0' and company = #{company} and state = '1'
  </select>
    <!-- 后台管理 用于模糊查询获取总页数 -->
  <select id="pageCountByLike1" parameterType="java.lang.String" resultType="java.lang.Integer">

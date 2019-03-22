@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.TopUpAmountMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.TopUpAmount">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="operationDate" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="billingDate" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="firm" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="topUpAmount" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="cashReceipts" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="paymentAccount" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="contact" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="note" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, operationDate, billingDate, firm, topUpAmount, cashReceipts, paymentAccount, 
+    contact, note, deleted, company
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from top_up_amount
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from top_up_amount
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.TopUpAmount">
+    insert into top_up_amount (id, operationDate, billingDate, 
+      firm, topUpAmount, cashReceipts, 
+      paymentAccount, contact, note, 
+      deleted, company)
+    values (#{id,jdbcType=INTEGER}, #{operationdate,jdbcType=VARCHAR}, #{billingdate,jdbcType=VARCHAR}, 
+      #{firm,jdbcType=VARCHAR}, #{topupamount,jdbcType=INTEGER}, #{cashreceipts,jdbcType=VARCHAR}, 
+      #{paymentaccount,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.TopUpAmount">
+    insert into top_up_amount
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="operationdate != null">
+        operationDate,
+      </if>
+      <if test="billingdate != null">
+        billingDate,
+      </if>
+      <if test="firm != null">
+        firm,
+      </if>
+      <if test="topupamount != null">
+        topUpAmount,
+      </if>
+      <if test="cashreceipts != null">
+        cashReceipts,
+      </if>
+      <if test="paymentaccount != null">
+        paymentAccount,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operationdate != null">
+        #{operationdate,jdbcType=VARCHAR},
+      </if>
+      <if test="billingdate != null">
+        #{billingdate,jdbcType=VARCHAR},
+      </if>
+      <if test="firm != null">
+        #{firm,jdbcType=VARCHAR},
+      </if>
+      <if test="topupamount != null">
+        #{topupamount,jdbcType=INTEGER},
+      </if>
+      <if test="cashreceipts != null">
+        #{cashreceipts,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentaccount != null">
+        #{paymentaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.TopUpAmount">
+    update top_up_amount
+    <set>
+      <if test="operationdate != null">
+        operationDate = #{operationdate,jdbcType=VARCHAR},
+      </if>
+      <if test="billingdate != null">
+        billingDate = #{billingdate,jdbcType=VARCHAR},
+      </if>
+      <if test="firm != null">
+        firm = #{firm,jdbcType=VARCHAR},
+      </if>
+      <if test="topupamount != null">
+        topUpAmount = #{topupamount,jdbcType=INTEGER},
+      </if>
+      <if test="cashreceipts != null">
+        cashReceipts = #{cashreceipts,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentaccount != null">
+        paymentAccount = #{paymentaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.TopUpAmount">
+    update top_up_amount
+    set operationDate = #{operationdate,jdbcType=VARCHAR},
+      billingDate = #{billingdate,jdbcType=VARCHAR},
+      firm = #{firm,jdbcType=VARCHAR},
+      topUpAmount = #{topupamount,jdbcType=INTEGER},
+      cashReceipts = #{cashreceipts,jdbcType=VARCHAR},
+      paymentAccount = #{paymentaccount,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

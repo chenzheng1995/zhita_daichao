@@ -11,6 +11,9 @@
       <arg column="firm" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="modifyTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sourceId" javaType="java.lang.Integer" jdbcType="VARCHAR" />
+      <arg column="businessesId" javaType="java.lang.Integer" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -112,10 +115,10 @@
  		  	<!--单价设置中的插入数据 -->
 	<insert id="setunitprice" parameterType="java.util.Map">
     insert into unit_price (account, price, 
-      accountType, firmType, firm,modifyTime
+      accountType, firmType, firm,modifyTime,company
       )
     values ( #{account,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
-      #{accountType,jdbcType=VARCHAR}, #{firmType,jdbcType=VARCHAR}, #{firm,jdbcType=VARCHAR},#{registrationTime,jdbcType=VARCHAR}
+      #{accountType,jdbcType=VARCHAR}, #{firmType,jdbcType=VARCHAR}, #{firm,jdbcType=VARCHAR},#{registrationTime,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR}
       )
 	</insert>
  
@@ -130,4 +133,29 @@
 		modifyTime = #{registrationTime}
 		where id = #{id} and deleted = '0'
 	</update>
+	
+	 			<!--单价设置中的删除数据，其实就是把deleted改成1 -->
+	<update id="deleteUnitPrice" parameterType="java.util.Map" >
+		update unit_price set deleted = '1',modifyTime = #{registrationTime} where id = #{id}
+	</update>
+	
+		 			<!--单价设置中的删除某个账号的全部数据，其实就是把deleted改成1 -->
+	<update id="deleteFirm" parameterType="java.util.Map" >
+		update unit_price set deleted = '1',modifyTime = #{registrationTime} where account = #{account} and firm =#{firm} and company =#{company}
+	</update>
+	
+			<!--单价设置中,查出所有的账号   -->
+	<select id="getaccount" parameterType="java.lang.String" resultType="java.lang.String">
+		select distinct account from unit_price where firm = #{firm} and firmType=#{firmType} and deleted = '0'
+	</select>
+	
+				<!--单价设置中,查出所有的账号对应得价格   -->
+	<select id="getprice" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select price from unit_price where account = #{account} and deleted = '0'
+	</select>
+	
+					<!--单价设置中,查出所有的数据  -->
+	<select id="getunitprice" parameterType="java.lang.String" resultType="com.zhita.model.manage.UnitPrice">
+		select id,account,price,accountType,firmType,firm,modifyTime from unit_price where firm = #{firm} and firmType=#{firmType} and deleted = '0' and company =#{company}
+	</select>
 </mapper>

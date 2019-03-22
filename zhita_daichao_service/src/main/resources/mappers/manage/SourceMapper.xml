@@ -224,4 +224,9 @@
   <select id="getsourceId" parameterType="java.lang.String" resultType="java.lang.Integer">
   	select id from source where sourcename = #{sourceId}
   </select>
+  
+     <!-- 获取所有的渠道名称 -->
+  <select id="getOneFirm" parameterType="java.lang.String" resultType="java.lang.String">
+  	select sourcename from source where deleted ='0' and company =#{company}
+  </select>
 </mapper>

@@ -160,4 +160,16 @@ public class RegisteServiceImp implements IntRegisteService{
   		int num=loansBusinessesMapper.upaSortByLoanId(sort, id);
   		return num;
   	}
+
+	@Override
+	public List<String> getTwoFirm(String company) {
+		List<String> firmList = loansBusinessesMapper.getTwoFirm(company);
+		return firmList;
+	}
+
+	@Override
+	public int pageCount2(String company) {
+  		int count=loansBusinessesMapper.pageCount2(company);
+  		return count;
+	}
 }
