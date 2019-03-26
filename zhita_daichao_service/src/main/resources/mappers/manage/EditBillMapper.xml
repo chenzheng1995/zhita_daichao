@@ -201,6 +201,30 @@
   </update>
   
   <!-- ==================================================================================== -->
-  
+     		  	<!--编辑账单中，平台类型为1的插入数据 -->
+	<insert id="setEditBill1" parameterType="java.util.Map">
+    insert into edit_bill (operationDate,account,registrationNumber, price, 
+      realPay, note,contact,note,accountType,modifyTime,registrationTime,company
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test='firmType == "1"'>
+        sourceId
+      </if>
+      <if test='firmType == "2"'>
+        businessesId
+      </if>
+      </trim>
+      )
+    values (#{operationDate},#{account}, #{registrationNumber}, #{price}, 
+      #{realPay}, #{note},#{contact},#{note},#{accountType},#{modifyTime},#{registrationTime},#{company}
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test='firmType == "1"'>
+        #{sourceId}
+      </if>
+      <if test='firmType == "2"'>
+        #{businessesId}
+      </if>
+      </trim>
+      )
+	</insert>
   
 </mapper>

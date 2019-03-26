@@ -53,9 +53,8 @@ public class EditBillController {
 			return map;
 		} else {
 			int realPay = registrationNumber * price;
-			if (firmType.equals("1")) {
-				int number = editBillService.setTUamount(operationDate, account, registrationNumber, price, realPay,
-						note, note, accountType, firmType, modifyTime, registrationTime, company);
+				int number = editBillService.setEditBill(operationDate, account, registrationNumber, price, realPay,
+						note, accountType, firmType, modifyTime, registrationTime, company,sourceId,businessesId);
 				if (number != 0) {
 					map.put("msg", "数据插入成功");
 					map.put("SCode", "200");
@@ -63,7 +62,6 @@ public class EditBillController {
 					map.put("msg", "数据插入失败");
 					map.put("SCode", "405");
 				}
-			}
 			return map;
 		}
 	}

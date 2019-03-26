@@ -12,11 +12,12 @@ public class EditBillServiceImp implements EditBillService{
 	EditBillMapper editBillMapper;
 
 	@Override
-	public int setTUamount(String operationDate, String account, int registrationNumber, int price, int realPay,
-			String note, String note2, String accountType, String firmType, String modifyTime, String registrationTime,
-			String company) {
-		int number = editBillMapper.setTUamount(operationDate, account, registrationNumber, price, realPay,
-				note, note, accountType, firmType, modifyTime, registrationTime, company);
+	public int setEditBill(String operationDate, String account, int registrationNumber, int price, int realPay,
+			String note, String accountType, String firmType, String modifyTime, String registrationTime,
+			String company,int sourceId, int businessesId) {
+		int number = editBillMapper.setEditBill(operationDate, account, registrationNumber, price, realPay,
+				note, accountType, firmType, modifyTime, registrationTime, company,sourceId,businessesId);
 		return number;
 	}
+
 }

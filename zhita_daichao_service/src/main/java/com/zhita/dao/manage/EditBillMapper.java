@@ -17,8 +17,11 @@ public interface EditBillMapper {
 
     int updateByPrimaryKey(EditBill record);
 
-	int setTUamount(@Param("operationDate") String operationDate,@Param("account") String account,@Param("registrationNumber") int registrationNumber,
-			@Param("price")int price,@Param("realPay") int realPay,@Param("note") String note,
-			@Param("note2")String note2,@Param("accountType") String accountType,@Param("firmType") String firmType,
-			@Param("modifyTime")String modifyTime,@Param("registrationTime") String registrationTime,@Param("company")String company);
+	int setEditBill(@Param("operationDate") String operationDate,@Param("account") String account,@Param("registrationNumber") int registrationNumber,
+			@Param("price")int price,@Param("realPay") int realPay,@Param("note") String note,@Param("accountType") String accountType,
+			@Param("firmType") String firmType,@Param("modifyTime")String modifyTime,@Param("registrationTime") String registrationTime,
+			@Param("company")String company,@Param("sourceId") int sourceId,@Param("businessesId") int businessesId);
+
+
+
 }
