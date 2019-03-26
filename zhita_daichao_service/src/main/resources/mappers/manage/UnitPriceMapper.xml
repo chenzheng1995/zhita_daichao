@@ -12,12 +12,13 @@
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="modifyTime" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="sourceId" javaType="java.lang.Integer" jdbcType="VARCHAR" />
-      <arg column="businessesId" javaType="java.lang.Integer" jdbcType="VARCHAR" />
+      <arg column="sourceId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessesId" javaType="java.lang.Integer" jdbcType="INTEGER" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, account, price, accountType, firmType, firm,deleted,modifyTime
+    id, account, price, accountType, firmType, firm, deleted, modifyTime, company, sourceId, 
+    businessesId
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -31,11 +32,13 @@
   </delete>
   <insert id="insert" parameterType="com.zhita.model.manage.UnitPrice">
     insert into unit_price (id, account, price, 
-      accountType, firmType, firm
-      )
+      accountType, firmType, firm, 
+      deleted, modifyTime, company, 
+      sourceId, businessesId)
     values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
-      #{accounttype,jdbcType=VARCHAR}, #{firmtype,jdbcType=VARCHAR}, #{firm,jdbcType=VARCHAR}
-      )
+      #{accounttype,jdbcType=VARCHAR}, #{firmtype,jdbcType=VARCHAR}, #{firm,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR}, #{modifytime,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
+      #{sourceid,jdbcType=INTEGER}, #{businessesid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.UnitPrice">
     insert into unit_price
@@ -58,6 +61,21 @@
       <if test="firm != null">
         firm,
       </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="modifytime != null">
+        modifyTime,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="sourceid != null">
+        sourceId,
+      </if>
+      <if test="businessesid != null">
+        businessesId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -77,6 +95,21 @@
       </if>
       <if test="firm != null">
         #{firm,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceid != null">
+        #{sourceid,jdbcType=INTEGER},
+      </if>
+      <if test="businessesid != null">
+        #{businessesid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -98,6 +131,21 @@
       <if test="firm != null">
         firm = #{firm,jdbcType=VARCHAR},
       </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null">
+        modifyTime = #{modifytime,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceid != null">
+        sourceId = #{sourceid,jdbcType=INTEGER},
+      </if>
+      <if test="businessesid != null">
+        businessesId = #{businessesid,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -107,7 +155,12 @@
       price = #{price,jdbcType=INTEGER},
       accountType = #{accounttype,jdbcType=VARCHAR},
       firmType = #{firmtype,jdbcType=VARCHAR},
-      firm = #{firm,jdbcType=VARCHAR}
+      firm = #{firm,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR},
+      modifyTime = #{modifytime,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      sourceId = #{sourceid,jdbcType=INTEGER},
+      businessesId = #{businessesid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -123,7 +176,7 @@
 	</insert>
  
  			<!--单价设置中的更新数据 -->
-	<update id="updateUnitPrice" parameterType="java.util.Map" >
+	<update id="updateUnitPrice" parameterType="java.util.Map">
 		update unit_price
 		set account = #{account},
 		price = #{price},
@@ -136,12 +189,12 @@
 	</update>
 	
 	 			<!--单价设置中的删除数据，其实就是把deleted改成1 -->
-	<update id="deleteUnitPrice" parameterType="java.util.Map" >
+	<update id="deleteUnitPrice" parameterType="java.util.Map">
 		update unit_price set deleted = '1',modifyTime = #{registrationTime} where id = #{id}
 	</update>
 	
 		 			<!--单价设置中的删除某个账号的全部数据，其实就是把deleted改成1 -->
-	<update id="deleteFirm" parameterType="java.util.Map" >
+	<update id="deleteFirm" parameterType="java.util.Map">
 		update unit_price set deleted = '1',modifyTime = #{registrationTime} where account = #{account} and sourceId =#{sourceId} and company =#{company}
 	</update>
 	
@@ -157,6 +210,6 @@
 	
 					<!--单价设置中,查出所有的数据  -->
 	<select id="getunitprice" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
-		select id,account,price,accountType,firmType,firm,modifyTime from unit_price where sourceId=#{sourceId} and deleted = '0' and company =#{company}
+		select id,account,price,accountType,firmType,firm,modifyTime,businessesId from unit_price where sourceId=#{sourceId} and deleted = '0' and company =#{company}
 	</select>
 </mapper>

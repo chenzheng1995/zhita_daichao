@@ -1,5 +1,7 @@
 package com.zhita.controller;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -83,9 +85,21 @@ public class Test {
 //		long i = Long.parseLong(endtimestamps);
 //		String s = i+"";
 //System.out.println(i);
-		String num=1+(((int)(Math.random()*8998)+1000+1)+"");
-		int applications = Integer.parseInt(num);
-		System.out.println(applications);
+//		String num=1+(((int)(Math.random()*8998)+1000+1)+"");
+//		int applications = Integer.parseInt(num);
+//		System.out.println(applications);
+		
+//		try {
+//			String ip = InetAddress.getLocalHost().getHostAddress();
+//			System.out.println(ip);
+//		} catch (UnknownHostException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		Timestamps timestamps = new Timestamps();
+		System.out.println(timestamps.dateToStamp("2019-3-25"));
+				
 		
 	}
 }

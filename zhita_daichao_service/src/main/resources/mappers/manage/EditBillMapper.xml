@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.EditBillMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.EditBill">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="operationDate" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="account" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="registrationNumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="price" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="realPay" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="note" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="accountType" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="firmType" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sourceId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessesId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="modifyTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="registrationTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, operationDate, account, registrationNumber, price, realPay, note, accountType, 
+    firmType, sourceId, businessesId, modifyTime, deleted, registrationTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from edit_bill
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from edit_bill
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.EditBill">
+    insert into edit_bill (id, operationDate, account, 
+      registrationNumber, price, realPay, 
+      note, accountType, firmType, 
+      sourceId, businessesId, modifyTime, 
+      deleted, registrationTime)
+    values (#{id,jdbcType=INTEGER}, #{operationdate,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{registrationnumber,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{realpay,jdbcType=INTEGER}, 
+      #{note,jdbcType=VARCHAR}, #{accounttype,jdbcType=VARCHAR}, #{firmtype,jdbcType=VARCHAR}, 
+      #{sourceid,jdbcType=INTEGER}, #{businessesid,jdbcType=INTEGER}, #{modifytime,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR}, #{registrationtime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.EditBill">
+    insert into edit_bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="operationdate != null">
+        operationDate,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="registrationnumber != null">
+        registrationNumber,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="realpay != null">
+        realPay,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="accounttype != null">
+        accountType,
+      </if>
+      <if test="firmtype != null">
+        firmType,
+      </if>
+      <if test="sourceid != null">
+        sourceId,
+      </if>
+      <if test="businessesid != null">
+        businessesId,
+      </if>
+      <if test="modifytime != null">
+        modifyTime,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="registrationtime != null">
+        registrationTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operationdate != null">
+        #{operationdate,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationnumber != null">
+        #{registrationnumber,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="realpay != null">
+        #{realpay,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="accounttype != null">
+        #{accounttype,jdbcType=VARCHAR},
+      </if>
+      <if test="firmtype != null">
+        #{firmtype,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceid != null">
+        #{sourceid,jdbcType=INTEGER},
+      </if>
+      <if test="businessesid != null">
+        #{businessesid,jdbcType=INTEGER},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationtime != null">
+        #{registrationtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.EditBill">
+    update edit_bill
+    <set>
+      <if test="operationdate != null">
+        operationDate = #{operationdate,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationnumber != null">
+        registrationNumber = #{registrationnumber,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="realpay != null">
+        realPay = #{realpay,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="accounttype != null">
+        accountType = #{accounttype,jdbcType=VARCHAR},
+      </if>
+      <if test="firmtype != null">
+        firmType = #{firmtype,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceid != null">
+        sourceId = #{sourceid,jdbcType=INTEGER},
+      </if>
+      <if test="businessesid != null">
+        businessesId = #{businessesid,jdbcType=INTEGER},
+      </if>
+      <if test="modifytime != null">
+        modifyTime = #{modifytime,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationtime != null">
+        registrationTime = #{registrationtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.EditBill">
+    update edit_bill
+    set operationDate = #{operationdate,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      registrationNumber = #{registrationnumber,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      realPay = #{realpay,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      accountType = #{accounttype,jdbcType=VARCHAR},
+      firmType = #{firmtype,jdbcType=VARCHAR},
+      sourceId = #{sourceid,jdbcType=INTEGER},
+      businessesId = #{businessesid,jdbcType=INTEGER},
+      modifyTime = #{modifytime,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR},
+      registrationTime = #{registrationtime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- ==================================================================================== -->
+  
+  
+</mapper>

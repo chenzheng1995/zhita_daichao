@@ -96,4 +96,6 @@ public interface LoansBusinessesMapper {
 
 	int pageCount2(String company);
 
+	String getBusinessesName(int businessesId);
+
 }

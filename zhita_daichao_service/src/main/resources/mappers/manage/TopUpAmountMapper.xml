@@ -14,11 +14,13 @@
       <arg column="note" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="firmType" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="modifyTime" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
     id, operationDate, billingDate, firm, topUpAmount, cashReceipts, paymentAccount, 
-    contact, note, deleted, company
+    contact, note, deleted, company, firmType
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -34,11 +36,13 @@
     insert into top_up_amount (id, operationDate, billingDate, 
       firm, topUpAmount, cashReceipts, 
       paymentAccount, contact, note, 
-      deleted, company)
+      deleted, company, firmType
+      )
     values (#{id,jdbcType=INTEGER}, #{operationdate,jdbcType=VARCHAR}, #{billingdate,jdbcType=VARCHAR}, 
       #{firm,jdbcType=VARCHAR}, #{topupamount,jdbcType=INTEGER}, #{cashreceipts,jdbcType=VARCHAR}, 
       #{paymentaccount,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
-      #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR})
+      #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{firmtype,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.TopUpAmount">
     insert into top_up_amount
@@ -76,6 +80,9 @@
       <if test="company != null">
         company,
       </if>
+      <if test="firmtype != null">
+        firmType,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -110,6 +117,9 @@
       </if>
       <if test="company != null">
         #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="firmtype != null">
+        #{firmtype,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -146,6 +156,9 @@
       <if test="company != null">
         company = #{company,jdbcType=VARCHAR},
       </if>
+      <if test="firmtype != null">
+        firmType = #{firmtype,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -160,7 +173,57 @@
       contact = #{contact,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
       deleted = #{deleted,jdbcType=VARCHAR},
-      company = #{company,jdbcType=VARCHAR}
+      company = #{company,jdbcType=VARCHAR},
+      firmType = #{firmtype,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  <!-- ================================================ -->
+   		  	<!--充值金额中的插入数据 -->
+	<insert id="setTUamount" parameterType="java.util.Map">
+    insert into top_up_amount (modifyTime,billingDate,firm, topUpAmount, 
+      cashReceipts, paymentAccount,contact,note,company,firmType,operationDate
+      )
+    values (#{registrationTime},#{billingDate}, #{firm}, #{topUpAmount}, 
+      #{cashReceipts}, #{paymentAccount},#{contact},#{note},#{company},#{firmType},#{otimestamps}
+      )
+	</insert>
+  
+   			<!--充值金额中的更新数据 -->
+	<update id="updateTUamount" parameterType="java.util.Map">
+		update top_up_amount
+		set modifyTime = #{registrationTime},
+		firm = #{firm},
+		billingDate = #{billingDate},
+		topUpAmount = #{topUpAmount},
+		cashReceipts = #{cashReceipts},
+		paymentAccount = #{paymentAccount},
+		contact = #{contact},
+		note = #{note},
+		firmType = #{firmType},
+		operationDate = #{otimestamps}
+		where id = #{id} and deleted = '0'
+	</update>
+	
+		 			<!--充值金额中根据id删除数据，其实就是把deleted改成1 -->
+	<update id="deleteAmountById" parameterType="java.util.Map">
+		update top_up_amount set deleted = '1',modifyTime = #{registrationTime} where id = #{id}
+	</update>
+	
+			 			<!--充值金额中根据操作日期删除数据，其实就是把deleted改成1 -->
+	<update id="deleteAmountByOperationDate" parameterType="java.lang.String">
+		update top_up_amount set deleted = '1',modifyTime = #{registrationTime} where operationDate = #{otimestamps}
+	</update>
+	
+	   <!-- 查询充值金额中有多少条数据 -->
+ <select id="pageCountByAmount" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select count(id) from top_up_amount where deleted='0' and company = #{company} and firmType =#{firmType}
+ </select>
+ 
+ 	   <!-- 查询充值金额中,查询数据,含分页 -->
+ <select id="getAmount" parameterType="java.util.Map" resultType="com.zhita.model.manage.TopUpAmount">
+   select id,operationDate,billingDate,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,firmType
+    from top_up_amount where firmType =#{firmType} and company = #{company} and deleted = '0' order by operationDate desc limit #{page},#{pagesize}
+ </select>
 </mapper>

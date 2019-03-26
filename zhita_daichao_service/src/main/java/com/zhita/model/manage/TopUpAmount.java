@@ -23,7 +23,11 @@ public class TopUpAmount {
 
     private String company;
 
-    public TopUpAmount(Integer id, String operationdate, String billingdate, String firm, Integer topupamount, String cashreceipts, String paymentaccount, String contact, String note, String deleted, String company) {
+    private String firmtype;
+    
+    private String modifyTime;
+
+    public TopUpAmount(Integer id, String operationdate, String billingdate, String firm, Integer topupamount, String cashreceipts, String paymentaccount, String contact, String note, String deleted, String company, String firmtype,String modifyTime) {
         this.id = id;
         this.operationdate = operationdate;
         this.billingdate = billingdate;
@@ -35,6 +39,8 @@ public class TopUpAmount {
         this.note = note;
         this.deleted = deleted;
         this.company = company;
+        this.firmtype = firmtype;
+        this.modifyTime = modifyTime;
     }
 
     public TopUpAmount() {
@@ -127,5 +133,21 @@ public class TopUpAmount {
 
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
+    }
+
+    public String getFirmtype() {
+        return firmtype;
+    }
+
+    public void setFirmtype(String firmtype) {
+        this.firmtype = firmtype == null ? null : firmtype.trim();
+    }
+    
+    public String getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(String modifyTime) {
+        this.modifyTime = modifyTime == null ? null : modifyTime.trim();
     }
 }

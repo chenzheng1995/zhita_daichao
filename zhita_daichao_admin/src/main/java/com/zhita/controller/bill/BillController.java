@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.druid.filter.FilterManager;
 import com.zhita.model.manage.UnitPrice;
 import com.zhita.service.bill.UnitPriceService;
 import com.zhita.service.merchant.IntMerchantService;
@@ -155,7 +156,13 @@ public class BillController {
 	@RequestMapping("/getunitprice")
     public Map<String,Object> getunitprice (int sourceId,String company){
 		HashMap<String,Object> map=new HashMap<>();
+		int businessesId = 0;
 		List<UnitPrice> accountList = UnitPriceService.getunitprice(sourceId,company);
+		for (UnitPrice unitPrice : accountList) {
+		   businessesId = unitPrice.getBusinessesId();
+		   String firm =  intRegisteService.getBusinessesName(businessesId);
+			unitPrice.setFirm(firm);
+		}
 		map.put("list", accountList);
 		return map;
 	}

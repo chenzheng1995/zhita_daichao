@@ -2,6 +2,9 @@ package com.zhita.controller.article;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -177,14 +180,20 @@ public class ArticleController {
 		@ResponseBody
 		@RequestMapping("/getcontent")
 		@Transactional
-		public Map<String, Object> getcontent(Integer id){
+		public Map<String, Object> getcontent(Integer id) throws UnknownHostException, UnsupportedEncodingException{
 			Map<String, Object> map = new HashMap<>();
+			String contentUrl ="";
 		  	PostAndGet postAndGet =new PostAndGet();
-		    ArticleUtil articleUtil = new ArticleUtil();
-			String contentUrl = articleService.getcontent(id);
+//		    ArticleUtil articleUtil = new ArticleUtil();
+			contentUrl = articleService.getcontent(id);
+//			String ip = InetAddress.getLocalHost().getHostAddress();
+//			if(ip.equals("39.98.83.65")) {
+//				contentUrl = contentUrl.replace("wx-dc.oss-cn-zhangjiakou.aliyuncs.com", "wx-dc.oss-cn-zhangjiakou-internal.aliyuncs.com");
+//			}
 			String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
-			String result = articleUtil.txt2String(content);
-			map.put("content",result);			
+//			String result = articleUtil.txt2String(content);
+//			content = new String(content.getBytes("ISO-8859-1"),"utf-8");
+			map.put("content",content);			
 			return map;
 			
 		}	

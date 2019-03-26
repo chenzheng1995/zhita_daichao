@@ -172,4 +172,10 @@ public class RegisteServiceImp implements IntRegisteService{
   		int count=loansBusinessesMapper.pageCount2(company);
   		return count;
 	}
+
+	@Override
+	public String getBusinessesName(int businessesId) {
+		String firm =  loansBusinessesMapper.getBusinessesName(businessesId);
+		return firm;
+	}
 }
