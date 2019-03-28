@@ -20,4 +20,6 @@ public interface AmountService {
 
 	List<TopUpAmount> getAmount(String firmType, String company, int page, int pagesize);
 
+	Integer gettopUpAmount(String sourceName, String date, String company);
+
 }

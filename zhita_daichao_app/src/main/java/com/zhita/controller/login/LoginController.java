@@ -211,6 +211,7 @@ public class LoginController {
 	@ResponseBody
 	@Transactional
 	public Map<String, Object> codeLogin(String phone, String code,String company,String registrationType,String sourceId) {
+		sourceId = "1";
 		Map<String, Object> map = new HashMap<String, Object>();
 		String loginStatus = "1";
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {

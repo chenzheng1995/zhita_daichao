@@ -52,4 +52,10 @@ public class AmountServiceImp implements AmountService{
 		return amountList;
 	}
 
+	@Override
+	public Integer gettopUpAmount(String sourceName, String date, String company) {
+		Integer topUpAmount = topUpAmountMapper.gettopUpAmount(sourceName,date,company);
+		return topUpAmount;
+	}
+
 }

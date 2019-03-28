@@ -209,6 +209,7 @@ public class AmountController {
 			topUpAmount.setOperationdate(operationDate);
 		}
 		map.put("amountList", amountList);
+		map.put("pageutil", pageUtil);
 		return map;
 	}
 	}

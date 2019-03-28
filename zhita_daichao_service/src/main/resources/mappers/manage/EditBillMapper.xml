@@ -18,6 +18,7 @@
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="registrationTime" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sourceTo" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -201,30 +202,124 @@
   </update>
   
   <!-- ==================================================================================== -->
-     		  	<!--编辑账单中，平台类型为1的插入数据 -->
-	<insert id="setEditBill1" parameterType="java.util.Map">
-    insert into edit_bill (operationDate,account,registrationNumber, price, 
-      realPay, note,contact,note,accountType,modifyTime,registrationTime,company
-      <trim prefix="(" suffix=")" suffixOverrides=",">
+     		  	<!--编辑账单中插入数据 -->
+	<insert id="setEditBill" parameterType="java.util.Map">
+    insert into edit_bill (operationDate,registrationNumber, price, 
+      realPay, note,accountType,firmType,modifyTime,registrationTime,company,sourceTo,
       <if test='firmType == "1"'>
-        sourceId
+        sourceId,account
       </if>
       <if test='firmType == "2"'>
         businessesId
       </if>
-      </trim>
       )
-    values (#{operationDate},#{account}, #{registrationNumber}, #{price}, 
-      #{realPay}, #{note},#{contact},#{note},#{accountType},#{modifyTime},#{registrationTime},#{company}
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+    values (#{operationDate}, #{registrationNumber}, #{price}, 
+      #{realPay}, #{note},#{accountType},#{firmType},#{modifyTime},#{registrationTime},#{company},#{sourceTo},
       <if test='firmType == "1"'>
-        #{sourceId}
+        #{sourceId},#{account}
       </if>
       <if test='firmType == "2"'>
         #{businessesId}
       </if>
-      </trim>
       )
 	</insert>
+	
+	
+  <!--编辑账单中更新数据 -->
+    <update id="updateEditBill" parameterType="java.util.Map">
+    update edit_bill
+    set operationDate = #{oDatetimestamps},
+      account = #{account},
+      registrationNumber = #{registrationNumber},
+      price = #{price},
+      realPay = #{realPay},
+      note = #{note},
+      accountType = #{accountType},
+      firmType = #{firmType},
+      modifyTime = #{modifyTimestamps},
+      registrationTime = #{registrationTimestamps},
+      sourceTo = #{sourceTo},
+      <if test='firmType == "1"'>
+      sourceId= #{sourceId},
+      account = #{account}
+      </if>
+      <if test='firmType == "2"'>
+      businessesId = #{businessesId}
+      </if>
+    where id = #{id}
+  </update>
   
+  	<!--充值金额中根据id删除数据，其实就是把deleted改成1 -->
+	<update id="deleteEditBillById" parameterType="java.util.Map">
+		update edit_bill set deleted = '1', modifyTime = #{modifyTimestamps} where id = #{id}
+	</update>
+	
+	
+	  	<!--充值金额中根据操作日期删除数据，其实就是把deleted改成1 -->
+	<update id="deleteEditBillByOperationDate" parameterType="java.util.Map">
+		update edit_bill set deleted = '1', modifyTime = #{modifyTimestamps} where operationDate =#{operationDate} and company=#{company} and (
+		<foreach collection="accountList" index="index" item="account" >  
+          account = #{account} or  
+        </foreach>
+        1=2)
+	</update>
+	
+		  	<!--充值金额中根据操作日期删除数据，其实就是把deleted改成1 -->
+	<update id="deleteEditBillByOperationDate1" parameterType="java.util.Map">
+		update edit_bill set deleted = '1', modifyTime = #{modifyTimestamps} where operationDate =#{oDatetimestamps} and company=#{company} and businessesId=#{businessesId}
+
+	</update>
+	
+		   <!-- 编辑账单中，根据传过来的账号查看有多少条数据 -->
+ <select id="pageCountByEditBill1" parameterType="java.util.Map" resultType="java.lang.Integer">
+   select count(id) from edit_bill where deleted='0' and (
+    <foreach collection="accountList" index="index" item="account" >  
+          account = #{account} or  
+        </foreach>
+        1=2)
+ </select>
+  
+  		   <!-- 编辑账单中，根据传过来的账号查看有多少条数据 -->
+ <select id="pageCountByEditBill2" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+   select count(id) from edit_bill where deleted='0' and businessesId = #{businessesId}   
+ </select>
+ 
+   		   <!-- 编辑账单中，根据传过来的账号查询所有数据 -->
+ <select id="getEditBill1" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+   select id,operationDate,account,registrationNumber,price,realPay,note,accountType,firmType,sourceId,registrationTime,sourceTo from edit_bill 
+   where deleted='0' and company = #{company} and firmType =#{firmType} and (
+        <foreach collection="accountList" index="index" item="account" >  
+          account = #{account} or  
+        </foreach>
+        1=2) order by operationDate desc limit #{page},#{pageSize}
+ </select>
+  
+     		   <!-- 编辑账单中，根据传过来的账号查询所有数据 -->
+ <select id="getEditBill2" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+   select id,operationDate,account,registrationNumber,price,realPay,note,accountType,firmType,sourceId,registrationTime,sourceTo from edit_bill 
+   where deleted='0' and company = #{company} and businessesId = #{businessesId} order by operationDate desc limit #{page},#{pageSize}
+ </select>
+ 
+<!--    		   编辑账单中，根据传过来的账号查询数据的总和-->
+ <select id="getEditBillCount1" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+select sum(realPay) realPay,count(accountType) accountType,ROUND(avg(price),0) price,sum(registrationNumber) registrationNumber from edit_bill where registrationTime >=#{startDate} and registrationTime &lt;#{endDate} and company = #{company} and deleted='0' and accountType = #{accountType} and (
+ <foreach collection="accountList" index="index" item="account" >  
+          account = #{account} or  
+ </foreach>
+  1=2)
+ </select> 
+
+ <!--    		   编辑账单中，根据传过来的账号查询数据的总和-->
+ <select id="getEditBillCount2" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+select sum(realPay) realPay,count(accountType) accountType,ROUND(avg(price),0) price,sum(registrationNumber) registrationNumber from edit_bill where registrationTime >=#{startDate} and registrationTime &lt;#{endDate} and company = #{company} and deleted='0' and accountType = #{accountType} and businessesId = #{businessesId} 
+ </select> 
+ 
+  <!--公司浏览中，查出有多少时间段-->
+ <select id="getdate" parameterType="java.util.Map" resultType="java.lang.String">
+select distinct operationDate from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and (
+ <foreach collection="accountList" index="index" item="account" >  
+          account = #{account} or  
+ </foreach>
+  1=2)
+ </select> 
 </mapper>

@@ -20,6 +20,10 @@ public interface UnitPriceService {
 
 	List<UnitPrice> getunitprice(int sourceId, String company);
 
+	int getbusinessesId(String account, String company);
+
+	List<UnitPrice> getaccountBySourceId(String company, Integer sourceId, String firmType);
+
 
 
 }

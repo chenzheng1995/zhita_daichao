@@ -38,4 +38,6 @@ public interface TopUpAmountMapper {
 	int pageCountByAmount(@Param("firmType")String firmType,@Param("company") String company);
 
 	List<TopUpAmount> getAmount(@Param("firmType")String firmType,@Param("company") String company,@Param("page") int page,@Param("pagesize") int pagesize);
+
+	Integer gettopUpAmount(@Param("sourceName")String sourceName,@Param("date") String date,@Param("company") String company);
 }

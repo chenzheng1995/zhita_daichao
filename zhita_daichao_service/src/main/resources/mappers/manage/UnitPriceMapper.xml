@@ -212,4 +212,13 @@
 	<select id="getunitprice" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
 		select id,account,price,accountType,firmType,firm,modifyTime,businessesId from unit_price where sourceId=#{sourceId} and deleted = '0' and company =#{company}
 	</select>
+						<!--根据账号，查寻出甲方id  -->
+	<select id="getbusinessesId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select businessesId from unit_price where account=#{account} and deleted = '0' and company =#{company} limit 1;
+	</select>
+	
+							<!--查出指定渠道的所有账号  -->
+	<select id="getaccountBySourceId" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
+		select account from unit_price  where sourceId=#{sourceId} and deleted = '0' and company =#{company} and firmType = #{firmType}
+	</select>
 </mapper>

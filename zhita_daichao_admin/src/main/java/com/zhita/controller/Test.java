@@ -4,8 +4,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import com.zhita.util.Timestamps;
 
@@ -96,10 +99,19 @@ public class Test {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
-		Timestamps timestamps = new Timestamps();
-		System.out.println(timestamps.dateToStamp("2019-3-25"));
-				
+		HashMap<String, Object> map = new HashMap<>();
+		 ArrayList<Object> arrList = new ArrayList<Object>();
+		 ArrayList<Object> arrList1 = new ArrayList<Object>();
+		 arrList.add(1);
+		 arrList.add(2);
+		 arrList.add(3);
+		 for (Object object : arrList) {
+			 map.put("1key", object);
+			 arrList1.add(map);
+			 
+		}
+		 
+			System.out.println(1111);	
 		
 	}
 }

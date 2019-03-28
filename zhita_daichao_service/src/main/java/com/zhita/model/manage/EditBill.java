@@ -30,8 +30,11 @@ public class EditBill {
     private String registrationtime;
     
     private String company;
+    
+    private String sourceTo;
+    
 
-    public EditBill(Integer id, String operationdate, String account, Integer registrationnumber, Integer price, Integer realpay, String note, String accounttype, String firmtype, Integer sourceid, Integer businessesid, String modifytime, String deleted, String registrationtime,String company) {
+    public EditBill(Integer id, String operationdate, String account, Integer registrationnumber, Integer price, Integer realpay, String note, String accounttype, String firmtype, Integer sourceid, Integer businessesid, String modifytime, String deleted, String registrationtime,String company,String sourceTo) {
         this.id = id;
         this.operationdate = operationdate;
         this.account = account;
@@ -47,6 +50,7 @@ public class EditBill {
         this.deleted = deleted;
         this.registrationtime = registrationtime;
         this.company = company;
+        this.sourceTo = sourceTo;
     }
 
     public EditBill() {
@@ -171,5 +175,13 @@ public class EditBill {
 
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
+    }
+    
+    public String getSourceTo() {
+        return sourceTo;
+    }
+
+    public void setSourceTo(String sourceTo) {
+        this.sourceTo = sourceTo == null ? null : sourceTo.trim();
     }
 }

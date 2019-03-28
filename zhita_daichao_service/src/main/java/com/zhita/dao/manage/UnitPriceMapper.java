@@ -33,6 +33,10 @@ public interface UnitPriceMapper {
 
 	List<UnitPrice> getunitprice(@Param("sourceId") int sourceId,@Param("company") String company);
 
+	int getbusinessesId(@Param("account")String account,@Param("company") String company);
+
+	List<UnitPrice> getaccountBySourceId(@Param("company")String company,@Param("sourceId") Integer sourceId,@Param("firmType") String firmType);
+
 
 
 }
