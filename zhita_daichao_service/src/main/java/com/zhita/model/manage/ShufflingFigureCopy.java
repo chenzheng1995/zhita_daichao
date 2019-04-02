@@ -95,4 +95,6 @@ public class ShufflingFigureCopy {
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
     }
+
+    
 }
