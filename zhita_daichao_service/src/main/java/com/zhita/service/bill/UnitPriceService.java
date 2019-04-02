@@ -24,6 +24,9 @@ public interface UnitPriceService {
 
 	List<UnitPrice> getaccountBySourceId(String company, Integer sourceId, String firmType);
 
+	List<Object> getaccountById(int sourceId, String company);
+
+
 
 
 }

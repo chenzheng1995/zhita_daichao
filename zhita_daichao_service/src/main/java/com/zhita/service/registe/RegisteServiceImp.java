@@ -174,8 +174,8 @@ public class RegisteServiceImp implements IntRegisteService{
 	}
 
 	@Override
-	public String getBusinessesName(int businessesId) {
-		String firm =  loansBusinessesMapper.getBusinessesName(businessesId);
+	public String getBusinessesName(int businessesId,String company) {
+		String firm =  loansBusinessesMapper.getBusinessesName(businessesId,company);
 		return firm;
 	}
 }

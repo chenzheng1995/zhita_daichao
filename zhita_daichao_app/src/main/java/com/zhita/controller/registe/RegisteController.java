@@ -1,18 +1,21 @@
 package com.zhita.controller.registe;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.registe.IntRegisteService;
+import com.zhita.service.sourcedadson.SourceDadSonService;
 import com.zhita.util.PageUtil;
 
 
@@ -26,10 +29,15 @@ public class RegisteController {
 	@Autowired
 	CommodityFootprintService cFootprintService;
 	
+	@Autowired
+	SourceDadSonService sourceDadSonService;
+	
 	//小程序---查询所有贷款商家信息,含分页
     @ResponseBody
     @RequestMapping("/queryAll")
-    public Map<String,Object> queryAll(Integer page,String company){    	
+    @Transactional
+    public Map<String,Object> queryAll(Integer page,String company,String oneSourceName,String twoSourceName){    
+    	String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);
     	PageUtil pageUtil=null;
     	int totalCount=intRegisteService.pageCount2(company);//该方法是查询贷款商家总条数
     	pageUtil=new PageUtil(page,10,totalCount);
@@ -64,4 +72,20 @@ public class RegisteController {
     	map.put("pageutil", pageUtil);
     	return map;
     }
+    
+    @ResponseBody
+    @RequestMapping("/dynamicData")
+    @Transactional
+    public HashMap<String,Object> queryAll(){
+    	HashMap<String,Object> map=new HashMap<>();
+    	map.put("left", "可贷额度");
+    	map.put("centerTop", "%");
+    	map.put("centerBottom", "成功率");
+    	map.put("button", "立即放款");
+    	map.put("right", "人已放款");
+		return map;    
+    	
+    }
+
+    
 }

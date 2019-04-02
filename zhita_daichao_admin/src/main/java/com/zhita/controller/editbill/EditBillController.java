@@ -70,7 +70,7 @@ public class EditBillController {
 		} else {
 			if(firmType.equals("1")) {
 				int id = unitPriceService.getbusinessesId(account,company);
-				sourceTo = intRegisteService.getBusinessesName(id);
+				sourceTo = intRegisteService.getBusinessesName(id,company);
 				businessesId = 0;
 			}
 			if(firmType.equals("2")) {
@@ -131,7 +131,7 @@ public class EditBillController {
 		} else {
 			if(firmType.equals("1")) {
 				int bId = unitPriceService.getbusinessesId(account,company);
-				sourceTo = intRegisteService.getBusinessesName(bId);
+				sourceTo = intRegisteService.getBusinessesName(bId,company);
 				businessesId = 0;
 			}
 			if(firmType.equals("2")) {

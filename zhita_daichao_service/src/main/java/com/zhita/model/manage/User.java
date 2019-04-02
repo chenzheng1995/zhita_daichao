@@ -41,8 +41,10 @@ public class User implements Serializable{
     private String programQrCode;//小程序二维码url
     
     private Integer fatherId;//父id（用于二维码推荐人和使用人相关联）
+    
+    private String sonSourceName;//二级渠道
 
-    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus,String pwd,String company,String registrationType,String loginTime,String programQrCode,Integer fatherId) {
+    public User(Integer id, Integer sourceId, String nickname, String phone, Integer dayfen, String registrationtime, String name, Integer age, String idcard, String openId,String loginStatus,String pwd,String company,String registrationType,String loginTime,String programQrCode,Integer fatherId,String sonSourceName) {
         this.id = id;
         this.sourceId = sourceId;
         this.nickname = nickname;
@@ -60,6 +62,7 @@ public class User implements Serializable{
         this.loginTime = loginTime;
         this.programQrCode = programQrCode;
         this.fatherId = fatherId;
+        this.sonSourceName = sonSourceName;
     }
 
     public User() {
@@ -218,5 +221,13 @@ public class User implements Serializable{
 
     public void setFatherId(Integer fatherId) {
         this.fatherId = fatherId;
+    }
+    
+    public String getSonSourceName() {
+        return sonSourceName;
+    }
+
+    public void setSonSourceName(String sonSourceName) {
+        this.sonSourceName = sonSourceName == null ? null : sonSourceName.trim();
     }
 }

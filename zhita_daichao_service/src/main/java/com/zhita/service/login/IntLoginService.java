@@ -96,4 +96,11 @@ public interface IntLoginService {
 	public int  upaStateTime(ManageLogin manageLogin);
 	//后台管理---通过手机号获取用户的id
 	public ManageLogin getIdByPhone(String phone);
+
+	int setAPPUser1(String phone, String md5Pwd, int merchantId, String registrationTime, String loginStatus,
+			String registrationType, String company, String sonSourceName);
+
+	int insertUser1(String phone, String loginStatus, String company, String registrationType, String registrationTime,
+			int merchantId, String sonSourceName);
+
 }

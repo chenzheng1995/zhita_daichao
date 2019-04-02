@@ -40,6 +40,26 @@ public interface EditBillService {
 
 	List<String> getdate(HashMap<String, Object> map1);
 
+	List<String> getdate2(String startDate, String endDate, Integer businessesId, String company, int page, int pageSize);
+
+	int pageCountByCThrough1(String startDate, String endDate, Integer sourceId, String company);
+
+	int pageCountByCThrough2(String startDate, String endDate, Integer businessesId, String company);
+
+	int pageCountByPThrough1(String startDate, String endDate, String company, String firmType);
+
+	List<Integer> getPThroughSourceId(String startDate, String endDate, String company, String firmType, int page, int pageSize);
+
+	ArrayList<EditBill> getPThrough(Integer sourceId, String startDate, String endDate, String company);
+
+	int pageCountByPThrough2(String startDate, String endDate, String company, String firmType);
+
+	List<Integer> getPThroughBusinessesId(String startDate, String endDate, String company, String firmType);
+
+	ArrayList<EditBill> getPThrough1(Integer businessesId, String startDate, String endDate, String company);
+
+
+
 
 
 }

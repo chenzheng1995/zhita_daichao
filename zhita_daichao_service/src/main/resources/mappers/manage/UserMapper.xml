@@ -36,6 +36,8 @@
 				jdbcType="VARCHAR" />
 			<arg column="fatherId" javaType="java.lang.Integer"
 				jdbcType="INTEGER" />
+			<arg column="sonSourceName" javaType="java.lang.String"
+				jdbcType="VARCHAR" />
 		</constructor>
 	</resultMap>
 	<sql id="Base_Column_List">
@@ -660,5 +662,33 @@
 		#{registrationType},
 		#{registrationTime},
 		#{sourceId})
+	</insert>
+	
+		  	<!--APP 插入用户信息 -->
+	<insert id="setAPPUser1" parameterType="java.util.Map">
+		insert into user (phone, pwd,
+		sourceId,registrationTime,loginStatus,registrationType,company,loginTime,sonSourceName)
+		values (#{phone},
+		#{md5Pwd},
+		#{merchantId},
+		#{registrationTime},
+		#{loginStatus},
+		#{registrationType},
+		#{company},
+		#{registrationTime},
+		#{sonSourceName})
+	</insert>
+	
+			  	<!--APP 插入用户信息 -->
+	<insert id="insertUser1" parameterType="java.util.Map">
+		insert into user (phone,registrationTime,loginStatus,company,registrationType,loginTime,sourceId,sonSourceName)
+		values (#{phone},
+		#{registrationTime},
+		#{loginStatus},
+		#{company},
+		#{registrationType},
+		#{registrationTime},
+		#{merchantId},
+		#{sonSourceName})
 	</insert>
 </mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.VestBagMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.VestBag">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="vestBagName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, vestBagName, deleted, company
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vest_bag
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from vest_bag
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.VestBag">
+    insert into vest_bag (id, vestBagName, deleted, 
+      company)
+    values (#{id,jdbcType=INTEGER}, #{vestbagname,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.VestBag">
+    insert into vest_bag
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="vestbagname != null">
+        vestBagName,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="vestbagname != null">
+        #{vestbagname,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.VestBag">
+    update vest_bag
+    <set>
+      <if test="vestbagname != null">
+        vestBagName = #{vestbagname,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.VestBag">
+    update vest_bag
+    set vestBagName = #{vestbagname,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+<!--      根据马甲包名和公司名查询id -->
+    <select id="getVestBag" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select id from vest_bag where vestBagName = #{vestBagName} and company = #{company} and deleted = '0'
+  </select>
+  
+  	<insert id="setVestBag" parameterType="java.lang.String">
+		insert into vest_bag (vestBagName,company)
+		values (#{vestBagName},
+		#{company})
+	</insert>
+</mapper>

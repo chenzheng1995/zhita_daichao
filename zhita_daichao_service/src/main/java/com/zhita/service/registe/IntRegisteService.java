@@ -59,7 +59,7 @@ public interface IntRegisteService{
   	public int upaSortByLoanId(Integer sort,Integer id);
 	public List<Object> getTwoFirm(String company);
 	public int pageCount2(String company);
-	public String getBusinessesName(int businessesId);
+	public String getBusinessesName(int businessesId, String company);
 
 
 }

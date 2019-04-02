@@ -2,6 +2,7 @@ package com.zhita.controller.browsinghistory;
 
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +31,7 @@ public class BrowsingHistoryController {
 	//查询用户的浏览记录
 	@RequestMapping("/getbrowsing")
 	@ResponseBody
-
+	@Transactional
 	public Map<String,Object> insertFootprint(String userId,int curPage,String company) { //userId是用户的id，curPage是页码
 		 Map<String,Object> map1 = new HashMap<String,Object>();
 		 int fakeApplications = 0;
@@ -55,6 +57,10 @@ public class BrowsingHistoryController {
 	    	map = intRegisteService.getLoansBusinesses(businessName,company); //获取商品的所有信息
  	    	if(map!=null) {
 		         fakeApplications = (int) map.get("applications"); //假的申请人数
+			        String loanlimitbig =((BigDecimal) map.get("loanlimitbig")).setScale(0)+"";
+			        String loanlimitsmall =((BigDecimal) map.get("loanlimitsmall")).setScale(0)+"";
+			        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
+			        map.put("loanlimit", loanlimit);
 	    	}
 	    	long applications = cFootprintService.getApplications(businessName,company)+fakeApplications; //获取申请人数	 
 	    	if(map==null) {

@@ -22,4 +22,7 @@ public interface AmountService {
 
 	Integer gettopUpAmount(String sourceName, String date, String company);
 
+	Integer getAmountbyfirm(String startDate, String endDate, String company, String sourceName);
+
+
 }

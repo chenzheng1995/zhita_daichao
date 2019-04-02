@@ -149,5 +149,12 @@ public interface UserMapper {
 	int setPwd(@Param("userId")int userId,@Param("md5Pwd") String md5Pwd);
 
 	int insertUser(@Param("phone")String phone, @Param("loginStatus")String loginStatus, @Param("company")String company,@Param("registrationType") String registrationType,@Param("registrationTime") String registrationTime,@Param("sourceId") int sourceId);
+
+	int setAPPUser1(@Param("phone")String phone,@Param("md5Pwd") String md5Pwd,@Param("merchantId") int merchantId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus,
+			@Param("registrationType")String registrationType,@Param("company") String company,@Param("sonSourceName") String sonSourceName);
+
+	int insertUser1(@Param("phone")String phone, @Param("loginStatus")String loginStatus, @Param("company")String company,@Param("registrationType") String registrationType,@Param("registrationTime") String registrationTime,@Param("merchantId") int merchantId,@Param("sonSourceName") String sonSourceName);
+
+
 	
 }

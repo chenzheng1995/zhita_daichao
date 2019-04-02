@@ -21,7 +21,7 @@ public class shufflingFigureController {
 
 	@RequestMapping("/getshufflingFigure")
 	@ResponseBody
-	public Map<String, Object> getqrcode(String company) {
+	public Map<String, Object> getqrcode(String company,String oneSourceName,String twoSourceName) {
     	List<ShufflingFigure> list=intBannerService.getShufflingFigure(company); //获取轮播图的所有数据   	
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("listshuff",list);

@@ -105,4 +105,59 @@ public class EditBillServiceImp implements EditBillService{
 		return dateList;
 	}
 
+	@Override
+	public List<String> getdate2(String startDate, String endDate, Integer businessesId, String company,int page, int pageSize) {
+		List<String> dateList = editBillMapper.getdate2(startDate,endDate,businessesId,company,page,pageSize);
+		return dateList;
+	}
+
+	@Override
+	public int pageCountByCThrough1(String startDate, String endDate, Integer sourceId, String company) {
+		int totalCount=editBillMapper.pageCountByCThrough1(startDate,endDate,sourceId,company);
+		return totalCount;
+	}
+
+	@Override
+	public int pageCountByCThrough2(String startDate, String endDate, Integer businessesId, String company) {
+		int totalCount=editBillMapper.pageCountByCThrough2(startDate,endDate,businessesId,company);
+		return totalCount;
+	}
+
+	@Override
+	public int pageCountByPThrough1(String startDate, String endDate, String company,String firmType) {
+		int totalCount=editBillMapper.pageCountByPThrough1(startDate,endDate,company,firmType);
+		return totalCount;
+	}
+
+	@Override
+	public List<Integer> getPThroughSourceId(String startDate, String endDate, String company,String firmType,int page,int pageSize) {
+		List<Integer> List = editBillMapper.getPThroughSourceId(startDate,endDate,company,firmType,page,pageSize);
+		return List;
+	}
+
+	@Override
+	public ArrayList<EditBill> getPThrough(Integer sourceId, String startDate, String endDate, String company) {
+		ArrayList<EditBill> List3 = editBillMapper.getPThrough(sourceId,startDate,endDate,company);
+		return List3;
+	}
+
+	@Override
+	public int pageCountByPThrough2(String startDate, String endDate, String company, String firmType) {
+		int totalCount=editBillMapper.pageCountByPThrough2(startDate,endDate,company,firmType);
+		return totalCount;
+	}
+
+	@Override
+	public List<Integer> getPThroughBusinessesId(String startDate, String endDate, String company, String firmType) {
+		List<Integer> List = editBillMapper.getPThroughBusinessesId(startDate,endDate,company,firmType);
+		return List;
+	}
+
+	@Override
+	public ArrayList<EditBill> getPThrough1(Integer businessesId , String startDate, String endDate, String company) {
+		ArrayList<EditBill> List3 = editBillMapper.getPThrough1(businessesId,startDate,endDate,company);
+		return List3;
+	}
+
+
 }

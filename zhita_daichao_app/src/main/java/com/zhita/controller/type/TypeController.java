@@ -41,7 +41,7 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryLoanClassBefore")
     @Transactional
-    public List<LoanClassification> queryLoanClass1(String company){
+    public List<LoanClassification> queryLoanClass1(String company,String oneSourceName,String twoSourceName){
     	List<LoanClassification> list = intTypeService.queryLoanClass1(company);
 		return list;
    	
@@ -51,7 +51,7 @@ public class TypeController {
     @ResponseBody
     @RequestMapping("/queryLoanClassAfter")
     @Transactional
-    public List<LoanClassification> queryLoanClassAfter1(String company){
+    public List<LoanClassification> queryLoanClassAfter1(String company,String oneSourceName,String twoSourceName){
     	List<LoanClassification> list = intTypeService.queryLoanClassAfter1(company);
 		return list;
    	
@@ -60,7 +60,7 @@ public class TypeController {
 	//小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息
     @ResponseBody
     @RequestMapping("/queryLoanbusinByLoanClass")
-    public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page,String company){
+    public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page,String company,String oneSourceName,String twoSourceName){
     	int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification,company);
     	PageUtil pageUtil=new PageUtil(page,10,totalCount);
     	if(page<1) {

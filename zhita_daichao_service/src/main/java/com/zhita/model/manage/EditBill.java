@@ -33,8 +33,18 @@ public class EditBill {
     
     private String sourceTo;
     
+    private String sourcename;
+    
+    private Integer topUpAmount; //充值金额
+    
+    private Integer remainingAmount; //充值金额
+    
+    private String businessname;
+    
+    
+    
 
-    public EditBill(Integer id, String operationdate, String account, Integer registrationnumber, Integer price, Integer realpay, String note, String accounttype, String firmtype, Integer sourceid, Integer businessesid, String modifytime, String deleted, String registrationtime,String company,String sourceTo) {
+    public EditBill(Integer id, String operationdate, String account, Integer registrationnumber, Integer price, Integer realpay, String note, String accounttype, String firmtype, Integer sourceid, Integer businessesid, String modifytime, String deleted, String registrationtime,String company,String sourceTo,String sourcename,Integer topUpAmount,Integer remainingAmount,String businessname) {
         this.id = id;
         this.operationdate = operationdate;
         this.account = account;
@@ -51,6 +61,10 @@ public class EditBill {
         this.registrationtime = registrationtime;
         this.company = company;
         this.sourceTo = sourceTo;
+        this.sourcename = sourcename;
+        this.topUpAmount = topUpAmount;
+        this.remainingAmount = remainingAmount;
+        this.businessname = businessname;
     }
 
     public EditBill() {
@@ -183,5 +197,37 @@ public class EditBill {
 
     public void setSourceTo(String sourceTo) {
         this.sourceTo = sourceTo == null ? null : sourceTo.trim();
+    }
+    
+    public String getSourcename() {
+        return sourcename;
+    }
+
+    public void setSourcename(String sourcename) {
+        this.sourcename = sourcename == null ? null : sourcename.trim();
+    }
+    
+    public Integer getTopUpAmount() {
+        return topUpAmount;
+    }
+
+    public void setTopUpAmount(Integer topUpAmount) {
+        this.topUpAmount = topUpAmount;
+    }
+    
+    public Integer getRemainingAmount() {
+        return remainingAmount;
+    }
+
+    public void setRemainingAmount(Integer remainingAmount) {
+        this.remainingAmount = remainingAmount;
+    }
+    
+    public String getBusinessname() {
+        return businessname;
+    }
+
+    public void setBusinessname(String businessname) {
+        this.businessname = businessname == null ? null : businessname.trim();
     }
 }

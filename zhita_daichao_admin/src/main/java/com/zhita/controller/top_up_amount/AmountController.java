@@ -33,7 +33,7 @@ public class AmountController {
 	 * 
 	 * @param billingDate    入账时间
 	 * @param firm           平台公司
-	 * @param topUpAmount    充值金额
+	 * @param topupamount    充值金额
 	 * @param cashReceipts   现金凭证
 	 * @param paymentAccount 支付账号
 	 * @param contact        联系人
@@ -47,22 +47,22 @@ public class AmountController {
 	@ResponseBody
 	@RequestMapping("/setTUamount")
 	@Transactional
-	public Map<String, Object> setTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts,
-			String paymentAccount, String contact, String note, String company, String firmType,String operationDate) throws ParseException {
+	public Map<String, Object> setTUamount(String billingdate, String firm, int topupamount, String cashreceipts,
+			String paymentaccount, String contact, String note, String company, String firmtype,String operationdate) throws ParseException {
 		HashMap<String, Object> map = new HashMap<>();
-		if (StringUtils.isEmpty(billingDate) || StringUtils.isEmpty(firm) || StringUtils.isEmpty(topUpAmount)
-				|| StringUtils.isEmpty(cashReceipts) || StringUtils.isEmpty(paymentAccount)
+		if (StringUtils.isEmpty(billingdate) || StringUtils.isEmpty(firm) || StringUtils.isEmpty(topupamount)
+				|| StringUtils.isEmpty(cashreceipts) || StringUtils.isEmpty(paymentaccount)
 				|| StringUtils.isEmpty(contact) || StringUtils.isEmpty(note) || StringUtils.isEmpty(company)
-				|| StringUtils.isEmpty(firmType)) {
-			map.put("msg", "billingDate,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,company,operationDate和firmType不能为空");
+				|| StringUtils.isEmpty(firmtype)) {
+			map.put("msg", "billingdate,firm,topupamount,cashreceipts,paymentaccount,contact,note,company,operationDate和firmtype不能为空");
 			map.put("SCode", "401");
 			return map;
 		} else {
 			Timestamps timestamps = new Timestamps();
-			String btimestamps = timestamps.dateToStamp(billingDate);//转换成时间戳
-			String otimestamps = timestamps.dateToStamp(operationDate);//转换成时间戳
+			String btimestamps = timestamps.dateToStamp(billingdate);//转换成时间戳
+			String otimestamps = timestamps.dateToStamp(operationdate);//转换成时间戳
 			String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-			int number = amountService.setTUamount(btimestamps,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,company,firmType,registrationTime,otimestamps);
+			int number = amountService.setTUamount(btimestamps,firm,topupamount,cashreceipts,paymentaccount,contact,note,company,firmtype,registrationTime,otimestamps);
 			if (number != 0) {								
 				map.put("msg", "数据插入成功");
 				map.put("SCode", "200");
@@ -93,22 +93,22 @@ public class AmountController {
 	@ResponseBody
 	@RequestMapping("/updateTUamount")
 	@Transactional
-	public Map<String, Object> updateTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts,
-			String paymentAccount, String contact, String note, String company, String firmType,int id,String operationDate) throws ParseException {
+	public Map<String, Object> updateTUamount(String billingdate, String firm, int topupamount, String cashreceipts,
+			String paymentaccount, String contact, String note, String company, String firmtype,int id,String operationdate) throws ParseException {
 		HashMap<String, Object> map = new HashMap<>();
-		if (StringUtils.isEmpty(billingDate) || StringUtils.isEmpty(firm) || StringUtils.isEmpty(topUpAmount)
-				|| StringUtils.isEmpty(cashReceipts) || StringUtils.isEmpty(paymentAccount)
+		if (StringUtils.isEmpty(billingdate) || StringUtils.isEmpty(firm) || StringUtils.isEmpty(topupamount)
+				|| StringUtils.isEmpty(cashreceipts) || StringUtils.isEmpty(paymentaccount)
 				|| StringUtils.isEmpty(contact) || StringUtils.isEmpty(note) || StringUtils.isEmpty(company)
-				|| StringUtils.isEmpty(firmType)) {
-			map.put("msg", "billingDate,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,company,id和firmType不能为空");
+				|| StringUtils.isEmpty(firmtype)) {
+			map.put("msg", "billingdate,firm,topupamount,cashreceipts,paymentaccount,contact,note,company,id和firmtype不能为空");
 			map.put("SCode", "401");
 			return map;
 		} else {
 			Timestamps timestamps = new Timestamps();
-			String btimestamps = timestamps.dateToStamp(billingDate);//转换成时间戳
-			String otimestamps = timestamps.dateToStamp(operationDate);//转换成时间戳
+			String btimestamps = timestamps.dateToStamp(billingdate);//转换成时间戳
+			String otimestamps = timestamps.dateToStamp(operationdate);//转换成时间戳
 			String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-			int number = amountService.updateTUamount(btimestamps,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,company,firmType,registrationTime,id,otimestamps);
+			int number = amountService.updateTUamount(btimestamps,firm,topupamount,cashreceipts,paymentaccount,contact,note,company,firmtype,registrationTime,id,otimestamps);
 			if (number != 0) {								
 				map.put("msg", "数据更新成功");
 				map.put("SCode", "200");
@@ -202,6 +202,7 @@ public class AmountController {
 		String billingDate = null;
 		Timestamps timestamps = new Timestamps();		
 		List<TopUpAmount> amountList = amountService.getAmount(firmType,company,pageUtil.getPage(),pageUtil.getPageSize());
+		pageUtil=new PageUtil(page,10,totalCount);
 		for (TopUpAmount topUpAmount : amountList) {
 			operationDate = timestamps.stampToDate1(topUpAmount.getOperationdate());
 			billingDate = timestamps.stampToDate1(topUpAmount.getBillingdate());

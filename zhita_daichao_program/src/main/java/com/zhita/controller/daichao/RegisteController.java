@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -79,6 +80,7 @@ public class RegisteController {
 	//小程序---查询所有贷款商家信息,含分页(为了审核用的)
   @ResponseBody
   @RequestMapping("/queryAll")
+  @Transactional
   public Map<String,Object> queryAll(Integer page,String company){    	
   	int totalCount=intRegisteCopyService.pageCount1(company);//该方法是查询贷款商家总条数
   	PageUtil pageUtil=new PageUtil(page,10,totalCount);

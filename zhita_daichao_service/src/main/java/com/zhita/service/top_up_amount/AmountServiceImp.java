@@ -58,4 +58,10 @@ public class AmountServiceImp implements AmountService{
 		return topUpAmount;
 	}
 
+	@Override
+	public Integer getAmountbyfirm(String startDate, String endDate, String company,String sourceName) {
+		Integer topUpAmount = topUpAmountMapper.getAmountbyfirm(startDate,endDate,company,sourceName);
+		return topUpAmount;
+	}
+
 }

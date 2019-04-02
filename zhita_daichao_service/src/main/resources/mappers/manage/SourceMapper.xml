@@ -11,6 +11,7 @@
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="discount" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -228,5 +229,10 @@
      <!-- 获取所有的渠道名称 -->
   <select id="getOneFirm" parameterType="java.lang.String" resultType="com.zhita.model.manage.Source">
   	select sourcename,id from source where deleted ='0' and company =#{company}
+  </select>
+  
+       <!-- 获取id获取渠道名称 -->
+  <select id="getSourceName" parameterType="java.util.Map" resultType="java.lang.String">
+  	select sourcename from source where deleted ='0' and company =#{company} and id =#{sourceId}
   </select>
 </mapper>

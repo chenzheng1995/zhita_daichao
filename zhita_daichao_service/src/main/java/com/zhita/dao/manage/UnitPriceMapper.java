@@ -37,6 +37,9 @@ public interface UnitPriceMapper {
 
 	List<UnitPrice> getaccountBySourceId(@Param("company")String company,@Param("sourceId") Integer sourceId,@Param("firmType") String firmType);
 
+	List<Object> getaccountById(@Param("sourceId")int sourceId,@Param("company") String company);
+
+
 
 
 }

@@ -50,8 +50,12 @@ public class LoansBusinessesCopy {
     private Integer applications;
 
     private String company;
+    
+    private String onesourcename;
 
-    public LoansBusinessesCopy(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busclaid, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications, String company) {
+    private String twosourcename;
+
+    public LoansBusinessesCopy(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busclaid, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications, String company,String onesourcename,String twosourcename) {
         this.id = id;
         this.businessname = businessname;
         this.intro = intro;
@@ -76,6 +80,8 @@ public class LoansBusinessesCopy {
         this.deleted = deleted;
         this.applications = applications;
         this.company = company;
+        this.onesourcename = onesourcename;
+        this.twosourcename = twosourcename;
     }
 
     public LoansBusinessesCopy() {
@@ -272,5 +278,21 @@ public class LoansBusinessesCopy {
 
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
+    }
+    
+    public String getOnesourcename() {
+        return onesourcename;
+    }
+
+    public void setOnesourcename(String onesourcename) {
+        this.onesourcename = onesourcename == null ? null : onesourcename.trim();
+    }
+    
+    public String getTwosourcename() {
+        return twosourcename;
+    }
+
+    public void setTwosourcename(String twosourcename) {
+        this.twosourcename = twosourcename == null ? null : twosourcename.trim();
     }
 }

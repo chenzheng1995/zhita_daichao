@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
+import com.zhita.service.sourcedadson.SourceDadSonService;
 import com.zhita.util.MD5Util;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
@@ -25,6 +26,9 @@ public class LoginController {
 	
 	@Autowired
 	IntMerchantService intMerchantService;
+	
+	@Autowired
+	SourceDadSonService sourceDadSonService;
 
 	// 发送验证码
 	@RequestMapping("/sendSMS")
@@ -49,7 +53,7 @@ public class LoginController {
 	@RequestMapping("/registered")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> registered(String phone, String pwd, String sourceId, String code,String company,String registrationType) {
+	public Map<String, Object> registered(String phone, String pwd, String sourceId, String code,String company,String registrationType,String sonSourceName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(pwd) || StringUtils.isEmpty(sourceId)
 				|| StringUtils.isEmpty(code)) {
@@ -57,6 +61,10 @@ public class LoginController {
 			map.put("SCode", "401");
 			return map;
 		} else {
+			int num = sourceDadSonService.getSourceDadSon(sourceId,sonSourceName,company);
+			if (num == 0) {
+			sourceDadSonService.setSourceDadSon(sourceId,sonSourceName,company);
+			}
 			int merchantId = intMerchantService.getsourceId(sourceId);
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
@@ -74,7 +82,7 @@ public class LoginController {
 				User user = loginService.findphone(phone,company); // 判断该用户是否存在
 				if (user == null) {
 					String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-					int number = loginService.setAPPUser(phone, md5Pwd, merchantId, registrationTime, loginStatus,registrationType,company);
+					int number = loginService.setAPPUser1(phone, md5Pwd, merchantId, registrationTime, loginStatus,registrationType,company,sonSourceName);
 					if (number == 1) {
 						int id = loginService.getId(phone,company); // 获取该用户的id
 						map.put("msg", "用户注册成功，数据插入成功");
@@ -164,6 +172,7 @@ public class LoginController {
 			map.put("msg", "phone或pwd不能为空");
 			return map;
 		} else {
+			
 			User user = loginService.findphone(phone,company); // 判断该用户是否存在
 			if (user == null) {
 				map.put("msg", "用户名不存在,请先注册");
@@ -182,6 +191,7 @@ public class LoginController {
 						map.put("SCode", "200");
 						map.put("loginStatus", loginStatus);
 						map.put("userId", id);
+						map.put("phone", phone);
 					} else {
 						map.put("msg", "用户登录失败，登录状态修改失败");
 						map.put("SCode", "406");
@@ -210,14 +220,17 @@ public class LoginController {
 	@RequestMapping("/codelogin")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> codeLogin(String phone, String code,String company,String registrationType,String sourceId) {
-		sourceId = "1";
+	public Map<String, Object> codeLogin(String phone, String code,String company,String registrationType,String sourceId,String sonSourceName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String loginStatus = "1";
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
 			map.put("msg", "phone或code不能为空");
 			return map;
 		} else {
+			int num1 = sourceDadSonService.getSourceDadSon(sourceId,sonSourceName,company);
+			if (num1 == 0) {
+			sourceDadSonService.setSourceDadSon(sourceId,sonSourceName,company);
+			}
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
 			String redisCode = redisClientUtil.get(key);
@@ -232,13 +245,14 @@ public class LoginController {
 				User user = loginService.findphone(phone,company); // 判断该用户是否存在
 				if (user == null) {
 					int merchantId = intMerchantService.getsourceId(sourceId);
-					int number = loginService.insertUser(phone,loginStatus,company,registrationType,registrationTime,merchantId);
+					int number = loginService.insertUser1(phone,loginStatus,company,registrationType,registrationTime,merchantId,sonSourceName);
 					if (number == 1) {								
 						int id = loginService.getId(phone,company); //获取该用户的id					
 							map.put("msg", "用户登录成功，数据插入成功，让用户添加密码");
 							map.put("SCode", "201");
 							map.put("loginStatus", loginStatus);
-							map.put("userId", id);				
+							map.put("userId", id);		
+							map.put("phone", phone);
 					} else {
 						map.put("msg", "用户登录失败，用户数据插入失败");
 						map.put("SCode", "405");
@@ -254,11 +268,13 @@ public class LoginController {
 						map.put("SCode","201");
 						map.put("loginStatus", loginStatus);
 						map.put("userId", id);
+						map.put("phone", phone);
 						}else {
 							map.put("msg", "用户登录成功，登录状态修改成功");
 							map.put("SCode", "200");
 							map.put("loginStatus", loginStatus);
 							map.put("userId", id);	
+							map.put("phone", phone);
 						}
 					} else {
 						map.put("msg", "用户登录失败，登录状态修改失败");

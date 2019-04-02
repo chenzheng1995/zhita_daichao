@@ -40,4 +40,7 @@ public interface TopUpAmountMapper {
 	List<TopUpAmount> getAmount(@Param("firmType")String firmType,@Param("company") String company,@Param("page") int page,@Param("pagesize") int pagesize);
 
 	Integer gettopUpAmount(@Param("sourceName")String sourceName,@Param("date") String date,@Param("company") String company);
+
+	Integer getAmountbyfirm(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("company") String company,@Param("sourceName") String sourceName);
+
 }

@@ -359,4 +359,21 @@ public class LoginServiceImp implements IntLoginService{
 		ManageLogin manageLogin=manageLoginMapper.getIdByPhone(phone);
 		return manageLogin;
 	}
+
+	@Override
+	public int setAPPUser1(String phone, String md5Pwd, int merchantId, String registrationTime, String loginStatus,
+			String registrationType, String company, String sonSourceName) {
+		int number = userMapper.setAPPUser1(phone, md5Pwd, merchantId,registrationTime,loginStatus,registrationType,company,sonSourceName);
+		return number;
+	}
+
+	@Override
+	public int insertUser1(String phone, String loginStatus, String company, String registrationType,
+			String registrationTime, int merchantId, String sonSourceName) {
+		int number = userMapper.insertUser1(phone,loginStatus,company,registrationType,registrationTime,merchantId,sonSourceName);
+		return number;
+	}
+
+
+
 }

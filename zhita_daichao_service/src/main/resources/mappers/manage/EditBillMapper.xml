@@ -19,6 +19,8 @@
       <arg column="registrationTime" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="sourceTo" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sourcename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="businessname" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -320,6 +322,55 @@ select distinct operationDate from edit_bill where operationDate >=#{startDate} 
  <foreach collection="accountList" index="index" item="account" >  
           account = #{account} or  
  </foreach>
-  1=2)
+  1=2) order by operationDate desc limit #{page},#{pageSize}
  </select> 
+ 
+   <!--公司浏览中，查出有多少时间段-->
+ <select id="getdate2" parameterType="java.util.Map" resultType="java.lang.String">
+select distinct operationDate from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and businessesId=#{businessesId} order by operationDate desc limit #{page},#{pageSize}
+ </select> 
+ 
+    <!--公司浏览中，查出有多少条数据-->
+ <select id="pageCountByCThrough1" parameterType="java.util.Map" resultType="java.lang.Integer">
+select count(distinct operationDate) from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and sourceId=#{sourceId}
+ </select> 
+ 
+     <!--公司浏览中，查出有多少条数据-->
+ <select id="pageCountByCThrough2" parameterType="java.util.Map" resultType="java.lang.Integer">
+select count(distinct operationDate) from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and businessesId=#{businessesId}
+ </select> 
+ 
+ 
+      <!--平台浏览中，查出有多少条数据-->
+ <select id="pageCountByPThrough1" parameterType="java.lang.String" resultType="java.lang.Integer">
+select count(distinct sourceId) from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and firmType =#{firmType}
+ </select> 
+ 
+      <!--平台浏览中，查出渠道id-->
+ <select id="getPThroughSourceId" parameterType="java.lang.String" resultType="java.lang.Integer">
+select distinct  sourceId from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and firmType=#{firmType} limit #{page},#{pageSize}
+ </select> 
+ 
+      <!--平台浏览中，查出渠道id-->
+ <select id="getPThrough" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+select sum(registrationNumber) registrationNumber,ROUND(avg(price),0) price,sum(realPay) realPay,sourcename from edit_bill eb,source s where operationDate >=#{startDate} and operationDate &lt;#{endDate} and eb.company = #{company} and s.company = #{company} and eb.deleted='0' and s.deleted='0' and sourceId = #{sourceId} and sourceId = s.id
+ </select> 
+ 
+       <!--平台浏览中，查出有多少条数据-->
+ <select id="pageCountByPThrough2" parameterType="java.lang.String" resultType="java.lang.Integer">
+select count(distinct businessesId) from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and firmType =#{firmType}
+ </select> 
+ 
+
+       <!--平台浏览中，查出渠道id-->
+ <select id="getPThroughBusinessesId" parameterType="java.lang.String" resultType="java.lang.Integer">
+select distinct  businessesId from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and firmType=#{firmType}
+ </select> 
+
+ 
+       <!--平台浏览中，查出渠道id-->
+ <select id="getPThrough1" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+select sum(registrationNumber) registrationNumber,ROUND(avg(price),0) price,sum(realPay) realPay,businessname from edit_bill eb,loans_businesses lb where operationDate >=#{startDate} and operationDate &lt;#{endDate} and eb.company = #{company} and lb.company = #{company} and eb.deleted='0' and lb.deleted='0' and businessesId = #{businessesId} and businessesId = lb.id
+ </select>
+
 </mapper>

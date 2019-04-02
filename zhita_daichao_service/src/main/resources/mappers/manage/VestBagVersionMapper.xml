@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.VestBagVersionMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.VestBagVersion">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="vestBagId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="version" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+
+  
+    <select id="getVersion" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select version from vest_bag_version where vestBagId =#{id} and deleted = '0';
+  </select>
+</mapper>

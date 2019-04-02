@@ -53,6 +53,26 @@ public interface EditBillMapper {
 
 	List<String> getdate(HashMap<String, Object> map1);
 
+	List<String> getdate2(@Param("startDate")String startDate,@Param("endDate") String endDate, @Param("businessesId")Integer businessesId, @Param("company")String company,@Param("page") int page,@Param("pageSize") int pageSize);
+
+	int pageCountByCThrough1(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("sourceId") Integer sourceId,@Param("company") String company);
+
+	int pageCountByCThrough2(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("businessesId") Integer businessesId,@Param("company") String company);
+
+	int pageCountByPThrough1(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("company") String company,@Param("firmType") String firmType);
+
+	List<Integer> getPThroughSourceId(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("company") String company,@Param("firmType") String firmType,@Param("page") int page,@Param("pageSize") int pageSize);
+
+	ArrayList<EditBill> getPThrough(@Param("sourceId")Integer sourceId, @Param("startDate") String startDate,@Param("endDate") String endDate,@Param("company") String company);
+
+	int pageCountByPThrough2(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("company") String company,@Param("firmType") String firmType);
+
+	List<Integer> getPThroughBusinessesId(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("company") String company,@Param("firmType") String firmType);
+
+	ArrayList<EditBill> getPThrough1(@Param("businessesId")Integer businessesId, @Param("startDate") String startDate,@Param("endDate") String endDate,@Param("company") String company);
+
+
+
 
 
 

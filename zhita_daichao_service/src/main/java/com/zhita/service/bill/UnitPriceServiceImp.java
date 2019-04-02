@@ -67,4 +67,10 @@ public class UnitPriceServiceImp implements UnitPriceService{
 		return accountList;
 	}
 
+	@Override
+	public List<Object> getaccountById(int sourceId, String company) {
+		List<Object> firmList = unitPriceMapper.getaccountById(sourceId,company);
+		return firmList;
+	}
+
 }

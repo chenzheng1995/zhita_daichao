@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,6 +46,7 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/setunitprice")
+	@Transactional
     public Map<String,Object> setUnitPrice (int sourceId,int businessesId,String firmType, String account,int price,String accountType,String company){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
@@ -71,6 +73,7 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/updateunitprice")
+	@Transactional
     public Map<String,Object> updateUnitPrice (int sourceId,int businessesId, String firmType, String account,int price,String accountType,int id){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
@@ -88,6 +91,7 @@ public class BillController {
     //单价设置里的单条记录删除
 	@ResponseBody
 	@RequestMapping("/deleteunitprice")
+	@Transactional
     public Map<String,Object> deleteUnitPrice (int id){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
@@ -111,6 +115,7 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/deletefirm")
+	@Transactional
     public Map<String,Object> deleteFirm (int sourceId,String account,String company){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
@@ -154,22 +159,35 @@ public class BillController {
 	 */
 	@ResponseBody
 	@RequestMapping("/getunitprice")
+	@Transactional
     public Map<String,Object> getunitprice (int sourceId,String company){
 		HashMap<String,Object> map=new HashMap<>();
 		int businessesId = 0;
 		List<UnitPrice> accountList = UnitPriceService.getunitprice(sourceId,company);
 		for (UnitPrice unitPrice : accountList) {
 		   businessesId = unitPrice.getBusinessesId();
-		   String firm =  intRegisteService.getBusinessesName(businessesId);
+		   String firm =  intRegisteService.getBusinessesName(businessesId,company);
 			unitPrice.setFirm(firm);
 		}
 		map.put("list", accountList);
 		return map;
 	}
 	
+
+    //根据传过来的渠道名，查询出所有账号
+	@ResponseBody
+	@RequestMapping("/getaccount")
+	@Transactional
+    public List<Object> getaccount (int sourceId,String company){  
+		List<Object> firmList = UnitPriceService.getaccountById(sourceId,company);
+    return firmList;
+	}
+	
+	
     //根据传过来的平台类型，返回平台名
 	@ResponseBody
 	@RequestMapping("/getfirm")
+	@Transactional
     public Map<String,Object> getFirm (String firmType,String company){   //firmType（渠道方为1，甲方为2）
 		HashMap<String,Object> map=new HashMap<>();
 		List<Object> firmList = null;

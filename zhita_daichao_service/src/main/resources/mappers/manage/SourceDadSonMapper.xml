@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.SourceDadSonMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.SourceDadSon">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="oneSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="twoSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tableType" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, oneSourceName, twoSourceName, deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from source_dad_son
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from source_dad_son
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhita.model.manage.SourceDadSon">
+    insert into source_dad_son (id, oneSourceName, twoSourceName, 
+      deleted)
+    values (#{id,jdbcType=INTEGER}, #{onesourcename,jdbcType=VARCHAR}, #{twosourcename,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.SourceDadSon">
+    insert into source_dad_son
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="onesourcename != null">
+        oneSourceName,
+      </if>
+      <if test="twosourcename != null">
+        twoSourceName,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="onesourcename != null">
+        #{onesourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="twosourcename != null">
+        #{twosourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.SourceDadSon">
+    update source_dad_son
+    <set>
+      <if test="onesourcename != null">
+        oneSourceName = #{onesourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="twosourcename != null">
+        twoSourceName = #{twosourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.SourceDadSon">
+    update source_dad_son
+    set oneSourceName = #{onesourcename,jdbcType=VARCHAR},
+      twoSourceName = #{twosourcename,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+ <!--  ============================================================ -->
+ 	   <!-- 查询充值金额中有多少条数据 -->
+ <select id="getSourceDadSon" parameterType="java.util.Map" resultType="java.lang.Integer">
+   select count(id) from source_dad_son where deleted='0' and company = #{company} and oneSourceName = #{sourceId} and twoSourceName =#{sonSourceName}
+ </select>
+ 
+ 		  	<!--APP 插入用户信息 -->
+	<insert id="setSourceDadSon" parameterType="java.util.Map">
+		insert into source_dad_son (oneSourceName,twoSourceName,company)
+		values (#{sourceId},
+		#{sonSourceName},
+		#{company})
+	</insert>
+ 
+ 
+  	   <!-- 查询表类型 -->
+ <select id="getTableType" parameterType="java.lang.String" resultType="java.lang.String">
+   select tableType from source_dad_son where deleted='0' and company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName =#{twoSourceName}
+ </select>
+</mapper>

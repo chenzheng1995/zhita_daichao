@@ -221,4 +221,9 @@
 	<select id="getaccountBySourceId" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
 		select account from unit_price  where sourceId=#{sourceId} and deleted = '0' and company =#{company} and firmType = #{firmType}
 	</select>
+	
+								<!--查出指定渠道的所有账号  -->
+	<select id="getaccountById" parameterType="java.util.Map" resultType="java.lang.String">
+		select account from unit_price  where sourceId=#{sourceId} and deleted = '0' and company =#{company}
+	</select>
 </mapper>

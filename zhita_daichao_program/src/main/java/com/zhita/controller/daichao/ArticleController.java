@@ -34,7 +34,7 @@ public class ArticleController {
 @ResponseBody
 @RequestMapping("/getAllnews")
 @Transactional
-public Map<String, Object> getAllnews(Integer page,String company,String typename){
+public Map<String, Object> getAllnews(Integer page,String company,String typename,String oneSourceName,String twoSourceName){
 	int totalCount =0;
 	List<News> list = null;
 	Map<String, Object> map = new HashMap<>();
@@ -114,7 +114,7 @@ public Map<String, Object> getnewscontent(int id){
 @ResponseBody
 @RequestMapping("/getfuzzynews")
 @Transactional
-public Map<String, Object> getfuzzynews(Integer page,String company, String title){
+public Map<String, Object> getfuzzynews(Integer page,String company, String title,String oneSourceName,String twoSourceName){
 	Map<String, Object> map = new HashMap<>();
 	int totalCount=articleService.pageCount2(company,title);//该方法是查询文章总条数
 	PageUtil pageUtil=new PageUtil(page,10,totalCount);
@@ -155,7 +155,7 @@ public Map<String, Object> getfuzzynews(Integer page,String company, String titl
 @ResponseBody
 @RequestMapping("/getnewstype")
 @Transactional
-public Map<String, Object> getnewstype(String company){
+public Map<String, Object> getnewstype(String company,String oneSourceName, String twoSourceName){
 	Map<String, Object> map = new HashMap<>();
 	List<String> typelist = new ArrayList<>();
 	typelist = newsTypeService.getnewstype(company);

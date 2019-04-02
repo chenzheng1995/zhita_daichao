@@ -2,6 +2,8 @@ package com.zhita.dao.manage;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 
@@ -85,4 +87,6 @@ public interface SourceMapper {
 	int getsourceId(String sourceId);
 
 	List<Object> getOneFirm(String company);
+
+	String getSourceName(@Param("sourceId")Integer sourceId,@Param("company") String company);
 }
