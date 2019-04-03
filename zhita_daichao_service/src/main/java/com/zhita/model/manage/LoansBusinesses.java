@@ -56,8 +56,6 @@ public class LoansBusinesses implements Serializable{
     private String company;//公司名
     
 
-    
-
     public LoansBusinesses(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busClaId, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, String lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications,String company) {
         this.id = id;
         this.businessname = businessname;

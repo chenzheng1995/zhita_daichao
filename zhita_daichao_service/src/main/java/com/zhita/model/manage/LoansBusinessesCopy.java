@@ -22,6 +22,8 @@ public class LoansBusinessesCopy {
     private String state;
 
     private Integer busclaid;
+    
+    private String busClaIdString;//做添加操作时  商家分类id字符串
 
     private BigDecimal loanlimitsmall;
 
@@ -295,4 +297,13 @@ public class LoansBusinessesCopy {
     public void setTwosourcename(String twosourcename) {
         this.twosourcename = twosourcename == null ? null : twosourcename.trim();
     }
+
+	public String getBusClaIdString() {
+		return busClaIdString;
+	}
+
+	public void setBusClaIdString(String busClaIdString) {
+		this.busClaIdString = busClaIdString;
+	}
+    
 }

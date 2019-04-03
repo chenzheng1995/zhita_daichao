@@ -99,7 +99,7 @@ public class Test {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		HashMap<String, Object> map = new HashMap<>();
+	/*	HashMap<String, Object> map = new HashMap<>();
 		 ArrayList<Object> arrList = new ArrayList<Object>();
 		 ArrayList<Object> arrList1 = new ArrayList<Object>();
 		 arrList.add(1);
@@ -111,7 +111,8 @@ public class Test {
 			 
 		}
 		 
-			System.out.println(1111);	
-		
+			System.out.println(1111);	*/
+		String num=1+(((int)(Math.random()*8998)+1000+1)+"");
+		System.out.println(num);
 	}
 }
