@@ -181,14 +181,31 @@
   
   <!-- ================================================ -->
    		  	<!--充值金额中的插入数据 -->
-	<insert id="setTUamount" parameterType="java.util.Map">
+	<insert id="setTUamount" parameterType="java.util.Map" useGeneratedKeys="true">
     insert into top_up_amount (modifyTime,billingDate,firm, topUpAmount, 
       cashReceipts, paymentAccount,contact,note,company,firmType,operationDate
       )
     values (#{registrationTime},#{billingDate}, #{firm}, #{topUpAmount}, 
-      #{cashReceipts}, #{paymentAccount},#{contact},#{note},#{company},#{firmType},#{otimestamps}
-      )
+      #{cashReceipts}, #{paymentAccount},#{contact},#{note},#{company},#{firmType},#{operationDate}
+      )     
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">  
+      SELECT LAST_INSERT_ID()
+    </selectKey>  
 	</insert>
+	
+	   		  	<!--充值金额中的插入数据 -->
+	<insert id="setTUamount1" parameterType="com.zhita.model.manage.TopUpAmount" useGeneratedKeys="true">
+    insert into top_up_amount (modifyTime,billingDate,firm, topUpAmount, 
+      cashReceipts, paymentAccount,contact,note,company,firmType,operationDate
+      )
+    values (#{modifyTime},#{billingDate}, #{firm}, #{topUpAmount}, 
+      #{cashReceipts}, #{paymentAccount},#{contact},#{note},#{company},#{firmType},#{operationDate}
+      )     
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">  
+      SELECT LAST_INSERT_ID()
+    </selectKey>  
+	</insert>
+		
   
    			<!--充值金额中的更新数据 -->
 	<update id="updateTUamount" parameterType="java.util.Map">
@@ -213,7 +230,7 @@
 	
 			 			<!--充值金额中根据操作日期删除数据，其实就是把deleted改成1 -->
 	<update id="deleteAmountByOperationDate" parameterType="java.lang.String">
-		update top_up_amount set deleted = '1',modifyTime = #{registrationTime} where operationDate = #{otimestamps}
+		update top_up_amount set deleted = '1',modifyTime = #{registrationTime} where operationDate = #{otimestamps} and company = #{company} and firmType = #{firmtype}
 	</update>
 	
 	   <!-- 查询充值金额中有多少条数据 -->

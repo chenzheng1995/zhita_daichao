@@ -62,4 +62,5 @@ public interface IntRegisteService{
 	public String getBusinessesName(int businessesId, String company);
 
 
+
 }

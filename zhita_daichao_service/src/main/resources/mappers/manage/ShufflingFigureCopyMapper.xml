@@ -11,6 +11,8 @@
       <arg column="businessName" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="oneSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="twoSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">

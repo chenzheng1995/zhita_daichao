@@ -301,6 +301,74 @@ public class EditBillController {
 	}
 	
 	
+	// 编辑账单中根据日期和公司名查询数据
+
+	@ResponseBody
+	@RequestMapping("/getEditBillByCO")
+	@Transactional
+	public Map<String, Object> getEditBill(String company, String firmType,String operationDate,Integer sourceId,String sourceName,Integer businessesId,String businessesName,Integer page) throws ParseException {
+		HashMap<String, Object> map = new HashMap<>();		
+		HashMap<String, Object> map1 = new HashMap<>();	
+		HashMap<String, Object> map2 = new HashMap<>();	
+		Timestamps timestamps = new Timestamps();
+		String Registrationtime ="";
+		operationDate = timestamps.dateToStamp(operationDate);//转换成时间戳
+		if(firmType.equals("1")) {
+			int totalCount=editBillService.pageCountEditBillByCO(company,firmType,operationDate,sourceId);
+	    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}else if(page>pageUtil.getTotalPageCount()) {
+	      		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages); 
+	    	List<EditBill> EditBillList = editBillService.getEditBillByCO(company,firmType,sourceId,operationDate,pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,10,totalCount);
+	    	for (EditBill editBill : EditBillList) {
+	    		operationDate = timestamps.stampToDate1(editBill.getOperationdate());
+	    		Registrationtime = timestamps.stampToDate1(editBill.getRegistrationtime());
+	    		editBill.setOperationdate(operationDate);
+	    		editBill.setRegistrationtime(Registrationtime);
+	    	}
+	    	map.put("EditBillList", EditBillList);
+	    	map.put("pageutil", pageUtil);
+		}
+		
+		if(firmType.equals("2")) {
+			int totalCount=editBillService.pageCountEditBillByCO2(company,firmType,operationDate,businessesId);
+	    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}else if(page>pageUtil.getTotalPageCount()) {
+	      		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+	    	pageUtil.setPage(pages); 
+	    	List<EditBill> EditBillList = editBillService.getEditBillByCO2(company,firmType,businessesId,operationDate,pageUtil.getPage(),pageUtil.getPageSize());
+	    	pageUtil=new PageUtil(page,10,totalCount);
+	    	for (EditBill editBill : EditBillList) {
+	    		operationDate = timestamps.stampToDate1(editBill.getOperationdate());
+	    		Registrationtime = timestamps.stampToDate1(editBill.getRegistrationtime());
+	    		editBill.setOperationdate(operationDate);
+	    		editBill.setRegistrationtime(Registrationtime);
+	    	}
+	    	map.put("EditBillList", EditBillList);
+	    	map.put("pageutil", pageUtil);
+		}
+
+	return map;
+	}
+	
+	
 	// 编辑账单中所有数据的总和
 	@ResponseBody
 	@RequestMapping("/getEditBillCount")

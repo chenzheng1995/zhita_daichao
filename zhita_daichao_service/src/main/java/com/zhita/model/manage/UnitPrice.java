@@ -7,9 +7,9 @@ public class UnitPrice {
 
     private Integer price;
 
-    private String accounttype;
+    private String accountType;
 
-    private String firmtype;
+    private String firmType;
 
     private String firm;
     
@@ -24,12 +24,12 @@ public class UnitPrice {
     private Integer businessesId;
     
 
-    public UnitPrice(Integer id, String account, Integer price, String accounttype, String firmtype, String firm,String deleted,String modifyTime,String company,Integer sourceId,Integer businessesId) {
+    public UnitPrice(Integer id, String account, Integer price, String accountType, String firmType, String firm,String deleted,String modifyTime,String company,Integer sourceId,Integer businessesId) {
         this.id = id;
         this.account = account;
         this.price = price;
-        this.accounttype = accounttype;
-        this.firmtype = firmtype;
+        this.accountType = accountType;
+        this.firmType = firmType;
         this.firm = firm;
         this.deleted = deleted;
         this.modifyTime = modifyTime;
@@ -66,20 +66,20 @@ public class UnitPrice {
         this.price = price;
     }
 
-    public String getAccounttype() {
-        return accounttype;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setAccounttype(String accounttype) {
-        this.accounttype = accounttype == null ? null : accounttype.trim();
+    public void setAccountType(String accountType) {
+        this.accountType = accountType == null ? null : accountType.trim();
     }
 
-    public String getFirmtype() {
-        return firmtype;
+    public String getFirmType() {
+        return firmType;
     }
 
-    public void setFirmtype(String firmtype) {
-        this.firmtype = firmtype == null ? null : firmtype.trim();
+    public void setFirmType(String firmType) {
+        this.firmType = firmType == null ? null : firmType.trim();
     }
 
     public String getFirm() {

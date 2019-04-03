@@ -1,19 +1,46 @@
 package com.zhita.model.manage;
 
 public class TopUpAmount {
+//    private Integer id;
+//
+//    private String operationdate;
+//
+//    private String billingdate;
+//
+//    private String firm;
+//
+//    private Integer topupamount;
+//
+//    private String cashreceipts;
+//
+//    private String paymentaccount;
+//
+//    private String contact;
+//
+//    private String note;
+//
+//    private String deleted;
+//
+//    private String company;
+//
+//    private String firmtype;
+//    
+//    private String modifyTime;
+    
+    
     private Integer id;
 
-    private String operationdate;
+    private String operationDate;
 
-    private String billingdate;
+    private String billingDate;
 
     private String firm;
 
-    private Integer topupamount;
+    private Integer topUpAmount;
 
-    private String cashreceipts;
+    private String cashReceipts;
 
-    private String paymentaccount;
+    private String paymentAccount;
 
     private String contact;
 
@@ -23,23 +50,23 @@ public class TopUpAmount {
 
     private String company;
 
-    private String firmtype;
+    private String firmType;
     
     private String modifyTime;
 
-    public TopUpAmount(Integer id, String operationdate, String billingdate, String firm, Integer topupamount, String cashreceipts, String paymentaccount, String contact, String note, String deleted, String company, String firmtype,String modifyTime) {
+    public TopUpAmount(Integer id, String operationDate, String billingDate, String firm, Integer topUpAmount, String cashReceipts, String paymentAccount, String contact, String note, String deleted, String company, String firmType,String modifyTime) {
         this.id = id;
-        this.operationdate = operationdate;
-        this.billingdate = billingdate;
+        this.operationDate = operationDate;
+        this.billingDate = billingDate;
         this.firm = firm;
-        this.topupamount = topupamount;
-        this.cashreceipts = cashreceipts;
-        this.paymentaccount = paymentaccount;
+        this.topUpAmount = topUpAmount;
+        this.cashReceipts = cashReceipts;
+        this.paymentAccount = paymentAccount;
         this.contact = contact;
         this.note = note;
         this.deleted = deleted;
         this.company = company;
-        this.firmtype = firmtype;
+        this.firmType = firmType;
         this.modifyTime = modifyTime;
     }
 
@@ -55,20 +82,20 @@ public class TopUpAmount {
         this.id = id;
     }
 
-    public String getOperationdate() {
-        return operationdate;
+    public String getoperationDate() {
+        return operationDate;
     }
 
-    public void setOperationdate(String operationdate) {
-        this.operationdate = operationdate == null ? null : operationdate.trim();
+    public void setOperationDate(String operationDate) {
+        this.operationDate = operationDate == null ? null : operationDate.trim();
     }
 
-    public String getBillingdate() {
-        return billingdate;
+    public String getBillingDate() {
+        return billingDate;
     }
 
-    public void setBillingdate(String billingdate) {
-        this.billingdate = billingdate == null ? null : billingdate.trim();
+    public void setBillingDate(String billingDate) {
+        this.billingDate = billingDate == null ? null : billingDate.trim();
     }
 
     public String getFirm() {
@@ -79,28 +106,28 @@ public class TopUpAmount {
         this.firm = firm == null ? null : firm.trim();
     }
 
-    public Integer getTopupamount() {
-        return topupamount;
+    public Integer getTopUpAmount() {
+        return topUpAmount;
     }
 
-    public void setTopupamount(Integer topupamount) {
-        this.topupamount = topupamount;
+    public void setTopUpAmount(Integer topUpAmount) {
+        this.topUpAmount = topUpAmount;
     }
 
-    public String getCashreceipts() {
-        return cashreceipts;
+    public String getCashReceipts() {
+        return cashReceipts;
     }
 
-    public void setCashreceipts(String cashreceipts) {
-        this.cashreceipts = cashreceipts == null ? null : cashreceipts.trim();
+    public void setCashReceipts(String cashReceipts) {
+        this.cashReceipts = cashReceipts == null ? null : cashReceipts.trim();
     }
 
-    public String getPaymentaccount() {
-        return paymentaccount;
+    public String getPaymentAccount() {
+        return paymentAccount;
     }
 
-    public void setPaymentaccount(String paymentaccount) {
-        this.paymentaccount = paymentaccount == null ? null : paymentaccount.trim();
+    public void setPaymentAccount(String paymentAccount) {
+        this.paymentAccount = paymentAccount == null ? null : paymentAccount.trim();
     }
 
     public String getContact() {
@@ -135,12 +162,12 @@ public class TopUpAmount {
         this.company = company == null ? null : company.trim();
     }
 
-    public String getFirmtype() {
-        return firmtype;
+    public String getFirmType() {
+        return firmType;
     }
 
-    public void setFirmtype(String firmtype) {
-        this.firmtype = firmtype == null ? null : firmtype.trim();
+    public void setFirmType(String firmType) {
+        this.firmType = firmType == null ? null : firmType.trim();
     }
     
     public String getModifyTime() {

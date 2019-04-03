@@ -19,7 +19,7 @@ public interface TopUpAmountMapper {
 
 	int updateByPrimaryKey(TopUpAmount record);
 
-	int setTUamount(@Param("billingDate") String billingDate, @Param("firm") String firm,
+	Integer setTUamount(@Param("billingDate") String billingDate, @Param("firm") String firm,
 			@Param("topUpAmount") int topUpAmount, @Param("cashReceipts") String cashReceipts,
 			@Param("paymentAccount") String paymentAccount, @Param("contact") String contact,
 			@Param("note") String note, @Param("company") String company,
@@ -33,7 +33,7 @@ public interface TopUpAmountMapper {
 
 	int deleteAmountById(@Param("id")int id,@Param("registrationTime") String registrationTime);
 
-	int deleteAmountByOperationDate(@Param("otimestamps")String otimestamps,@Param("registrationTime") String registrationTime);
+	int deleteAmountByOperationDate(@Param("otimestamps")String otimestamps,@Param("registrationTime") String registrationTime,@Param("company") String company,@Param("firmtype") String firmtype);
 
 	int pageCountByAmount(@Param("firmType")String firmType,@Param("company") String company);
 
@@ -42,5 +42,7 @@ public interface TopUpAmountMapper {
 	Integer gettopUpAmount(@Param("sourceName")String sourceName,@Param("date") String date,@Param("company") String company);
 
 	Integer getAmountbyfirm(@Param("startDate")String startDate,@Param("endDate") String endDate,@Param("company") String company,@Param("sourceName") String sourceName);
+
+	Integer setTUamount1(TopUpAmount topupamount);
 
 }

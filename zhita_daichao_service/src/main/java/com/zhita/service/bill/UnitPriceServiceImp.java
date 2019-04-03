@@ -20,8 +20,8 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	}
 
 	@Override
-	public int updateUnitPrice(int sourceId, int businessesId, String firmType, String account, int price, String accountType,int id,String registrationTime) {
-		int number = unitPriceMapper.updateUnitPrice(sourceId,businessesId,firmType,account,price,accountType,id,registrationTime);
+	public int updateUnitPrice(int sourceId, int businessesId, String firmType, String account, int price, String accountType,int id,String registrationTime,String company) {
+		int number = unitPriceMapper.updateUnitPrice(sourceId,businessesId,firmType,account,price,accountType,id,registrationTime,company);
 		return number;
 	}
 
@@ -71,6 +71,12 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	public List<Object> getaccountById(int sourceId, String company) {
 		List<Object> firmList = unitPriceMapper.getaccountById(sourceId,company);
 		return firmList;
+	}
+
+	@Override
+	public int setunitprice1(UnitPrice unitPrice) {
+		int number = unitPriceMapper.setunitprice1(unitPrice);
+		return number;
 	}
 
 }

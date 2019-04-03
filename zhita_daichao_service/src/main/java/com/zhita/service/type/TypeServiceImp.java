@@ -166,6 +166,13 @@ public class TypeServiceImp implements IntTypeService{
 		return list;
 	}
 
+	@Override
+	public int pageCountByBusinessClassificationAppCopy(String businessClassification, String company,
+			String oneSourceName, String twoSourceName) {
+		int totalCount=loansBusinessesCopyMapper.pageCountByBusinessClassificationAppCopy(businessClassification,company,oneSourceName,twoSourceName);
+		return totalCount;
+	}
+
 
 
 }

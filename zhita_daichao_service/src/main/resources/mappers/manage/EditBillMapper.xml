@@ -347,7 +347,7 @@ select count(distinct sourceId) from edit_bill where operationDate >=#{startDate
  </select> 
  
       <!--平台浏览中，查出渠道id-->
- <select id="getPThroughSourceId" parameterType="java.lang.String" resultType="java.lang.Integer">
+ <select id="getPThroughSourceId" parameterType="java.util.Map" resultType="java.lang.Integer">
 select distinct  sourceId from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and firmType=#{firmType} limit #{page},#{pageSize}
  </select> 
  
@@ -373,4 +373,27 @@ select distinct  businessesId from edit_bill where operationDate >=#{startDate} 
 select sum(registrationNumber) registrationNumber,ROUND(avg(price),0) price,sum(realPay) realPay,businessname from edit_bill eb,loans_businesses lb where operationDate >=#{startDate} and operationDate &lt;#{endDate} and eb.company = #{company} and lb.company = #{company} and eb.deleted='0' and lb.deleted='0' and businessesId = #{businessesId} and businessesId = lb.id
  </select>
 
+
+      <!--编辑账单中根据日期和渠道名查询出有多少条数据-->
+ <select id="pageCountEditBillByCO" parameterType="java.util.Map" resultType="java.lang.Integer">
+select count(id) from edit_bill where deleted='0' and company = #{company} and firmType =#{firmType} and operationDate = #{operationDate} and sourceId = #{sourceId}
+ </select> 
+ 
+      		   <!-- 编辑账单中，根据传过来的日期和渠道名查询所有数据 -->
+ <select id="getEditBillByCO" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+   select id,operationDate,account,registrationNumber,price,realPay,note,accountType,firmType,sourceId,registrationTime,sourceTo from edit_bill 
+   where deleted='0' and company = #{company} and sourceId = #{sourceId} and firmType =#{firmType} and operationDate = #{operationDate} order by operationDate desc limit #{page},#{pageSize}
+ </select>
+
+
+      <!--编辑账单中根据日期和甲方查询出有多少条数据-->
+ <select id="pageCountEditBillByCO2" parameterType="java.util.Map" resultType="java.lang.Integer">
+select count(id) from edit_bill where deleted='0' and company = #{company} and firmType =#{firmType} and operationDate = #{operationDate} and businessesId = #{businessesId}
+ </select> 
+ 
+       		   <!-- 编辑账单中，根据传过来的日期和甲方查询所有数据 -->
+ <select id="getEditBillByCO2" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
+   select id,operationDate,account,registrationNumber,price,realPay,note,accountType,firmType,businessesId,registrationTime,sourceTo from edit_bill 
+   where deleted='0' and company = #{company} and businessesId = #{businessesId} and firmType =#{firmType} and operationDate = #{operationDate} order by operationDate desc limit #{page},#{pageSize}
+ </select>
 </mapper>

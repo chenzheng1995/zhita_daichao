@@ -71,6 +71,16 @@ public interface EditBillMapper {
 
 	ArrayList<EditBill> getPThrough1(@Param("businessesId")Integer businessesId, @Param("startDate") String startDate,@Param("endDate") String endDate,@Param("company") String company);
 
+	int pageCountEditBillByCO(@Param("company")String company,@Param("firmType") String firmType,@Param("operationDate") String operationDate,@Param("sourceId") Integer sourceId);
+
+	List<EditBill> getEditBillByCO(@Param("company")String company,@Param("firmType") String firmType,@Param("sourceId") Integer sourceId,@Param("operationDate") String operationDate,@Param("page") int page,
+			@Param("pageSize")int pageSize);
+
+	int pageCountEditBillByCO2(@Param("company")String company,@Param("firmType") String firmType,@Param("operationDate") String operationDate,@Param("businessesId") Integer businessesId);
+
+	List<EditBill> getEditBillByCO2(@Param("company")String company,@Param("firmType") String firmType,@Param("businessesId") Integer businessesId,@Param("operationDate") String operationDate,
+			@Param("page")int page,@Param("pageSize") int pageSize);
+
 
 
 

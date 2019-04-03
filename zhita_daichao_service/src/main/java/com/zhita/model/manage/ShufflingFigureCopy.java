@@ -16,8 +16,12 @@ public class ShufflingFigureCopy {
     private String deleted;
 
     private String company;
+    
+    private String oneSourceName;
+    
+    private String twoSourceName;
 
-    public ShufflingFigureCopy(Integer id, String title, String cover, String link, String state, String businessname, String deleted, String company) {
+    public ShufflingFigureCopy(Integer id, String title, String cover, String link, String state, String businessname, String deleted, String company,String oneSourceName,String twoSourceName) {
         this.id = id;
         this.title = title;
         this.cover = cover;
@@ -26,6 +30,8 @@ public class ShufflingFigureCopy {
         this.businessname = businessname;
         this.deleted = deleted;
         this.company = company;
+        this.oneSourceName = oneSourceName;
+        this.twoSourceName = twoSourceName;
     }
 
     public ShufflingFigureCopy() {
@@ -94,6 +100,22 @@ public class ShufflingFigureCopy {
 
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
+    }
+    
+    public String getOneSourceName() {
+        return oneSourceName;
+    }
+
+    public void setOneSourceName(String oneSourceName) {
+        this.oneSourceName = oneSourceName == null ? null : oneSourceName.trim();
+    }
+    
+    public String getTwoSourceName() {
+        return twoSourceName;
+    }
+
+    public void setTwoSourceName(String twoSourceName) {
+        this.twoSourceName = twoSourceName == null ? null : twoSourceName.trim();
     }
 
     

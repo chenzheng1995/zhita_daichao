@@ -166,13 +166,29 @@
   
  <!--  ===================================================================== -->
  		  	<!--单价设置中的插入数据 -->
-	<insert id="setunitprice" parameterType="java.util.Map">
+	<insert id="setunitprice" parameterType="java.util.Map" useGeneratedKeys="true">
     insert into unit_price (sourceId,businessesId,account, price, 
       accountType, firmType,modifyTime,company
       )
     values (#{sourceId,jdbcType=INTEGER},#{businessesId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
       #{accountType,jdbcType=VARCHAR}, #{firmType,jdbcType=VARCHAR},#{registrationTime,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR}
       )
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">  
+      SELECT LAST_INSERT_ID()
+    </selectKey> 
+	</insert>
+	
+	 		  	<!--单价设置中的插入数据 -->
+	<insert id="setunitprice1" parameterType="java.util.Map" useGeneratedKeys="true">
+    insert into unit_price (sourceId,businessesId,account, price, 
+      accountType, firmType,modifyTime,company
+      )
+    values (#{sourceId,jdbcType=INTEGER},#{businessesId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+      #{accountType,jdbcType=VARCHAR}, #{firmType,jdbcType=VARCHAR},#{modifyTime,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR}
+      )
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">  
+      SELECT LAST_INSERT_ID()
+    </selectKey> 
 	</insert>
  
  			<!--单价设置中的更新数据 -->
@@ -185,7 +201,7 @@
 		sourceId = #{sourceId},
 		businessesId = #{businessesId},
 		modifyTime = #{registrationTime}
-		where id = #{id} and deleted = '0'
+		where id = #{id} and deleted = '0' and company = #{company}
 	</update>
 	
 	 			<!--单价设置中的删除数据，其实就是把deleted改成1 -->
@@ -210,7 +226,7 @@
 	
 					<!--单价设置中,查出所有的数据  -->
 	<select id="getunitprice" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
-		select id,account,price,accountType,firmType,firm,modifyTime,businessesId from unit_price where sourceId=#{sourceId} and deleted = '0' and company =#{company}
+		select id,account,price,accountType,firmType,firm,modifyTime,businessesId from unit_price where sourceId=#{sourceId} and deleted = '0' and company =#{company} order by account
 	</select>
 						<!--根据账号，查寻出甲方id  -->
 	<select id="getbusinessesId" parameterType="java.lang.String" resultType="java.lang.Integer">

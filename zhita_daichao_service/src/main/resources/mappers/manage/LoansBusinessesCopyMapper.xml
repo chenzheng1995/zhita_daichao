@@ -27,6 +27,8 @@
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="oneSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="twoSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -425,4 +427,15 @@
  <select id="getTrademark1" resultType="java.lang.String" parameterType="java.lang.String">
  	select trademark  from loans_businesses_copy where businessName = #{businessname}
  </select>
+ 
+   <!-- 后台管理 用于获取总页数 -->
+ <select id="pageCountAppCopy" resultType="java.lang.Integer">
+   select count(businessName) from loans_businesses_copy where deleted='0' and company = #{company} and state = '1' and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName}
+ </select>
+ 
+ 
+   <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
+  <select id="queryAllAdmainproAppCopy" parameterType="map" resultType="com.zhita.model.manage.LoansBusinesses">
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,applications,state from loans_businesses_copy where deleted='0' and company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName} and state = 1 order by isStick desc,sort asc limit #{page},#{pageSize}
+  </select>
 </mapper>

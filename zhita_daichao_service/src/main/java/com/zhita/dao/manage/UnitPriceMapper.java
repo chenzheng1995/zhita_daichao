@@ -21,7 +21,7 @@ public interface UnitPriceMapper {
 
 	int setunitprice(@Param("sourceId")int sourceId,@Param("businessesId")int businessesId,@Param("firmType") String firmType,@Param("account") String account,@Param("price") int price,@Param("accountType") String accountType,@Param("registrationTime") String registrationTime,@Param("company") String company);
 
-	int updateUnitPrice(@Param("sourceId")int sourceId,@Param("businessesId")int businessesId,@Param("firmType") String firmType,@Param("account") String account,@Param("price") int price,@Param("accountType") String accountType,@Param("id") int id,@Param("registrationTime") String registrationTime);
+	int updateUnitPrice(@Param("sourceId")int sourceId,@Param("businessesId")int businessesId,@Param("firmType") String firmType,@Param("account") String account,@Param("price") int price,@Param("accountType") String accountType,@Param("id") int id,@Param("registrationTime") String registrationTime,@Param("company") String company);
 
 	int deleteUnitPrice(@Param("id")int id,@Param("registrationTime") String registrationTime);
 
@@ -38,6 +38,8 @@ public interface UnitPriceMapper {
 	List<UnitPrice> getaccountBySourceId(@Param("company")String company,@Param("sourceId") Integer sourceId,@Param("firmType") String firmType);
 
 	List<Object> getaccountById(@Param("sourceId")int sourceId,@Param("company") String company);
+
+	int setunitprice1(UnitPrice unitPrice);
 
 
 

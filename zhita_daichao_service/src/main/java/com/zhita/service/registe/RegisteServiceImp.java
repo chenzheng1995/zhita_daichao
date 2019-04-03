@@ -178,4 +178,5 @@ public class RegisteServiceImp implements IntRegisteService{
 		String firm =  loansBusinessesMapper.getBusinessesName(businessesId,company);
 		return firm;
 	}
+
 }

@@ -8,7 +8,7 @@ public interface UnitPriceService {
 
 	int setunitprice(int sourceId, int businessesId, String firmType, String account, int price, String accountType, String registrationTime, String company);
 
-	int updateUnitPrice(int sourceId, int businessesId, String firmType, String account, int price, String accountType, int id, String registrationTime);
+	int updateUnitPrice(int sourceId, int businessesId, String firmType, String account, int price, String accountType, int id, String registrationTime, String company);
 
 	int deleteUnitPrice(int id, String registrationTime);
 
@@ -25,6 +25,8 @@ public interface UnitPriceService {
 	List<UnitPrice> getaccountBySourceId(String company, Integer sourceId, String firmType);
 
 	List<Object> getaccountById(int sourceId, String company);
+
+	int setunitprice1(UnitPrice unitPrice);
 
 
 

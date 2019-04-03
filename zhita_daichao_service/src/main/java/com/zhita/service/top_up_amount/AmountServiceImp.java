@@ -14,9 +14,9 @@ public class AmountServiceImp implements AmountService{
 	TopUpAmountMapper topUpAmountMapper;
 
 	@Override
-	public int setTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts, String paymentAccount,
+	public Integer setTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts, String paymentAccount,
 			String contact, String note, String company, String firmType, String registrationTime,String otimestamps) {
-		int number = topUpAmountMapper.setTUamount(billingDate,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,company,firmType,registrationTime,otimestamps);
+		Integer number = topUpAmountMapper.setTUamount(billingDate,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,company,firmType,registrationTime,otimestamps);
 		return number;
 	}
 
@@ -35,8 +35,9 @@ public class AmountServiceImp implements AmountService{
 	}
 
 	@Override
-	public int deleteAmountByOperationDate(String otimestamps, String registrationTime) {
-		int number = topUpAmountMapper.deleteAmountByOperationDate(otimestamps,registrationTime);
+	public int deleteAmountByOperationDate(String otimestamps, String registrationTime,String company,
+			String firmtype) {
+		int number = topUpAmountMapper.deleteAmountByOperationDate(otimestamps,registrationTime,company,firmtype);
 		return number;
 	}
 
@@ -63,5 +64,12 @@ public class AmountServiceImp implements AmountService{
 		Integer topUpAmount = topUpAmountMapper.getAmountbyfirm(startDate,endDate,company,sourceName);
 		return topUpAmount;
 	}
+
+	@Override
+	public Integer setTUamount1(TopUpAmount topupamount) {
+		Integer id = topUpAmountMapper.setTUamount1(topupamount);
+		return id;
+	}
+
 
 }

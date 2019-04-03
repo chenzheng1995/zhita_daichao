@@ -58,6 +58,16 @@ public interface EditBillService {
 
 	ArrayList<EditBill> getPThrough1(Integer businessesId, String startDate, String endDate, String company);
 
+	int pageCountEditBillByCO(String company, String firmType, String operationDate, Integer sourceId);
+
+	List<EditBill> getEditBillByCO(String company, String firmType, Integer sourceId, String operationDate, int page,
+			int pageSize);
+
+	int pageCountEditBillByCO2(String company, String firmType, String operationDate, Integer businessesId);
+
+	List<EditBill> getEditBillByCO2(String company, String firmType, Integer businessesId, String operationDate,
+			int page, int pageSize);
+
 
 
 

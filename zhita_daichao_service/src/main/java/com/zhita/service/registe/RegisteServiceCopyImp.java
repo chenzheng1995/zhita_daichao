@@ -155,4 +155,17 @@ public class RegisteServiceCopyImp implements IntRegisteCopyService{
   		return count;
   	}
 
+	@Override
+	public int pageCountAppCopy(String company, String oneSourceName, String twoSourceName) {
+		int totalCount=loansBusinessesCopyMapper.pageCountAppCopy(company,oneSourceName,twoSourceName);//该方法是查询贷款商家总条数
+		return totalCount;
+	}
+
+	@Override
+	public List<LoansBusinesses> queryAllAdmainproAppCopy(int page, int pageSize, String company, String oneSourceName,
+			String twoSourceName) {
+		List<LoansBusinesses> list=loansBusinessesCopyMapper.queryAllAdmainproAppCopy(page,pageSize,company,oneSourceName,twoSourceName);
+		return list;
+	}
+
 }

@@ -159,5 +159,31 @@ public class EditBillServiceImp implements EditBillService{
 		return List3;
 	}
 
+	@Override
+	public int pageCountEditBillByCO(String company, String firmType, String operationDate, Integer sourceId) {
+		int totalCount=editBillMapper.pageCountEditBillByCO(company,firmType,operationDate,sourceId);
+		return totalCount;
+	}
+
+	@Override
+	public List<EditBill> getEditBillByCO(String company, String firmType, Integer sourceId, String operationDate,
+			int page, int pageSize) {
+		List<EditBill> EditBillList = editBillMapper.getEditBillByCO(company,firmType,sourceId,operationDate,page,pageSize);
+		return EditBillList;
+	}
+
+	@Override
+	public int pageCountEditBillByCO2(String company, String firmType, String operationDate, Integer businessesId) {
+		int totalCount=editBillMapper.pageCountEditBillByCO2(company,firmType,operationDate,businessesId);
+		return totalCount;
+	}
+
+	@Override
+	public List<EditBill> getEditBillByCO2(String company, String firmType, Integer businessesId, String operationDate,
+			int page, int pageSize) {
+		List<EditBill> EditBillList = editBillMapper.getEditBillByCO2(company,firmType,businessesId,operationDate,page,pageSize);
+		return EditBillList;
+	}
+
 
 }

@@ -47,10 +47,32 @@ public class BillController {
 	@ResponseBody
 	@RequestMapping("/setunitprice")
 	@Transactional
+    public Map<String,Object> setUnitPrice (UnitPrice unitPrice){
+		HashMap<String,Object> map=new HashMap<>();
+		String modifyTime = System.currentTimeMillis() + ""; // 获取当前时间戳
+		unitPrice.setModifyTime(modifyTime);
+		int number = UnitPriceService.setunitprice1(unitPrice);
+		int id = unitPrice.getId();		
+		if (number != 0) {								
+			map.put("msg", "数据插入成功");
+			map.put("SCode", "200");
+			map.put("id",id);
+		} else {
+			map.put("msg", "数据插入失败");
+			map.put("SCode", "405");
+		}
+		return map;
+	}
+	
+/*	@ResponseBody
+	@RequestMapping("/setunitprice")
+	@Transactional
     public Map<String,Object> setUnitPrice (int sourceId,int businessesId,String firmType, String account,int price,String accountType,String company){
 		HashMap<String,Object> map=new HashMap<>();
+		UnitPrice unitPrice = null;
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
 		int number = UnitPriceService.setunitprice(sourceId,businessesId,firmType,account,price,accountType,registrationTime,company);
+		int id = unitPrice.getId();
 		if (number != 0) {								
 			map.put("msg", "数据插入成功");
 			map.put("SCode", "200");
@@ -59,7 +81,7 @@ public class BillController {
 			map.put("SCode", "405");
 		}
 		return map;
-	}
+	}*/
 	
     //单价设置里的更新
 	/**
@@ -74,10 +96,10 @@ public class BillController {
 	@ResponseBody
 	@RequestMapping("/updateunitprice")
 	@Transactional
-    public Map<String,Object> updateUnitPrice (int sourceId,int businessesId, String firmType, String account,int price,String accountType,int id){
+    public Map<String,Object> updateUnitPrice (int sourceId,int businessesId, String firmType, String account,int price,String accountType,int id,String company){
 		HashMap<String,Object> map=new HashMap<>();
 		String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-		int number = UnitPriceService.updateUnitPrice(sourceId,businessesId,firmType,account,price,accountType,id,registrationTime);
+		int number = UnitPriceService.updateUnitPrice(sourceId,businessesId,firmType,account,price,accountType,id,registrationTime,company);
 		if (number != 0) {								
 			map.put("msg", "数据修改成功");
 			map.put("SCode", "200");

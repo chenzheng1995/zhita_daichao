@@ -6,7 +6,7 @@ import com.zhita.model.manage.TopUpAmount;
 
 public interface AmountService {
 
-	int setTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts, String paymentAccount,
+	Integer setTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts, String paymentAccount,
 			String contact, String note, String company, String firmType, String registrationTime, String otimestamps);
 
 	int updateTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts, String paymentAccount,
@@ -14,7 +14,7 @@ public interface AmountService {
 
 	int deleteAmountById(int id, String registrationTime);
 
-	int deleteAmountByOperationDate(String otimestamps, String registrationTime);
+	int deleteAmountByOperationDate(String otimestamps, String registrationTime, String company, String firmtype);
 
 	int pageCountByAmount(String firmType, String company);
 
@@ -23,6 +23,8 @@ public interface AmountService {
 	Integer gettopUpAmount(String sourceName, String date, String company);
 
 	Integer getAmountbyfirm(String startDate, String endDate, String company, String sourceName);
+
+	Integer setTUamount1(TopUpAmount topupamount);
 
 
 }

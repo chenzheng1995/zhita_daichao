@@ -85,6 +85,14 @@ public interface LoansBusinessesCopyMapper {
 
 	String getTrademark1(String businessname);
 
+	int pageCountAppCopy(@Param("company")String company,@Param("oneSourceName") String oneSourceName,@Param("twoSourceName") String twoSourceName);
+
+	List<LoansBusinesses> queryAllAdmainproAppCopy(@Param("page")int page,@Param("pageSize") int pageSize,@Param("company") String company,@Param("oneSourceName") String oneSourceName,
+			@Param("twoSourceName") String twoSourceName);
+
+	int pageCountByBusinessClassificationAppCopy(@Param("businessClassification")String businessClassification,@Param("company") String company,@Param("oneSourceName") String oneSourceName,
+			@Param("twoSourceName")String twoSourceName);
+
 
 
 

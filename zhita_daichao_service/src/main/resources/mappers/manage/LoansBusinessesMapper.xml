@@ -454,4 +454,6 @@
  <select id="getBusinessesName" parameterType="java.util.Map" resultType="java.lang.String">
    select businessName from loans_businesses where id = #{businessesId} and company =#{company}
  </select>
+ 
+ 
 </mapper>
