@@ -27,13 +27,15 @@
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="onesourcename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="twosourcename" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
     id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
     state, busClaId, loanLimitSmall, loanLimitBig, cycle, interestRate, applicationRequirements, 
     applicationProcess, specialInstructions, successRate, lendingRate, registerLink, 
-    prepaidAmount, deleted, applications, company
+    prepaidAmount, deleted, applications, company,onesourcename,twosourcename
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -424,5 +426,120 @@
    <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->
  <select id="getTrademark1" resultType="java.lang.String" parameterType="java.lang.String">
  	select trademark  from loans_businesses_copy where businessName = #{businessname}
+ </select>
+ 
+ 
+
+ <!--后台管理    通过主键id查询出贷款商家信息（loans_businesses_copy表）  -->
+  <select id="selectByPrimaryKeyCopy" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loans_businesses_copy_copy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+ <!--后台管理   添加贷款商家信息（loans_businesses_copy表）  -->
+  <insert id="insertCopy" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
+    insert into loans_businesses_copy_copy (id, businessName, intro, 
+      loanLimit, trademark, isStick, 
+      sort, applicationNumber, state, 
+      busClaId, loanLimitSmall, loanLimitBig, 
+      cycle, interestRate, applicationRequirements, 
+      applicationProcess, specialInstructions, 
+      successRate, lendingRate, registerLink, 
+      prepaidAmount, deleted, applications, 
+      company,onesourcename,twosourcename)
+    values (#{id,jdbcType=INTEGER}, #{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
+      #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
+      #{busclaid,jdbcType=INTEGER}, #{loanlimitsmall,jdbcType=DECIMAL}, #{loanlimitbig,jdbcType=DECIMAL}, 
+      #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, #{applicationrequirements,jdbcType=VARCHAR}, 
+      #{applicationprocess,jdbcType=VARCHAR}, #{specialinstructions,jdbcType=VARCHAR}, 
+      #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, #{registerlink,jdbcType=VARCHAR}, 
+      #{prepaidamount,jdbcType=DECIMAL}, #{deleted,jdbcType=VARCHAR}, #{applications,jdbcType=INTEGER}, 
+      #{company,jdbcType=VARCHAR},#{onesourcename,jdbcType=VARCHAR},#{twosourcename,jdbcType=VARCHAR})
+  </insert>
+
+  
+   <!--后台管理   通过传过来的贷款商家对象，对当前对象进行修改保存  （loans_businesses_copy表）-->
+  <update id="updateLoansBusinessesCopy" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
+    update loans_businesses_copy_copy
+    set businessName = #{businessname,jdbcType=VARCHAR},
+      intro = #{intro,jdbcType=VARCHAR},
+      trademark = #{trademark,jdbcType=VARCHAR},
+      loanLimit = #{loanlimit,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      busClaId = #{busClaId,jdbcType=INTEGER},
+      loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
+      loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
+      cycle = #{cycle,jdbcType=VARCHAR},
+      interestRate = #{interestrate,jdbcType=DECIMAL},
+      applicationRequirements = #{applicationrequirements,jdbcType=VARCHAR},
+      applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
+      specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
+      successRate = #{successrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=INTEGER},
+      registerLink = #{registerlink,jdbcType=VARCHAR},
+      prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
+      oneSourceName= #{onesourcename,jdbcType=DECIMAL},
+      twoSourceName= #{twosourcename,jdbcType=DECIMAL}
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 后台管理  查询贷款商家部分字段信息，含分页  （loans_businesses_copy表）-->
+  <select id="queryAllAdmainCopy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
+  </select>
+  <!-- 后台管理  查询贷款商家部分字段信息，不含分页 （loans_businesses_copy表）-->
+  <select id="queryAllAdmain1Copy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and company=#{arg0}
+  </select> 
+   <!-- 后台管理 用于获取总页数  （loans_businesses_copy表）-->
+ <select id="pageCountCopy" resultType="java.lang.Integer">
+   select count(businessName) from loans_businesses_copy where deleted='0' and company = #{company} and state = '1'
+ </select>
+   <!-- 后台管理 用于模糊查询获取总页数  （loans_businesses_copy表）-->
+ <select id="pageCountByLikeCopy" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select count(businessName) from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
+ </select>
+ <!-- 后台管理  通过商家名称模糊查询，并且有分页功能   （loans_businesses_copy表）-->
+ <select id="queryByNameLikeCopy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ </select>
+ <!-- 后台管理  通过商家名称模糊查询，没有分页功能   （loans_businesses_copy表）-->
+ <select id="queryByNameLike1Copy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
+ </select>
+ <!-- 后台管理  通过商家主键id修改假删除字段的值  （loans_businesses_copy表） -->
+ <update id="upaFalseDelCopy" parameterType="java.lang.Integer">
+ 	update loans_businesses_copy set deleted='1' where id=#{id}
+ </update>
+ <!-- 后台管理  修改贷款商家状态 为开启   （loans_businesses_copy表）-->
+ <update id="upaStateOpenCopy" parameterType="java.lang.Integer">
+ 	update loans_businesses_copy set state='1' where id=#{id}
+ </update>
+  <!-- 后台管理  修改贷款商家状态 为关闭  （loans_businesses_copy表）-->
+ <update id="upaStateCloseCopy" parameterType="java.lang.Integer">
+ 	update loans_businesses_copy set state='2' where id=#{id}
+ </update>
+ <!-- 后台管理  查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中  （loans_businesses_copy表-->
+ <select id="queryAllBusinessNameCopy" resultType="java.lang.String">
+ 	select businessName from loans_businesses_copy where company=#{company} and deleted='0'
+ </select>
+ <!-- 后台管理  通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中   （loans_businesses_copy表）-->
+ <select id="queryAllBusinessNameByLikeCopy" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select businessName from loans_businesses_copy where businessName like "%"#{arg0}"%" and company=#{arg1} and deleted=0
+ </select>
+ <!-- 后台管理    根据商家名称更新被申请次数字段   （loans_businesses_copy表）-->
+ <update id="upaApplicationNumberCopy">
+ 	update loans_businesses_copy set applicationNumber=#{arg0} where businessName=#{arg1}
+ </update>
+<!-- 后台管理    根据id  修改商家的排序字段   （loans_businesses_copy表）-->
+ <update id="upaSortByLoanIdCopy" parameterType="java.lang.Integer">
+ 	update loans_businesses_copy set sort=#{arg0} where id=#{arg1}
+ </update>
+  <!-- 后台管理      通过商家id，查询商标的URL（loans_businesses_copy表） -->
+ <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select trademark  from loans_businesses where id = #{id}
  </select>
 </mapper>

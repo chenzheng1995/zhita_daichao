@@ -85,10 +85,56 @@ public interface LoansBusinessesCopyMapper {
 
 	String getTrademark1(String businessname);
 
-
-
-
-
+    //后台管理---添加贷款商家信息（loans_businesses_copy表）
+    int insertCopy(LoansBusinessesCopy record);
+ 
+    //后台管理---通过主键id查询出贷款商家信息（loans_businesses_copy表）
+    LoansBusinessesCopy selectByPrimaryKeyCopy(Integer id);
+    
+    //后台管理---通过传过来的贷款商家对象，对当前对象进行修改保存（loans_businesses_copy表）
+    int updateLoansBusinessesCopy(LoansBusinessesCopy loans);
+    
+    
+  	//后台管理---查询贷款商家部分字段信息，含分页（loans_businesses_copy表）
+  	List<LoansBusinessesCopy> queryAllAdmainCopy(String company,Integer page,Integer pagesize);
+  	
+  	//后台管理---查询贷款商家部分字段信息，不含分页（loans_businesses_copy表）
+  	List<LoansBusinessesCopy> queryAllAdmain1Copy(String company);
+  	
+  	//后台管理---查询贷款商家总条数（loans_businesses_copy表）
+  	int pageCountCopy(String company);
+  	
+  	//后台管理---通过模糊查询的条件查询贷款商家总条数（loans_businesses_copy表）
+  	int pageCountByLikeCopy(String businessName,String company);
+  	
+  	//后台管理---通过商家名称模糊查询，并且有分页功能（loans_businesses_copy表）
+  	List<LoansBusinessesCopy> queryByNameLikeCopy(String businessName,String company,Integer page,Integer pagesize);
+  	
+  	//后台管理---通过商家名称模糊查询，没有分页功能（loans_businesses_copy表）
+  	List<LoansBusinessesCopy> queryByNameLike1Copy(String businessName,String company);
+  	
+  	//后台管理---通过商家主键id修改假删除字段的值（loans_businesses_copy表）
+  	int upaFalseDelCopy(Integer id);
+  	
+  	//后台管理---修改贷款商家状态为开启（loans_businesses_copy表）
+  	int upaStateOpenCopy(Integer id);
+  	
+  	//后台管理---修改贷款商家状态为关闭（loans_businesses_copy表）
+  	int upaStateCloseCopy(Integer id);
+  
+  	//后台管理---查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中（loans_businesses_copy表）
+  	List<String> queryAllBusinessNameCopy(String company);
+  	
+  	//后台管理---通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中（loans_businesses_copy表）
+  	List<String> queryAllBusinessNameByLikeCopy(String businessName,String company);
+  	
+  	//后台管理---根据商家名称更新被申请次数字段（loans_businesses_copy表）
+  	int upaApplicationNumberCopy(Integer num,String businessName);
+  
+  	//后台管理---根据id  修改商家的排序字段（loans_businesses_copy表）
+  	int upaSortByLoanIdCopy(Integer sort,Integer id);
+  	//后台管理----通过商家id，查询商标的URL（loans_businesses_copy表）
+  	String getTrademark(Integer id);
 
 
 }
