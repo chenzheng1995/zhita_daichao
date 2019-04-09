@@ -353,11 +353,11 @@
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} order by state,isstick desc,sort limit #{arg1},#{arg2}
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} order by state asc,isstick desc,sort asc limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，不含分页 -->
   <select id="queryAllAdmain1" resultType="com.zhita.model.manage.LoansBusinesses">
-  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} order by state,isstick desc,sort
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} order by state asc,isstick desc,sort asc
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
@@ -369,11 +369,11 @@
  </select>
  <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
  <select id="queryByNameLike" resultType="com.zhita.model.manage.LoansBusinesses">
- 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state,isstick desc,sort limit #{arg2},#{arg3}
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state asc,isstick desc,sort asc limit #{arg2},#{arg3}
  </select>
  <!-- 后台管理  通过商家名称模糊查询，没有分页功能 -->
  <select id="queryByNameLike1" resultType="com.zhita.model.manage.LoansBusinesses">
- 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state,isstick desc,sort
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state asc,isstick desc,sort asc
  </select>
  <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">

@@ -12,7 +12,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, oneSourceName, twoSourceName, deleted
+    id, oneSourceName, twoSourceName, deleted,tableType
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -104,4 +104,21 @@
  <select id="getTableType" parameterType="java.lang.String" resultType="java.lang.String">
    select tableType from source_dad_son where deleted='0' and company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName =#{twoSourceName}
  </select>
+ <!--后台管理       查询source_dad_son表所有数据-->
+ <select id="queryAll" resultType="com.zhita.model.manage.SourceDadSon">
+ 	select 
+ 	<include refid="Base_Column_List" /> 
+ 	from source_dad_son  s where s.deleted=0 and s.company in
+ 	<foreach collection="company" item="item" open="(" separator="," close=")">  
+          #{item}  
+    </foreach>
+ </select>
+ <!-- 后台管理    修改source_dad_son表的tableType字段为1-->
+ <update id="upatableTypeStart" parameterType="java.lang.Integer">
+ 	update source_dad_son set tableType='1' where id=#{id}
+ </update>
+  <!--  后台管理    修改source_dad_son表的tableType字段为2-->
+ <update id="upatableTypeClose" parameterType="java.lang.Integer">
+ 	update source_dad_son set tableType='2' where id=#{id}
+ </update>
 </mapper>
