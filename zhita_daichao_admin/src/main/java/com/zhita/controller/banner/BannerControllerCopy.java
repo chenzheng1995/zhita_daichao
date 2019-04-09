@@ -20,7 +20,7 @@ import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
 
 @Controller
-@RequestMapping("bannerCopy")
+@RequestMapping("/bannerCopy")
 public class BannerControllerCopy {
 	@Autowired
 	private IntBannerServiceCopy intBannerServiceCopy;
@@ -86,7 +86,6 @@ public class BannerControllerCopy {
 	    //后台管理---根据标题字段模糊查询轮播图信息，含分页
 		@ResponseBody
 		@RequestMapping("/queryAllByLikeCopy")
-		
 	    public Map<String,Object> queryAllByLike(String title,Integer page,String string){
 			PageUtil pageUtil=null;
 			List<ShufflingFigureCopy> list=new ArrayList<>();
