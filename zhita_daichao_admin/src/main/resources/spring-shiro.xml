@@ -135,6 +135,25 @@
 				/news/updatenews = perms["文章-更新保存"]
 				/news/deletenews = perms["文章-删除"]
 				/news/getcontent = perms["文章-内容"]
+				<!-- 商家    轮播图审核权限控制 -->
+				/registeCopy/queryAllAdminCopy = perms["商家轮播图-审核"]
+				/registeCopy/selAllNameCopy = perms["商家轮播图-审核"]
+				/registeCopy/insertAllAdminCopy = perms["商家轮播图-审核"]
+				/registeCopy/queryByNameLikeCopy = perms["商家轮播图-审核"]
+				/registeCopy/falsedeleteByPrimaryKeyCopy = perms["商家轮播图-审核"]
+				/registeCopy/selectByPrimaryKeyCopy = perms["商家轮播图-审核"]
+				/registeCopy/upaBaocunByPrimaryKeyCopy = perms["商家轮播图-审核"]
+				/registeCopy/upaStateCopy = perms["商家轮播图-审核"]
+				/registeCopy/upaSortByLoanIdCopy = perms["商家轮播图-审核"]
+				/bannerCopy/queryAllCopy = perms["商家轮播图-审核"]
+				/bannerCopy/queryAllByLikeCopy = perms["商家轮播图-审核"]
+				/bannerCopy/AddAllCopy = perms["商家轮播图-审核"]
+				/bannerCopy/selectByPrimaryKeyCopy = perms["商家轮播图-审核"]
+				/bannerCopy/updateShufflingFigureCopy = perms["商家轮播图-审核"]
+				/bannerCopy/upaFalseDelCopy = perms["商家轮播图-审核"]
+				/bannerCopy/upaStateCopy = perms["商家轮播图-审核"]
+				/soucedadson/queryAll = perms["商家轮播图-审核"]
+				/soucedadson/upatableType = perms["商家轮播图-审核"]
 			</value>
 		</property>
 	</bean>
