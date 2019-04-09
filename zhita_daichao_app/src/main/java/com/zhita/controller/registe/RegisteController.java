@@ -109,7 +109,7 @@ public class RegisteController {
             	        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
             	        loansBusinesses.setLoanlimit(loanlimit);          
             		}
-            	}
+            	} 
 
         	map.put("listLoansBusin",list);
         	map.put("pageutil", pageUtil);	

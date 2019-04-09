@@ -555,4 +555,11 @@
  	select trademark  from loans_businesses where id = #{id}
  </select>
 
+
+  <!-- APP  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
+ <select id="queryLoanbusinByLoanClassAppCopy" resultMap="BaseResultMap">
+ 	select * from loans_businesses_copy lobus inner join loan_classification locla on lobus.busClaId like concat('%',locla.id,'%') where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName} and state = 1 order by isStick desc,sort asc limit #{pages},#{pageSize}
+ </select>
+ 
+ 
 </mapper>

@@ -102,4 +102,6 @@
  <select id="pageCountByBusinessClassification1" parameterType="java.lang.String" resultType="java.lang.Integer">
  	select count(businessClassification) from loans_businesses_copy lb inner join loan_classification_copy lc on lb.busClaId like concat('%',lc.id,'%') where deleted='0' and lb.state='1' and businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
  </select>
+ 
+
 </mapper>

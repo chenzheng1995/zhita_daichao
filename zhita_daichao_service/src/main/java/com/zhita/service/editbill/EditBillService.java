@@ -8,9 +8,9 @@ import com.zhita.model.manage.EditBill;
 
 public interface EditBillService {
 
-	int setEditBill(String operationDate, String account, int registrationNumber, int price, int realPay, String note,
-			String accountType, String firmType, String modifyTime, String registrationTime,
-			String company,int sourceId, int businessesId, String sourceTo);
+//	Integer setEditBill(String operationDate, String account, int registrationNumber, int price, int realPay, String note,
+//			String accountType, String firmType, String modifyTime, String registrationTime,
+//			String company,int sourceId, int businessesId, String sourceTo);
 
 	int updateEditBill(String oDatetimestamps, String account, Integer registrationNumber, Integer price, int realPay,
 			String note, String accountType, String firmType, String modifyTimestamps, String registrationTimestamps,
@@ -67,6 +67,8 @@ public interface EditBillService {
 
 	List<EditBill> getEditBillByCO2(String company, String firmType, Integer businessesId, String operationDate,
 			int page, int pageSize);
+
+	Integer setEditBill(EditBill editBill);
 
 
 

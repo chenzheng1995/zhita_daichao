@@ -205,7 +205,7 @@
   
   <!-- ==================================================================================== -->
      		  	<!--编辑账单中插入数据 -->
-	<insert id="setEditBill" parameterType="java.util.Map">
+	<insert id="setEditBill" parameterType="java.util.Map" useGeneratedKeys="true">
     insert into edit_bill (operationDate,registrationNumber, price, 
       realPay, note,accountType,firmType,modifyTime,registrationTime,company,sourceTo,
       <if test='firmType == "1"'>
@@ -224,6 +224,9 @@
         #{businessesId}
       </if>
       )
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">  
+      SELECT LAST_INSERT_ID()
+    </selectKey>
 	</insert>
 	
 	
@@ -304,7 +307,7 @@
  
 <!--    		   编辑账单中，根据传过来的账号查询数据的总和-->
  <select id="getEditBillCount1" parameterType="java.util.Map" resultType="com.zhita.model.manage.EditBill">
-select sum(realPay) realPay,count(accountType) accountType,ROUND(avg(price),0) price,sum(registrationNumber) registrationNumber from edit_bill where registrationTime >=#{startDate} and registrationTime &lt;#{endDate} and company = #{company} and deleted='0' and accountType = #{accountType} and (
+select sum(realPay) realPay,count(accountType) accountType,ROUND(avg(price),0) price,sum(registrationNumber) registrationNumber from edit_bill where operationDate >=#{startDate} and operationDate &lt;#{endDate} and company = #{company} and deleted='0' and accountType = #{accountType} and (
  <foreach collection="accountList" index="index" item="account" >  
           account = #{account} or  
  </foreach>
@@ -396,4 +399,8 @@ select count(id) from edit_bill where deleted='0' and company = #{company} and f
    select id,operationDate,account,registrationNumber,price,realPay,note,accountType,firmType,businessesId,registrationTime,sourceTo from edit_bill 
    where deleted='0' and company = #{company} and businessesId = #{businessesId} and firmType =#{firmType} and operationDate = #{operationDate} order by operationDate desc limit #{page},#{pageSize}
  </select>
+ 
+ 
+ 
+ 
 </mapper>

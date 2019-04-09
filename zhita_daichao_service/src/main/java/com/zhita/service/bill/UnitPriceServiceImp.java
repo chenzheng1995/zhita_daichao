@@ -50,8 +50,8 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	}
 
 	@Override
-	public List<UnitPrice> getunitprice(int sourceId,String company) {
-		List<UnitPrice> accountList = unitPriceMapper.getunitprice(sourceId,company);
+	public List<UnitPrice> getunitprice(int sourceId,String company,int pages,int pageSize) {
+		List<UnitPrice> accountList = unitPriceMapper.getunitprice(sourceId,company,pages,pageSize);
 		return accountList;
 	}
 
@@ -62,8 +62,8 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	}
 
 	@Override
-	public List<UnitPrice> getaccountBySourceId(String company, Integer sourceId, String firmType) {
-		List<UnitPrice> accountList = unitPriceMapper.getaccountBySourceId(company,sourceId,firmType);
+	public List<UnitPrice> getaccountBySourceId(String company, Integer sourceId, String firmType,int pages, int pageSize) {
+		List<UnitPrice> accountList = unitPriceMapper.getaccountBySourceId(company,sourceId,firmType,pages,pageSize);
 		return accountList;
 	}
 
@@ -77,6 +77,30 @@ public class UnitPriceServiceImp implements UnitPriceService{
 	public int setunitprice1(UnitPrice unitPrice) {
 		int number = unitPriceMapper.setunitprice1(unitPrice);
 		return number;
+	}
+
+	@Override
+	public int pageCountUnitprice(int sourceId, String company) {
+		int totalCount=unitPriceMapper.pageCountUnitprice(sourceId,company);
+		return totalCount;
+	}
+
+	@Override
+	public String getaccountType(String company, String account) {
+		String accountType = unitPriceMapper.getaccountType(company, account);
+		return accountType;
+	}
+
+	@Override
+	public List<Object> getPrice(String company, String account) {
+		List<Object> list = unitPriceMapper.getPrice(company,account);
+		return list;
+	}
+
+	@Override
+	public Integer getSourceTo(String company, String account) {
+		Integer SourceTo = unitPriceMapper.getSourceTo(company,account);
+		return SourceTo;
 	}
 
 }

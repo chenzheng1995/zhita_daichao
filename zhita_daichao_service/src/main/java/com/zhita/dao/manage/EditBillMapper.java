@@ -21,10 +21,10 @@ public interface EditBillMapper {
 
     int updateByPrimaryKey(EditBill record);
 
-	int setEditBill(@Param("operationDate") String operationDate,@Param("account") String account,@Param("registrationNumber") int registrationNumber,
-			@Param("price")int price,@Param("realPay") int realPay,@Param("note") String note,@Param("accountType") String accountType,
-			@Param("firmType") String firmType,@Param("modifyTime")String modifyTime,@Param("registrationTime") String registrationTime,
-			@Param("company")String company,@Param("sourceId") int sourceId,@Param("businessesId") int businessesId,@Param("sourceTo") String sourceTo);
+//    Integer setEditBill(@Param("operationDate") String operationDate,@Param("account") String account,@Param("registrationNumber") int registrationNumber,
+//			@Param("price")int price,@Param("realPay") int realPay,@Param("note") String note,@Param("accountType") String accountType,
+//			@Param("firmType") String firmType,@Param("modifyTime")String modifyTime,@Param("registrationTime") String registrationTime,
+//			@Param("company")String company,@Param("sourceId") int sourceId,@Param("businessesId") int businessesId,@Param("sourceTo") String sourceTo);
 
 	int updateEditBill(@Param("oDatetimestamps")String oDatetimestamps,@Param("account") String account,@Param("registrationNumber") Integer registrationNumber,@Param("price") Integer price,@Param("realPay") int realPay,
 			@Param("note")String note,@Param("accountType") String accountType,@Param("firmType") String firmType,@Param("modifyTimestamps") String modifyTimestamps,@Param("registrationTimestamps") String registrationTimestamps,
@@ -80,6 +80,8 @@ public interface EditBillMapper {
 
 	List<EditBill> getEditBillByCO2(@Param("company")String company,@Param("firmType") String firmType,@Param("businessesId") Integer businessesId,@Param("operationDate") String operationDate,
 			@Param("page")int page,@Param("pageSize") int pageSize);
+
+	Integer setEditBill(EditBill editBill);
 
 
 

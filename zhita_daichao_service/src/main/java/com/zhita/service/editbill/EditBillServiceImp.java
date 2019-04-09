@@ -16,14 +16,14 @@ public class EditBillServiceImp implements EditBillService{
 	@Autowired
 	EditBillMapper editBillMapper;
 
-	@Override
-	public int setEditBill(String operationDate, String account, int registrationNumber, int price, int realPay,
-			String note, String accountType, String firmType, String modifyTime, String registrationTime,
-			String company,int sourceId, int businessesId, String sourceTo) {
-		int number = editBillMapper.setEditBill(operationDate, account, registrationNumber, price, realPay,
-				note, accountType, firmType, modifyTime, registrationTime, company,sourceId,businessesId,sourceTo);
-		return number;
-	}
+//	@Override
+//	public Integer setEditBill(String operationDate, String account, int registrationNumber, int price, int realPay,
+//			String note, String accountType, String firmType, String modifyTime, String registrationTime,
+//			String company,int sourceId, int businessesId, String sourceTo) {
+//		Integer number = editBillMapper.setEditBill(operationDate, account, registrationNumber, price, realPay,
+//				note, accountType, firmType, modifyTime, registrationTime, company,sourceId,businessesId,sourceTo);
+//		return number;
+//	}
 
 	@Override
 	public int updateEditBill(String oDatetimestamps, String account, Integer registrationNumber, Integer price,
@@ -183,6 +183,12 @@ public class EditBillServiceImp implements EditBillService{
 			int page, int pageSize) {
 		List<EditBill> EditBillList = editBillMapper.getEditBillByCO2(company,firmType,businessesId,operationDate,page,pageSize);
 		return EditBillList;
+	}
+
+	@Override
+	public Integer setEditBill(EditBill editBill) {
+		Integer number = editBillMapper.setEditBill(editBill);
+		return number;
 	}
 
 

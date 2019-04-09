@@ -133,4 +133,8 @@
      <select id="getShufflingFigure1" resultType="com.zhita.model.manage.ShufflingFigure">
   	select id,title,cover,link,state,businessname,deleted from shuffling_figure_copy where deleted='0' and company=#{company}
   </select>
+  
+     <select id="getShufflingFigureAppCopy" resultType="com.zhita.model.manage.ShufflingFigureCopy">
+  	select id,title,cover,link,state,businessname,deleted from shuffling_figure_copy where deleted='0' and company=#{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName}
+  </select>
 </mapper>

@@ -64,6 +64,9 @@ public interface LoanClassificationMapper {
 
 	List<LoanClassification> queryLoanClassAfter1(String company);
 
+	int pageCountByBusinessClassificationAppCopy(@Param("businessClassification")String businessClassification,@Param("company") String company,@Param("oneSourceName") String oneSourceName,
+			@Param("twoSourceName")String twoSourceName);
+
 
     
 }

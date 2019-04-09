@@ -3,31 +3,31 @@ package com.zhita.model.manage;
 public class EditBill {
     private Integer id;
 
-    private String operationdate;
+    private String operationDate;
 
     private String account;
 
-    private Integer registrationnumber;
+    private Integer registrationNumber;
 
     private Integer price;
 
-    private Integer realpay;
+    private Integer realPay;
 
     private String note;
 
-    private String accounttype;
+    private String accountType;
 
-    private String firmtype;
+    private String firmType;
 
-    private Integer sourceid;
+    private Integer sourceId;
 
-    private Integer businessesid;
+    private Integer businessesId;
 
-    private String modifytime;
+    private String modifyTime;
 
     private String deleted;
 
-    private String registrationtime;
+    private String registrationTime;
     
     private String company;
     
@@ -44,21 +44,21 @@ public class EditBill {
     
     
 
-    public EditBill(Integer id, String operationdate, String account, Integer registrationnumber, Integer price, Integer realpay, String note, String accounttype, String firmtype, Integer sourceid, Integer businessesid, String modifytime, String deleted, String registrationtime,String company,String sourceTo,String sourcename,Integer topUpAmount,Integer remainingAmount,String businessname) {
+    public EditBill(Integer id, String operationDate, String account, Integer registrationNumber, Integer price, Integer realPay, String note, String accountType, String firmType, Integer sourceId, Integer businessesId, String modifyTime, String deleted, String registrationTime,String company,String sourceTo,String sourcename,Integer topUpAmount,Integer remainingAmount,String businessname) {
         this.id = id;
-        this.operationdate = operationdate;
+        this.operationDate = operationDate;
         this.account = account;
-        this.registrationnumber = registrationnumber;
+        this.registrationNumber = registrationNumber;
         this.price = price;
-        this.realpay = realpay;
+        this.realPay = realPay;
         this.note = note;
-        this.accounttype = accounttype;
-        this.firmtype = firmtype;
-        this.sourceid = sourceid;
-        this.businessesid = businessesid;
-        this.modifytime = modifytime;
+        this.accountType = accountType;
+        this.firmType = firmType;
+        this.sourceId = sourceId;
+        this.businessesId = businessesId;
+        this.modifyTime = modifyTime;
         this.deleted = deleted;
-        this.registrationtime = registrationtime;
+        this.registrationTime = registrationTime;
         this.company = company;
         this.sourceTo = sourceTo;
         this.sourcename = sourcename;
@@ -79,12 +79,12 @@ public class EditBill {
         this.id = id;
     }
 
-    public String getOperationdate() {
-        return operationdate;
+    public String getOperationDate() {
+        return operationDate;
     }
 
-    public void setOperationdate(String operationdate) {
-        this.operationdate = operationdate == null ? null : operationdate.trim();
+    public void setOperationDate(String operationDate) {
+        this.operationDate = operationDate == null ? null : operationDate.trim();
     }
 
     public String getAccount() {
@@ -95,12 +95,12 @@ public class EditBill {
         this.account = account == null ? null : account.trim();
     }
 
-    public Integer getRegistrationnumber() {
-        return registrationnumber;
+    public Integer getRegistrationNumber() {
+        return registrationNumber;
     }
 
-    public void setRegistrationnumber(Integer registrationnumber) {
-        this.registrationnumber = registrationnumber;
+    public void setRegistrationNumber(Integer registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 
     public Integer getPrice() {
@@ -111,12 +111,12 @@ public class EditBill {
         this.price = price;
     }
 
-    public Integer getRealpay() {
-        return realpay;
+    public Integer getRealPay() {
+        return realPay;
     }
 
-    public void setRealpay(Integer realpay) {
-        this.realpay = realpay;
+    public void setRealPay(Integer realPay) {
+        this.realPay = realPay;
     }
 
     public String getNote() {
@@ -127,44 +127,44 @@ public class EditBill {
         this.note = note == null ? null : note.trim();
     }
 
-    public String getAccounttype() {
-        return accounttype;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setAccounttype(String accounttype) {
-        this.accounttype = accounttype == null ? null : accounttype.trim();
+    public void setAccountType(String accountType) {
+        this.accountType = accountType == null ? null : accountType.trim();
     }
 
-    public String getFirmtype() {
-        return firmtype;
+    public String getFirmType() {
+        return firmType;
     }
 
-    public void setFirmtype(String firmtype) {
-        this.firmtype = firmtype == null ? null : firmtype.trim();
+    public void setFirmType(String firmType) {
+        this.firmType = firmType == null ? null : firmType.trim();
     }
 
-    public Integer getSourceid() {
-        return sourceid;
+    public Integer getSourceId() {
+        return sourceId;
     }
 
-    public void setSourceid(Integer sourceid) {
-        this.sourceid = sourceid;
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 
-    public Integer getBusinessesid() {
-        return businessesid;
+    public Integer getBusinessesId() {
+        return businessesId;
     }
 
-    public void setBusinessesid(Integer businessesid) {
-        this.businessesid = businessesid;
+    public void setBusinessesId(Integer businessesId) {
+        this.businessesId = businessesId;
     }
 
-    public String getModifytime() {
-        return modifytime;
+    public String getModifyTime() {
+        return modifyTime;
     }
 
-    public void setModifytime(String modifytime) {
-        this.modifytime = modifytime == null ? null : modifytime.trim();
+    public void setModifyTime(String modifyTime) {
+        this.modifyTime = modifyTime == null ? null : modifyTime.trim();
     }
 
     public String getDeleted() {
@@ -175,12 +175,12 @@ public class EditBill {
         this.deleted = deleted == null ? null : deleted.trim();
     }
 
-    public String getRegistrationtime() {
-        return registrationtime;
+    public String getRegistrationTime() {
+        return registrationTime;
     }
 
-    public void setRegistrationtime(String registrationtime) {
-        this.registrationtime = registrationtime == null ? null : registrationtime.trim();
+    public void setRegistrationTime(String registrationTime) {
+        this.registrationTime = registrationTime == null ? null : registrationTime.trim();
     }
     
     public String getCompany() {

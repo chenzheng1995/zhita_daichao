@@ -45,4 +45,8 @@ public interface TopUpAmountMapper {
 
 	Integer setTUamount1(TopUpAmount topupamount);
 
+	int pageCountByAmountNoFirm(@Param("firmType")String firmType,@Param("company") String company,@Param("firm") String firm);
+
+	List<TopUpAmount> getAmountNoFirm(@Param("firmType")String firmType,@Param("company") String company,@Param("page") int page,@Param("pageSize") int pageSize,@Param("firm") String firm);
+
 }

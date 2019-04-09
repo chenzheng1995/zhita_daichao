@@ -15,6 +15,7 @@ import com.zhita.model.manage.UnitPrice;
 import com.zhita.service.bill.UnitPriceService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.service.registe.IntRegisteService;
+import com.zhita.util.PageUtil;
 
 
 @Controller
@@ -182,15 +183,28 @@ public class BillController {
 	@ResponseBody
 	@RequestMapping("/getunitprice")
 	@Transactional
-    public Map<String,Object> getunitprice (int sourceId,String company){
+    public Map<String,Object> getunitprice (int sourceId,String company,Integer page){
 		HashMap<String,Object> map=new HashMap<>();
 		int businessesId = 0;
-		List<UnitPrice> accountList = UnitPriceService.getunitprice(sourceId,company);
+		int totalCount=UnitPriceService.pageCountUnitprice(sourceId,company);
+    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+    	if(page<1) {
+    		page=1;
+    	}else if(page>pageUtil.getTotalPageCount()) {
+      		if(totalCount==0) {
+    			page=pageUtil.getTotalPageCount()+1;
+    		}else {
+    			page=pageUtil.getTotalPageCount();
+    		}
+    	}
+    	int pages=(page-1)*pageUtil.getPageSize();
+		List<UnitPrice> accountList = UnitPriceService.getunitprice(sourceId,company,pages,pageUtil.getPageSize());
 		for (UnitPrice unitPrice : accountList) {
 		   businessesId = unitPrice.getBusinessesId();
 		   String firm =  intRegisteService.getBusinessesName(businessesId,company);
 			unitPrice.setFirm(firm);
 		}
+		map.put("pageUtil", pageUtil);
 		map.put("list", accountList);
 		return map;
 	}

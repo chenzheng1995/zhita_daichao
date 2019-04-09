@@ -27,8 +27,7 @@ public class AmountController {
 	@Autowired
 	AmountService amountService;
 
-	
-	//添加充值金额的数据
+	// 添加充值金额的数据
 	/**
 	 * 
 	 * @param billingDate    入账时间
@@ -42,36 +41,35 @@ public class AmountController {
 	 * @param firmType       平台类型（渠道方为1，甲方为2）
 	 * @param operationDate  操作时间
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@ResponseBody
 	@RequestMapping("/setTUamount")
 	@Transactional
 	public Map<String, Object> setTUamount(TopUpAmount topupamount) throws ParseException {
 		HashMap<String, Object> map = new HashMap<>();
-			Timestamps timestamps = new Timestamps();
-			String billingdate = topupamount.getBillingDate();
-			String operationdate = topupamount.getoperationDate();
-			String btimestamps = timestamps.dateToStamp(billingdate);//转换成时间戳
-			String otimestamps = timestamps.dateToStamp(operationdate);//转换成时间戳
-			String modifyTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-			topupamount.setModifyTime(modifyTime);
-			topupamount.setBillingDate(btimestamps);
-			topupamount.setOperationDate(otimestamps);
-			Integer number = amountService.setTUamount1(topupamount);
-			int id = topupamount.getId();
-			if (number != 0) {								
-				map.put("msg", "数据插入成功");
-				map.put("SCode", "200");
-				map.put("id", id);
-			} else {
-				map.put("msg", "数据插入失败");
-				map.put("SCode", "405");
-			}
-			return map;
+		Timestamps timestamps = new Timestamps();
+		String billingdate = topupamount.getBillingDate();
+		String operationdate = topupamount.getoperationDate();
+		String btimestamps = timestamps.dateToStamp(billingdate);// 转换成时间戳
+		String otimestamps = timestamps.dateToStamp(operationdate);// 转换成时间戳
+		String modifyTime = System.currentTimeMillis() + ""; // 获取当前时间戳
+		topupamount.setModifyTime(modifyTime);
+		topupamount.setBillingDate(btimestamps);
+		topupamount.setOperationDate(otimestamps);
+		Integer number = amountService.setTUamount1(topupamount);
+		int id = topupamount.getId();
+		if (number != 0) {
+			map.put("msg", "数据插入成功");
+			map.put("SCode", "200");
+			map.put("id", id);
+		} else {
+			map.put("msg", "数据插入失败");
+			map.put("SCode", "405");
 		}
+		return map;
+	}
 
-	
 //	@ResponseBody
 //	@RequestMapping("/setTUamount")
 //	@Transactional
@@ -101,8 +99,8 @@ public class AmountController {
 //			return map;
 //		}
 //	}
-	
-	//更新充值记录的数据
+
+	// 更新充值记录的数据
 	/**
 	 * 
 	 * @param billingDate    入账时间
@@ -116,28 +114,31 @@ public class AmountController {
 	 * @param firmType       平台类型（渠道方为1，甲方为2）
 	 * @param operationDate  操作时间
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@ResponseBody
 	@RequestMapping("/updateTUamount")
 	@Transactional
 	public Map<String, Object> updateTUamount(String billingDate, String firm, int topUpAmount, String cashReceipts,
-			String paymentAccount, String contact, String note, String company, String firmType,int id,String operationDate) throws ParseException {
+			String paymentAccount, String contact, String note, String company, String firmType, int id,
+			String operationDate) throws ParseException {
 		HashMap<String, Object> map = new HashMap<>();
 		if (StringUtils.isEmpty(billingDate) || StringUtils.isEmpty(firm) || StringUtils.isEmpty(topUpAmount)
 				|| StringUtils.isEmpty(cashReceipts) || StringUtils.isEmpty(paymentAccount)
 				|| StringUtils.isEmpty(contact) || StringUtils.isEmpty(note) || StringUtils.isEmpty(company)
 				|| StringUtils.isEmpty(firmType)) {
-			map.put("msg", "billingdate,firm,topupamount,cashreceipts,paymentaccount,contact,note,company,id和firmtype不能为空");
+			map.put("msg",
+					"billingdate,firm,topupamount,cashreceipts,paymentaccount,contact,note,company,id和firmtype不能为空");
 			map.put("SCode", "401");
 			return map;
 		} else {
 			Timestamps timestamps = new Timestamps();
-			String btimestamps = timestamps.dateToStamp(billingDate);//转换成时间戳
-			String otimestamps = timestamps.dateToStamp(operationDate);//转换成时间戳
+			String btimestamps = timestamps.dateToStamp(billingDate);// 转换成时间戳
+			String otimestamps = timestamps.dateToStamp(operationDate);// 转换成时间戳
 			String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-			int number = amountService.updateTUamount(btimestamps,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,company,firmType,registrationTime,id,otimestamps);
-			if (number != 0) {								
+			int number = amountService.updateTUamount(btimestamps, firm, topUpAmount, cashReceipts, paymentAccount,
+					contact, note, company, firmType, registrationTime, id, otimestamps);
+			if (number != 0) {
 				map.put("msg", "数据更新成功");
 				map.put("SCode", "200");
 			} else {
@@ -147,8 +148,8 @@ public class AmountController {
 			return map;
 		}
 	}
-	
-	//再充值金额里根据id删除记录（假删除）
+
+	// 再充值金额里根据id删除记录（假删除）
 	@ResponseBody
 	@RequestMapping("/deleteAmountById")
 	@Transactional
@@ -160,8 +161,8 @@ public class AmountController {
 			return map;
 		} else {
 			String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-			int number = amountService.deleteAmountById(id,registrationTime);
-			if (number != 0) {								
+			int number = amountService.deleteAmountById(id, registrationTime);
+			if (number != 0) {
 				map.put("msg", "数据删除成功");
 				map.put("SCode", "200");
 			} else {
@@ -171,24 +172,25 @@ public class AmountController {
 			return map;
 		}
 	}
-	
-	//在充值金额里根据操作日期删除记录（假删除）
+
+	// 在充值金额里根据操作日期删除记录（假删除）
 	@ResponseBody
 	@RequestMapping("/deleteAmountByOperationDate")
 	@Transactional
-	public Map<String, Object> deleteAmountByOperationDate(String operationDate,String company,String firmtype) throws ParseException {
+	public Map<String, Object> deleteAmountByOperationDate(String operationDate, String company, String firmtype)
+			throws ParseException {
 		HashMap<String, Object> map = new HashMap<>();
 		if (StringUtils.isEmpty(operationDate)) {
 			map.put("msg", "operationDate不能为空");
 			map.put("SCode", "401");
 			return map;
 		} else {
-					
+
 			String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
 			Timestamps timestamps = new Timestamps();
-			String otimestamps = timestamps.dateToStamp(operationDate);//转换成时间戳
-			int number = amountService.deleteAmountByOperationDate(otimestamps,registrationTime,company,firmtype);
-			if (number != 0) {								
+			String otimestamps = timestamps.dateToStamp(operationDate);// 转换成时间戳
+			int number = amountService.deleteAmountByOperationDate(otimestamps, registrationTime, company, firmtype);
+			if (number != 0) {
 				map.put("msg", "数据删除成功");
 				map.put("SCode", "200");
 			} else {
@@ -198,49 +200,82 @@ public class AmountController {
 			return map;
 		}
 	}
-	
-    //在充值金额里查询所有数据
+
+	// 在充值金额里查询所有数据
 	/**
-	 * @param company 公司名
+	 * @param company  公司名
 	 * @param firmType 平台类型（渠道方为1，甲方为2）
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/getAmount")
-    public Map<String,Object> getAmount (String firmType,String company,Integer page){
-		HashMap<String,Object> map=new HashMap<>();
+	public Map<String, Object> getAmount(String firmType, String company, Integer page, String firm) {
+		HashMap<String, Object> map = new HashMap<>();
 		if (StringUtils.isEmpty(firmType) || StringUtils.isEmpty(company) || StringUtils.isEmpty(page)) {
 			map.put("msg", "firmType,page和company不能为空");
 			map.put("SCode", "401");
 			return map;
 		} else {
-	     	int totalCount=amountService.pageCountByAmount(firmType,company);
-	    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
-	    	if(page<1) {
-	    		page=1;
-	    	}else if(page>pageUtil.getTotalPageCount()) {
-	      		if(totalCount==0) {
-	    			page=pageUtil.getTotalPageCount()+1;
-	    		}else {
-	    			page=pageUtil.getTotalPageCount();
-	    		}
-	    	}
-	    	int pages=(page-1)*pageUtil.getPageSize();
-	    	pageUtil.setPage(pages); 
-		String operationDate = null;
-		String billingDate = null;
-		Timestamps timestamps = new Timestamps();		
-		List<TopUpAmount> amountList = amountService.getAmount(firmType,company,pageUtil.getPage(),pageUtil.getPageSize());
-		pageUtil=new PageUtil(page,10,totalCount);
-		for (TopUpAmount topUpAmount : amountList) {
-			operationDate = timestamps.stampToDate1(topUpAmount.getoperationDate());
-			billingDate = timestamps.stampToDate1(topUpAmount.getBillingDate());
-			topUpAmount.setBillingDate(billingDate);
-			topUpAmount.setOperationDate(operationDate);
+			if (firm==null) {
+				int totalCount = amountService.pageCountByAmount(firmType, company);
+				PageUtil pageUtil = new PageUtil(page, 10, totalCount);
+				if (page < 1) {
+					page = 1;
+				} else if (page > pageUtil.getTotalPageCount()) {
+					if (totalCount == 0) {
+						page = pageUtil.getTotalPageCount() + 1;
+					} else {
+						page = pageUtil.getTotalPageCount();
+					}
+				}
+				int pages = (page - 1) * pageUtil.getPageSize();
+				pageUtil.setPage(pages);
+				String operationDate = null;
+				String billingDate = null;
+				Timestamps timestamps = new Timestamps();
+				List<TopUpAmount> amountList = amountService.getAmount(firmType, company, pageUtil.getPage(),
+						pageUtil.getPageSize());
+				pageUtil = new PageUtil(page, 10, totalCount);
+				for (TopUpAmount topUpAmount : amountList) {
+					operationDate = timestamps.stampToDate1(topUpAmount.getoperationDate());
+					billingDate = timestamps.stampToDate1(topUpAmount.getBillingDate());
+					topUpAmount.setBillingDate(billingDate);
+					topUpAmount.setOperationDate(operationDate);
+				}
+				map.put("amountList", amountList);
+				map.put("pageutil", pageUtil);
+
+			} else {
+				int totalCount = amountService.pageCountByAmountNoFirm(firmType, company,firm);
+				PageUtil pageUtil = new PageUtil(page, 10, totalCount);
+				if (page < 1) {
+					page = 1;
+				} else if (page > pageUtil.getTotalPageCount()) {
+					if (totalCount == 0) {
+						page = pageUtil.getTotalPageCount() + 1;
+					} else {
+						page = pageUtil.getTotalPageCount();
+					}
+				}
+				int pages = (page - 1) * pageUtil.getPageSize();
+				pageUtil.setPage(pages);
+				String operationDate = null;
+				String billingDate = null;
+				Timestamps timestamps = new Timestamps();
+				List<TopUpAmount> amountList = amountService.getAmountNoFirm(firmType, company, pageUtil.getPage(),
+						pageUtil.getPageSize(),firm);
+				pageUtil = new PageUtil(page, 10, totalCount);
+				for (TopUpAmount topUpAmount : amountList) {
+					operationDate = timestamps.stampToDate1(topUpAmount.getoperationDate());
+					billingDate = timestamps.stampToDate1(topUpAmount.getBillingDate());
+					topUpAmount.setBillingDate(billingDate);
+					topUpAmount.setOperationDate(operationDate);
+				}
+				map.put("amountList", amountList);
+				map.put("pageutil", pageUtil);
+			}
+
+			return map;
 		}
-		map.put("amountList", amountList);
-		map.put("pageutil", pageUtil);
-		return map;
-	}
 	}
 }

@@ -253,4 +253,15 @@
  <select id="getAmountbyfirm" parameterType="java.lang.String" resultType="java.lang.Integer">
    select sum(topUpAmount) from top_up_amount where deleted='0' and company = #{company} and firm = #{sourceName} and billingDate >=#{startDate} and billingDate &lt;#{endDate}
  </select>
+ 
+ 	   <!-- 查询充值金额中有多少条数据 -->
+ <select id="pageCountByAmountNoFirm" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select count(id) from top_up_amount where deleted='0' and company = #{company} and firmType =#{firmType} and firm = #{firm}
+ </select>
+ 
+  	   <!-- 查询充值金额中,查询数据,含分页 -->
+ <select id="getAmountNoFirm" parameterType="java.util.Map" resultType="com.zhita.model.manage.TopUpAmount">
+   select id,operationDate,billingDate,firm,topUpAmount,cashReceipts,paymentAccount,contact,note,firmType
+    from top_up_amount where firmType =#{firmType} and company = #{company} and deleted = '0' and firm=#{firm} order by operationDate desc limit #{page},#{pageSize}
+ </select>
 </mapper>

@@ -90,8 +90,7 @@ public interface LoansBusinessesCopyMapper {
 	List<LoansBusinesses> queryAllAdmainproAppCopy(@Param("page")int page,@Param("pageSize") int pageSize,@Param("company") String company,@Param("oneSourceName") String oneSourceName,
 			@Param("twoSourceName") String twoSourceName);
 
-	int pageCountByBusinessClassificationAppCopy(@Param("businessClassification")String businessClassification,@Param("company") String company,@Param("oneSourceName") String oneSourceName,
-			@Param("twoSourceName")String twoSourceName);
+
 
 
     //后台管理---添加贷款商家信息（loans_businesses_copy表）
@@ -144,6 +143,9 @@ public interface LoansBusinessesCopyMapper {
   	int upaSortByLoanIdCopy(Integer sort,Integer id);
   	//后台管理----通过商家id，查询商标的URL（loans_businesses_copy表）
   	String getTrademark(Integer id);
+
+	List<LoansBusinessesCopy> queryLoanbusinByLoanClassAppCopy(@Param("businessClassification")String businessClassification,@Param("pages") int pages,@Param("pageSize") int pageSize,
+			@Param("company") String company,@Param("oneSourceName") String oneSourceName,@Param("twoSourceName") String twoSourceName);
 
 
 

@@ -31,15 +31,23 @@ public interface UnitPriceMapper {
 
 	List<Integer> getprice(String account);
 
-	List<UnitPrice> getunitprice(@Param("sourceId") int sourceId,@Param("company") String company);
+	List<UnitPrice> getunitprice(@Param("sourceId") int sourceId,@Param("company") String company,@Param("pages") int pages,@Param("pageSize") int pageSize);
 
 	int getbusinessesId(@Param("account")String account,@Param("company") String company);
 
-	List<UnitPrice> getaccountBySourceId(@Param("company")String company,@Param("sourceId") Integer sourceId,@Param("firmType") String firmType);
+	List<UnitPrice> getaccountBySourceId(@Param("company")String company,@Param("sourceId") Integer sourceId,@Param("firmType") String firmType,@Param("pages") int pages,@Param("pageSize") int pageSize);
 
 	List<Object> getaccountById(@Param("sourceId")int sourceId,@Param("company") String company);
 
 	int setunitprice1(UnitPrice unitPrice);
+
+	int pageCountUnitprice(@Param("sourceId")int sourceId,@Param("company") String company);
+
+	String getaccountType(@Param("company")String company,@Param("account") String account);
+
+	List<Object> getPrice(@Param("company")String company,@Param("account") String account);
+
+	Integer getSourceTo(@Param("company")String company,@Param("account") String account);
 
 
 

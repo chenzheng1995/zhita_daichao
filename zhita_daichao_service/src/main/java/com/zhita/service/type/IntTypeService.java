@@ -44,6 +44,8 @@ public interface IntTypeService{
 	public List<LoanClassification> queryLoanClassAfter1(String company);
 	public int pageCountByBusinessClassificationAppCopy(String businessClassification, String company,
 			String oneSourceName, String twoSourceName);
+	public List<LoansBusinessesCopy> queryLoanbusinByLoanClassAppCopy(String businessClassification, int pages,
+			int pageSize, String company, String oneSourceName, String twoSourceName);
 
 
 }

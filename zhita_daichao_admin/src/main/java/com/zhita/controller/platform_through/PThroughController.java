@@ -82,9 +82,10 @@ public class PThroughController {
     				if(list2==null) {
     					continue;
     				}
-                	list2.setRemainingAmount(topUpAmount-list2.getRealpay());
-					list2.setRealpay(list2.getRealpay()*-1);
+                	list2.setRemainingAmount(topUpAmount-list2.getRealPay());
+					list2.setRealPay(list2.getRealPay()*-1);
 					list2.setTopUpAmount(topUpAmount);
+					list2.setSourceId(sourceId);
 				}
 			}
 			map.put("list2",List2);
@@ -122,8 +123,9 @@ public class PThroughController {
     				if(list2==null) {
     					continue;
     				}
-                	list2.setRemainingAmount(topUpAmount-list2.getRealpay());
-					list2.setRealpay(list2.getRealpay()*-1);
+    				list2.setBusinessesId(businessesId);
+                	list2.setRemainingAmount(topUpAmount-list2.getRealPay());
+					list2.setRealPay(list2.getRealPay()*-1);
 					list2.setTopUpAmount(topUpAmount);
 				}
 			}

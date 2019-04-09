@@ -34,4 +34,6 @@ public interface IntBannerServiceCopy {
 	public List<ShufflingFigureCopy> getShufflingFigure1(String company);
     //后台管理 ——用于添加轮播图时进行判断----将传过来的贷款商家名称  传进贷款商家表看是否存在
 	public int  ifBusinessNameIfExist(String businessname);
+	public List<ShufflingFigureCopy> getShufflingFigureAppCopy(String company, String oneSourceName,
+			String twoSourceName);
 }

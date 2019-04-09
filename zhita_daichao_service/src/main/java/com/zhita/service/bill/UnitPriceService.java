@@ -18,15 +18,23 @@ public interface UnitPriceService {
 
 	List<Integer> getprice(String account);
 
-	List<UnitPrice> getunitprice(int sourceId, String company);
+	List<UnitPrice> getunitprice(int sourceId, String company, int pages, int pageSize);
 
 	int getbusinessesId(String account, String company);
 
-	List<UnitPrice> getaccountBySourceId(String company, Integer sourceId, String firmType);
+	List<UnitPrice> getaccountBySourceId(String company, Integer sourceId, String firmType, int pages, int pageSize);
 
 	List<Object> getaccountById(int sourceId, String company);
 
 	int setunitprice1(UnitPrice unitPrice);
+
+	int pageCountUnitprice(int sourceId, String company);
+
+	String getaccountType(String company, String account);
+
+	List<Object> getPrice(String company, String account);
+
+	Integer getSourceTo(String company, String account);
 
 
 

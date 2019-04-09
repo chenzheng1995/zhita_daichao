@@ -26,5 +26,9 @@ public interface AmountService {
 
 	Integer setTUamount1(TopUpAmount topupamount);
 
+	int pageCountByAmountNoFirm(String firmType, String company, String firm);
+
+	List<TopUpAmount> getAmountNoFirm(String firmType, String company, int page, int pageSize, String firm);
+
 
 }

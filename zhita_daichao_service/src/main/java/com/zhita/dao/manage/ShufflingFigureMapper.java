@@ -2,7 +2,10 @@ package com.zhita.dao.manage;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.zhita.model.manage.ShufflingFigure;
+import com.zhita.model.manage.ShufflingFigureCopy;
 
 public interface ShufflingFigureMapper {
     int deleteByPrimaryKey(Integer id);
@@ -57,4 +60,6 @@ public interface ShufflingFigureMapper {
     
     //后台管理 ——用于添加轮播图时进行判断----将传过来的贷款商家名称  传进贷款商家表看是否存在
 	int  ifBusinessNameIfExist(String businessname);
+
+
 }

@@ -226,7 +226,7 @@
 	
 					<!--单价设置中,查出所有的数据  -->
 	<select id="getunitprice" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
-		select id,account,price,accountType,firmType,firm,modifyTime,businessesId from unit_price where sourceId=#{sourceId} and deleted = '0' and company =#{company} order by account
+		select id,account,price,accountType,firmType,firm,modifyTime,businessesId from unit_price where sourceId=#{sourceId} and deleted = '0' and company =#{company} order by account limit #{pages},#{pageSize}
 	</select>
 						<!--根据账号，查寻出甲方id  -->
 	<select id="getbusinessesId" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -235,11 +235,31 @@
 	
 							<!--查出指定渠道的所有账号  -->
 	<select id="getaccountBySourceId" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
-		select account from unit_price  where sourceId=#{sourceId} and deleted = '0' and company =#{company} and firmType = #{firmType}
+		select account from unit_price  where sourceId=#{sourceId} and deleted = '0' and company =#{company} and firmType = #{firmType} limit #{pages},#{pageSize}
 	</select>
 	
 								<!--查出指定渠道的所有账号  -->
 	<select id="getaccountById" parameterType="java.util.Map" resultType="java.lang.String">
-		select account from unit_price  where sourceId=#{sourceId} and deleted = '0' and company =#{company}
+		select distinct account from unit_price  where sourceId=#{sourceId} and deleted = '0' and company =#{company}
 	</select>
+	
+		   <!-- 查询单价设置中有多少条数据 -->
+ <select id="pageCountUnitprice" parameterType="java.util.Map" resultType="java.lang.Integer">
+   select count(id) from unit_price where deleted='0' and company = #{company} and sourceId = #{sourceId} 
+ </select>
+	
+			   <!--根据账号 查询单价设置中该账号的类型 -->
+ <select id="getaccountType" parameterType="java.lang.String" resultType="java.lang.String">
+   select accountType from unit_price where deleted='0' and company = #{company} and account = #{account} limit 1
+ </select>
+ 
+ 			   <!--编辑账单中查询某个账号的所有单价 -->
+ <select id="getPrice" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select price from unit_price where deleted='0' and company = #{company} and account = #{account}
+ </select>
+ 
+  			   <!--编辑账单中查询某个账号的流量去向 -->
+ <select id="getSourceTo" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select businessesId from unit_price where deleted='0' and company = #{company} and account = #{account} limit 1
+ </select>
 </mapper>

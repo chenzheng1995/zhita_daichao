@@ -105,4 +105,13 @@ public class BannerServiceCopyImp implements IntBannerServiceCopy{
 		int count=shufflingFigureMapper.ifBusinessNameIfExist(businessname);
 		return count;
 	}
+
+	@Override
+	public List<ShufflingFigureCopy> getShufflingFigureAppCopy(String company, String oneSourceName,
+			String twoSourceName) {
+		List<ShufflingFigureCopy> list=shufflingFigureCopyMapper.getShufflingFigureAppCopy(company,oneSourceName,twoSourceName); //获取轮播图的所有数据   
+		return list;
+	}
+	
+	
 }

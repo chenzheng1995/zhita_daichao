@@ -71,5 +71,17 @@ public class AmountServiceImp implements AmountService{
 		return id;
 	}
 
+	@Override
+	public int pageCountByAmountNoFirm(String firmType, String company, String firm) {
+		int totalCount=topUpAmountMapper.pageCountByAmountNoFirm(firmType,company,firm);
+		return totalCount;
+	}
+
+	@Override
+	public List<TopUpAmount> getAmountNoFirm(String firmType, String company, int page, int pageSize, String firm) {
+		List<TopUpAmount> amountList = topUpAmountMapper.getAmountNoFirm(firmType,company,page,pageSize,firm);
+		return amountList;
+	}
+
 
 }

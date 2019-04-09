@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhita.model.manage.LoanClassification;
 import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
+import com.zhita.model.manage.LoansBusinessesCopy;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.sourcedadson.SourceDadSonService;
 import com.zhita.service.type.IntTypeService;
@@ -81,6 +82,7 @@ public class TypeController {
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
         	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize(),company);
+        	pageUtil=new PageUtil(page,10,totalCount);
         	 for (LoansBusinesses loansBusinesses : list) {
         	        String businessName = loansBusinesses.getBusinessname();
         	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
@@ -108,8 +110,9 @@ public class TypeController {
         		}
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize(),company);
-        	 for (LoansBusinesses loansBusinesses : list) {
+        	List<LoansBusinessesCopy> list=intTypeService.queryLoanbusinByLoanClassAppCopy(businessClassification,pages,pageUtil.getPageSize(),company,oneSourceName,twoSourceName);
+        	pageUtil=new PageUtil(page,10,totalCount);
+        	 for (LoansBusinessesCopy loansBusinesses : list) {
         	        String businessName = loansBusinesses.getBusinessname();
         	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
         	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
