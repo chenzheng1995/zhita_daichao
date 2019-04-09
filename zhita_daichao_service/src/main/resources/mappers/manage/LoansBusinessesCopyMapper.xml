@@ -446,42 +446,42 @@
   <select id="selectByPrimaryKeyCopy" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from loans_businesses_copy_copy
+    from loans_businesses_copy
     where id = #{id,jdbcType=INTEGER}
   </select>
  <!--后台管理   添加贷款商家信息（loans_businesses_copy表）  -->
   <insert id="insertCopy" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
-    insert into loans_businesses_copy_copy (id, businessName, intro, 
+    insert into loans_businesses_copy (id, businessName, intro, 
       loanLimit, trademark, isStick, 
-      sort, applicationNumber, state, 
+      sort, applicationNumber, 
       busClaId, loanLimitSmall, loanLimitBig, 
       cycle, interestRate, applicationRequirements, 
       applicationProcess, specialInstructions, 
       successRate, lendingRate, registerLink, 
-      prepaidAmount, deleted, applications, 
+      prepaidAmount, applications, 
       company,onesourcename,twosourcename)
     values (#{id,jdbcType=INTEGER}, #{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
       #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, 
       #{busclaid,jdbcType=INTEGER}, #{loanlimitsmall,jdbcType=DECIMAL}, #{loanlimitbig,jdbcType=DECIMAL}, 
       #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, #{applicationrequirements,jdbcType=VARCHAR}, 
       #{applicationprocess,jdbcType=VARCHAR}, #{specialinstructions,jdbcType=VARCHAR}, 
       #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, #{registerlink,jdbcType=VARCHAR}, 
-      #{prepaidamount,jdbcType=DECIMAL}, #{deleted,jdbcType=VARCHAR}, #{applications,jdbcType=INTEGER}, 
+      #{prepaidamount,jdbcType=DECIMAL},#{applications,jdbcType=INTEGER}, 
       #{company,jdbcType=VARCHAR},#{onesourcename,jdbcType=VARCHAR},#{twosourcename,jdbcType=VARCHAR})
   </insert>
 
   
    <!--后台管理   通过传过来的贷款商家对象，对当前对象进行修改保存  （loans_businesses_copy表）-->
   <update id="updateLoansBusinessesCopy" parameterType="com.zhita.model.manage.LoansBusinessesCopy">
-    update loans_businesses_copy_copy
+    update loans_businesses_copy
     set businessName = #{businessname,jdbcType=VARCHAR},
       intro = #{intro,jdbcType=VARCHAR},
       trademark = #{trademark,jdbcType=VARCHAR},
       loanLimit = #{loanlimit,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
-      busClaId = #{busClaId,jdbcType=INTEGER},
+      busClaId = #{busclaid,jdbcType=INTEGER},
       loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
       loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
       cycle = #{cycle,jdbcType=VARCHAR},
@@ -500,15 +500,15 @@
   
   <!-- 后台管理  查询贷款商家部分字段信息，含分页  （loans_businesses_copy表）-->
   <select id="queryAllAdmainCopy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
-  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and company=#{arg0} order by state asc,isstick desc,sort asc limit #{arg1},#{arg2}
   </select>
   <!-- 后台管理  查询贷款商家部分字段信息，不含分页 （loans_businesses_copy表）-->
   <select id="queryAllAdmain1Copy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
-  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and company=#{arg0}
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and company=#{arg0} order by state asc,isstick desc,sort asc
   </select> 
    <!-- 后台管理 用于获取总页数  （loans_businesses_copy表）-->
  <select id="pageCountCopy" resultType="java.lang.Integer">
-   select count(businessName) from loans_businesses_copy where deleted='0' and company = #{company} and state = '1'
+   select count(businessName) from loans_businesses_copy where deleted='0' and company = #{company}
  </select>
    <!-- 后台管理 用于模糊查询获取总页数  （loans_businesses_copy表）-->
  <select id="pageCountByLikeCopy" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -516,11 +516,11 @@
  </select>
  <!-- 后台管理  通过商家名称模糊查询，并且有分页功能   （loans_businesses_copy表）-->
  <select id="queryByNameLikeCopy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
- 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state asc,isstick desc,sort asc limit #{arg2},#{arg3}
  </select>
  <!-- 后台管理  通过商家名称模糊查询，没有分页功能   （loans_businesses_copy表）-->
  <select id="queryByNameLike1Copy" resultType="com.zhita.model.manage.LoansBusinessesCopy">
- 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company,oneSourceName,twoSourceName from loans_businesses_copy where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state asc,isstick desc,sort asc
  </select>
  <!-- 后台管理  通过商家主键id修改假删除字段的值  （loans_businesses_copy表） -->
  <update id="upaFalseDelCopy" parameterType="java.lang.Integer">
@@ -552,7 +552,7 @@
  </update>
   <!-- 后台管理      通过商家id，查询商标的URL（loans_businesses_copy表） -->
  <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.Integer">
- 	select trademark  from loans_businesses where id = #{id}
+ 	select trademark  from loans_businesses_copy where id = #{id}
  </select>
 
 </mapper>

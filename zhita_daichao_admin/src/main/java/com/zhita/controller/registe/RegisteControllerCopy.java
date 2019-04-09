@@ -99,7 +99,7 @@ public class RegisteControllerCopy {
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
     	}
     	HashMap<String,Object> map=new HashMap<>();
-    	map.put("listLoansBusinCopy",listto);
+    	map.put("listLoansBusin",listto);
     	map.put("pageutil", pageUtil);
     	map.put("company", company);
     	return map;

@@ -16,7 +16,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, cover, link, state, businessName, deleted, company
+    id, title, cover, link, state, businessName, deleted, company,oneSourceName,twoSourceName
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -132,5 +132,74 @@
   
      <select id="getShufflingFigure1" resultType="com.zhita.model.manage.ShufflingFigure">
   	select id,title,cover,link,state,businessname,deleted from shuffling_figure_copy where deleted='0' and company=#{company}
+  </select>
+  
+   <!-- 后台管理  根据主键id查询出轮播图信息  (shuffling_figure_copy表)-->
+  <select id="selectByPrimaryKeyCopy" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shuffling_figure_copy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+ 
+  <!--后台管理  通过传过来的轮播图对象，对当前对象进行修改保存 (shuffling_figure_copy表) -->
+    <update id="updateShufflingFigureCopy" parameterType="com.zhita.model.manage.ShufflingFigureCopy">
+    update shuffling_figure_copy
+    set title = #{title,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      link = #{link,jdbcType=VARCHAR},
+      businessname=#{businessname,jdbcType=VARCHAR},
+      oneSourceName=#{oneSourceName,jdbcType=VARCHAR},
+      twoSourceName=#{twoSourceName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 后台管理    查询出轮播图总数量 (shuffling_figure_copy表)-->
+  <select id="pageCountCopy" resultType="java.lang.Integer">
+  	select count(title) from shuffling_figure_copy where deleted='0' and company=#{arg0}
+  </select>
+  <!-- 后台管理   根据标题字段模糊查询出  轮播图总数量  (shuffling_figure_copy表)-->
+  <select id="pageCountByLikeCopy" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(title) from shuffling_figure_copy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
+  </select>
+  <!--后台管理   查询轮播图全部信息 含分页   (shuffling_figure_copy表)-->
+  <select id="queryAllCopy" resultType="com.zhita.model.manage.ShufflingFigureCopy">
+  	select * from shuffling_figure_copy where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
+  </select>
+  <!--后台管理   查询轮播图全部信息  不含分页  (shuffling_figure_copy表)-->
+  <select id="queryAll1Copy" resultType="com.zhita.model.manage.ShufflingFigureCopy">
+  	select * from shuffling_figure_copy where deleted='0' and company=#{arg0}
+  </select>
+  <!-- 后台管理   根据标题字段模糊查询轮播图信息，含分页   (shuffling_figure_copy表)-->
+  <select id="queryAllByLikeCopy" resultType="com.zhita.model.manage.ShufflingFigureCopy">
+  	select * from shuffling_figure_copy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+  </select>
+  <!-- 后台管理   根据标题字段模糊查询轮播图信息，不含分页   (shuffling_figure_copy表)-->
+  <select id="queryAllByLike1Copy" resultType="com.zhita.model.manage.ShufflingFigureCopy">
+  	select * from shuffling_figure_copy where deleted='0' and title like "%"#{arg0}"%" and company=#{arg1}
+  </select>
+  <!-- 后台管理   添加轮播图信息   (shuffling_figure_copy表)-->
+  <insert id="AddAllCopy" parameterType="com.zhita.model.manage.ShufflingFigureCopy">
+  	insert into shuffling_figure_copy(title,cover,link,businessname,company,oneSourceName,twoSourceName) values(#{title},#{cover},#{link},#{businessname},#{company},#{oneSourceName},#{twoSourceName})
+  </insert>
+  <!-- 后台管理   根据删除按钮，修改轮播图假删除状态   (shuffling_figure_copy表)-->
+  <update id="upaFalseDelCopy" parameterType="java.lang.Integer">
+  	update shuffling_figure_copy set deleted='1' where id=#{id}
+  </update>
+  <!-- 后台管理  修改轮播图的状态 为开启   (shuffling_figure_copy表)-->
+  <update id="upaStateOpenCopy" parameterType="java.lang.Integer">
+  	update shuffling_figure_copy set state='1' where id=#{id}
+  </update>
+  <!-- 后台管理  修改轮播图的状态 为关闭    (shuffling_figure_copy表)-->
+  <update id="upaStateCloseCopy" parameterType="java.lang.Integer">
+  	update shuffling_figure_copy set state='2' where id=#{id}
+  </update>
+     <!-- 后台管理,通过传过来的轮播图id，查询商标的URL   (shuffling_figure_copy表)-->
+ <select id="getCoverCopy" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select cover from shuffling_figure_copy where id =#{id}
+ </select>
+   
+  <!-- 后台管理    用于添加轮播图时进行判断   将传过来的贷款商家名称  传进贷款商家表看是否存在   (shuffling_figure_copy表)-->
+  <select id="ifBusinessNameIfExistCopy" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(businessname) from loans_businesses_copy  where businessname=#{businessname}
   </select>
 </mapper>
