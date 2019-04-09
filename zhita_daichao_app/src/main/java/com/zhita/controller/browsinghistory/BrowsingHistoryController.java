@@ -32,7 +32,7 @@ public class BrowsingHistoryController {
 	@RequestMapping("/getbrowsing")
 	@ResponseBody
 	@Transactional
-	public Map<String,Object> insertFootprint(String userId,int curPage,String company) { //userId是用户的id，curPage是页码
+	public Map<String,Object> insertFootprint(String userId,int curPage,String company,String oneSourceName,String twoSourceName) { //userId是用户的id，curPage是页码
 		 Map<String,Object> map1 = new HashMap<String,Object>();
 		 int fakeApplications = 0;
 		if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(curPage) || StringUtils.isEmpty(company)) {
