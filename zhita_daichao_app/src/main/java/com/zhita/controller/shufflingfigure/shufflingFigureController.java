@@ -32,15 +32,20 @@ public class shufflingFigureController {
 	@ResponseBody
 	public Map<String, Object> getqrcode(String company,String oneSourceName,String twoSourceName) {
 		HashMap<String,Object> map=new HashMap<>();
-    	String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);	
-    	if(tableType.equals("1")) {
-    	List<ShufflingFigure> list=intBannerService.getShufflingFigure(company); //获取轮播图的所有数据   	
-    	map.put("listshuff",list);
-    	}
-    	if(tableType.equals("2")) {
-    	List<ShufflingFigureCopy> list=intBannerServiceCopy.getShufflingFigureAppCopy(company,oneSourceName,twoSourceName); //获取轮播图的所有数据   	
-    	map.put("listshuff",list);
-    	}
+		if(oneSourceName==null&&twoSourceName==null) {
+	    	List<ShufflingFigure> list=intBannerService.getShufflingFigure(company); //获取轮播图的所有数据   	
+	    	map.put("listshuff",list);
+		}else {
+			String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);	
+	    	if(tableType.equals("1")) {
+	    	List<ShufflingFigure> list=intBannerService.getShufflingFigure(company); //获取轮播图的所有数据   	
+	    	map.put("listshuff",list);
+	    	}
+	    	if(tableType.equals("2")) {
+	    	List<ShufflingFigureCopy> list=intBannerServiceCopy.getShufflingFigureAppCopy(company,oneSourceName,twoSourceName); //获取轮播图的所有数据   	
+	    	map.put("listshuff",list);
+	    	}
+		} 
     	return map;
 	}
 }

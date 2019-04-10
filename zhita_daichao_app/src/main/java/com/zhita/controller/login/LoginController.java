@@ -61,10 +61,10 @@ public class LoginController {
 			map.put("SCode", "401");
 			return map;
 		} else {
-			int num = sourceDadSonService.getSourceDadSon(sourceId,sonSourceName,company);
-			if (num == 0) {
-			sourceDadSonService.setSourceDadSon(sourceId,sonSourceName,company);
-			}
+//			int num = sourceDadSonService.getSourceDadSon(sourceId,sonSourceName,company);
+//			if (num == 0) {
+//			sourceDadSonService.setSourceDadSon(sourceId,sonSourceName,company);
+//			}
 			int merchantId = intMerchantService.getsourceId(sourceId);
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
@@ -227,10 +227,10 @@ public class LoginController {
 			map.put("msg", "phone或code不能为空");
 			return map;
 		} else {
-			int num1 = sourceDadSonService.getSourceDadSon(sourceId,sonSourceName,company);
-			if (num1 == 0) {
-			sourceDadSonService.setSourceDadSon(sourceId,sonSourceName,company);
-			}
+//			int num1 = sourceDadSonService.getSourceDadSon(sourceId,sonSourceName,company);
+//			if (num1 == 0) {
+//			sourceDadSonService.setSourceDadSon(sourceId,sonSourceName,company);
+//			}
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
 			String redisCode = redisClientUtil.get(key);

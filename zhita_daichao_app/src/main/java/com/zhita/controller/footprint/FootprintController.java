@@ -46,8 +46,8 @@ public class FootprintController {
 			map.put("SCode", "401");
 			return map;
 		} else {
-			String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);	
-			if(tableType.equals("1")){
+			
+			if(oneSourceName==null&&twoSourceName==null) {
 				long currentTimestamp = System.currentTimeMillis();
 				if (footprintType.equals("1")) {
 					int number = commodityFootprintService.insertfootprint(footprintName, userId, currentTimestamp,company);
@@ -78,15 +78,49 @@ public class FootprintController {
 						map.put("SCode", "405");
 					}
 				}
-			}
-			if(tableType.equals("2")) {
-				long currentTimestamp = System.currentTimeMillis();
-				int number = commodityFootprintCopyService.insertfootprintAppCopy(footprintName, userId, currentTimestamp,company,oneSourceName,twoSourceName);
-				if (number == 1) {
-					map.put("msg", "插入成功");
-					map.put("SCode", "200");
-				} else {
-					map.put("SCode", "405");
+			}else {
+				String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);	
+				if(tableType.equals("1")){
+					long currentTimestamp = System.currentTimeMillis();
+					if (footprintType.equals("1")) {
+						int number = commodityFootprintService.insertfootprint(footprintName, userId, currentTimestamp,company);
+						if (number == 1) {
+							map.put("msg", "插入成功");
+							map.put("SCode", "200");
+						} else {
+							map.put("SCode", "405");
+						}
+					}
+					if (footprintType.equals("2")) {
+						int number = lcFootprintService.insertfootprint(footprintName, userId, currentTimestamp,company);
+						if (number == 1) {
+							map.put("msg", "插入成功");
+							map.put("SCode", "200");
+						} else {
+							map.put("msg", "插入失败");
+							map.put("SCode", "405");
+						}
+					}
+					if (footprintType.equals("3")) {
+						int number = buttonFootprintService.insertfootprint(footprintName, userId, currentTimestamp,company);
+						if (number == 1) {
+							map.put("msg", "插入成功");
+							map.put("SCode", "200");
+						} else {
+							map.put("msg", "插入失败");
+							map.put("SCode", "405");
+						}
+					}
+				}
+				if(tableType.equals("2")) {
+					long currentTimestamp = System.currentTimeMillis();
+					int number = commodityFootprintCopyService.insertfootprintAppCopy(footprintName, userId, currentTimestamp,company,oneSourceName,twoSourceName);
+					if (number == 1) {
+						map.put("msg", "插入成功");
+						map.put("SCode", "200");
+					} else {
+						map.put("SCode", "405");
+					}
 				}
 			}
 

@@ -67,8 +67,7 @@ public class TypeController {
     @RequestMapping("/queryLoanbusinByLoanClass")
     public Map<String,Object> queryLoanbusinByLoanClass(String businessClassification,Integer page,String company,String oneSourceName,String twoSourceName){
     	HashMap<String,Object> map=new HashMap<>();
-    	String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);	
-    	if(tableType.equals("1")) {
+    	if(oneSourceName==null&&twoSourceName==null) {
     		int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification,company);
         	PageUtil pageUtil=new PageUtil(page,10,totalCount);
         	if(page<1) {
@@ -95,37 +94,67 @@ public class TypeController {
         			}
         	map.put("listLoansBusinByLike",list);
         	map.put("pageutil", pageUtil);
-    	}
-    	
-    	if(tableType.equals("2")) {
-    		int totalCount=intTypeService.pageCountByBusinessClassificationAppCopy(businessClassification,company,oneSourceName,twoSourceName);
-        	PageUtil pageUtil=new PageUtil(page,10,totalCount);
-        	if(page<1) {
-        		page=1;
-        	}else if(page>pageUtil.getTotalPageCount()) {
-          		if(totalCount==0) {
-        			page=pageUtil.getTotalPageCount()+1;
-        		}else {
-        			page=pageUtil.getTotalPageCount();
-        		}
+    	}else {
+        	String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);	
+        	if(tableType.equals("1")) {
+        		int totalCount=intTypeService.pageCountByBusinessClassification(businessClassification,company);
+            	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+            	if(page<1) {
+            		page=1;
+            	}else if(page>pageUtil.getTotalPageCount()) {
+              		if(totalCount==0) {
+            			page=pageUtil.getTotalPageCount()+1;
+            		}else {
+            			page=pageUtil.getTotalPageCount();
+            		}
+            	}
+            	int pages=(page-1)*pageUtil.getPageSize();
+            	List<LoansBusinesses> list=intTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize(),company);
+            	pageUtil=new PageUtil(page,10,totalCount);
+            	 for (LoansBusinesses loansBusinesses : list) {
+            	        String businessName = loansBusinesses.getBusinessname();
+            	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
+            	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
+            	        loansBusinesses.setApplications(applications);
+            	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
+            	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
+            	        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
+            	        loansBusinesses.setLoanlimit(loanlimit);
+            			}
+            	map.put("listLoansBusinByLike",list);
+            	map.put("pageutil", pageUtil);
         	}
-        	int pages=(page-1)*pageUtil.getPageSize();
-        	List<LoansBusinessesCopy> list=intTypeService.queryLoanbusinByLoanClassAppCopy(businessClassification,pages,pageUtil.getPageSize(),company,oneSourceName,twoSourceName);
-        	pageUtil=new PageUtil(page,10,totalCount);
-        	 for (LoansBusinessesCopy loansBusinesses : list) {
-        	        String businessName = loansBusinesses.getBusinessname();
-        	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
-        	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
-        	        loansBusinesses.setApplications(applications);
-        	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
-        	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
-        	        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
-        	        loansBusinesses.setLoanlimit(loanlimit);
-        			}
-        	map.put("listLoansBusinByLike",list);
-        	map.put("pageutil", pageUtil);
-    	}
-    	
+        	
+        	if(tableType.equals("2")) {
+        		int totalCount=intTypeService.pageCountByBusinessClassificationAppCopy(businessClassification,company,oneSourceName,twoSourceName);
+            	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+            	if(page<1) {
+            		page=1;
+            	}else if(page>pageUtil.getTotalPageCount()) {
+              		if(totalCount==0) {
+            			page=pageUtil.getTotalPageCount()+1;
+            		}else {
+            			page=pageUtil.getTotalPageCount();
+            		}
+            	}
+            	int pages=(page-1)*pageUtil.getPageSize();
+            	List<LoansBusinessesCopy> list=intTypeService.queryLoanbusinByLoanClassAppCopy(businessClassification,pages,pageUtil.getPageSize(),company,oneSourceName,twoSourceName);
+            	pageUtil=new PageUtil(page,10,totalCount);
+            	 for (LoansBusinessesCopy loansBusinesses : list) {
+            	        String businessName = loansBusinesses.getBusinessname();
+            	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
+            	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
+            	        loansBusinesses.setApplications(applications);
+            	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
+            	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
+            	        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
+            	        loansBusinesses.setLoanlimit(loanlimit);
+            			}
+            	map.put("listLoansBusinByLike",list);
+            	map.put("pageutil", pageUtil);
+        	}
+		}
+	
     	return map;
     }   
 

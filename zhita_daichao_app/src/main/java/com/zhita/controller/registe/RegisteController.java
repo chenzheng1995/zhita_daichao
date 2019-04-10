@@ -44,11 +44,44 @@ public class RegisteController {
     @Transactional
     public Map<String,Object> queryAll(Integer page,String company,String oneSourceName,String twoSourceName){        	
     	HashMap<String,Object> map=new HashMap<>();
-    	String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);
     	PageUtil pageUtil=null;
     	int totalCount = 0;
     	int pages = 0;
     	List<LoansBusinesses> list = null;
+    	if(oneSourceName==null&&twoSourceName==null) {
+    		totalCount=intRegisteService.pageCount2(company);//该方法是查询贷款商家总条数
+        	pageUtil=new PageUtil(page,10,totalCount);
+        	if(page<1) {
+        		page=1;
+        	}
+        	else if(page>pageUtil.getTotalPageCount()) {
+        		if(totalCount==0) {
+        			page=pageUtil.getTotalPageCount()+1;
+        		}else {
+        			page=pageUtil.getTotalPageCount();
+        		}
+        	}
+        	pages=(page-1)*pageUtil.getPageSize();
+        	pageUtil.setPage(pages); 	
+        	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
+        	pageUtil=new PageUtil(page,10,totalCount);
+        	if(list!=null) {
+            for (LoansBusinesses loansBusinesses : list) {
+    	        String businessName = loansBusinesses.getBusinessname();
+    	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
+    	        int applications = (int)cFootprintService.getApplications(businessName,company)+fakeApplications;//获取申请人数	  
+    	        loansBusinesses.setApplications(applications);
+    	        String loanlimitbig = loansBusinesses.getLoanlimitbig().setScale(0)+"";
+    	        String loanlimitsmall = loansBusinesses.getLoanlimitsmall().setScale(0)+"";
+    	        String loanlimit = loanlimitsmall+"~"+loanlimitbig;
+    	        loansBusinesses.setLoanlimit(loanlimit);          
+    		}
+        	}
+        	map.put("listLoansBusin",list);
+        	map.put("pageutil", pageUtil);	
+    	}else {
+	
+    	String  tableType = sourceDadSonService.getTableType(oneSourceName,twoSourceName,company);
     	if(tableType.equals("1")) {        	
         	totalCount=intRegisteService.pageCount2(company);//该方法是查询贷款商家总条数
         	pageUtil=new PageUtil(page,10,totalCount);
@@ -113,6 +146,7 @@ public class RegisteController {
 
         	map.put("listLoansBusin",list);
         	map.put("pageutil", pageUtil);	
+    	}
     	}
 
     	return map;
