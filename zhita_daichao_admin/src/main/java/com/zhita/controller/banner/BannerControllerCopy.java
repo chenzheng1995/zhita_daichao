@@ -15,15 +15,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zhita.model.manage.ShufflingFigureCopy;
 import com.zhita.service.banner.IntBannerServiceCopy;
+import com.zhita.service.registe.IntRegisteCopyService;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
-
+/**
+ * 轮播图
+ * @author lhq
+ * @{date} 2019年4月9日
+ */
 @Controller
 @RequestMapping("/bannerCopy")
 public class BannerControllerCopy {
 	@Autowired
 	private IntBannerServiceCopy intBannerServiceCopy;
+	@Autowired
+	private IntRegisteCopyService intRegisteCopyService;
 	
 	    //后台管理---查询轮播图全部信息,含分页
 		@ResponseBody
@@ -189,6 +196,23 @@ public class BannerControllerCopy {
 	    	map.put("pageutil", pageUtil);
 	    	return map;
 	    }
+		
+		//后台管理---查询source_dad_son表的所有一级渠道 
+	    @ResponseBody
+	    @RequestMapping("/selOneSouceCopy")
+	    public List<String> selAllName(){
+			List<String> listOneSource=intRegisteCopyService.selOneSource();
+	    	return listOneSource;
+	    }
+	    
+	    //后台管理---查询source_dad_son表    根据一级渠道查询   当前一级渠道下的所有二级渠道
+	    @ResponseBody
+	    @RequestMapping("/selTwoSouceCopy")
+	    public List<String> selTwoSouceCopy(String oneSouce){
+	    	List<String> list=intRegisteCopyService.selTwoSouceCopy(oneSouce);
+	    	return list;
+	    }
+		
 	    //后台管理---添加轮播图信息
 		@Transactional
 		@ResponseBody

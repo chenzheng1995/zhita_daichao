@@ -12,8 +12,9 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, oneSourceName, twoSourceName, deleted,tableType
+    id, oneSourceName, twoSourceName, deleted,company,tableType
   </sql>
+  <!-- 后台管理       通过主键id查询source_dad_son表数据 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -105,7 +106,7 @@
    select tableType from source_dad_son where deleted='0' and company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName =#{twoSourceName}
  </select>
  <!--后台管理       查询source_dad_son表所有数据-->
- <select id="queryAll" resultType="com.zhita.model.manage.SourceDadSon">
+ <select id="queryAll" resultType="com.zhita.model.manage.SourceDadSon" parameterType="java.lang.String">
  	select 
  	<include refid="Base_Column_List" /> 
  	from source_dad_son  s where s.deleted=0 and s.company in
@@ -120,5 +121,26 @@
   <!--  后台管理    修改source_dad_son表的tableType字段为2-->
  <update id="upatableTypeClose" parameterType="java.lang.Integer">
  	update source_dad_son set tableType='2' where id=#{id}
+ </update>
+ <!--后台管理   查询出所有渠道表信息，不含分页  -->
+ <select id="queryAllSource" parameterType="java.lang.String" resultType="com.zhita.model.manage.Source">
+  select id,sourcename,company from source where deleted="0" and company=#{arg0}
+ </select>
+ <!-- 后台管理      往source_dad_son表新增数据 -->
+ <insert id="insertSouceDadSon" parameterType="com.zhita.model.manage.SourceDadSon">
+    insert into source_dad_son (oneSourceName, twoSourceName,company)
+    values (#{onesourcename,jdbcType=VARCHAR}, #{twosourcename,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR})
+ </insert>
+ <!-- 后台管理     修改source_dad_son表数据 -->
+ <update id="updateSouceDadSon" parameterType="com.zhita.model.manage.SourceDadSon"> 
+ 	update source_dad_son
+    set oneSourceName = #{onesourcename,jdbcType=VARCHAR},
+      twoSourceName = #{twosourcename,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+ </update>
+ <!-- 后台管理        修改source_dad_son表假删除状态 -->
+ <update id="updateFalseDel" parameterType="java.lang.Integer">
+ 	update source_dad_son set deleted=1 where id=#{id}
  </update>
 </mapper>
