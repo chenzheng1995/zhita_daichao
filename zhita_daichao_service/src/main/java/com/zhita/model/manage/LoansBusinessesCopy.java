@@ -41,7 +41,7 @@ public class LoansBusinessesCopy {
 
     private Integer successrate;
 
-    private Integer lendingrate;
+    private String lendingrate;
 
     private String registerlink;
 
@@ -57,7 +57,7 @@ public class LoansBusinessesCopy {
 
     private String twosourcename;
 
-    public LoansBusinessesCopy(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busclaid, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, Integer lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications, String company,String onesourcename,String twosourcename) {
+    public LoansBusinessesCopy(Integer id, String businessname, String intro, String loanlimit, String trademark, String isstick, Integer sort, Integer applicationnumber, String state, Integer busclaid, BigDecimal loanlimitsmall, BigDecimal loanlimitbig, String cycle, BigDecimal interestrate, String applicationrequirements, String applicationprocess, String specialinstructions, Integer successrate, String lendingrate, String registerlink, BigDecimal prepaidamount, String deleted, Integer applications, String company,String onesourcename,String twosourcename) {
         this.id = id;
         this.businessname = businessname;
         this.intro = intro;
@@ -234,15 +234,16 @@ public class LoansBusinessesCopy {
         this.successrate = successrate;
     }
 
-    public Integer getLendingrate() {
-        return lendingrate;
-    }
 
-    public void setLendingrate(Integer lendingrate) {
-        this.lendingrate = lendingrate;
-    }
+    public String getLendingrate() {
+		return lendingrate;
+	}
 
-    public String getRegisterlink() {
+	public void setLendingrate(String lendingrate) {
+		this.lendingrate = lendingrate;
+	}
+
+	public String getRegisterlink() {
         return registerlink;
     }
 
