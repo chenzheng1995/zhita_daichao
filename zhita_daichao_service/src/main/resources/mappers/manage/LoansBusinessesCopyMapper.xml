@@ -21,7 +21,7 @@
       <arg column="applicationProcess" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="specialInstructions" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="successRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="lendingRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="lendingRate" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="registerLink" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -443,9 +443,12 @@
 
 
  <!--后台管理    通过主键id查询出贷款商家信息（loans_businesses_copy表）  -->
-  <select id="selectByPrimaryKeyCopy" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKeyCopy" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.LoansBusinessesCopy">
     select 
-    <include refid="Base_Column_List" />
+    id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
+    state, busClaId as busClaIdString, loanLimitSmall, loanLimitBig, cycle, interestRate, applicationRequirements, 
+    applicationProcess, specialInstructions, successRate, lendingRate, registerLink, 
+    prepaidAmount, deleted, applications, company,onesourcename,twosourcename
     from loans_businesses_copy
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -463,10 +466,10 @@
     values (#{id,jdbcType=INTEGER}, #{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
       #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER}, 
-      #{busclaid,jdbcType=INTEGER}, #{loanlimitsmall,jdbcType=DECIMAL}, #{loanlimitbig,jdbcType=DECIMAL}, 
+      #{busClaIdString,jdbcType=VARCHAR}, #{loanlimitsmall,jdbcType=DECIMAL}, #{loanlimitbig,jdbcType=DECIMAL}, 
       #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, #{applicationrequirements,jdbcType=VARCHAR}, 
       #{applicationprocess,jdbcType=VARCHAR}, #{specialinstructions,jdbcType=VARCHAR}, 
-      #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=INTEGER}, #{registerlink,jdbcType=VARCHAR}, 
+      #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=VARCHAR}, #{registerlink,jdbcType=VARCHAR}, 
       #{prepaidamount,jdbcType=DECIMAL},#{applications,jdbcType=INTEGER}, 
       #{company,jdbcType=VARCHAR},#{onesourcename,jdbcType=VARCHAR},#{twosourcename,jdbcType=VARCHAR})
   </insert>
@@ -481,7 +484,7 @@
       loanLimit = #{loanlimit,jdbcType=VARCHAR},
       isStick = #{isstick,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
-      busClaId = #{busclaid,jdbcType=INTEGER},
+      busClaId = #{busClaIdString,jdbcType=VARCHAR},
       loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
       loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
       cycle = #{cycle,jdbcType=VARCHAR},
@@ -490,7 +493,7 @@
       applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
       specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
       successRate = #{successrate,jdbcType=INTEGER},
-      lendingRate = #{lendingrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=VARCHAR},
       registerLink = #{registerlink,jdbcType=VARCHAR},
       prepaidAmount = #{prepaidamount,jdbcType=DECIMAL},
       oneSourceName= #{onesourcename,jdbcType=DECIMAL},
