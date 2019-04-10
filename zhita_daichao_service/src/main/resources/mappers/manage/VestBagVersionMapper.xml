@@ -10,9 +10,37 @@
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
-
+  <sql id="Base_Column_List">
+    id, vestBagId, version,company, deleted
+  </sql>
   
     <select id="getVersion" parameterType="java.lang.Integer" resultType="java.lang.String">
     select version from vest_bag_version where vestBagId =#{id} and deleted = '0';
   </select>
+  
+   <!--后台管理       查询vest_bag_version表所有的信息-->
+ <select id="queryAllVersion" resultType="com.zhita.model.manage.VestBagVersion" parameterType="java.lang.String">
+ 	select 
+ 	<include refid="Base_Column_List" /> 
+ 	from vest_bag_version  s where s.deleted=0 and s.company in
+ 	<foreach collection="company" item="item" open="(" separator="," close=")">  
+          #{item}  
+    </foreach>
+ </select>
+  
+  <!-- 后台管理       通过id查询vest_bag_version对象的信息 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vest_bag_version
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <!-- 后台管理     保存修改后的vest_bag_version表信息 -->
+ <update id="upaVersion" parameterType="com.zhita.model.manage.VestBagVersion"> 
+ 	update vest_bag_version
+    set version = #{version,jdbcType=VARCHAR},
+    	deleted = #{deleted,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+ </update>
 </mapper>

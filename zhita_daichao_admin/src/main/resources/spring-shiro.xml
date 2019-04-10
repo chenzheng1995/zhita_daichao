@@ -154,6 +154,15 @@
 				/bannerCopy/upaStateCopy = perms["商家轮播图-审核"]
 				/soucedadson/queryAll = perms["商家轮播图-审核"]
 				/soucedadson/upatableType = perms["商家轮播图-审核"]
+				/soucedadson/selSourceName = perms["商家轮播图-审核"]
+				/soucedadson/insertSouceDadSon = perms["商家轮播图-审核"]
+				/soucedadson/selectByPrimaryKey = perms["商家轮播图-审核"]
+				/soucedadson/updateSouceDadSon = perms["商家轮播图-审核"]
+				/soucedadson/updateFalseDel = perms["商家轮播图-审核"]
+				<!-- 系统-版本控制权限控制 -->
+				/vestbagversion/queryAllVersion = perms["系统-版本控制"]
+				/vestbagversion/selectByPrimaryKey = perms["系统-版本控制"]
+				/vestbagversion/updateSouceDadSon = perms["系统-版本控制"]
 			</value>
 		</property>
 	</bean>
