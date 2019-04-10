@@ -108,7 +108,7 @@ public class RegisteControllerCopy {
 	//后台管理---查询贷款分类的所有分类名称
     @ResponseBody
     @RequestMapping("/selAllNameCopy")
-    public List<LoanClassification> selAllName(String string){
+    public HashMap<String,Object> selAllName(String string){
     	string = string.replaceAll("\"", "").replace("[","").replace("]","");
 		String[] company=string.split(",");
 		List<LoanClassification> loanlist=null;
@@ -117,8 +117,21 @@ public class RegisteControllerCopy {
 			loanlist=intTypeService.queryAllLoanCla(company[i]);//添加贷款商家信息时，先查询出贷款分类的所有类型
 			loanlistto.addAll(loanlist);
 		}
-    	return loanlistto;
+		List<String> listOneSource=intRegisteCopyService.selOneSource();
+		HashMap<String,Object> map=new HashMap<>();
+    	map.put("loanlistto",loanlistto);
+    	map.put("listOneSource", listOneSource);
+    	return map;
     }
+    
+    //后台管理---查询source_dad_son表    根据一级渠道查询   当前一级渠道下的所有二级渠道
+    @ResponseBody
+    @RequestMapping("/selTwoSouceCopy")
+    public List<String> selTwoSouceCopy(String oneSouce){
+    	List<String> list=intRegisteCopyService.selTwoSouceCopy(oneSouce);
+    	return list;
+    }
+    
     
 	//后台管理---添加贷款商家信息
     @Transactional

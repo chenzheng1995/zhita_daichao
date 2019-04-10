@@ -267,5 +267,14 @@ public class RegisteServiceCopyImp implements IntRegisteCopyService{
   		String trademark=loansBusinessesCopyMapper.getTrademark(id);
   		return trademark;
   	}
-
+	//后台管理     查询source_dad_son表的所有一级渠道 
+  	public List<String> selOneSource(){
+  		List<String> list=loansBusinessesCopyMapper.selOneSource();
+  		return list;
+  	}
+    //后台管理---查询source_dad_son表    根据一级渠道查询   当前一级渠道下的所有二级渠道
+    public List<String> selTwoSouceCopy(String oneSouce){
+    	List<String> list=loansBusinessesCopyMapper.selTwoSouceCopy(oneSouce);
+    	return list;
+    }
 }

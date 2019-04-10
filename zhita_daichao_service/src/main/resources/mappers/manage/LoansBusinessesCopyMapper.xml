@@ -554,8 +554,14 @@
  <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.Integer">
  	select trademark  from loans_businesses_copy where id = #{id}
  </select>
-
-
+<!-- 后台管理     查询source_dad_son表的所有一级渠道 -->
+<select id="selOneSource" resultType="java.lang.String">
+	select DISTINCT oneSourceName from source_dad_son;
+</select>
+<!-- 后台管理        查询source_dad_son表    根据一级渠道查询   当前一级渠道下的所有二级渠道 -->
+<select id="selTwoSouceCopy" parameterType="java.lang.String" resultType="java.lang.String">
+	select twoSourceName from source_dad_son where oneSourceName=#{arg0}
+</select>
   <!-- APP  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClassAppCopy" resultMap="BaseResultMap">
  	select * from loans_businesses_copy lobus inner join loan_classification locla on lobus.busClaId like concat('%',locla.id,'%') where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName} and state = 1 order by isStick desc,sort asc limit #{pages},#{pageSize}
