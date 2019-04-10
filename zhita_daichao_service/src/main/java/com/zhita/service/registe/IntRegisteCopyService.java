@@ -108,5 +108,7 @@ public interface IntRegisteCopyService{
   	public int upaSortByLoanIdCopy(Integer sort,Integer id);
   	//后台管理----通过商家id，查询商标的URL（loans_businesses_copy表）
 	public String getTrademark(Integer id);
+	public Map<String, Object> getLoansBusinessesAppCopy(String businessName, String company, String oneSourceName,
+			String twoSourceName);
 
 }

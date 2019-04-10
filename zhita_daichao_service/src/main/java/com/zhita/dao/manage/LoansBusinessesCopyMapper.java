@@ -147,6 +147,9 @@ public interface LoansBusinessesCopyMapper {
 	List<LoansBusinessesCopy> queryLoanbusinByLoanClassAppCopy(@Param("businessClassification")String businessClassification,@Param("pages") int pages,@Param("pageSize") int pageSize,
 			@Param("company") String company,@Param("oneSourceName") String oneSourceName,@Param("twoSourceName") String twoSourceName);
 
+	Map<String, Object> getLoansBusinessesAppCopy(@Param("businessName")String businessName,@Param("company") String company,@Param("oneSourceName") String oneSourceName,
+			@Param("twoSourceName")String twoSourceName);
+
 
 
 }

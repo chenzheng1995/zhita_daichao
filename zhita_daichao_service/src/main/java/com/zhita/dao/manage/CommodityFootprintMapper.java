@@ -41,4 +41,6 @@ public interface CommodityFootprintMapper {
 
 	long getRecordNumber(@Param("userId")String userId,@Param("company") String company);
 
+
+
 }

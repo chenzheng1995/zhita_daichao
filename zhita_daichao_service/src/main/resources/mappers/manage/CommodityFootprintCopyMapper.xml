@@ -9,6 +9,8 @@
       <arg column="footprintTime" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="oneSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="twoSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -166,4 +168,33 @@
 	select count(distinct c.footprint) from commodity_footprint_copy c,loans_businesses_copy l where c.footprint = l.businessName and userId=#{userId} and c.company=#{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.state = 1;
 		<!-- select count(userId) from commodity_footprint where userId=#{userId} and company=#{company} and deleted = 0 -->
 	</select>
+	
+		<!-- 插入商品足迹 -->
+	<insert id="insertfootprintAppCopy"
+		parameterType="java.util.Map">
+		insert into commodity_footprint_copy (userId, footprint,
+		footprintTime,company,oneSourceName,twoSourceName)
+		values (#{userId,jdbcType=INTEGER},
+		#{footprintName,jdbcType=VARCHAR},
+		#{currentTimestamp,jdbcType=VARCHAR},
+		#{company,jdbcType=VARCHAR},
+		#{oneSourceName,jdbcType=VARCHAR},
+		#{twoSourceName,jdbcType=VARCHAR})
+	</insert>
+	
+	
+		<!-- 小程序   查询某个用户有多少条浏览记录 -->
+	<select id="getRecordNumberAppCopy" parameterType="java.lang.String" resultType="java.lang.Long">
+	select count(distinct c.footprint) from commodity_footprint_copy c,loans_businesses_copy l where c.footprint = l.businessName and userId=#{userId} and c.company=#{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.state = 1 and c.oneSourceName = #{oneSourceName} and c.twoSourceName = #{twoSourceName};
+	</select>
+	
+		<!-- 查找商品足迹表中的商品名称 -->
+	<select id="getbusinessNameAppCopy" resultType="String" parameterType="map">
+	    select distinct c.footprint from commodity_footprint_copy c,loans_businesses_copy l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.oneSourceName = #{oneSourceName} and c.twoSourceName = #{twoSourceName} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime desc limit #{startRow},#{pageSize}
+	</select>
+	
+		<!-- 查询出某个商品的申请人数 -->
+	<select id="getApplicationsAppCopy" resultType="long" parameterType="java.lang.String">
+		select count(distinct userId) from commodity_footprint_copy where footprint= #{businessName} and deleted = 0 and company= #{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName}
+    </select>
 </mapper>

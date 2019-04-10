@@ -26,7 +26,7 @@ public class SourceController {
 	@RequestMapping("/getSourceClick")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> getqrcode(String company,String source,String date,String sonSource) {
+	public Map<String, Object> getqrcode(String company,String source,String date,String sonSource,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<>();
     	RedisClientUtil redisClientUtil = new RedisClientUtil();
     	String SourceClick = redisClientUtil.get(company+source+date+"Key");

@@ -23,4 +23,14 @@ public interface CommodityFootprintCopyService {
 
 	long getRecordNumber1(String userId, String company);
 
+	int insertfootprintAppCopy(String footprintName, String userId, long currentTimestamp, String company,
+			String oneSourceName, String twoSourceName);
+
+	long getRecordNumberAppCopy(String userId, String company, String oneSourceName, String twoSourceName);
+
+	List<String> getbusinessNameAppCopy(String userId, int pageSize, int startRow, String company, String oneSourceName,
+			String twoSourceName);
+
+	long getApplicationsAppCopy(String businessName, String company, String oneSourceName, String twoSourceName);
+
 }

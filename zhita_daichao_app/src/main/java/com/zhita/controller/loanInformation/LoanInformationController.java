@@ -43,7 +43,7 @@ public class LoanInformationController {
 	 */
 	public Map<String, Object> setloanInformation(int userId,String name,String idCard,String professionalIdentity,String monthlyIncomeRange
 			,String educationalBackground,String sesamePoints,String cellPhoneTime,String isCreditCard,String isAccumulationFund
-			,String isSocialSecurity,String isCar,String isHouse,String company) {
+			,String isSocialSecurity,String isCar,String isHouse,String company,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		LoanInformation loanInformation = loanInformationService.getloanInformation(userId,company); //查找该用户的贷款信息
 		if (loanInformation == null) {	
@@ -75,7 +75,7 @@ public class LoanInformationController {
 	//查询贷款信息
 	@RequestMapping("/getloaninformation")
 	@ResponseBody
-	public Map<String, Object> getloanInformation(int userId,String company){
+	public Map<String, Object> getloanInformation(int userId,String company,String oneSourceName,String twoSourceName){
 		Map<String, Object> map = new HashMap<String, Object>();
 		LoanInformation loanInformation = loanInformationService.getloanInformation(userId,company); //查找该用户的贷款信息
 		if (loanInformation == null) {	

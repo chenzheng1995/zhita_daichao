@@ -12,14 +12,20 @@ public class CommodityFootprintCopy {
     private String deleted;
 
     private String company;
+    
+    private String onesourcename;
 
-    public CommodityFootprintCopy(Integer id, Integer userid, String footprint, String footprinttime, String deleted, String company) {
+    private String twosourcename;
+
+    public CommodityFootprintCopy(Integer id, Integer userid, String footprint, String footprinttime, String deleted, String company,String onesourcename,String twosourcename) {
         this.id = id;
         this.userid = userid;
         this.footprint = footprint;
         this.footprinttime = footprinttime;
         this.deleted = deleted;
         this.company = company;
+        this.onesourcename = onesourcename;
+        this.twosourcename = twosourcename;
     }
 
     public CommodityFootprintCopy() {
@@ -72,5 +78,21 @@ public class CommodityFootprintCopy {
 
     public void setCompany(String company) {
         this.company = company == null ? null : company.trim();
+    }
+    
+    public String getOnesourcename() {
+        return onesourcename;
+    }
+
+    public void setOnesourcename(String onesourcename) {
+        this.onesourcename = onesourcename == null ? null : onesourcename.trim();
+    }
+
+    public String getTwosourcename() {
+        return twosourcename;
+    }
+
+    public void setTwosourcename(String twosourcename) {
+        this.twosourcename = twosourcename == null ? null : twosourcename.trim();
     }
 }

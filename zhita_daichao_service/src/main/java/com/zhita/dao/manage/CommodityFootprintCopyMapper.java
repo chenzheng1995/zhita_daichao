@@ -41,4 +41,14 @@ public interface CommodityFootprintCopyMapper {
 
 	long getRecordNumber1(@Param("userId")String userId,@Param("company") String company);
 
+	int insertfootprintAppCopy(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp,@Param("company") String company,
+			@Param("oneSourceName")String oneSourceName,@Param("twoSourceName") String twoSourceName);
+
+	long getRecordNumberAppCopy(@Param("userId")String userId,@Param("company") String company,@Param("oneSourceName") String oneSourceName,@Param("twoSourceName") String twoSourceName);
+
+	List<String> getbusinessNameAppCopy(@Param("userId")String userId,@Param("pageSize") int pageSize,@Param("startRow") int startRow,@Param("company") String company,@Param("oneSourceName") String oneSourceName,
+			@Param("twoSourceName") String twoSourceName);
+
+	long getApplicationsAppCopy(@Param("businessName")String businessName,@Param("company") String company,@Param("oneSourceName") String oneSourceName,@Param("twoSourceName") String twoSourceName);
+
 }

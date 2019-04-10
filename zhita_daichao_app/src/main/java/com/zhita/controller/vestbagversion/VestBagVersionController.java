@@ -26,7 +26,7 @@ public class VestBagVersionController {
 	@RequestMapping("/getVestBagVersion")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> getVestBagVersion(String company,String vestBagName) {
+	public Map<String, Object> getVestBagVersion(String company,String vestBagName,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<>();
  		Integer id = vestBugService.getVestBag(vestBagName,company);
 		if (id == null) {								

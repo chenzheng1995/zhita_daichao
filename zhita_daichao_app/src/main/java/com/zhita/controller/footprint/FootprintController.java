@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.service.buttonfootprint.ButtonFootprintService;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
+import com.zhita.service.commodityfootprintcopy.CommodityFootprintCopyService;
 import com.zhita.service.loanclassificationfootprint.LCFootprintService;
 import com.zhita.service.sourcedadson.SourceDadSonService;
 
@@ -30,6 +31,9 @@ public class FootprintController {
 	
 	@Autowired
 	SourceDadSonService sourceDadSonService;
+	
+	@Autowired
+	CommodityFootprintCopyService commodityFootprintCopyService;
 
 	//插入足迹
 	@RequestMapping("/insertfootprint")
@@ -77,7 +81,7 @@ public class FootprintController {
 			}
 			if(tableType.equals("2")) {
 				long currentTimestamp = System.currentTimeMillis();
-				int number = commodityFootprintService.insertfootprint(footprintName, userId, currentTimestamp,company);
+				int number = commodityFootprintCopyService.insertfootprintAppCopy(footprintName, userId, currentTimestamp,company,oneSourceName,twoSourceName);
 				if (number == 1) {
 					map.put("msg", "插入成功");
 					map.put("SCode", "200");

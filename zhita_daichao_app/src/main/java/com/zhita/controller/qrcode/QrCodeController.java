@@ -24,7 +24,7 @@ public class QrCodeController {
 
 	@RequestMapping("/getqrcode")
 	@ResponseBody
-	public Map<String, String> getqrcode(String grant_type, String appid, String secret, String scene, String company) {// scene传的是userid
+	public Map<String, String> getqrcode(String grant_type, String appid, String secret, String scene, String company,String oneSourceName,String twoSourceName) {// scene传的是userid
 		Map<String, String> map = new HashMap<String, String>();
 		if (StringUtils.isEmpty(grant_type) || StringUtils.isEmpty(appid) || StringUtils.isEmpty(secret)
 				|| StringUtils.isEmpty(scene) || StringUtils.isEmpty(company)) {

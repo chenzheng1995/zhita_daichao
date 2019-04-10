@@ -117,7 +117,7 @@ public class LoginController {
 	@RequestMapping("/forgotpwd")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> forgotpwd(String phone, String pwd, String code,String company) {
+	public Map<String, Object> forgotpwd(String phone, String pwd, String code,String company,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(pwd) || StringUtils.isEmpty(code)) {
 			map.put("msg", "phone,pwd或code不能为空");
@@ -165,7 +165,7 @@ public class LoginController {
 	@RequestMapping("/pwdlogin")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> pwdLogin(String phone, String pwd,String company) {
+	public Map<String, Object> pwdLogin(String phone, String pwd,String company,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String loginStatus = "1";
 		if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(pwd)) {
@@ -296,7 +296,7 @@ public class LoginController {
 	@RequestMapping("/setpwd")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> setPwd(String pwd, int userId) {
+	public Map<String, Object> setPwd(String pwd, int userId,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(pwd) || StringUtils.isEmpty(userId)) {
 			map.put("msg", "pwd或userId不能为空");
@@ -323,7 +323,7 @@ public class LoginController {
 	@RequestMapping("/getuser")
 	@ResponseBody
 	@Transactional
-	public Map<String, Object> getuser(String phone, String company) {
+	public Map<String, Object> getuser(String phone, String company,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = loginService.findphone(phone,company); // 判断该用户是否存在
 		if (user == null) {
@@ -347,7 +347,7 @@ public class LoginController {
 	@RequestMapping("/logOut")
 	@ResponseBody
 	@Transactional
-	public Map<String, String> appLogOut(int userId,String company) {
+	public Map<String, String> appLogOut(int userId,String company,String oneSourceName,String twoSourceName) {
 		Map<String, String> map = new HashMap<>();
 		if (StringUtils.isEmpty(userId)) {
 			map.put("msg", "userId不能为空");

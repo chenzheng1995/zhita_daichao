@@ -74,6 +74,32 @@ public class CommodityFootprintCopyServiceImp implements CommodityFootprintCopyS
 		return recordNumber;
 	}
 
+	@Override
+	public int insertfootprintAppCopy(String footprintName, String userId, long currentTimestamp, String company,
+			String oneSourceName, String twoSourceName) {
+		int number = commodityFootprintCopyMapper.insertfootprintAppCopy(footprintName, userId, currentTimestamp,company,oneSourceName,twoSourceName);
+		return number;
+	}
+
+	@Override
+	public long getRecordNumberAppCopy(String userId, String company, String oneSourceName, String twoSourceName) {
+		 long recordNumber = commodityFootprintCopyMapper.getRecordNumberAppCopy(userId,company,oneSourceName,twoSourceName);
+		return recordNumber;
+	}
+
+	@Override
+	public List<String> getbusinessNameAppCopy(String userId, int pageSize, int startRow, String company,
+			String oneSourceName, String twoSourceName) {
+		List<String> list =	(List<String>) commodityFootprintCopyMapper.getbusinessNameAppCopy(userId,pageSize,startRow,company,oneSourceName,twoSourceName);
+		return list;
+	}
+
+	@Override
+	public long getApplicationsAppCopy(String businessName, String company, String oneSourceName, String twoSourceName) {
+		long applications = commodityFootprintCopyMapper.getApplicationsAppCopy(businessName,company,oneSourceName,twoSourceName);
+		return applications;
+	}
+
 
 
 }

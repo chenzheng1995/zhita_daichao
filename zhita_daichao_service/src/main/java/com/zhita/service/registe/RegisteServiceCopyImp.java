@@ -268,4 +268,12 @@ public class RegisteServiceCopyImp implements IntRegisteCopyService{
   		return trademark;
   	}
 
+	@Override
+	public Map<String, Object> getLoansBusinessesAppCopy(String businessName, String company, String oneSourceName,
+			String twoSourceName) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = loansBusinessesCopyMapper.getLoansBusinessesAppCopy(businessName,company,oneSourceName,twoSourceName); 
+		return map;
+	}
+
 }

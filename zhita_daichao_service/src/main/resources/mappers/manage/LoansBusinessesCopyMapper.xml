@@ -561,5 +561,9 @@
  	select * from loans_businesses_copy lobus inner join loan_classification locla on lobus.busClaId like concat('%',locla.id,'%') where locla.businessClassification=#{businessClassification} and deleted = '0' and lobus.company = #{company} and locla.company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName} and state = 1 order by isStick desc,sort asc limit #{pages},#{pageSize}
  </select>
  
+ 	 <!-- 获取商品的所有信息 -->
+ <select id="getLoansBusinessesAppCopy" resultType="map" parameterType="java.lang.String">
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applications,applicationProcess,specialInstructions,successRate,lendingRate,registerLink,interestRate interestrate,cycle,state from loans_businesses_copy where deleted='0' and businessName = #{businessName} and company = #{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName}
+ </select>
  
 </mapper>

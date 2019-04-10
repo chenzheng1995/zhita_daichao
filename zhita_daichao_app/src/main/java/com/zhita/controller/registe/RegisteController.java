@@ -121,7 +121,7 @@ public class RegisteController {
     @ResponseBody
     @RequestMapping("/dynamicData")
     @Transactional
-    public HashMap<String,Object> queryAll(){
+    public HashMap<String,Object> queryAll(String oneSourceName,String twoSourceName){
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("left", "可贷额度");
     	map.put("centerTop", "%");
