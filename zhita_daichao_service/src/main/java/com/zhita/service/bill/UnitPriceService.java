@@ -36,6 +36,10 @@ public interface UnitPriceService {
 
 	Integer getSourceTo(String company, String account);
 
+	int pageCountUnitprice1(Integer businessesId, String company);
+
+	List<UnitPrice> getunitprice1(Integer businessesId, String company, int pages, int pageSize);
+
 
 
 

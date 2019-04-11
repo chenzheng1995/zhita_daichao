@@ -262,4 +262,14 @@
  <select id="getSourceTo" parameterType="java.lang.String" resultType="java.lang.Integer">
    select businessesId from unit_price where deleted='0' and company = #{company} and account = #{account} limit 1
  </select>
+ 
+ 		   <!-- 查询单价设置中有多少条数据 -->
+ <select id="pageCountUnitprice1" parameterType="java.util.Map" resultType="java.lang.Integer">
+   select count(id) from unit_price where deleted='0' and company = #{company} and businessesId = #{businessesId} 
+ </select>
+ 
+ 					<!--单价设置中,查出所有的数据  -->
+	<select id="getunitprice1" parameterType="java.util.Map" resultType="com.zhita.model.manage.UnitPrice">
+		select id,account,price,accountType,firmType,firm,modifyTime,sourceId from unit_price where businessesId=#{businessesId} and deleted = '0' and company =#{company} order by account limit #{pages},#{pageSize}
+	</select>
 </mapper>

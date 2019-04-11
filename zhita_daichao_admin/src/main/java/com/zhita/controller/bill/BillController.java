@@ -183,29 +183,52 @@ public class BillController {
 	@ResponseBody
 	@RequestMapping("/getunitprice")
 	@Transactional
-    public Map<String,Object> getunitprice (int sourceId,String company,Integer page){
+    public Map<String,Object> getunitprice (Integer sourceId,String company,Integer page,String firmType,Integer businessesId){
 		HashMap<String,Object> map=new HashMap<>();
-		int businessesId = 0;
-		int totalCount=UnitPriceService.pageCountUnitprice(sourceId,company);
-    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
-    	if(page<1) {
-    		page=1;
-    	}else if(page>pageUtil.getTotalPageCount()) {
-      		if(totalCount==0) {
-    			page=pageUtil.getTotalPageCount()+1;
-    		}else {
-    			page=pageUtil.getTotalPageCount();
-    		}
-    	}
-    	int pages=(page-1)*pageUtil.getPageSize();
-		List<UnitPrice> accountList = UnitPriceService.getunitprice(sourceId,company,pages,pageUtil.getPageSize());
-		for (UnitPrice unitPrice : accountList) {
-		   businessesId = unitPrice.getBusinessesId();
-		   String firm =  intRegisteService.getBusinessesName(businessesId,company);
-			unitPrice.setFirm(firm);
+		if(firmType.equals("1")) {
+			int totalCount=UnitPriceService.pageCountUnitprice(sourceId,company);
+	    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}else if(page>pageUtil.getTotalPageCount()) {
+	      		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+			List<UnitPrice> accountList = UnitPriceService.getunitprice(sourceId,company,pages,pageUtil.getPageSize());
+			for (UnitPrice unitPrice : accountList) {
+			   businessesId = unitPrice.getBusinessesId();
+			   String firm =  intRegisteService.getBusinessesName(businessesId,company);
+				unitPrice.setFirm(firm);
+			}
+			map.put("pageUtil", pageUtil);
+			map.put("list", accountList);
 		}
-		map.put("pageUtil", pageUtil);
-		map.put("list", accountList);
+		if(firmType.equals("2")) {
+			int totalCount=UnitPriceService.pageCountUnitprice1(businessesId,company);
+	    	PageUtil pageUtil=new PageUtil(page,10,totalCount);
+	    	if(page<1) {
+	    		page=1;
+	    	}else if(page>pageUtil.getTotalPageCount()) {
+	      		if(totalCount==0) {
+	    			page=pageUtil.getTotalPageCount()+1;
+	    		}else {
+	    			page=pageUtil.getTotalPageCount();
+	    		}
+	    	}
+	    	int pages=(page-1)*pageUtil.getPageSize();
+			List<UnitPrice> accountList = UnitPriceService.getunitprice1(businessesId,company,pages,pageUtil.getPageSize());
+			for (UnitPrice unitPrice : accountList) {
+				sourceId = unitPrice.getSourceId();
+			   String firm = intMerchantService.getSourceName(sourceId, company);
+				unitPrice.setFirm(firm);
+			}
+			map.put("pageUtil", pageUtil);
+			map.put("list", accountList);
+		}
 		return map;
 	}
 	

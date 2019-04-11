@@ -103,4 +103,16 @@ public class UnitPriceServiceImp implements UnitPriceService{
 		return SourceTo;
 	}
 
+	@Override
+	public int pageCountUnitprice1(Integer businessesId, String company) {
+		int totalCount=unitPriceMapper.pageCountUnitprice1(businessesId,company);
+		return totalCount;
+	}
+
+	@Override
+	public List<UnitPrice> getunitprice1(Integer businessesId, String company, int pages, int pageSize) {
+		List<UnitPrice> accountList = unitPriceMapper.getunitprice1(businessesId,company,pages,pageSize);
+		return accountList;
+	}
+
 }

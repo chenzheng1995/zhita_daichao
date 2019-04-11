@@ -49,6 +49,10 @@ public interface UnitPriceMapper {
 
 	Integer getSourceTo(@Param("company")String company,@Param("account") String account);
 
+	int pageCountUnitprice1(@Param("businessesId")Integer businessesId,@Param("company") String company);
+
+	List<UnitPrice> getunitprice1(@Param("businessesId")Integer businessesId,@Param("company") String company,@Param("pages") int pages,@Param("pageSize") int pageSize);
+
 
 
 
