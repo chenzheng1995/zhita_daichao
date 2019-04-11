@@ -171,8 +171,8 @@
 		GROUP_CONCAT(r.roleMiaoshu) roleMiaoshu
 		from manage_login u 
 		left join managelogin_role mr on mr.manageLoginId=u.id
-		left join role r on mr.roleId=r.id
-		group by u.id limit #{arg0},#{arg1}
+		left join role r on mr.roleId=r.id 
+		group by u.id  order by u.loginTime desc limit #{arg0},#{arg1}
 	</select>
 	
 	

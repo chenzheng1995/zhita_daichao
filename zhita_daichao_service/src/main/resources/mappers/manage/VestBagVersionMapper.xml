@@ -39,8 +39,7 @@
    <!-- 后台管理     保存修改后的vest_bag_version表信息 -->
  <update id="upaVersion" parameterType="com.zhita.model.manage.VestBagVersion"> 
  	update vest_bag_version
-    set version = #{version,jdbcType=VARCHAR},
-    	deleted = #{deleted,jdbcType=VARCHAR}
+    set version = #{version,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
  </update>
 </mapper>
