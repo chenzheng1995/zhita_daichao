@@ -18,7 +18,7 @@
     id, sourcename, account,pwd, link, state, deleted,company,discount
   </sql>
   <!-- 后台管理  通过渠道id，查询渠道信息 -->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Source">
     select 
     <include refid="Base_Column_List" />
     from source
