@@ -163,6 +163,25 @@
 				/vestbagversion/queryAllVersion = perms["系统-版本控制"]
 				/vestbagversion/selectByPrimaryKey = perms["系统-版本控制"]
 				/vestbagversion/updateSouceDadSon = perms["系统-版本控制"]
+				<!-- 账单    查询权限控制 -->
+				/bill/setunitprice = perms["账单-查询"]
+				/bill/updateunitprice = perms["账单-查询"]
+				/bill/deleteunitprice = perms["账单-查询"]
+				/bill/deletefirm = perms["账单-查询"]
+				/bill/getunitprice = perms["账单-查询"]
+				/bill/getaccount = perms["账单-查询"]
+				/bill/getfirm = perms["账单-查询"]
+				/CThrough/getCThrough = perms["账单-查询"]
+				/editbill/setEditBill = perms["账单-查询"]
+				/editbill/updateEditBill = perms["账单-查询"]
+				/editbill/deleteEditBillById = perms["账单-查询"]
+				/editbill/deleteEditBillByOperationDate = perms["账单-查询"]
+				/editbill/getEditBill = perms["账单-查询"]
+				/editbill/getEditBillByCO = perms["账单-查询"]
+				/editbill/getEditBillCount = perms["账单-查询"]
+				/editbill/getPrice = perms["账单-查询"]
+				/editbill/getSourceTo = perms["账单-查询"]
+				/PThrough/getPThrough = perms["账单-查询"]
 			</value>
 		</property>
 	</bean>
