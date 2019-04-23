@@ -232,4 +232,13 @@ public class MerchantServiceImp implements IntMerchantService{
 		String  SourceName =  sourceMapper.getSourceName(sourceId,company);
 		return SourceName;
 	}
+	@Override
+	public String getLink(Integer id) {
+		String link = sourceMapper.getLink(id);
+		return link;
+	}
+	@Override
+	public void updateLink(String link,Integer id) {
+		sourceMapper.updateLink(link,id);		
+	}
 }

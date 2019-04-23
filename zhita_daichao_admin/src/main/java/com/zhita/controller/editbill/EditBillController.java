@@ -77,7 +77,7 @@ public class EditBillController {
 			String operationDate = editBill.getOperationDate();
 			String registrationTime = editBill.getRegistrationTime();
 			Integer registrationNumber = editBill.getRegistrationNumber();
-			Integer price = editBill.getRealPay();
+			Integer price = editBill.getPrice();
 			if(firmType.equals("1")) {
 				int id = unitPriceService.getbusinessesId(account,company);
 				sourceTo = intRegisteService.getBusinessesName(id,company);

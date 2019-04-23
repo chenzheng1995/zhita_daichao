@@ -89,4 +89,8 @@ public interface SourceMapper {
 	List<Object> getOneFirm(String company);
 
 	String getSourceName(@Param("sourceId")Integer sourceId,@Param("company") String company);
+
+	String getLink(Integer id);
+
+	void updateLink(@Param("link")String link,@Param("id") Integer id);
 }

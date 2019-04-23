@@ -235,4 +235,15 @@
   <select id="getSourceName" parameterType="java.util.Map" resultType="java.lang.String">
   	select sourcename from source where deleted ='0' and company =#{company} and id =#{sourceId}
   </select>
+  
+  
+         <!-- 根据id获取该渠道的连接 -->
+  <select id="getLink" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select link from source where id =#{id}
+  </select>
+  
+    <!-- 根据id更改该渠道的连接 -->
+ <update id="updateLink" parameterType="java.util.Map">
+ 	update source set link=#{link} where id=#{id}
+ </update>
 </mapper>

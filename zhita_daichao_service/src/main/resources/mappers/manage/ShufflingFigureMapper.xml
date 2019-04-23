@@ -172,7 +172,7 @@
  	select cover from shuffling_figure where id =#{id}
  </select>
    <select id="getShufflingFigure" resultType="com.zhita.model.manage.ShufflingFigure">
-  	select id,title,cover,link,state,businessname,deleted from shuffling_figure where deleted='0' and company=#{company}
+  	select id,title,cover,link,state,businessname,deleted from shuffling_figure where deleted='0' and state ='1'  and company=#{company}
   </select>
   <!-- 后台管理    用于添加轮播图时进行判断   将传过来的贷款商家名称  传进贷款商家表看是否存在 -->
   <select id="ifBusinessNameIfExist" parameterType="java.lang.String" resultType="java.lang.Integer">

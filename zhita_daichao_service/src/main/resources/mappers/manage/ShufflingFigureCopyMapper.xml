@@ -131,11 +131,11 @@
   </update>
   
      <select id="getShufflingFigure1" resultType="com.zhita.model.manage.ShufflingFigure">
-  	select id,title,cover,link,state,businessname,deleted from shuffling_figure_copy where deleted='0' and company=#{company}
+  	select id,title,cover,link,state,businessname,deleted from shuffling_figure_copy where deleted='0' and  state = '1' and  company=#{company}
   </select>
 
      <select id="getShufflingFigureAppCopy" resultType="com.zhita.model.manage.ShufflingFigureCopy">
-  	select id,title,cover,link,state,businessname,deleted from shuffling_figure_copy where deleted='0' and company=#{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName}
+  	select id,title,cover,link,state,businessname,deleted from shuffling_figure_copy where deleted='0' and state = '1' and company=#{company} and oneSourceName = #{oneSourceName} and twoSourceName = #{twoSourceName}
 </select>
    <!-- 后台管理  根据主键id查询出轮播图信息  (shuffling_figure_copy表)-->
   <select id="selectByPrimaryKeyCopy" parameterType="java.lang.Integer" resultMap="BaseResultMap">

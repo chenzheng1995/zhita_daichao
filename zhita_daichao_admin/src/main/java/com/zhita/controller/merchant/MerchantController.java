@@ -1,5 +1,6 @@
 package com.zhita.controller.merchant;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
+import com.zhita.util.FolderUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
 import com.zhita.util.Timestamps;
@@ -218,8 +220,10 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/AddAll")
-    public int AddAll(Source source){
-		
+    public int AddAll(Source source) throws IOException{
+		FolderUtil FolderUtil = new FolderUtil();
+		FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\rong51-H5","E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
+		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
 		int num=intMerchantService.addAll(source);//添加渠道表信息
 		
 		ManageLogin manageLogin=new ManageLogin();
@@ -241,7 +245,11 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateSource")
-    public int updateSource(Source source){
+    public int updateSource(Source source,String oldSourceName) throws IOException{
+		FolderUtil FolderUtil = new FolderUtil();
+		FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName,"E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
+		FolderUtil.deleteDirectory("E:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName);//把旧的文件夹删掉
+		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
 		System.out.println(source);
 		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
 		int num=intMerchantService.updateSource(source);
@@ -262,11 +270,25 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaState")
-	public int upaState(String state,Integer id) {
+	public int upaState(String state,Integer id) throws IOException {
 		int num=0;
+  		String link = intMerchantService.getLink(id);
+	 	String fileName = link.substring(32, link.lastIndexOf("/"));
 		if(state.equals("1")) {
+			if(fileName.endsWith("###")) {
+			 	String newLink = link.replace(fileName,fileName.substring(0,fileName.length()-3));
+				intMerchantService.updateLink(newLink,id);
+				FolderUtil folderUtil = new FolderUtil();
+				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName.substring(0,fileName.length()-3));
+			}
 			num=intMerchantService.upaStateOpen(id);
 		}else {
+			if(!fileName.endsWith("###")) {
+				String newLink = link.replace("/"+fileName+"/","/"+fileName+"###"+"/");
+				intMerchantService.updateLink(newLink,id);
+				FolderUtil folderUtil = new FolderUtil();
+				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName+"###");
+			}
 			num=intMerchantService.upaStateClose(id);
 		}
 		return num;

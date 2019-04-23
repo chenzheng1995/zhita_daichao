@@ -159,7 +159,7 @@ public class RegisteController {
     	HashMap<String,Object> map=new HashMap<>();
     	map.put("left", "可贷额度");
     	map.put("centerTop", "%");
-    	map.put("centerBottom", "成功率");
+    	map.put("centerBottom", "日利率");
     	map.put("button", "立即放款");
     	map.put("right", "人已放款");
 		return map;    
