@@ -1,6 +1,12 @@
 package com.zhita.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import com.zhita.util.DateListUtil;
+import com.zhita.util.Timestamps;
 
 public class Test {
 	public static void main(String[] args) throws ParseException {
@@ -102,7 +108,23 @@ public class Test {
 		}
 		 
 			System.out.println(1111);	*/
-		String num=1+(((int)(Math.random()*8998)+1000+1)+"");
-		System.out.println(num);
+		//String num=1+(((int)(Math.random()*8998)+1000+1)+"");
+		//System.out.println(num);
+		
+		String dateStart="2019-4-20";
+		String dateEnd="2019-4-21";
+		
+		/*String startTime = Timestamps.dateToStamp(dateStart);// 将开始时间转换为时间戳格式
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sdf.parse(dateEnd.replace("/", "-")));
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		Date newDate = calendar.getTime();
+		String nextDate = sdf.format(newDate);// 传进来日期的后一天
+		
+		String endTime = Timestamps.dateToStamp(nextDate);// 将结束时间转换为时间戳格式
+		System.out.println(startTime+"start"+endTime+"end");*/
+		System.out.println(DateListUtil.getDays(dateStart, dateEnd));;
 	}
 }
