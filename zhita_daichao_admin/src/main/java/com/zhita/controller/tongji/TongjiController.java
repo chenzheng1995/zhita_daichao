@@ -199,10 +199,10 @@ public class TongjiController {
 					String cvr = null;
 					for (int j = 0; j <listdate.size(); j++) {
 						int uvi=0;
-						if (redisClientUtil.getSourceClick(company[0] + source + listdate.get(j) + "Key") == null) {
+						if (redisClientUtil.getSourceClick(company[0] + source + listdate.get(j).replace("-", "/") + "Key") == null) {
 							uvi = 0;
 						} else {
-							uvi = Integer.parseInt(redisClientUtil.getSourceClick(company[0] + source + listdate.get(j) + "Key"));
+							uvi = Integer.parseInt(redisClientUtil.getSourceClick(company[0] + source + listdate.get(j).replace("-", "/") + "Key"));
 						}
 						uv=uv+uvi;
 					}
@@ -244,10 +244,10 @@ public class TongjiController {
 						String cvr = null;
 						for (int k = 0; k <listdate.size(); k++) {
 							int uvi=0;
-							if (redisClientUtil.getSourceClick(company[0] + source + listdate.get(k) + "Key") == null) {
+							if (redisClientUtil.getSourceClick(company[0] + source + listdate.get(k).replace("-", "/") + "Key") == null) {
 								uvi = 0;
 							} else {
-								uvi = Integer.parseInt(redisClientUtil.getSourceClick(company[j] + source + listdate.get(k) + "Key"));
+								uvi = Integer.parseInt(redisClientUtil.getSourceClick(company[j] + source + listdate.get(k).replace("-", "/") + "Key"));
 							}
 							uv=uv+uvi;
 						}
@@ -321,10 +321,10 @@ public class TongjiController {
 					int sumappnum = intTongjiService.queryUV(company, sourcename, startTime, endTime);// 得到点过甲方贷款商家总的人数
 					int uv = 0;
 					String cvr = null;
-					if (redisClientUtil.getSourceClick(company + sourcename + date + "Key") == null) {
+					if (redisClientUtil.getSourceClick(company + sourcename + date.replace("-", "/") + "Key") == null) {
 						uv = 0;
 					} else {
-						uv = Integer.parseInt(redisClientUtil.getSourceClick(company + sourcename+ date + "Key"));
+						uv = Integer.parseInt(redisClientUtil.getSourceClick(company + sourcename+ date.replace("-", "/") + "Key"));
 					}
 					if ((appnum < 0.000001) || (uv == 0)) {
 						cvr = 0 + "%";// 得到转化率
