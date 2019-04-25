@@ -124,12 +124,6 @@ import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 		   
 		  // ==========================================================================
 		   
-
-		   
-			   public static void main(String[] args) throws IOException {
-			      FolderUtil folderUtil = new FolderUtil();
-			      folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\x","abc");
-			   }
 			   
 			   
 			   /**
@@ -159,5 +153,12 @@ import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 				    }
 
 
+
 			   }
+			   
+
+			    
+/*	================================================================	*/	    
+
+
 }
