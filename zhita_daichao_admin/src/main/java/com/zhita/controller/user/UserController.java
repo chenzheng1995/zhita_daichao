@@ -37,6 +37,28 @@ public class UserController {
 	private IntMerchantService IntMerchantService;
 	@Autowired
 	private IntRegisteService intRegisteService;
+	
+	//后台管理---查询渠道（列表下拉时选择）
+    @ResponseBody
+    @RequestMapping("/queryAllSource")
+    public List<Source> queryAllSource(String string){
+    	string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
+   	    List<Source> list1=new ArrayList<>();//存渠道的集合
+   	    
+	   	 if(company.length==1){
+	   		list1=IntMerchantService.queryAll(company[0]);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
+	   	 }
+	   	 else if(company.length>1){
+	   		List<Source> list1for=null;
+	   		for (int i = 0; i < company.length;i++) {
+	   			list1for=IntMerchantService.queryAll(company[i]);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
+    	    	list1.addAll(list1for);
+	   		}
+	   	}
+	   	 return list1;
+    }
+    
 	//后台管理---查询出用户表所有信息，含分页
     @ResponseBody
     @RequestMapping("/queryAllUser")
