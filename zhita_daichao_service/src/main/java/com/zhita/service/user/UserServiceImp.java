@@ -12,6 +12,7 @@ import com.zhita.dao.manage.UserMapper;
 import com.zhita.model.manage.ButtonFootprint;
 import com.zhita.model.manage.User;
 import com.zhita.util.PageUtil;
+import com.zhita.util.PhoneDeal;
 import com.zhita.util.Timestamps;
 import com.zhita.util.TuoMinUtil;
 
@@ -153,7 +154,10 @@ public class UserServiceImp implements UserService {
 		else if((phone!=null||!"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null)) {
 			System.out.println("第三个if");
 			
-	    	list2=userMapper.queryAllPhoneByPhoneSouNameLike(phone, sourceName, company);//通过手机号，渠道名称，公司名模糊查询手机号
+			PhoneDeal phoneDeal=new PhoneDeal();
+			String phone1=phoneDeal.encryption(phone);//将传进来的手机号进行加密
+			
+	    	list2=userMapper.queryAllPhoneByPhoneSouNameLike(phone1, sourceName, company);//通过手机号，渠道名称，公司名模糊查询手机号
 	    	
 	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
 			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
@@ -171,7 +175,7 @@ public class UserServiceImp implements UserService {
 	    			}
 				}
 			}
-	 		int totalCount=userMapper.pageCountByPhoneAndSourceName(phone,sourceName,company);//该方法是通过手机号，渠道名称，公司名模糊查询出用户总数量
+	 		int totalCount=userMapper.pageCountByPhoneAndSourceName(phone1,sourceName,company);//该方法是通过手机号，渠道名称，公司名模糊查询出用户总数量
 	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -185,14 +189,17 @@ public class UserServiceImp implements UserService {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryByPhoneAndSourceName(phone,sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=userMapper.queryByPhoneAndSourceName(phone1,sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
 	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		//手机号不为空    渠道   时间不为空  公司
 		else if((phone!=null||!"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null)) {
 			System.out.println("第四个if");
 			
-	    	list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间,公司名模糊查询手机号
+			PhoneDeal phoneDeal=new PhoneDeal();
+			String phone1=phoneDeal.encryption(phone);//将传进来的手机号进行加密
+			
+	    	list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone1, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间,公司名模糊查询手机号
 	    	
 	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
 			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
@@ -211,7 +218,7 @@ public class UserServiceImp implements UserService {
 				}
 			}
 			
-			int totalCount=userMapper.pageCountByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过电话、渠道名称和注册时间模糊查询出用户总数量
+			int totalCount=userMapper.pageCountByPhoneSourceNameAndRegistrationtime(phone1,sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过电话、渠道名称和注册时间模糊查询出用户总数量
 	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -225,15 +232,20 @@ public class UserServiceImp implements UserService {
 	    	}
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
-	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone,sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone1,sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
 	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		TuoMinUtil tuoMinUtil=new TuoMinUtil();//将用户模块的手机号进行脱名
+		PhoneDeal phoneDeal=new PhoneDeal();
 		for (int i = 0; i < list.size(); i++) {
+			list.get(i).setPhone(phoneDeal.decryption(list.get(i).getPhone()));
 			String tuomingphone=tuoMinUtil.mobileEncrypt(list.get(i).getPhone());
     		list.get(i).setPhone(tuomingphone);
     		list.get(i).setRegistrationtime(Timestamps.stampToDate(list.get(i).getRegistrationtime()));
 			list.get(i).setLoginTime(Timestamps.stampToDate(list.get(i).getLoginTime()));
+		}
+		for (int i = 0; i < list2.size(); i++) {
+			list2.get(i).setPhone(phoneDeal.decryption(list2.get(i).getPhone()));
 		}
 		HashMap<String, Object> map=new HashMap<>();
 		map.put("listSource", list2);

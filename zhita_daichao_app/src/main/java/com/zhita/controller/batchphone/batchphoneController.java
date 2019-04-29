@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.service.user.UserService;
-import com.zhita.util.phoneDeal;
+import com.zhita.util.PhoneDeal;
 
 
 @Controller
@@ -27,7 +27,7 @@ public class batchphoneController {
 			if(phone==null) {
 				continue;
 			}
-			phoneDeal phoneDeal = new phoneDeal();
+			PhoneDeal phoneDeal = new PhoneDeal();
 			String newPhone = phoneDeal.encryption(phone);
 			userService.updatePhone(startId1,newPhone);
 		}
@@ -45,7 +45,7 @@ public class batchphoneController {
 			if(phone==null) {
 				continue;
 			}
-			phoneDeal phoneDeal = new phoneDeal();
+			PhoneDeal phoneDeal = new PhoneDeal();
 			String newPhone = phoneDeal.decryption(phone);
 			userService.updatePhone(startId1,newPhone);
 		}

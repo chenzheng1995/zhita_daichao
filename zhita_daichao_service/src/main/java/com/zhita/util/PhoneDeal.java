@@ -3,7 +3,8 @@ package com.zhita.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class phoneDeal {
+public class PhoneDeal {
+
 
 	
 /*
@@ -148,10 +149,11 @@ public class phoneDeal {
 	}
 	
 	public static void main(String[] args) {
-		phoneDeal phoneDeal = new phoneDeal();
+		PhoneDeal phoneDeal = new PhoneDeal();
 		String phone = phoneDeal.encryption("17853514010");
 		System.out.println(phone);
 		phone = phoneDeal.decryption(phone);
 		System.out.println(phone);
 	}
+
 }

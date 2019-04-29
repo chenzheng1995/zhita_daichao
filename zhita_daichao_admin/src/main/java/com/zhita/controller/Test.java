@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.zhita.util.DateListUtil;
+import com.zhita.util.PhoneDeal;
 import com.zhita.util.Timestamps;
 
 public class Test {
@@ -111,8 +112,8 @@ public class Test {
 		//String num=1+(((int)(Math.random()*8998)+1000+1)+"");
 		//System.out.println(num);
 		
-		String dateStart="2019-4-20";
-		String dateEnd="2019-4-21";
+		//String dateStart="2019-4-20";
+		//String dateEnd="2019-4-21";
 		
 		/*String startTime = Timestamps.dateToStamp(dateStart);// 将开始时间转换为时间戳格式
 		
@@ -125,6 +126,8 @@ public class Test {
 		
 		String endTime = Timestamps.dateToStamp(nextDate);// 将结束时间转换为时间戳格式
 		System.out.println(startTime+"start"+endTime+"end");*/
-		System.out.println(DateListUtil.getDays(dateStart, dateEnd));;
+		//System.out.println(DateListUtil.getDays(dateStart, dateEnd));;
+		PhoneDeal phoneDeal=new PhoneDeal();//手机号解密实体类
+		System.out.println(phoneDeal.encryption("18871552653"));
 	}
 }
