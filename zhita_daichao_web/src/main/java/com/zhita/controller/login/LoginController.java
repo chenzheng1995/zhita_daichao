@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.util.MD5Util;
+import com.zhita.util.PhoneDeal;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
 
@@ -53,6 +54,8 @@ public class LoginController {
 			map.put("SCode", "401");
 			return map;
 		} else {
+			PhoneDeal phoneDeal = new PhoneDeal();			
+			String newPhone = phoneDeal.encryption(phone);
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
 			String redisCode = redisClientUtil.get(key);
@@ -66,12 +69,12 @@ public class LoginController {
 				String loginStatus = "1";
 				MD5Util md5Util = new MD5Util();
 				String md5Pwd = md5Util.EncoderByMd5(pwd);
-				User user = loginService.findphone(phone,company); // 判断该用户是否存在
+				User user = loginService.findphone(newPhone,company); // 判断该用户是否存在
 				if (user == null) {
 					String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-					int number = loginService.setAPPUser(phone, md5Pwd, sourceId, registrationTime, loginStatus,registrationType,company);
+					int number = loginService.setAPPUser(newPhone, md5Pwd, sourceId, registrationTime, loginStatus,registrationType,company);
 					if (number == 1) {
-						int id = loginService.getId(phone,company); // 获取该用户的id
+						int id = loginService.getId(newPhone,company); // 获取该用户的id
 						map.put("msg", "用户注册成功，数据插入成功");
 						map.put("loginStatus", loginStatus);
 						map.put("userId", id);
@@ -111,6 +114,8 @@ public class LoginController {
 			map.put("SCode", "401");
 			return map;
 		} else {
+			PhoneDeal phoneDeal = new PhoneDeal();			
+			String newPhone = phoneDeal.encryption(phone);
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
 			String redisCode = redisClientUtil.get(key);
@@ -123,9 +128,9 @@ public class LoginController {
 				redisClientUtil.delkey(key);// 验证码正确就从redis里删除这个key
 				MD5Util md5Util = new MD5Util();
 				String md5Pwd = md5Util.EncoderByMd5(pwd);
-				int number = loginService.updatePwd(phone, md5Pwd,company);
+				int number = loginService.updatePwd(newPhone, md5Pwd,company);
 				if (number == 1) {
-					int id = loginService.getId(phone,company); // 获取该用户的id
+					int id = loginService.getId(newPhone,company); // 获取该用户的id
 					map.put("msg", "密码修改成功");
 					map.put("userId", id);
 					map.put("phone", phone);
@@ -159,20 +164,22 @@ public class LoginController {
 			map.put("msg", "phone或pwd不能为空");
 			return map;
 		} else {
-			User user = loginService.findphone(phone,company); // 判断该用户是否存在
+			PhoneDeal phoneDeal = new PhoneDeal();			
+			String newPhone = phoneDeal.encryption(phone);
+			User user = loginService.findphone(newPhone,company); // 判断该用户是否存在
 			if (user == null) {
 				map.put("msg", "用户名不存在,请先注册");
 				map.put("SCode", "405");
 				return map;
 			} else {
 				MD5Util md5Util = new MD5Util();
-				String dataMd5Pwd = loginService.getMd5pwd(phone,company);
+				String dataMd5Pwd = loginService.getMd5pwd(newPhone,company);
 				String Md5Pwd = md5Util.EncoderByMd5(pwd); // md5加密
 				if (Md5Pwd.equals(dataMd5Pwd)) {
 					String loginTime = System.currentTimeMillis()+"";
-					int num = loginService.updateStatus(loginStatus, phone,company,loginTime);
+					int num = loginService.updateStatus(loginStatus, newPhone,company,loginTime);
 					if (num == 1) {
-						int id = loginService.getId(phone,company); // 获取该用户的id
+						int id = loginService.getId(newPhone,company); // 获取该用户的id
 						map.put("msg", "用户登录成功，登录状态修改成功");
 						map.put("SCode", "200");
 						map.put("loginStatus", loginStatus);
@@ -212,6 +219,8 @@ public class LoginController {
 			map.put("msg", "phone或code不能为空");
 			return map;
 		} else {
+			PhoneDeal phoneDeal = new PhoneDeal();			
+			String newPhone = phoneDeal.encryption(phone);
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			String key = phone + "Key";
 			String redisCode = redisClientUtil.get(key);
@@ -223,11 +232,11 @@ public class LoginController {
 			if (redisCode.equals(code)) {
 				redisClientUtil.delkey(key);// 验证码正确就从redis里删除这个key
 				String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
-				User user = loginService.findphone(phone,company); // 判断该用户是否存在
+				User user = loginService.findphone(newPhone,company); // 判断该用户是否存在
 				if (user == null) {
-					int number = loginService.insertUser(phone,loginStatus,company,registrationType,registrationTime,sourceId);
+					int number = loginService.insertUser(newPhone,loginStatus,company,registrationType,registrationTime,sourceId);
 					if (number == 1) {								
-						int id = loginService.getId(phone,company); //获取该用户的id					
+						int id = loginService.getId(newPhone,company); //获取该用户的id					
 							map.put("msg", "用户登录成功，数据插入成功，让用户添加密码");
 							map.put("SCode", "201");
 							map.put("loginStatus", loginStatus);
@@ -238,9 +247,9 @@ public class LoginController {
 					}
 				} else {
 					String loginTime = System.currentTimeMillis()+"";
-					int num = loginService.updateStatus(loginStatus, phone,company,loginTime);
+					int num = loginService.updateStatus(loginStatus, newPhone,company,loginTime);
 					if (num == 1) {
-						int id = loginService.getId(phone,company); // 获取该用户的id
+						int id = loginService.getId(newPhone,company); // 获取该用户的id
 						String pwd = loginService.getPwd(id);
 						if(pwd==null) {
 						map.put("msg","用户登录成功，登录状态修改成功，让用户添加密码");
@@ -302,7 +311,9 @@ public class LoginController {
 	@Transactional
 	public Map<String, Object> getuser(String phone, String company) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		User user = loginService.findphone(phone,company); // 判断该用户是否存在
+		PhoneDeal phoneDeal = new PhoneDeal();			
+		String newPhone = phoneDeal.encryption(phone);
+		User user = loginService.findphone(newPhone,company); // 判断该用户是否存在
 		if (user == null) {
 			map.put("msg", "用户名不存在,请先注册");
 			map.put("SCode", "405");

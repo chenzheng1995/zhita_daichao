@@ -29,10 +29,10 @@ public class VestBagVersionController {
 	public Map<String, Object> getVestBagVersion(String company,String vestBagName,String oneSourceName,String twoSourceName) {
 		Map<String, Object> map = new HashMap<>();
  		Integer id = vestBugService.getVestBag(vestBagName,company);
-		if (id == null) {								
-			vestBugService.setVestBag(vestBagName,company);
-			id = vestBugService.getVestBag(vestBagName,company);
-		}
+//		if (id == null) {								
+//			vestBugService.setVestBag(vestBagName,company);
+//			id = vestBugService.getVestBag(vestBagName,company);
+//		}
 		String version = vestBugVersionService.getVersion(id);
 		map.put("version", version);	
 		return map;

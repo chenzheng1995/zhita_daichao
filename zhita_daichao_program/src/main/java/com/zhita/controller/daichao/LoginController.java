@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.util.AESUtil;
+import com.zhita.util.PhoneDeal;
 import com.zhita.util.PostAndGet;
 import com.zhita.util.RedisClientUtil;
 import com.zhita.util.SMSUtil;
@@ -58,6 +59,7 @@ public class LoginController {
 			map.put("SCode", "401");
 			return map;
 			}else {
+	
 				PostAndGet pGet = new PostAndGet();
 				String string = pGet.sendGet("https://api.weixin.qq.com/sns/jscode2session?js_code=" + code + "&appid=wx95e29f36ef71f6a2" +
 				"&secret=db67bd09f1ebed05dbd0d5d384b14a84" + "&grant_type=authorization_code");
@@ -73,18 +75,20 @@ public class LoginController {
 			            System.out.println(userInfo);
 			            JSONObject json = JSONObject.parseObject(userInfo); //将字符串{“id”：1}
 			            String phoneNumber = json.getString("phoneNumber");
+						PhoneDeal phoneDeal = new PhoneDeal();			
+						String newPhone = phoneDeal.encryption(phoneNumber);
 			            
 			            String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
-						User user = intLoginService.findphone(phoneNumber,company); // 判断该用户是否存在
+						User user = intLoginService.findphone(newPhone,company); // 判断该用户是否存在
 						String loginStatus = "1";
 						if (user == null) {			//如果用户不存在	
 							if(fatherId==null) { //如果用户是通过扫二维码登录进来的，fatherId不为null，否则fatherId为null
-						        number = intLoginService.insertfootprint(phoneNumber, nickName, openId,registrationTime,loginStatus,company,registrationType);
+						        number = intLoginService.insertfootprint(newPhone, nickName, openId,registrationTime,loginStatus,company,registrationType);
 							}else {
-								number = intLoginService.insertfootprint1(phoneNumber, nickName, openId,registrationTime,loginStatus,company,registrationType,fatherId);
+								number = intLoginService.insertfootprint1(newPhone, nickName, openId,registrationTime,loginStatus,company,registrationType,fatherId);
 							}
 							if (number == 1) {								
-								int id = intLoginService.getId(phoneNumber,company); //获取该用户的id
+								int id = intLoginService.getId(newPhone,company); //获取该用户的id
 								map.put("msg", "用户登录成功，数据插入成功");
 								map.put("SCode", "200");
 								map.put("loginStatus", loginStatus);
@@ -98,20 +102,20 @@ public class LoginController {
 							String loginTime = System.currentTimeMillis()+"";
 							if(user.getOpenId()==null) {  //当openId为null时，通过phone更新loginStatus和openId
 								if(fatherId==null) {   //如果用户是通过扫二维码登录进来的，fatherId不为null，否则fatherId为null
-									num = intLoginService.updateloginStatus(loginStatus,openId,phoneNumber,company,loginTime); 
+									num = intLoginService.updateloginStatus(loginStatus,openId,newPhone,company,loginTime); 
 								}else {
-									 num = intLoginService.updateloginStatus1(loginStatus,openId,phoneNumber,company,loginTime,fatherId); 
+									 num = intLoginService.updateloginStatus1(loginStatus,openId,newPhone,company,loginTime,fatherId); 
 								}						   
 							}else {  //当openId不为null时，通过phone更新loginStatus
 								if(fatherId==null) {   //如果用户是通过扫二维码登录进来的，fatherId不为null，否则fatherId为null
-									num = intLoginService.updateStatus(loginStatus,phoneNumber,company,loginTime);
+									num = intLoginService.updateStatus(loginStatus,newPhone,company,loginTime);
 								}else {
-									num = intLoginService.updateStatus1(loginStatus,phoneNumber,company,loginTime,fatherId); 
+									num = intLoginService.updateStatus1(loginStatus,newPhone,company,loginTime,fatherId); 
 								}	
 							    
 							}
 							if (num == 1) {	
-								int id = intLoginService.getId(phoneNumber,company); //获取该用户的id
+								int id = intLoginService.getId(newPhone,company); //获取该用户的id
 								map.put("msg", "用户登录成功，登录状态修改成功");
 								map.put("SCode", "200");
 								map.put("loginStatus", loginStatus);
@@ -160,6 +164,8 @@ public class LoginController {
 			map.put("SCode", "401");
 			return map;
 			}else {
+				PhoneDeal phoneDeal = new PhoneDeal();			
+				String newPhone = phoneDeal.encryption(phone);
 				PostAndGet pGet = new PostAndGet();
 				String string = pGet.sendGet("https://api.weixin.qq.com/sns/jscode2session?js_code=" + code + "&appid=wx95e29f36ef71f6a2" +
 				"&secret=db67bd09f1ebed05dbd0d5d384b14a84" + "&grant_type=authorization_code");
@@ -176,16 +182,16 @@ public class LoginController {
 				if(redisCode.equals(verificationCode)) {
 					redisClientUtil.delkey(key);//验证码正确就从redis里删除这个key
 					String registrationTime = System.currentTimeMillis()+"";  //获取当前时间戳
-					User user = intLoginService.findphone(phone,company); // 判断该用户是否存在
+					User user = intLoginService.findphone(newPhone,company); // 判断该用户是否存在
 					String loginStatus = "1";
 					if (user == null) {			//如果用户不存在	
 						if(fatherId==null) { //如果用户是通过扫二维码登录进来的，fatherId不为null，否则fatherId为null
-					        number = intLoginService.insertfootprint(phone, nickName, openId,registrationTime,loginStatus,company,registrationType);
+					        number = intLoginService.insertfootprint(newPhone, nickName, openId,registrationTime,loginStatus,company,registrationType);
 						}else {
-							number = intLoginService.insertfootprint1(phone, nickName, openId,registrationTime,loginStatus,company,registrationType,fatherId);
+							number = intLoginService.insertfootprint1(newPhone, nickName, openId,registrationTime,loginStatus,company,registrationType,fatherId);
 						}
 						if (number == 1) {								
-							int id = intLoginService.getId(phone,company); //获取该用户的id
+							int id = intLoginService.getId(newPhone,company); //获取该用户的id
 							map.put("msg", "用户登录成功，数据插入成功");
 							map.put("SCode", "200");
 							map.put("loginStatus", loginStatus);
@@ -198,20 +204,20 @@ public class LoginController {
 						String loginTime = System.currentTimeMillis()+"";
 						if(user.getOpenId()==null) {  //当openId为null时，通过phone更新loginStatus和openId
 							if(fatherId==null) {   //如果用户是通过扫二维码登录进来的，fatherId不为null，否则fatherId为null
-								num = intLoginService.updateloginStatus(loginStatus,openId,phone,company,loginTime); 
+								num = intLoginService.updateloginStatus(loginStatus,openId,newPhone,company,loginTime); 
 							}else {
-								 num = intLoginService.updateloginStatus1(loginStatus,openId,phone,company,loginTime,fatherId); 
+								 num = intLoginService.updateloginStatus1(loginStatus,openId,newPhone,company,loginTime,fatherId); 
 							}						   
 						}else {  //当openId不为null时，通过phone更新loginStatus
 							if(fatherId==null) {   //如果用户是通过扫二维码登录进来的，fatherId不为null，否则fatherId为null
-								num = intLoginService.updateStatus(loginStatus,phone,company,loginTime);
+								num = intLoginService.updateStatus(loginStatus,newPhone,company,loginTime);
 							}else {
-								num = intLoginService.updateStatus1(loginStatus,phone,company,loginTime,fatherId); 
+								num = intLoginService.updateStatus1(loginStatus,newPhone,company,loginTime,fatherId); 
 							}	
 						    
 						}
 						if (num == 1) {	
-							int id = intLoginService.getId(phone,company); //获取该用户的id
+							int id = intLoginService.getId(newPhone,company); //获取该用户的id
 							map.put("msg", "用户登录成功，登录状态修改成功");
 							map.put("SCode", "200");
 							map.put("loginStatus", loginStatus);
@@ -280,10 +286,12 @@ public class LoginController {
 				if("1".equals(loginStatus)) {
 					String userId = intLoginService.getUserId(openId,company);
 					String phone = intLoginService.getPhone(openId,company);
+					PhoneDeal phoneDeal = new PhoneDeal();			
+					String newPhone = phoneDeal.decryption(phone);
 					map.put("msg","该用户已登录");
 					map.put("code","1");
 					map.put("userId", userId);
-					map.put("phone", phone);
+					map.put("phone", newPhone);
 				}
 			}
 
