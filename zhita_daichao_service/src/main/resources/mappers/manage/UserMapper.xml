@@ -318,7 +318,7 @@
 	</select>
 	<!-- 后台管理    通过手机号和渠道名称模糊查询用户总数量  -->
 	<select id="pageCountByPhoneAndSourceName" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(phone) from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName in
+		select count(phone) from user u inner join source s on u.sourceId=s.id where u.phone=#{arg0} and s.sourceName in
 		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
             #{item}  
        	</foreach>  
@@ -344,7 +344,7 @@
 	</select>
 	<!-- 后台管理    通过手机号、渠道名称和注册时间模糊查询用户总数量  -->
 	<select id="pageCountByPhoneSourceNameAndRegistrationtime" parameterType="java.lang.String" resultType="java.lang.Integer">
-     	select count(phone) from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName in
+     	select count(phone) from user u inner join source s on u.sourceId=s.id where u.phone=#{arg0} and s.sourceName in
 		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach> 
@@ -405,7 +405,7 @@
 	</select>
 	<!-- 后台管理   根据手机号和渠道名称进行模糊查询，含分页 -->
 	<select id="queryByPhoneAndSourceName" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName in
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id where u.phone=#{arg0} and s.sourceName in
 		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach>  
@@ -435,7 +435,7 @@
 	</select>
 	<!-- 后台管理   根据手机号、渠道名称和注册时间进行模糊查询，含分页 -->
 	<select id="queryByPhoneSourceNameAndRegistrationtime" resultMap="userSource">
-		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName in
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u inner join source s on u.sourceId=s.id where u.phone=#{arg0} and s.sourceName in
 		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach>  
@@ -475,7 +475,7 @@
 	</select>
 	<!-- 后台管理   根据手机号,渠道名称和公司名查询出所有用户的手机号 -->
 	<select id="queryAllPhoneByPhoneSouNameLike" resultType="com.zhita.model.manage.User">
-		select u.id,u.phone from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName in
+		select u.id,u.phone from user u inner join source s on u.sourceId=s.id where u.phone=#{arg0} and s.sourceName in
 		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach>  
@@ -490,7 +490,7 @@
 	</select>
 	<!-- 后台管理   根据手机号,渠道名称,注册时间和公司名查询出所有用户的手机号 -->
 	<select id="queryAllPhoneByPhoneSouNameTimeLike" resultType="com.zhita.model.manage.User">
-		select u.id,u.phone from user u inner join source s on u.sourceId=s.id where u.phone like #{arg0}"%" and s.sourceName in
+		select u.id,u.phone from user u inner join source s on u.sourceId=s.id where u.phone=#{arg0} and s.sourceName in
 		<foreach collection="arg1" item="item" open="(" separator="," close=")">  
             #{item}  
         </foreach> 

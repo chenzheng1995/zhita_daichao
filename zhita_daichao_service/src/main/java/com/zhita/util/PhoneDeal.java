@@ -154,4 +154,5 @@ public class PhoneDeal {
 		phone = phoneDeal.decryption(phone);
 		System.out.println(phone);
 	}
+
 }

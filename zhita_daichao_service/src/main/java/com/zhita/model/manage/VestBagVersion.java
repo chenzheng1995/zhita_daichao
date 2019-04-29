@@ -4,6 +4,8 @@ public class VestBagVersion {
     private Integer id;
 
     private Integer vestbagid;
+    
+    private String vestbagname;
 
     private String version;
 
@@ -39,7 +41,15 @@ public class VestBagVersion {
         this.vestbagid = vestbagid;
     }
 
-    public String getVersion() {
+    public String getVestbagname() {
+		return vestbagname;
+	}
+
+	public void setVestbagname(String vestbagname) {
+		this.vestbagname = vestbagname;
+	}
+
+	public String getVersion() {
         return version;
     }
 
