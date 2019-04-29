@@ -45,5 +45,10 @@ public interface UserService {
   	public List<String> queryDayFenByTime(Integer userId,String LikeTime1,String LikeTime2);
   	//后台管理---根据userId和传过来的年  月  日(例如：2019-01-01) 获取当前用户这一天的足迹数量
   	public int queryAmount(Integer userId,String LikeTime1,String LikeTime2);
+
+	String getUserPhone(int startId1);
+
+	void updatePhone(int startId1, String newPhone);
+
 	
 }

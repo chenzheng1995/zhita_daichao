@@ -284,4 +284,16 @@ public class UserServiceImp implements UserService {
   		int amount=userMapper.queryAmount(userId, LikeTime1, LikeTime2);
   		return amount;
   	}
+
+	@Override
+	public String getUserPhone(int startId1) {
+		String phone = userMapper.getUserPhone(startId1);
+		return phone;
+	}
+
+	@Override
+	public void updatePhone(int startId1, String newPhone) {
+		userMapper.updatePhone(startId1,newPhone);
+		
+	}
 }

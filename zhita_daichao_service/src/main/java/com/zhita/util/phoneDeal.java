@@ -9,7 +9,7 @@ public class phoneDeal {
 /*
  * 将手机号码进行加密，加密流程为：把手机号码的第一位和第七位交换，第二位和第八位交换，
  * 第三位和第九位交换，第四位和第十位交换，第五位和第十一位交换，第六位保持不变。
- * 13个位置上除了0和9，其他的都要加1
+ * 13个位置上除了0和9，其他的都要加1,8也不用加1,因为他要替换成“x”,
  */
 	public String encryption(String oldPhone) { 
 		   int intPhone = 0;
@@ -63,11 +63,15 @@ public class phoneDeal {
 	       list.add(shiyi);
 
 	       for (String string : list) {
-	    	intPhone = Integer.parseInt(string);
-			if(intPhone>0&&intPhone<10) {
-				intPhone=intPhone+1;
+	    	   if(string.equals("8")) {
+	    		   string="x";
+	    	   }else {
+	   	    	intPhone = Integer.parseInt(string);
+				if(intPhone>0&&intPhone<9) {
+					intPhone=intPhone+1;
+				}
+				string = intPhone+"";
 			}
-			string = intPhone+"";
 			newPhone = newPhone.append(string);
 			encryptionPhone = newPhone.toString();
 		}
@@ -127,11 +131,15 @@ public class phoneDeal {
 	       list.add(shiyi);
 
 	       for (String string : list) {
+	    	   if(string.equals("x")) {
+	    		   string="8";
+	    	   }else {
 	    	intPhone = Integer.parseInt(string);
-			if(intPhone>0&&intPhone<10) {
+			if(intPhone>0&&intPhone<9) {
 				intPhone=intPhone-1;
 			}
 			string = intPhone+"";
+	    	   }
 			newPhone = newPhone.append(string);
 			encryptionPhone = newPhone.toString();
 		}
@@ -141,7 +149,7 @@ public class phoneDeal {
 	
 	public static void main(String[] args) {
 		phoneDeal phoneDeal = new phoneDeal();
-		String phone = phoneDeal.encryption("13486070402");
+		String phone = phoneDeal.encryption("17853514010");
 		System.out.println(phone);
 		phone = phoneDeal.decryption(phone);
 		System.out.println(phone);

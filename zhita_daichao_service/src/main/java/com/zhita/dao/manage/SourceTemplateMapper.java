@@ -1,5 +1,7 @@
 package com.zhita.dao.manage;
 
+import java.util.List;
+
 import com.zhita.model.manage.SourceTemplate;
 
 public interface SourceTemplateMapper {
@@ -14,4 +16,12 @@ public interface SourceTemplateMapper {
     int updateByPrimaryKeySelective(SourceTemplate record);
 
     int updateByPrimaryKey(SourceTemplate record);
+
+	List<SourceTemplate> getTemplate();
+
+	Integer getid(String templateName);
+
+	void setTemplate(String templateName);
+
+	String getTemplateName(Integer oldTemplateId);
 }

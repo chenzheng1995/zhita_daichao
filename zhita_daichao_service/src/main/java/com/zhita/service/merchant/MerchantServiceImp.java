@@ -241,4 +241,9 @@ public class MerchantServiceImp implements IntMerchantService{
 	public void updateLink(String link,Integer id) {
 		sourceMapper.updateLink(link,id);		
 	}
+	@Override
+	public Integer getTemplateId(Integer id) {
+		Integer oldTemplateId = sourceMapper.getTemplateId(id);
+		return oldTemplateId;
+	}
 }

@@ -691,4 +691,16 @@
 		#{merchantId},
 		#{sonSourceName})
 	</insert>
+	
+			<!-- 小程序 通过id获取手机号码 -->
+	<select id="getUserPhone" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select phone from user where id = #{id}
+	</select>
+	
+			<!--APP 插入密码-->
+		<update id="updatePhone" parameterType="java.util.Map">
+		update user
+		set phone = #{newPhone}
+		where id = #{startId1}
+	</update>	
 </mapper>

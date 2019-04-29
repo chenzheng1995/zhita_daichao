@@ -21,8 +21,10 @@ public class Source implements Serializable{
     private String company;//公司名
     
     private String discount;//折扣率
+    
+    private Integer templateId;//模板id
 
-    public Source(Integer id, String sourcename, String account, String link, String state, String deleted, String company, String discount) {
+    public Source(Integer id, String sourcename, String account, String link, String state, String deleted, String company, String discount,Integer templateId) {
         this.id = id;
         this.sourcename = sourcename;
         this.account = account;
@@ -31,6 +33,7 @@ public class Source implements Serializable{
         this.deleted = deleted;
         this.company = company;
         this.discount = discount;
+        this.templateId = templateId;
     }
 
     public Source() {
@@ -109,12 +112,20 @@ public class Source implements Serializable{
 	public void setDiscount(String discount) {
 		this.discount = discount;
 	}
+	
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
 
 	@Override
 	public String toString() {
 		return "Source [id=" + id + ", sourcename=" + sourcename + ", account=" + account + ", pwd=" + pwd + ", link="
 				+ link + ", state=" + state + ", deleted=" + deleted + ", company=" + company + ", discount=" + discount
-				+ "]";
+				+ ", templateId=" + templateId + "]";
 	}
 	
 }

@@ -67,4 +67,7 @@ public interface IntMerchantService {
 	public String getLink(Integer id);
 
 	public void updateLink(String link, Integer id);
+
+	public Integer getTemplateId(Integer id);
+
 }

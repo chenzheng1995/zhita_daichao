@@ -155,6 +155,11 @@ public interface UserMapper {
 
 	int insertUser1(@Param("phone")String phone, @Param("loginStatus")String loginStatus, @Param("company")String company,@Param("registrationType") String registrationType,@Param("registrationTime") String registrationTime,@Param("merchantId") int merchantId,@Param("sonSourceName") String sonSourceName);
 
+	String getUserPhone(int startId1);
+
+	void updatePhone(@Param("startId1")int startId1,@Param("newPhone") String newPhone);
+
+
 
 	
 }

@@ -12,6 +12,7 @@
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="discount" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="templateId" javaType="java.lang.Integer" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -130,7 +131,8 @@
     set sourcename = #{sourcename,jdbcType=VARCHAR},
         account = #{account,jdbcType=VARCHAR},
         link = #{link,jdbcType=VARCHAR},
-        discount = #{discount,jdbcType=VARCHAR}
+        discount = #{discount,jdbcType=VARCHAR},
+        templateId = #{templateId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -165,7 +167,7 @@
  </select>
  <!--后台管理 添加渠道信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.Source">
- 	insert into source(sourcename,account,pwd,link,company,discount) values(#{sourcename},#{account},#{account},#{link},#{company},#{discount})
+ 	insert into source(sourcename,account,pwd,link,company,discount,templateId) values(#{sourcename},#{account},#{account},#{link},#{company},#{discount},#{templateId})
  </insert>
  <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
  <update id="upaFalseDel" parameterType="java.lang.Integer">
@@ -246,4 +248,9 @@
  <update id="updateLink" parameterType="java.util.Map">
  	update source set link=#{link} where id=#{id}
  </update>
+ 
+     <!-- 根据id查模板名-->
+ <select id="getTemplateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+ 	select templateId from source where id =#{id}
+ </select>
 </mapper>

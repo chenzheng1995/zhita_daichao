@@ -70,4 +70,26 @@
       templateImage = #{templateimage,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  
+  <!-- ========================================================= -->
+    <!-- 查询模板的所有信息 -->
+    <select id="getTemplate" resultType="java.util.Map">
+    select id,name from source_template
+  </select>
+  
+      <!-- 根据模板的名字获取id -->
+    <select id="getid" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select id from source_template where name = #{templateName}
+  </select>
+  
+   <insert id="setTemplate" parameterType="com.zhita.model.manage.SourceTemplate">
+    insert into source_template (name) values (#{templateName})
+  </insert>
+  
+        <!-- 根据id获取模板的名字 -->
+    <select id="getTemplateName" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select name from source_template where id = #{oldTemplateId}
+  </select>
 </mapper>

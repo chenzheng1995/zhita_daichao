@@ -93,4 +93,6 @@ public interface SourceMapper {
 	String getLink(Integer id);
 
 	void updateLink(@Param("link")String link,@Param("id") Integer id);
+
+	Integer getTemplateId(Integer id);
 }

@@ -1,10 +1,12 @@
 package com.zhita.controller.sourcetemplate;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.zhita.model.manage.SourceTemplate;
 import com.zhita.service.sourcetemplate.SourceTemplateService;
 import com.zhita.util.FolderUtil;
 import com.zhita.util.ZipUtil;
@@ -31,7 +34,7 @@ public class SourceTemplateController {
 		SourceTemplateService sourceTemplateService;
 
 		
-		//上传模板的文件夹		
+		//添加或修改模板		
 		/**
 		 * 
 		 * @param file 模板的压缩包
@@ -42,6 +45,10 @@ public class SourceTemplateController {
 		@ResponseBody
 		@Transactional
 		public void UploadFolder(MultipartFile file,String templateName) throws IOException {
+			Integer number = sourceTemplateService.getid(templateName);
+			if(number==null) {
+				sourceTemplateService.setTemplate(templateName);
+			}
             FolderUtil folderUtil = new FolderUtil();
 		    File toFile = null;
 		    if(file.getSize()<=0){
@@ -61,6 +68,45 @@ public class SourceTemplateController {
            			
 		}
 		
+		
+		
+		
+		//根据模板的名称获取缩略图		
+		/**
+		 * 
+		 * 
+		 * @param templateName 模板的名字
+		 * @throws IOException
+		 */		
+		@RequestMapping("/getThumbnail")
+		@ResponseBody
+		@Transactional
+		public String getThumbnail(String templateName){
+			String ThumbnailPath = "http://tg.rong51dai.com/promote/"+templateName+"/image.jpg";
+			return ThumbnailPath;
+           			
+		}
+		
+		
+		//获取模板的所有信息
+		/**
+		 * 
+		 * 
+		 * @param templateName 模板的名字
+		 * @throws IOException
+		 */		
+		@RequestMapping("/getTemplate")
+		@ResponseBody
+		@Transactional
+		public List<SourceTemplate> getTemplate(){
+			List<SourceTemplate> list = sourceTemplateService.getTemplate ();
+			return list;          			
+		}
+		
+		
+		
+		
+		//MultipartFile转File的方法
 		public static void inputStreamToFile(InputStream ins, File file) {
 		    try {
 		        OutputStream os = new FileOutputStream(file);

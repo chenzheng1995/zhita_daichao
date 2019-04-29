@@ -20,6 +20,7 @@ import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
+import com.zhita.service.sourcetemplate.SourceTemplateService;
 import com.zhita.util.FolderUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
@@ -33,6 +34,9 @@ public class MerchantController {
 	private IntMerchantService intMerchantService;
 	@Autowired
 	IntLoginService loginService;
+	
+	@Autowired
+	SourceTemplateService sourceTemplateService;
 	
 	
 	//后台管理---查询渠道表所有信息，含分页
@@ -220,12 +224,13 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/AddAll")
-    public int AddAll(Source source) throws IOException{
+    public int AddAll(Source source,String templateName) throws IOException{
+		Integer templateId = sourceTemplateService.getid(templateName);
+		source.setTemplateId(templateId);
 		FolderUtil FolderUtil = new FolderUtil();
-		FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\rong51-H5","E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
+		FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
 		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
-		int num=intMerchantService.addAll(source);//添加渠道表信息
-		
+		int num=intMerchantService.addAll(source);//添加渠道表信息		
 		ManageLogin manageLogin=new ManageLogin();
 		manageLogin.setCompany(source.getCompany());
 		manageLogin.setSourcename(source.getSourcename());
@@ -245,12 +250,23 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateSource")
-    public int updateSource(Source source,String oldSourceName) throws IOException{
+    public int updateSource(Source source,String oldSourceName,String templateName) throws IOException{
 		FolderUtil FolderUtil = new FolderUtil();
+		if(!source.getSourcename().equals(oldSourceName)) {		
 		FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName,"E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
 		FolderUtil.deleteDirectory("E:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName);//把旧的文件夹删掉
 		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
 		System.out.println(source);
+		}
+		Integer oldTemplateId = intMerchantService.getTemplateId(source.getId());
+		String oldTemplateName = sourceTemplateService.getTemplateName(oldTemplateId);
+		Integer templateId = sourceTemplateService.getid(templateName);
+		source.setTemplateId(templateId);
+		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");	
+		if(!oldTemplateName.equals(templateName)) {
+			FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());			
+		}
+	
 		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
 		int num=intMerchantService.updateSource(source);
 		intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
