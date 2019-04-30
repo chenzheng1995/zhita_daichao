@@ -5,7 +5,6 @@ import java.util.List;
 
 public class PhoneDeal {
 
-
 	
 /*
  * 将手机号码进行加密，加密流程为：把手机号码的第一位和第七位交换，第二位和第八位交换，

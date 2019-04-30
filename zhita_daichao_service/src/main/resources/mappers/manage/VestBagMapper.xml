@@ -7,6 +7,8 @@
       <arg column="vestBagName" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="oneSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="twoSourceName" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -84,7 +86,7 @@
   
 <!--      根据马甲包名和公司名查询id -->
     <select id="getVestBag" parameterType="java.lang.String" resultType="java.lang.Integer">
-    select id from vest_bag where vestBagName = #{vestBagName} and company = #{company} and deleted = '0'
+    select id from vest_bag where vestBagName = #{vestBagName}  and company = #{company} and deleted = '0'
   </select>
   
   	<insert id="setVestBag" parameterType="java.lang.String">
