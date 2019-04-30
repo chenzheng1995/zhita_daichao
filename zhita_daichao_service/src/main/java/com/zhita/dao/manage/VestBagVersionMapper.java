@@ -4,11 +4,16 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.zhita.model.manage.VestBag;
 import com.zhita.model.manage.VestBagVersion;
 
 public interface VestBagVersionMapper {
     int deleteByPrimaryKey(Integer id);
-
+    
+    //后台管理---先查询出vest_bag表所有信息
+    List<VestBag> queryAll(String company);
+    
+    //后台管理---添加vest_bag_version表信息
     int insert(VestBagVersion record);
 
     int insertSelective(VestBagVersion record);

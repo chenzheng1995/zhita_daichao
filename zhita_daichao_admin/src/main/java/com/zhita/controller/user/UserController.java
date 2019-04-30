@@ -25,6 +25,7 @@ import com.zhita.service.user.UserService;
 import com.zhita.util.DateListUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
+import com.zhita.util.PhoneDeal;
 import com.zhita.util.Timestamps;
 import com.zhita.util.TuoMinUtil;
 
@@ -143,7 +144,9 @@ public class UserController {
 	    	
     	}
     	TuoMinUtil tuoMinUtil=new TuoMinUtil();//将用户模块的手机号进行脱名
+    	PhoneDeal phoneDeal=new PhoneDeal();//将用户手机号进行解密
     	for (int i = 0; i < listto.size(); i++) {
+    		listto.get(i).setPhone(phoneDeal.decryption(listto.get(i).getPhone()));
     		String tuomingphone=tuoMinUtil.mobileEncrypt(listto.get(i).getPhone());
     		listto.get(i).setPhone(tuomingphone);
 			

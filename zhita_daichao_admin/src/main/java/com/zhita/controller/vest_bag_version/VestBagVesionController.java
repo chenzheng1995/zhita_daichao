@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhita.model.manage.Source;
+import com.zhita.model.manage.VestBag;
 import com.zhita.model.manage.VestBagVersion;
 import com.zhita.service.vestbugversion.VestBugVersionService;
 import com.zhita.util.ListPageUtil;
@@ -59,6 +61,34 @@ public class VestBagVesionController {
     @RequestMapping("/updateSouceDadSon")
     public int upaVersion(VestBagVersion vestBagVersion){
     	int num=vestBugVersionService.upaVersion(vestBagVersion);
+    	return num;
+    }
+  //后台管理---先查询出vest_bag表所有信息
+    @ResponseBody
+    @RequestMapping("/queryAll")
+    public List<VestBag> queryAll(String string){
+    	string = string.replaceAll("\"", "").replace("[","").replace("]","");
+		String [] company= string.split(",");
+   	    List<VestBag> list1=new ArrayList<>();//存渠道的集合
+   	    
+	   	 if(company.length==1){
+	   		list1=vestBugVersionService.queryAll(company[0]);
+	   	 }
+	   	 else if(company.length>1){
+	   		List<VestBag> list1for=null;
+	   		for (int i = 0; i < company.length;i++) {
+	   			list1for=vestBugVersionService.queryAll(company[i]);
+    	    	list1.addAll(list1for);
+	   		}
+	   	}
+	   	 return list1;
+    }
+    
+    //后台管理---添加vest_bag_version表信息
+    @ResponseBody
+    @RequestMapping("insert")
+    public int insert(VestBagVersion record){
+    	int num=vestBugVersionService.insert(record);
     	return num;
     }
 

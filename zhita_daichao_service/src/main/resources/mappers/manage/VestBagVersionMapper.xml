@@ -17,7 +17,14 @@
     <select id="getVersion" parameterType="java.lang.Integer" resultType="java.lang.String">
     select version from vest_bag_version where vestBagId =#{id} and deleted = '0';
   </select>
-  
+  <!--后台管理     先查询出vest_bag表所有信息  -->
+  <select id="queryAll" parameterType="java.lang.String" resultType="com.zhita.model.manage.VestBag">
+  	select id,vestBagName,company from vest_bag where deleted=0 and company=#{arg0}
+  </select>
+  <!--后台管理     添加vest_bag_version表信息 -->
+  <insert id="insert" parameterType="com.zhita.model.manage.VestBagVersion">
+  	insert into vest_bag_version(vestBagId,version,company) values(#{vestbagid},#{version},#{company})
+  </insert>
    <!--后台管理       查询vest_bag_version表所有的信息-->
  <select id="queryAllVersion" parameterType="java.lang.String" resultType="com.zhita.model.manage.VestBagVersion">
  	select vb.vestBagName,vbv.version,vbv.company from vest_bag_version vbv inner join vest_bag vb on vbv.vestBagId=vb.id where vbv.deleted=0 and vbv.company in

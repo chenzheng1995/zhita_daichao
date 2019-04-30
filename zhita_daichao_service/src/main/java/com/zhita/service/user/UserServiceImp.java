@@ -236,7 +236,7 @@ public class UserServiceImp implements UserService {
 	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		TuoMinUtil tuoMinUtil=new TuoMinUtil();//将用户模块的手机号进行脱名
-		PhoneDeal phoneDeal=new PhoneDeal();
+		PhoneDeal phoneDeal=new PhoneDeal();//将用户手机号进行解密
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setPhone(phoneDeal.decryption(list.get(i).getPhone()));
 			String tuomingphone=tuoMinUtil.mobileEncrypt(list.get(i).getPhone());

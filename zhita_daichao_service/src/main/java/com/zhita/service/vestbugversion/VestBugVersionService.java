@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.zhita.model.manage.VestBag;
 import com.zhita.model.manage.VestBagVersion;
 
 public interface VestBugVersionService {
@@ -15,4 +16,9 @@ public interface VestBugVersionService {
 	public List<VestBagVersion> queryAllVersion(@Param("company") String[] company);
 	//后台管理-----保存修改后的vest_bag_version表信息
 	public int  upaVersion(VestBagVersion vestBagVersion);
+	//后台管理---先查询出vest_bag表所有信息
+    public List<VestBag> queryAll(String company);
+    
+    //后台管理---添加vest_bag_version表信息
+    public int insert(VestBagVersion record);
 }

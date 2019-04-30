@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.VestBagVersionMapper;
+import com.zhita.model.manage.VestBag;
 import com.zhita.model.manage.VestBagVersion;
 
 @Service
@@ -35,4 +36,15 @@ public class VestBugVersionServiceImp implements VestBugVersionService{
 		int num=vestBagVersionMapper.upaVersion(vestBagVersion);
 		return num;
 	}
+	//后台管理---先查询出vest_bag表所有信息
+    public List<VestBag> queryAll(String company){
+    	List<VestBag> list=vestBagVersionMapper.queryAll(company);
+    	return list;
+    }
+    
+    //后台管理---添加vest_bag_version表信息
+    public int insert(VestBagVersion record){
+    	int num=vestBagVersionMapper.insert(record);
+    	return num;
+    }
 }
