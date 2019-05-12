@@ -12,11 +12,11 @@
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="discount" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="templateId" javaType="java.lang.Integer" jdbcType="VARCHAR" />
+      <arg column="templateId" javaType="java.lang.Integer" jdbcType="INTEGER" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, sourcename, account,pwd, link, state, deleted,company,discount
+    id, sourcename, account,pwd, link, state, deleted,company,discount,templateId
   </sql>
   <!-- 后台管理  通过渠道id，查询渠道信息 -->
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Source">
