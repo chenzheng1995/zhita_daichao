@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.CreditCard1Mapper">
+  <!-- 缓存类配置 -->
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.CreditCard1">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="intro" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="loanLimit" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trademark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isStick" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sort" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="applicationNumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="busClaId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="loanLimitSmall" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="loanLimitBig" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="cycle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="interestRate" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="applicationRequirements" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applicationProcess" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="specialInstructions" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="successRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="lendingRate" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="registerLink" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />    
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
+    state, busClaId, loanLimitSmall, loanLimitBig, cycle, interestRate, 
+    applicationRequirements, applicationProcess, specialInstructions, successRate, lendingRate, 
+    registerLink, prepaidAmount, deleted, applications,company
+  </sql>
+  <!--后台管理  通过主键id查询出贷款商家信息  -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.CreditCard1">
+    select  id, businessName, intro, loanLimit, trademark, isStick, sort, applicationNumber, 
+    state, busClaId as busClaIdString, loanLimitSmall, loanLimitBig, cycle, interestRate, 
+    applicationRequirements, applicationProcess, specialInstructions, successRate, lendingRate, 
+    registerLink, prepaidAmount, deleted, applications,company
+    from credit_card1
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 后台管理   添加贷款商家信息 -->
+  <insert id="insert" parameterType="com.zhita.model.manage.CreditCard1">
+    insert into credit_card1 (businessName, intro, 
+      loanLimit, trademark, isStick,
+      sort, applicationNumber, 
+      busClaId, loanLimitSmall, 
+      loanLimitBig, cycle, interestRate, 
+      applicationRequirements, applicationProcess, 
+      specialInstructions, successRate, lendingRate, 
+      registerLink, prepaidAmount, 
+      applications,company)
+    values (#{businessname,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
+      #{loanlimit,jdbcType=VARCHAR}, #{trademark,jdbcType=VARCHAR}, #{isstick,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{applicationnumber,jdbcType=INTEGER},
+      #{busClaIdString,jdbcType=VARCHAR}, #{loanlimitsmall,jdbcType=DECIMAL}, 
+      #{loanlimitbig,jdbcType=DECIMAL}, #{cycle,jdbcType=VARCHAR}, #{interestrate,jdbcType=DECIMAL}, 
+      #{applicationrequirements,jdbcType=VARCHAR}, #{applicationprocess,jdbcType=VARCHAR}, 
+      #{specialinstructions,jdbcType=VARCHAR}, #{successrate,jdbcType=INTEGER}, #{lendingrate,jdbcType=VARCHAR}, 
+      #{registerlink,jdbcType=VARCHAR}, #{prepaidamount,jdbcType=DECIMAL},
+      #{applications,jdbcType=INTEGER},#{company,jdbcType=INTEGER})
+  </insert>
+  
+  <!--后台管理   通过传过来的贷款商家对象，对当前对象进行修改保存  -->
+  <update id="updateLoansBusinesses" parameterType="com.zhita.model.manage.CreditCard1">
+    update credit_card1
+    set businessName = #{businessname,jdbcType=VARCHAR},
+      intro = #{intro,jdbcType=VARCHAR},
+      trademark = #{trademark,jdbcType=VARCHAR},
+      loanLimit = #{loanlimit,jdbcType=VARCHAR},
+      isStick = #{isstick,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      busClaId = #{busClaIdString,jdbcType=VARCHAR},
+      loanLimitSmall = #{loanlimitsmall,jdbcType=DECIMAL},
+      loanLimitBig = #{loanlimitbig,jdbcType=DECIMAL},
+      cycle = #{cycle,jdbcType=VARCHAR},
+      interestRate = #{interestrate,jdbcType=DECIMAL},
+      applicationRequirements = #{applicationrequirements,jdbcType=VARCHAR},
+      applicationProcess = #{applicationprocess,jdbcType=VARCHAR},
+      specialInstructions = #{specialinstructions,jdbcType=VARCHAR},
+      successRate = #{successrate,jdbcType=INTEGER},
+      lendingRate = #{lendingrate,jdbcType=VARCHAR},
+      registerLink = #{registerlink,jdbcType=VARCHAR},
+      prepaidAmount = #{prepaidamount,jdbcType=DECIMAL}
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
+  <select id="queryAllAdmain" resultType="com.zhita.model.manage.CreditCard1">
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from credit_card1 where deleted='0' and company=#{arg0} order by state asc,isstick desc,sort asc limit #{arg1},#{arg2}
+  </select>
+  <!-- 后台管理  查询贷款商家部分字段信息，不含分页 -->
+  <select id="queryAllAdmain1" resultType="com.zhita.model.manage.CreditCard1">
+  	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from credit_card1 where deleted='0' and company=#{arg0} order by state asc,isstick desc,sort asc
+  </select>
+  <!-- 后台管理 用于获取总页数 -->
+ <select id="pageCount" resultType="java.lang.Integer">
+   select count(businessName) from credit_card1 where deleted='0' and company = #{company} 
+ </select>
+   <!-- 后台管理 用于模糊查询获取总页数 -->
+ <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select count(businessName) from credit_card1 where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1}
+ </select>
+ <!-- 后台管理  通过商家名称模糊查询，并且有分页功能 -->
+ <select id="queryByNameLike" resultType="com.zhita.model.manage.CreditCard1">
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from credit_card1 where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state asc,isstick desc,sort asc limit #{arg2},#{arg3}
+ </select>
+ <!-- 后台管理  通过商家名称模糊查询，没有分页功能 -->
+ <select id="queryByNameLike1" resultType="com.zhita.model.manage.CreditCard1">
+ 	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from credit_card1 where deleted='0' and businessName like "%"#{arg0}"%" and company=#{arg1} order by state asc,isstick desc,sort asc
+ </select>
+ <!-- 后台管理  通过商家主键id修改假删除字段的值 -->
+ <update id="upaFalseDel" parameterType="java.lang.Integer">
+ 	update credit_card1 set deleted='1' where id=#{id}
+ </update>
+ <!-- 后台管理  修改贷款商家状态 为开启-->
+ <update id="upaStateOpen" parameterType="java.lang.Integer">
+ 	update credit_card1 set state='1' where id=#{id}
+ </update>
+  <!-- 后台管理  修改贷款商家状态 为关闭-->
+ <update id="upaStateClose" parameterType="java.lang.Integer">
+ 	update credit_card1 set state='2' where id=#{id}
+ </update>
+ <!-- 获取商品的所有信息 -->
+ <select id="getLoansBusinesses" resultType="map" parameterType="java.lang.String">
+ 	select id,businessname,trademark,intro,loanlimitsmall,loanlimitbig,applicationRequirements,applicationProcess,specialInstructions,successRate,lendingRate,registerLink registerlink,interestRate interestrate,cycle,state,applications from credit_card1 where deleted='0' and businessName = #{businessName} and company = #{company} limit 1
+ </select>
+ <!-- 后台管理  查询出贷款商家表所有的商家名称，将所有的商家名称存入一个集合中 -->
+ <select id="queryAllBusinessName" resultType="java.lang.String">
+ 	select businessName from credit_card1 where company=#{company} and deleted='0'
+ </select>
+ <!-- 后台管理  通过名称模糊查询出所有的商家名称，将所有的商家名称存入一个集合中 -->
+ <select id="queryAllBusinessNameByLike" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select businessName from credit_card1 where businessName like "%"#{arg0}"%" and company=#{arg1} and deleted=0
+ </select>
+ <!-- 后台管理    根据商家名称更新被申请次数字段 -->
+ <update id="upaApplicationNumber">
+ 	update credit_card1 set applicationNumber=#{arg0} where businessName=#{arg1}
+ </update>
+ <!--后台管理  根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间 -->
+ <select id="queryTime" parameterType="java.lang.String" resultType="java.lang.String">
+ 	select footprinttime from commodity_footprint where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ </select>
+ <!--后台管理   根据商品名称和传过来的年  月  日(例如：2019-01-01) 获取当前甲方商家这一天的足迹数量  -->
+ <select id="queryAmount"  parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select count(DISTINCT f.userId) from commodity_footprint f where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ </select>
+ 
+   <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->
+ <select id="getTrademark" resultType="java.lang.String" parameterType="java.lang.Integer">
+ 	select trademark  from credit_card1 where id = #{id}
+ </select>
+ 	<!-- 后台管理    根据id  修改商家的排序字段 -->
+ 	<update id="upaSortByLoanId" parameterType="java.lang.Integer">
+ 		update credit_card1 set sort=#{arg0} where id=#{arg1}
+ 	</update>
+ 
+   <!-- 根据公司名查询所有的贷款商家的名字 -->
+ <select id="BusinessesName" resultType="com.zhita.model.manage.CreditCard1" parameterType="java.lang.String">
+ 	select businessName  from credit_card1 where company = #{company} and deleted = 0;
+ </select>
+ 
+    <!-- 获取所有的甲方的名称 -->
+ <select id="getTwoFirm" resultType="com.zhita.model.manage.CreditCard1">
+ 	select businessName,id  from credit_card1 where company = #{company} and deleted = 0;
+ </select>
+ 
+   <!-- 后台管理 用于获取总页数 -->
+ <select id="pageCount2" resultType="java.lang.Integer">
+   select count(businessName) from credit_card1 where deleted='0' and company = #{company} and state = '1'
+ </select>
+ 
+    <!-- 根据id查出甲方名称 -->
+ <select id="getBusinessesName" parameterType="java.util.Map" resultType="java.lang.String">
+   select businessName from credit_card1 where id = #{businessesId} and company =#{company}
+ </select>
+ <!-- 小程序  查询贷款商家部分字段信息，含分页 -->
+  <select id="queryAllAdmainpro" parameterType="map" resultType="com.zhita.model.manage.CreditCard1">
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,applications,state from credit_card1 where deleted='0' and company = #{company} and state = 1 order by isStick desc,sort asc limit #{page},#{pageSize}
+  </select>
+</mapper>

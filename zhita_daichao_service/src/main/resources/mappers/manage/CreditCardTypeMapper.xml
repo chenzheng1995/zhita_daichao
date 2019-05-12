@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhita.dao.manage.CreditCardTypeMapper">
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.CreditCardType">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessClassification" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="amount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="icon" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="BaseResultMap1" type="com.zhita.model.manage.CreditCard1">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="businessName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="intro" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="loanLimit" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trademark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isStick" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sort" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="applicationNumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="busClaId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="loanLimitSmall" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="loanLimitBig" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="cycle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="interestRate" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="applicationRequirements" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applicationProcess" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="specialInstructions" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="successRate" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="lendingRate" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="registerLink" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="prepaidAmount" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="applications" javaType="java.lang.Integer" jdbcType="INTEGER" />    
+      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessClassification, amount,company,icon
+  </sql>
+   <sql id="Base_Column_List1">
+    lobus.id, lobus.businessName, lobus.intro, lobus.loanLimit, lobus.trademark, lobus.isStick, lobus.sort, lobus.applicationNumber, 
+   lobus.state,lobus.busClaId, lobus.loanLimitSmall, lobus.loanLimitBig, lobus.cycle, lobus.interestRate, 
+    lobus.applicationRequirements, lobus.applicationProcess, lobus.specialInstructions, lobus.successRate, lobus.lendingRate, 
+    lobus.registerLink, lobus.prepaidAmount, lobus.deleted, lobus.applications,lobus.company
+  </sql>
+  <!-- 后台管理  通过主键id查询出贷款分类信息 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from credit_card_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 后台管理  通过传过来的贷款分类对象，对当前对象进行修改保存 -->
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.CreditCardType">
+    update credit_card_type
+    set businessClassification = #{businessClassification,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      icon = #{icon,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!--后台管理  查询贷款分类所有信息，含分页 -->
+  <select id="queryAllPage" resultType="com.zhita.model.manage.CreditCardType">
+  	select 
+   	 <include refid="Base_Column_List" />
+     from credit_card_type where company=#{arg0} limit #{arg1},#{arg2}
+  </select>
+    <!--后台管理  查询贷款分类所有信息，不含分页 -->
+  <select id="queryAllNoPage" resultType="com.zhita.model.manage.CreditCardType">
+  	select 
+   	 <include refid="Base_Column_List" />
+     from credit_card_type where company=#{arg0}
+  </select>
+  <!-- 后台管理 用于获取总页数 -->
+ <select id="pageCount" resultType="java.lang.Integer">
+   select count(businessClassification) from credit_card_type where company=#{arg0}
+ </select>
+   <!-- 后台管理 用于获取模糊查询总页数 -->
+ <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
+   select count(businessClassification) from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1}
+ </select>
+ <!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
+ <select id="queryByLike" resultType="com.zhita.model.manage.CreditCardType">
+ 	select 
+   	 <include refid="Base_Column_List" />
+    from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+ </select>
+  <!-- 后台管理 模糊查询贷款分类信息没有分页功能 -->
+ <select id="queryByLike1" resultType="com.zhita.model.manage.CreditCardType">
+ 	select 
+   	 <include refid="Base_Column_List" />
+    from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1}
+ </select>
+ <!-- 后台管理   添加贷款分类信息 -->
+ <insert id="addAll" parameterType="com.zhita.model.manage.CreditCardType">
+ 	insert into credit_card_type(businessClassification,amount,company,icon) values(#{businessClassification},#{amount},#{company},#{icon})
+ </insert>
+ <!-- 后台管理    查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用-->
+  <select id="queryAllLoanCla" parameterType="java.lang.String" resultType="com.zhita.model.manage.CreditCardType">
+  	select id,businessClassification,company from credit_card_type where company=#{arg0}  
+  </select>
+  <!-- 后台管理     根据分类id   查询当前分类的图标 -->
+  <select id="queryIconById" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select icon from credit_card_type where id=#{arg0}
+  </select>
+<!--  小程序     查询出所有的信用卡分类 -->
+<select id="queryAll" parameterType="java.lang.String" resultType="com.zhita.model.manage.CreditCardType">
+	select id, businessClassification, amount,company,icon from credit_card_type where company in
+	<foreach collection="company" item="item" open="(" separator="," close=")">  
+          #{item}  
+    </foreach>  
+</select>
+ <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
+ <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap1">
+ 	select  
+ 	<include refid="Base_Column_List1" /> 
+ 	from credit_card1 lobus inner join credit_card_type locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} and deleted='0' order by isStick desc limit #{arg1},#{arg2}
+ </select>
+ 
+  <!-- 小程序    用于获取通过贷款分类的名称查询出贷款商家的个数 -->
+ <select id="pageCountByBusinessClassification" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select count(businessName) from credit_card1 lb inner join credit_card_type lc on lb.busClaId=lc.id where lb.busClaId like concat('%',lc.id,'%') and lb.deleted='0' and lb.state='1' and businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
+ </select>
+</mapper>

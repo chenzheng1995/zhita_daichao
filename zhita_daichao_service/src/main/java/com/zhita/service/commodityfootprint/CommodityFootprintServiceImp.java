@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.CommodityFootprintMapper;
 
-
-
 @Service
 public class CommodityFootprintServiceImp implements CommodityFootprintService{
 

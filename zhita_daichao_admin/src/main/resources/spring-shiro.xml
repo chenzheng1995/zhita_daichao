@@ -54,12 +54,28 @@
 				/registe/upaBaocunByPrimaryKey = perms["贷款商家-更新保存"]
 				/registe/upaState = perms["贷款商家-更新状态"]
 				/registe/queryTime = perms["贷款商家-申请统计"]
+				<!-- 信用卡（贷款商家）权限拦截 -->
+				/card1/queryAllAdmin = perms["信用卡1-查询所有"]
+				/card1/queryByNameLike = perms["信用卡1-模糊查询"]
+				/card1/selAllName = perms["信用卡1-添加"]
+				/card1/insertAllAdmin = perms["信用卡1-添加"]
+				/card1/falsedeleteByPrimaryKey = perms["信用卡1-删除"]
+				/card1/selectByPrimaryKey = perms["信用卡1-编辑"]
+				/card1/upaBaocunByPrimaryKey = perms["信用卡1-更新保存"]
+				/card1/upaState = perms["信用卡1-更新状态"]
+				/card1/queryTime = perms["信用卡1-申请统计"]
 				<!-- 贷款分类权限拦截 -->
 				/type/queryAllPage = perms["贷款分类-查询所有"]
 				/type/queryByLike = perms["贷款分类-模糊查询"]
 				/type/insertAllfind = perms["贷款分类-添加"]
 				/type/selectByPrimaryKey = perms["贷款分类-编辑"]
 				/type/updateByPrimaryKey = perms["贷款分类-更新保存"]
+				<!-- 信用卡分类拦截 -->
+				/creditcardtype/queryAllPage = perms["信用卡分类-查询所有"]
+				/creditcardtype/queryByLike = perms["信用卡分类-模糊查询"]
+				/creditcardtype/insertAllfind = perms["信用卡分类-添加"]
+				/creditcardtype/selectByPrimaryKey = perms["信用卡分类-编辑"]
+				/creditcardtype/updateByPrimaryKey = perms["信用卡分类-更新保存"]
 				<!-- 信用卡权限拦截 -->
 				/card/queryAllCard = perms["信用卡-查询所有"]
 				/card/queryByLike = perms["信用卡-模糊查询"]
