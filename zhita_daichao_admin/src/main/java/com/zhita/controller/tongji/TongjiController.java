@@ -191,8 +191,9 @@ public class TongjiController {
 			List<String> listdate=DateListUtil.getDays(dateStart, dateEnd);
 
 			if (company.length == 1) {
+				String companyClient=null;
 				if(company[0].equals("借吧")){
-					company[0]="融51";
+					companyClient="融51";
 				}
 				System.out.println("company.length==1");
 
@@ -209,10 +210,10 @@ public class TongjiController {
 					String cvr = null;
 					for (int j = 0; j <listdate.size(); j++) {
 						int uvi=0;
-						if (redisClientUtil.getSourceClick(company[0] + source + listdate.get(j).replace("-", "/") + "Key") == null) {
+						if (redisClientUtil.getSourceClick(companyClient + source + listdate.get(j).replace("-", "/") + "Key") == null) {
 							uvi = 0;
 						} else {
-							uvi = Integer.parseInt(redisClientUtil.getSourceClick(company[0] + source + listdate.get(j).replace("-", "/") + "Key"));
+							uvi = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source + listdate.get(j).replace("-", "/") + "Key"));
 						}
 						uv=uv+uvi;
 					}
@@ -240,9 +241,10 @@ public class TongjiController {
 
 				List<Source> listsourcefor = null;
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
+				String companyClient=null;
 				for (int j = 0; j < company.length; j++) {
 					if(company[j].equals("借吧")){
-						company[j]="融51";
+						companyClient="融51";
 					}
 					
 					listsourcefor = intMerchantService.queryAll(company[j]);// 查询出所有的渠道信息
@@ -258,10 +260,10 @@ public class TongjiController {
 						String cvr = null;
 						for (int k = 0; k <listdate.size(); k++) {
 							int uvi=0;
-							if (redisClientUtil.getSourceClick(company[j] + source + listdate.get(k).replace("-", "/") + "Key") == null) {
+							if (redisClientUtil.getSourceClick(companyClient + source + listdate.get(k).replace("-", "/") + "Key") == null) {
 								uvi = 0;
 							} else {
-								uvi = Integer.parseInt(redisClientUtil.getSourceClick(company[j] + source + listdate.get(k).replace("-", "/") + "Key"));
+								uvi = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source + listdate.get(k).replace("-", "/") + "Key"));
 							}
 							uv=uv+uvi;
 						}
