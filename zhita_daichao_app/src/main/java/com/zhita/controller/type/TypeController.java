@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.LoanClassification;
-import com.zhita.model.manage.LoanClassificationCopy;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.model.manage.LoansBusinessesCopy;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
