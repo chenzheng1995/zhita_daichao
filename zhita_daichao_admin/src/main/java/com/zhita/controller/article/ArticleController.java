@@ -1,6 +1,7 @@
 package com.zhita.controller.article;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
@@ -23,10 +24,13 @@ import com.zhita.model.manage.News;
 import com.zhita.service.article.ArticleService;
 import com.zhita.service.newstype.NewsTypeService;
 import com.zhita.util.ArticleUtil;
+import com.zhita.util.FileContentUtil;
+import com.zhita.util.FolderUtil;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
 import com.zhita.util.PostAndGet;
 import com.zhita.util.Timestamps;
+import com.zhita.util.WriteFileUtil;
 
 @Controller
 @RequestMapping(value = "/news")
@@ -63,10 +67,13 @@ public class ArticleController {
 		} else {
 			Integer typeId = newsTypeService.getTypeId(typename,company);
 			String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-			OssUtil ossUtil = new OssUtil();
+//			OssUtil ossUtil = new OssUtil();
 			String ossimagePath = null;
-			ByteArrayInputStream InputStringStream = new ByteArrayInputStream(content.getBytes());
-			String ossarticlePath = ossUtil.uploadFile(InputStringStream, "news/article/" + title + ".txt");
+//			ByteArrayInputStream InputStringStream = new ByteArrayInputStream(content.getBytes());
+//			String ossarticlePath = ossUtil.uploadFile(InputStringStream, "news/article/" + title + ".txt");
+			WriteFileUtil writeFileUtil = new WriteFileUtil();
+			writeFileUtil.writeFile("D://nginx-1.14.2/html/dist/image/news/article/" + title + ".txt", content);
+			String ossarticlePath = "http://tg.mis8888.com/image/news/article/" + title + ".txt";
 			if (titleImage != null) {
 				if (titleImage.getSize() != 0) {// 判断上传的文件是否为空
 					String path = null;// 文件路径
@@ -83,15 +90,25 @@ public class ArticleController {
 							// 自定义的文件名称
 							String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
 							// 设置存放图片文件的路径
-							path = "news/image/" + /* System.getProperty("file.separator")+ */trueFileName;
-							ossimagePath = ossUtil.uploadFile(iStream, path);
-							if (ossimagePath.substring(0, 5).equals("https")) {
-								System.out.println("路径为：" + ossimagePath);
+//							path = "news/image/" + /* System.getProperty("file.separator")+ */trueFileName;
+//							ossimagePath = ossUtil.uploadFile(iStream, path);
+//							if (ossimagePath.substring(0, 5).equals("https")) {
+//								System.out.println("路径为：" + ossimagePath);
+//								map.put("msg", "图片上传成功");
+//								map.put("SCode", "201");
+//							}
+//
+//							System.out.println("存放图片文件的路径:" + ossimagePath);
+							path = "D://nginx-1.14.2/html/dist/image/news/image/" + /* System.getProperty("file.separator")+ */trueFileName;
+							InputStream inStream = titleImage.getInputStream();
+							FolderUtil folderUtil = new FolderUtil();
+							String code = folderUtil.uploadImage(inStream, path);
+							if(code.equals("200")) {
+								ossimagePath = "http://tg.mis8888.com/image/news/image/"+trueFileName;
 								map.put("msg", "图片上传成功");
-								map.put("SCode", "201");
+							}else {
+								map.put("msg", "图片上传失败");
 							}
-
-							System.out.println("存放图片文件的路径:" + ossimagePath);
 						} else {
 							map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
 							map.put("SCode", "402");
@@ -180,19 +197,22 @@ public class ArticleController {
 		@ResponseBody
 		@RequestMapping("/getcontent")
 		@Transactional
-		public Map<String, Object> getcontent(Integer id) throws UnknownHostException, UnsupportedEncodingException{
+		public Map<String, Object> getcontent(String title) throws UnknownHostException, UnsupportedEncodingException{
 			Map<String, Object> map = new HashMap<>();
 			String contentUrl ="";
 		  	PostAndGet postAndGet =new PostAndGet();
 //		    ArticleUtil articleUtil = new ArticleUtil();
-			contentUrl = articleService.getcontent(id);
+//			contentUrl = articleService.getcontent(id);
 //			String ip = InetAddress.getLocalHost().getHostAddress();
 //			if(ip.equals("39.98.83.65")) {
 //				contentUrl = contentUrl.replace("wx-dc.oss-cn-zhangjiakou.aliyuncs.com", "wx-dc.oss-cn-zhangjiakou-internal.aliyuncs.com");
 //			}
-			String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+//			String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
 //			String result = articleUtil.txt2String(content);
 //			content = new String(content.getBytes("ISO-8859-1"),"utf-8");
+			   FileContentUtil fileContentUtil = new FileContentUtil();
+			   File file = new File("D://nginx-1.14.2/html/dist/image/news/article/"+title+".txt");
+			   String content = fileContentUtil.txt2String(file);//获取txt文件的内容
 			map.put("content",content);			
 			return map;
 			
@@ -211,8 +231,13 @@ public class ArticleController {
 			int typeid = list.get(0).getTypeid();
 			String typename = newsTypeService.gettypename(typeid);
 			
-			 String contentUrl  = list.get(0).getContenturl(); //获取内容的URL
-			    String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+//			 String contentUrl  = list.get(0).getContenturl(); //获取内容的URL
+//			    String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+			
+			String contentName = list.get(0).getTitle();
+			FileContentUtil fileContentUtil = new FileContentUtil();
+			   File file = new File("D://nginx-1.14.2/html/dist/image/news/article/"+contentName+".txt");
+			   String content = fileContentUtil.txt2String(file);//获取txt文件的内容
 			    String result = articleUtil.txt2String(content);
 			    list.get(0).setContenturl(result);      
 			map.put("list", list);
@@ -251,15 +276,18 @@ public class ArticleController {
 			} else {
 				Integer typeId = newsTypeService.getTypeId(typename,company);
 				String registrationTime = System.currentTimeMillis() + ""; // 获取当前时间戳
-				OssUtil ossUtil = new OssUtil();
+//				OssUtil ossUtil = new OssUtil();
 				String ossimagePath = null;
 				
 				if(titleImage==null) {
 					ossimagePath = "0";
 				}
-				ByteArrayInputStream InputStringStream = new ByteArrayInputStream(content.getBytes());
-
-				String ossarticlePath = ossUtil.uploadFile(InputStringStream, "news/article/" + title + ".txt");
+//				ByteArrayInputStream InputStringStream = new ByteArrayInputStream(content.getBytes());
+//
+//				String ossarticlePath = ossUtil.uploadFile(InputStringStream, "news/article/" + title + ".txt");
+				WriteFileUtil writeFileUtil = new WriteFileUtil();
+				writeFileUtil.writeFile("D://nginx-1.14.2/html/dist/image/news/article/" + title + ".txt", content);
+				String ossarticlePath = "http://tg.mis8888.com/image/news/article/" + title + ".txt";
 				if(titleImage!=null) {
 					if (titleImage.getSize() != 0) {// 判断上传的文件是否为空
 						String path = null;// 文件路径
@@ -276,15 +304,26 @@ public class ArticleController {
 								// 自定义的文件名称
 								String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
 								// 设置存放图片文件的路径
-								path = "news/image/" + /* System.getProperty("file.separator")+ */trueFileName;
-								ossimagePath = ossUtil.uploadFile(iStream, path);
-								if (ossimagePath.substring(0, 5).equals("https")) {
-									System.out.println("路径为：" + ossimagePath);
+//								path = "news/image/" + /* System.getProperty("file.separator")+ */trueFileName;
+//								ossimagePath = ossUtil.uploadFile(iStream, path);
+//								if (ossimagePath.substring(0, 5).equals("https")) {
+//									System.out.println("路径为：" + ossimagePath);
+//									map.put("msg", "图片上传成功");
+//									map.put("SCode", "201");
+//								}
+//
+//								System.out.println("存放图片文件的路径:" + ossimagePath);
+								path = "D://nginx-1.14.2/html/dist/image/news/image/" + /* System.getProperty("file.separator")+ */trueFileName;
+								InputStream inStream = titleImage.getInputStream();
+								FolderUtil folderUtil = new FolderUtil();
+								String code = folderUtil.uploadImage(inStream, path);
+								if(code.equals("200")) {
+									ossimagePath = "http://tg.mis8888.com/image/news/image/"+trueFileName;
 									map.put("msg", "图片上传成功");
-									map.put("SCode", "201");
+								}else {
+									map.put("msg", "图片上传失败");
 								}
-
-								System.out.println("存放图片文件的路径:" + ossimagePath);
+								
 							} else {
 								map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
 								map.put("SCode", "402");

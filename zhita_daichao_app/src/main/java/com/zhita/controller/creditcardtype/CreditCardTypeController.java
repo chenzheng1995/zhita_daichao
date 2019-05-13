@@ -54,7 +54,7 @@ public class CreditCardTypeController {
     @ResponseBody
     @RequestMapping("/queryAll")
     @Transactional
-    public List<CreditCardType> queryLoanClassAfter1(String[] company){
+    public List<CreditCardType> queryLoanClassAfter1(String[] company,String oneSourceName,String twoSourceName){
     	List<CreditCardType> list = intCreditCardTypeService.queryAll(company);
 		return list;
    	

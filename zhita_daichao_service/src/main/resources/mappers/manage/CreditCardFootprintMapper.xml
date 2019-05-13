@@ -28,5 +28,16 @@
 	<select id="getApplications" resultType="long" parameterType="java.lang.String">
 		select count(distinct userId) from credit_card_footprint where footprint= #{businessName} and deleted = 0 and company= #{company}
     </select>
+    
+    	<!-- 插入商品足迹 -->
+	<insert id="insertfootprint"
+		parameterType="java.util.Map">
+		insert into credit_card_footprint (userId, footprint,
+		footprintTime,company)
+		values (#{userId,jdbcType=INTEGER},
+		#{footprintName,jdbcType=VARCHAR},
+		#{currentTimestamp,jdbcType=VARCHAR},
+		#{company,jdbcType=VARCHAR})
+	</insert>
 	
 </mapper>

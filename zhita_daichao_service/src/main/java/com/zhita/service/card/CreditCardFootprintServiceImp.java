@@ -25,4 +25,10 @@ public class CreditCardFootprintServiceImp implements IntCreditCardFootprintServ
 		long applications =creditCardFootprintMapper.getApplications(businessName, company);
 		return applications;
 	}
+
+	@Override
+	public int insertfootprint(String footprintName, String userId, long currentTimestamp, String company) {
+		int number = creditCardFootprintMapper.insertfootprint(footprintName, userId, currentTimestamp,company);
+		return number;
+	}
 }

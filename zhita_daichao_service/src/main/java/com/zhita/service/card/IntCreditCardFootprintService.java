@@ -9,4 +9,6 @@ public interface IntCreditCardFootprintService {
 	public int queryCount(String businessName,String company);
 	//小程序
 	long getApplications(@Param("businessName")String businessName,@Param("company") String company);
+	
+	public int insertfootprint(String footprintName, String userId, long currentTimestamp, String company);
 }

@@ -1,5 +1,6 @@
 package com.zhita.controller.sourcetemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -113,9 +114,7 @@ public class SourceTemplateController {
 			List<SourceTemplate> list = sourceTemplateService.getTemplate ();
 			return list;          			
 		}
-		
-		
-		
+			
 		
 		//MultipartFile转File的方法
 		public static void inputStreamToFile(InputStream ins, File file) {

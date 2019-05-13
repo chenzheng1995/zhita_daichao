@@ -11,4 +11,6 @@ public interface CreditCardFootprintMapper {
 	//小程序
 	long getApplications(@Param("businessName")String businessName,@Param("company") String company);
 
+	int insertfootprint(@Param("footprintName")String footprintName,@Param("userId") String userId,@Param("currentTimestamp") long currentTimestamp,@Param("company") String company);
+
 }

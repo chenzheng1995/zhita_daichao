@@ -229,7 +229,7 @@ public class MerchantController {
 		source.setTemplateId(templateId);
 		FolderUtil FolderUtil = new FolderUtil();
 		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
-		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
+		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");
 		int num=intMerchantService.addAll(source);//添加渠道表信息		
 		ManageLogin manageLogin=new ManageLogin();
 		manageLogin.setCompany(source.getCompany());
@@ -260,14 +260,14 @@ public class MerchantController {
 		if(!source.getSourcename().equals(oldSourceName)) {		
 		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
 		FolderUtil.deleteDirectory("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName);//把旧的文件夹删掉
-		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
+		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");
 		System.out.println(source);
 		}
 		Integer oldTemplateId = intMerchantService.getTemplateId(source.getId());
 		String oldTemplateName = sourceTemplateService.getTemplateName(oldTemplateId);
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
-		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");	
+		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");	
 		if(!oldTemplateName.equals(templateName)) {
 			FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());			
 		}

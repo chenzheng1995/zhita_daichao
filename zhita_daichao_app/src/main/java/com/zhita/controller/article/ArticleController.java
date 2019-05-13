@@ -1,6 +1,7 @@
 package com.zhita.controller.article;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.zhita.model.manage.News;
 import com.zhita.service.article.ArticleService;
 import com.zhita.service.newstype.NewsTypeService;
 import com.zhita.util.ArticleUtil;
+import com.zhita.util.FileContentUtil;
 import com.zhita.util.PageUtil;
 import com.zhita.util.PostAndGet;
 import com.zhita.util.Timestamps;
@@ -100,7 +102,11 @@ public Map<String, Object> getnewscontent(int id,String oneSourceName,String two
     date = timestamps.stampToDate1(date);   
     news.setDate(date);
     String contentUrl  = news.getContenturl(); //获取内容的URL
-    String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+    String contentName = contentUrl.substring(contentUrl.lastIndexOf("/")+1);
+//    String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+    FileContentUtil fileContentUtil = new FileContentUtil();
+    File file = new File("D://nginx-1.14.2/html/dist/image/news/article/"+contentName);
+    String content = fileContentUtil.txt2String(file);//获取txt文件的内容
     String result = articleUtil.txt2String(content);
     news.setContenturl(result);      
 	map.put("news",news);
@@ -138,7 +144,11 @@ public Map<String, Object> getfuzzynews(Integer page,String company, String titl
      date  = news.getDate(); //获取时间戳
      date = timestamps.stampToDate1(date);
      contentUrl  = news.getContenturl(); //获取内容的URL
-     String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+     String contentName = contentUrl.substring(contentUrl.lastIndexOf("/")+1);
+//   String content = postAndGet.sendGet1(contentUrl);//获取txt文件的内容
+   FileContentUtil fileContentUtil = new FileContentUtil();
+   File file = new File("D://nginx-1.14.2/html/dist/image/news/article/"+contentName);
+   String content = fileContentUtil.txt2String(file);//获取txt文件的内容
      String result = articleUtil.txt2String(content);
      news.setContenturl(result);      
      news.setDate(date);

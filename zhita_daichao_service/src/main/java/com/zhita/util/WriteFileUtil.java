@@ -30,4 +30,10 @@ public class WriteFileUtil {
 			}
 		}
 	}
+	
+	
+	public static void main(String[] args) {
+		WriteFileUtil writeFileUtil = new WriteFileUtil();
+		writeFileUtil.writeFile("C:\\Users\\Administrator\\Desktop\\qqq.txt", "sdfsdfasf");
+	}
 }

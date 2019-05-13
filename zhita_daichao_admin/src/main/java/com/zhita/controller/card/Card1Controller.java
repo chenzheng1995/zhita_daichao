@@ -23,6 +23,7 @@ import com.zhita.service.card.IntCard1Service;
 import com.zhita.service.card.IntCreditCardFootprintService;
 import com.zhita.service.card.IntCreditCardTypeService;
 import com.zhita.util.DateListUtil;
+import com.zhita.util.FolderUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
@@ -148,16 +149,35 @@ public class Card1Controller {
 					// 自定义的文件名称
 					String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
 					// 设置存放图片文件的路径
-					path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
-					OssUtil ossUtil = new OssUtil();
-					String ossPath = ossUtil.uploadFile(iStream, path);
-					if(ossPath.substring(0, 5).equals("https")) {
-						System.out.println("路径为："+ossPath);
-						loansBusinesses.setTrademark(ossPath);
-						map.put("msg", "图片上传成功");
-					}
+//					path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
+//					OssUtil ossUtil = new OssUtil();
+//					String ossPath = ossUtil.uploadFile(iStream, path);
+//					if(ossPath.substring(0, 5).equals("https")) {
+//						System.out.println("路径为："+ossPath);
+//						loansBusinesses.setTrademark(ossPath);
+//						map.put("msg", "图片上传成功");
+//					}
+//					
+//					System.out.println("存放图片文件的路径:" + ossPath);
 					
-					System.out.println("存放图片文件的路径:" + ossPath);
+				
+					path = "D://nginx-1.14.2/html/dist/image/loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
+//					OssUtil ossUtil = new OssUtil();
+//					String ossPath = ossUtil.uploadFile(iStream, path);
+//					if(ossPath.substring(0, 5).equals("https")) {
+//						System.out.println("路径为："+ossPath);
+//						shufflingFigure.setCover(ossPath);
+//						map.put("msg", "图片上传成功");
+//					}
+					InputStream inStream = file.getInputStream();
+					FolderUtil folderUtil = new FolderUtil();
+					String code = folderUtil.uploadImage(inStream, path);
+					if(code.equals("200")) {
+						loansBusinesses.setTrademark("http://tg.mis8888.com/image/loans_businesses/"+trueFileName);
+						map.put("msg", "图片上传成功");
+					}else {
+						map.put("msg", "图片上传失败");
+					}
 				} else {
 					map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
 					return map;
@@ -348,16 +368,34 @@ public class Card1Controller {
 					// 自定义的文件名称
 					String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
 					// 设置存放图片文件的路径
-					path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
-					OssUtil ossUtil = new OssUtil();
-					String ossPath = ossUtil.uploadFile(iStream, path);
-					if(ossPath.substring(0, 5).equals("https")) {
-						System.out.println("路径为："+ossPath);
-						loansBusinesses.setTrademark(ossPath);
-						map.put("msg", "图片上传成功");
-					}
+//					path = "loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
+//					OssUtil ossUtil = new OssUtil();
+//					String ossPath = ossUtil.uploadFile(iStream, path);
+//					if(ossPath.substring(0, 5).equals("https")) {
+//						System.out.println("路径为："+ossPath);
+//						loansBusinesses.setTrademark(ossPath);
+//						map.put("msg", "图片上传成功");
+//					}
+//					
+//					System.out.println("存放图片文件的路径:" + ossPath);
 					
-					System.out.println("存放图片文件的路径:" + ossPath);
+					path = "D://nginx-1.14.2/html/dist/image/loans_businesses/" + /* System.getProperty("file.separator")+ */trueFileName;
+//					OssUtil ossUtil = new OssUtil();
+//					String ossPath = ossUtil.uploadFile(iStream, path);
+//					if(ossPath.substring(0, 5).equals("https")) {
+//						System.out.println("路径为："+ossPath);
+//						shufflingFigure.setCover(ossPath);
+//						map.put("msg", "图片上传成功");
+//					}
+					InputStream inStream = file.getInputStream();
+					FolderUtil folderUtil = new FolderUtil();
+					String code = folderUtil.uploadImage(inStream, path);
+					if(code.equals("200")) {
+						loansBusinesses.setTrademark("http://tg.mis8888.com/image/loans_businesses/"+trueFileName);
+						map.put("msg", "图片上传成功");
+					}else {
+						map.put("msg", "图片上传失败");
+					}
 				} else {
 					map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
 					return map;

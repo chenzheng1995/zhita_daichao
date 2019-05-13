@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zhita.model.manage.ShufflingFigure;
 import com.zhita.service.banner.IntBannerService;
+import com.zhita.util.FolderUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.OssUtil;
 import com.zhita.util.PageUtil;
@@ -221,16 +222,23 @@ public class BannerController {
 					// 自定义的文件名称
 					String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
 					// 设置存放图片文件的路径
-					path = "shuffling_figure/" + /* System.getProperty("file.separator")+ */trueFileName;
-					OssUtil ossUtil = new OssUtil();
-					String ossPath = ossUtil.uploadFile(iStream, path);
-					if(ossPath.substring(0, 5).equals("https")) {
-						System.out.println("路径为："+ossPath);
-						shufflingFigure.setCover(ossPath);
+					path = "D://nginx-1.14.2/html/dist/image/shuffling_figure/" + /* System.getProperty("file.separator")+ */trueFileName;
+//					OssUtil ossUtil = new OssUtil();
+//					String ossPath = ossUtil.uploadFile(iStream, path);
+//					if(ossPath.substring(0, 5).equals("https")) {
+//						System.out.println("路径为："+ossPath);
+//						shufflingFigure.setCover(ossPath);
+//						map.put("msg", "图片上传成功");
+//					}
+					InputStream inStream = file.getInputStream();
+					FolderUtil folderUtil = new FolderUtil();
+					String code = folderUtil.uploadImage(inStream, path);
+					if(code.equals("200")) {
+						shufflingFigure.setCover("http://tg.mis8888.com/image/shuffling_figure/"+trueFileName);
 						map.put("msg", "图片上传成功");
+					}else {
+						map.put("msg", "图片上传失败");
 					}
-					
-					System.out.println("存放图片文件的路径:" + ossPath);
 				} else {
 					map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
 					return map;
@@ -272,16 +280,24 @@ public class BannerController {
 					// 自定义的文件名称
 					String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
 					// 设置存放图片文件的路径
-					path = "shuffling_figure/" + /* System.getProperty("file.separator")+ */trueFileName;
-					OssUtil ossUtil = new OssUtil();
-					String ossPath = ossUtil.uploadFile(iStream, path);
-					if(ossPath.substring(0, 5).equals("https")) {
-						System.out.println("路径为："+ossPath);
-						shufflingFigure.setCover(ossPath);
+					path = "D://nginx-1.14.2/html/dist/image/shuffling_figure/" + /* System.getProperty("file.separator")+ */trueFileName;
+//					OssUtil ossUtil = new OssUtil();
+//					String ossPath = ossUtil.uploadFile(iStream, path);
+//					if(ossPath.substring(0, 5).equals("https")) {
+//						System.out.println("路径为："+ossPath);
+//						shufflingFigure.setCover(ossPath);
+//						map.put("msg", "图片上传成功");
+//					}
+					InputStream inStream = file.getInputStream();
+					FolderUtil folderUtil = new FolderUtil();
+					String code = folderUtil.uploadImage(inStream, path);
+					if(code.equals("200")) {
+						shufflingFigure.setCover("http://tg.mis8888.com/image/shuffling_figure/"+trueFileName);
 						map.put("msg", "图片上传成功");
+					}else {
+						map.put("msg", "图片上传失败");
 					}
-					
-					System.out.println("存放图片文件的路径:" + ossPath);
+
 				} else {
 					map.put("msg", "不是我们想要的文件类型,请按要求重新上传");
 					return map;
