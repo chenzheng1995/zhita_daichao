@@ -74,10 +74,14 @@ public class TongjiController {
 			int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
 			int uv = 0;
 			String cvr = null;
-			if (redisClientUtil.getSourceClick(company + sourceName + list1.get(i) + "Key") == null) {
+			String companyClient=null;
+			if(company.equals("借吧")){
+				companyClient="融51";
+			}
+			if (redisClientUtil.getSourceClick(companyClient + sourceName + list1.get(i) + "Key") == null) {
 				uv = 0;
 			} else {
-				uv = Integer.parseInt(redisClientUtil.getSourceClick(company + sourceName + list1.get(i) + "Key"));
+				uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + sourceName + list1.get(i) + "Key"));
 
 			}
 			if ((appnum < 0.000001) || (uv == 0)) {
@@ -132,10 +136,14 @@ public class TongjiController {
 		int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
 		int uv = 0;
 		String cvr = null;
-		if (redisClientUtil.getSourceClick(company + source + date + "Key") == null) {
+		String companyClient=null;
+		if(company.equals("借吧")){
+			companyClient="融51";
+		}
+		if (redisClientUtil.getSourceClick(companyClient + source + date + "Key") == null) {
 			uv = 0;
 		} else {
-			uv = Integer.parseInt(redisClientUtil.getSourceClick(company + source + date + "Key"));
+			uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source + date + "Key"));
 
 		}
 		if ((appnum < 0.000001) || (uv == 0)) {
@@ -183,7 +191,9 @@ public class TongjiController {
 			List<String> listdate=DateListUtil.getDays(dateStart, dateEnd);
 
 			if (company.length == 1) {
-
+				if(company[0].equals("借吧")){
+					company[0]="融51";
+				}
 				System.out.println("company.length==1");
 
 				listsource = intMerchantService.queryAll(company[0]);// 查询出所有的渠道信息
@@ -225,12 +235,16 @@ public class TongjiController {
 					listto.add(tongjiSorce);
 				}
 			} else if (company.length > 1) {
-
+				
 				System.out.println("company.length>1");
 
 				List<Source> listsourcefor = null;
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
 				for (int j = 0; j < company.length; j++) {
+					if(company[j].equals("借吧")){
+						company[j]="融51";
+					}
+					
 					listsourcefor = intMerchantService.queryAll(company[j]);// 查询出所有的渠道信息
 					listsource.addAll(listsourcefor);
 
@@ -244,7 +258,7 @@ public class TongjiController {
 						String cvr = null;
 						for (int k = 0; k <listdate.size(); k++) {
 							int uvi=0;
-							if (redisClientUtil.getSourceClick(company[0] + source + listdate.get(k).replace("-", "/") + "Key") == null) {
+							if (redisClientUtil.getSourceClick(company[j] + source + listdate.get(k).replace("-", "/") + "Key") == null) {
 								uvi = 0;
 							} else {
 								uvi = Integer.parseInt(redisClientUtil.getSourceClick(company[j] + source + listdate.get(k).replace("-", "/") + "Key"));
@@ -301,6 +315,10 @@ public class TongjiController {
 		@RequestMapping("/queryAllPageDetail")
 		public Map<String, Object> queryAllPage(String company,String sourcename, String dateStart,String dateEnd) throws ParseException {
 			List<String> listdate=DateListUtil.getDays(dateStart, dateEnd);
+			String companyClient=null;
+			if(company.equals("借吧")){
+				companyClient="融51";
+			}
 			
 			List<TongjiSorce> listto = new ArrayList<>();
 			for (int i = 0; i < listdate.size(); i++) {
@@ -321,10 +339,10 @@ public class TongjiController {
 					int sumappnum = intTongjiService.queryUV(company, sourcename, startTime, endTime);// 得到点过甲方贷款商家总的人数
 					int uv = 0;
 					String cvr = null;
-					if (redisClientUtil.getSourceClick(company + sourcename + date.replace("-", "/") + "Key") == null) {
+					if (redisClientUtil.getSourceClick(companyClient + sourcename + date.replace("-", "/") + "Key") == null) {
 						uv = 0;
 					} else {
-						uv = Integer.parseInt(redisClientUtil.getSourceClick(company + sourcename+ date.replace("-", "/") + "Key"));
+						uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + sourcename+ date.replace("-", "/") + "Key"));
 					}
 					if ((appnum < 0.000001) || (uv == 0)) {
 						cvr = 0 + "%";// 得到转化率
