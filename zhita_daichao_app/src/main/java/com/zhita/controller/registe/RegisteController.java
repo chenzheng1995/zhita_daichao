@@ -1,7 +1,6 @@
 package com.zhita.controller.registe;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zhita.model.manage.LoanCustomvalue;
 import com.zhita.model.manage.LoansBusinesses;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.registe.IntRegisteCopyService;
+import com.zhita.service.registe.IntRegisteCustomvalueService;
 import com.zhita.service.registe.IntRegisteService;
 import com.zhita.service.sourcedadson.SourceDadSonService;
 import com.zhita.util.PageUtil;
@@ -36,7 +37,8 @@ public class RegisteController {
 	@Autowired
 	IntRegisteCopyService intRegisteCopyService;
 	
-	
+	@Autowired
+	IntRegisteCustomvalueService intRegisteCustomvalueService;
 	
 	//小程序---查询所有贷款商家信息,含分页
     @ResponseBody
@@ -152,7 +154,7 @@ public class RegisteController {
     	return map;
     }
     
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping("/dynamicData")
     @Transactional
     public HashMap<String,Object> queryAll(String oneSourceName,String twoSourceName){
@@ -164,7 +166,32 @@ public class RegisteController {
     	map.put("right", "人已放款");
 		return map;    
     	
-    }
+    }*/
 
-    
+    @ResponseBody
+    @RequestMapping("/dynamicData")
+    @Transactional
+    public HashMap<String,Object> queryAll(String oneSourceName,String twoSourceName){
+    	List<LoanCustomvalue> list=intRegisteCustomvalueService.queryAll();
+    	
+    	HashMap<String,Object> map=new HashMap<>();
+    	for (int i = 0; i < list.size(); i++) {
+    		if(i==0){
+    			map.put("left", list.get(0).getFields());
+    		}
+    		if(i==1){
+    			map.put("centerTop", list.get(1).getFields());
+    		}
+        	if(i==2){
+        		map.put("centerBottom", list.get(2).getFields());
+        	}
+        	if(i==3){
+        		map.put("button", list.get(3).getFields());
+        	}
+        	if(i==4){
+        		map.put("right", list.get(4).getFields());
+        	}
+		}
+    	return map;
+    }
 }

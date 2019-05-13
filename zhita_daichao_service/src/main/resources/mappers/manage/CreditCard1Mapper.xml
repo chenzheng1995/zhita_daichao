@@ -144,11 +144,11 @@
  </update>
  <!--后台管理  根据商品名称和传过来的年  月  日(例如：2019-01-01——2019-01-20)  获取当前甲方商家这个时间段的所有足迹时间 -->
  <select id="queryTime" parameterType="java.lang.String" resultType="java.lang.String">
- 	select footprinttime from commodity_footprint where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ 	select footprinttime from credit_card_footprint where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
  </select>
  <!--后台管理   根据商品名称和传过来的年  月  日(例如：2019-01-01) 获取当前甲方商家这一天的足迹数量  -->
  <select id="queryAmount"  parameterType="java.lang.String" resultType="java.lang.Integer">
- 	select count(DISTINCT f.userId) from commodity_footprint f where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
+ 	select count(DISTINCT f.userId) from credit_card_footprint f where footprint=#{arg0} and footprintTime>=#{arg1} and footprintTime &lt;#{arg2} and deleted='0'
  </select>
  
    <!-- 后台管理,通过传过来的贷款商家名字，查询商标的URL -->

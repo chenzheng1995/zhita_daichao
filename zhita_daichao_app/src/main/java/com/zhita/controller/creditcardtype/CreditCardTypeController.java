@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.CreditCard1;
 import com.zhita.model.manage.CreditCardType;
+import com.zhita.model.manage.Creditcard1Customvalue;
+import com.zhita.service.card.IntCreditCard1CustomService;
 import com.zhita.service.card.IntCreditCardTypeService;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.sourcedadson.SourceDadSonService;
@@ -30,6 +32,9 @@ public class CreditCardTypeController {
 	@Autowired
 	SourceDadSonService sourceDadSonService;
 	
+	@Autowired
+	IntCreditCard1CustomService intCreditCard1CustomService;
+	
 /*	//小程序，获取前4个贷款分类	
     @ResponseBody
     @RequestMapping("/queryLoanClassBefore")
@@ -37,7 +42,6 @@ public class CreditCardTypeController {
     public List<LoanClassification> queryLoanClass1(String company,String oneSourceName,String twoSourceName){
     	List<LoanClassification> list = intTypeService.queryLoanClass1(company);
 		return list;
-   	
     }
 
 	//小程序，获取后3个贷款分类	
@@ -156,5 +160,31 @@ public class CreditCardTypeController {
     	return map;
     }   
 
+    @ResponseBody
+    @RequestMapping("/dynamicData")
+    @Transactional
+    public HashMap<String,Object> queryAll(String oneSourceName,String twoSourceName){
+    	List<Creditcard1Customvalue> list=intCreditCard1CustomService.queryAll();
+    	
+    	HashMap<String,Object> map=new HashMap<>();
+    	for (int i = 0; i < list.size(); i++) {
+    		if(i==0){
+    			map.put("left", list.get(0).getFields());
+    		}
+    		if(i==1){
+    			map.put("centerTop", list.get(1).getFields());
+    		}
+        	if(i==2){
+        		map.put("centerBottom", list.get(2).getFields());
+        	}
+        	if(i==3){
+        		map.put("button", list.get(3).getFields());
+        	}
+        	if(i==4){
+        		map.put("right", list.get(4).getFields());
+        	}
+		}
+    	return map;
+    }
 
 }
