@@ -228,7 +228,7 @@ public class MerchantController {
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
 		FolderUtil FolderUtil = new FolderUtil();
-		FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
+		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
 		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
 		int num=intMerchantService.addAll(source);//添加渠道表信息		
 		ManageLogin manageLogin=new ManageLogin();
@@ -242,9 +242,14 @@ public class MerchantController {
     //后台管理---通过主键id查询出渠道信息
 	@ResponseBody
 	@RequestMapping("/selectByPrimaryKey")
-    public Source selectByPrimaryKey(Integer id) {
+    public Map<String, Object> selectByPrimaryKey(Integer id) {
+		Map<String, Object> map = new HashMap<>();
     	Source source=intMerchantService.selectByPrimaryKey(id);
-    	return source;
+    	int templateId = source.getTemplateId();
+    	String templateName = sourceTemplateService.getTemplateName(templateId);
+    	map.put("source",source);
+    	map.put("templateName",templateName);
+    	return map;
     }
 	//后台管理---通过传过来的渠道对象，对当前对象进行修改保存
 	@Transactional
@@ -253,8 +258,8 @@ public class MerchantController {
     public int updateSource(Source source,String oldSourceName,String templateName) throws IOException{
 		FolderUtil FolderUtil = new FolderUtil();
 		if(!source.getSourcename().equals(oldSourceName)) {		
-		FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName,"E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
-		FolderUtil.deleteDirectory("E:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName);//把旧的文件夹删掉
+		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
+		FolderUtil.deleteDirectory("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName);//把旧的文件夹删掉
 		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");
 		System.out.println(source);
 		}
@@ -264,7 +269,7 @@ public class MerchantController {
 		source.setTemplateId(templateId);
 		source.setLink("http://tg.rong51dai.com/promote/"+source.getSourcename()+"/index.html");	
 		if(!oldTemplateName.equals(templateName)) {
-			FolderUtil.copyDir("E:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"E:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());			
+			FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());			
 		}
 	
 		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
@@ -277,9 +282,11 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaFalseDelById")
-    public int upaFalseDelById(Integer id,String account) {
+    public int upaFalseDelById(Integer id,String account,String SourceName) {
     	int num=intMerchantService.upaFalseDel(id);//通过渠道id更新当前渠道表的假删除状态
     	loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
+    	FolderUtil folderUtil = new FolderUtil();
+    	folderUtil.DeleteFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+SourceName);//删除文件夹
     	return num;
     }
     //后台管理---修改渠道状态
@@ -295,7 +302,7 @@ public class MerchantController {
 			 	String newLink = link.replace(fileName,fileName.substring(0,fileName.length()-3));
 				intMerchantService.updateLink(newLink,id);
 				FolderUtil folderUtil = new FolderUtil();
-				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName.substring(0,fileName.length()-3));
+				folderUtil.renameFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName.substring(0,fileName.length()-3));
 			}
 			num=intMerchantService.upaStateOpen(id);
 		}else {
@@ -303,7 +310,7 @@ public class MerchantController {
 				String newLink = link.replace("/"+fileName+"/","/"+fileName+"###"+"/");
 				intMerchantService.updateLink(newLink,id);
 				FolderUtil folderUtil = new FolderUtil();
-				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName+"###");
+				folderUtil.renameFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName+"###");
 			}
 			num=intMerchantService.upaStateClose(id);
 		}

@@ -5,7 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,27 +40,42 @@ public class SourceTemplateController {
 		@RequestMapping("/UploadFolder")
 		@ResponseBody
 		@Transactional
-		public void UploadFolder(MultipartFile file,String templateName) throws IOException {
+		public Map<String, Object> UploadFolder(MultipartFile file,String templateName) throws IOException {
+			Map<String, Object> map = new HashMap<>();
+			InputStream ins = null;
+		    File toFile = null;
+            ins = file.getInputStream();
+            toFile = new File(file.getOriginalFilename());
+            inputStreamToFile(ins, toFile);
+            ins.close();
 			Integer number = sourceTemplateService.getid(templateName);
+			String fileName = toFile.getName();
+			String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+			if(suffix.equals("zip")) {
 			if(number==null) {
 				sourceTemplateService.setTemplate(templateName);
 			}
-            FolderUtil folderUtil = new FolderUtil();
-		    File toFile = null;
-		    if(file.getSize()<=0){
-		        file = null;
-		    }else {
-		            InputStream ins = null;
-		            ins = file.getInputStream();
-		            toFile = new File(file.getOriginalFilename());
-		            inputStreamToFile(ins, toFile);
-		            ins.close();
-		    }
-		    String FileName = toFile.getName().replace(".zip","");
-            ZipUtil zipUtil = new ZipUtil();
-            zipUtil.unZipFiles(toFile,"E:\\nginx-1.14.2\\html\\dist\\promote\\");   //将文件夹解压
-            folderUtil.DeleteFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName);//删除文件夹
-            folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+FileName,templateName);//重命名文件夹
+			  FolderUtil folderUtil = new FolderUtil();
+			    if(file.getSize()<=0){
+			        file = null;
+			    }else {		            
+			            ins = file.getInputStream();
+			            toFile = new File(file.getOriginalFilename());
+			            inputStreamToFile(ins, toFile);
+			            ins.close();
+			    }
+			    String FileName = toFile.getName().replace(".zip","");
+	            ZipUtil zipUtil = new ZipUtil();
+	            zipUtil.unZipFiles(toFile,"D:\\nginx-1.14.2\\html\\dist\\promote\\");   //将文件夹解压
+	            folderUtil.DeleteFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName);//删除文件夹
+	            folderUtil.renameFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+FileName,templateName);//重命名文件夹
+	            map.put("code", "200");
+			}else {
+				map.put("code", "2");
+				map.put("msg", "文件类型必须是.zip");
+			}
+			return map;
+          
            			
 		}
 		
@@ -76,7 +93,7 @@ public class SourceTemplateController {
 		@ResponseBody
 		@Transactional
 		public String getThumbnail(String templateName){
-			String ThumbnailPath = "http://tg.rong51dai.com/promote/"+templateName+"/image.jpg";
+			String ThumbnailPath = "http://tg.mis8888.com/promote/"+templateName+"/image.jpg";
 			return ThumbnailPath;
            			
 		}

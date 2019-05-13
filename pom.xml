@@ -250,6 +250,13 @@
             <version>1.1.12</version>
         </dependency>
         
+            <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-s3</artifactId>
+        <version>1.11.347</version>
+    </dependency>
+
+        
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
 <dependency>
     <groupId>org.apache.poi</groupId>
