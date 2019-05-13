@@ -200,6 +200,16 @@
 				/editbill/getPrice = perms["账单-查询"]
 				/editbill/getSourceTo = perms["账单-查询"]
 				/PThrough/getPThrough = perms["账单-查询"]
+				<!-- 甲方商家自定义值   权限控制 -->
+				/registecustomvalue/queryAll = perms["甲方自定义-查询"]
+				/registecustomvalue/updateByPrimaryKey = perms["甲方自定义-修改"]
+				<!-- 信用卡自定义值   权限控制-->
+				/card1customvalue/queryAll  = perms["信用卡自定义-查询"]
+				/card1customvalue/updateByPrimaryKey  = perms["信用卡自定义-修改"]
+				<!--模版  权限控制 -->
+				/SourceTemplate/UploadFolder = perms["模版-管理"]
+				/SourceTemplate/getThumbnail = perms["模版-管理"]
+				/SourceTemplate/getTemplate = perms["模版-管理"]
 			</value>
 		</property>
 	</bean>
