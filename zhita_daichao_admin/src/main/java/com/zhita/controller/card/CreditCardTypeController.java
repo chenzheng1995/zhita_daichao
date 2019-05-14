@@ -320,4 +320,12 @@ public class CreditCardTypeController {
 		intCreditCardTypeService.updateByPrimaryKey(loanClassification);
     	return map;
     }
+    //后台管理---根据信用卡分类id修改假删除状态
+    @ResponseBody
+    @RequestMapping("/deleteByPrimaryKey")
+    public int deleteByPrimaryKey(Integer id){
+    	int sum=intCreditCardTypeService.deleteByPrimaryKey(id);
+    	return sum;
+    }
+
 }

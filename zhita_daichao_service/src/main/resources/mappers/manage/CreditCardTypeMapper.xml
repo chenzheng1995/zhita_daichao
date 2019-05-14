@@ -39,7 +39,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, businessClassification, amount,company,icon
+    id, businessClassification, amount,company,icon,deleted
   </sql>
    <sql id="Base_Column_List1">
     lobus.id, lobus.businessName, lobus.intro, lobus.loanLimit, lobus.trademark, lobus.isStick, lobus.sort, lobus.applicationNumber, 
@@ -67,33 +67,33 @@
   <select id="queryAllPage" resultType="com.zhita.model.manage.CreditCardType">
   	select 
    	 <include refid="Base_Column_List" />
-     from credit_card_type where company=#{arg0} limit #{arg1},#{arg2}
+     from credit_card_type where company=#{arg0} and deleted=0 limit #{arg1},#{arg2}
   </select>
     <!--后台管理  查询贷款分类所有信息，不含分页 -->
   <select id="queryAllNoPage" resultType="com.zhita.model.manage.CreditCardType">
   	select 
    	 <include refid="Base_Column_List" />
-     from credit_card_type where company=#{arg0}
+     from credit_card_type where company=#{arg0} and deleted=0
   </select>
   <!-- 后台管理 用于获取总页数 -->
  <select id="pageCount" resultType="java.lang.Integer">
-   select count(businessClassification) from credit_card_type where company=#{arg0}
+   select count(businessClassification) from credit_card_type where company=#{arg0} and deleted=0
  </select>
    <!-- 后台管理 用于获取模糊查询总页数 -->
  <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
-   select count(businessClassification) from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1}
+   select count(businessClassification) from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1} and deleted=0
  </select>
  <!-- 后台管理 模糊查询贷款分类信息并且有分页功能 -->
  <select id="queryByLike" resultType="com.zhita.model.manage.CreditCardType">
  	select 
    	 <include refid="Base_Column_List" />
-    from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
+    from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1} and deleted=0 limit #{arg2},#{arg3}
  </select>
   <!-- 后台管理 模糊查询贷款分类信息没有分页功能 -->
  <select id="queryByLike1" resultType="com.zhita.model.manage.CreditCardType">
  	select 
    	 <include refid="Base_Column_List" />
-    from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1}
+    from credit_card_type where businessClassification like "%"#{arg0}"%" and company=#{arg1} and deleted=0
  </select>
  <!-- 后台管理   添加贷款分类信息 -->
  <insert id="addAll" parameterType="com.zhita.model.manage.CreditCardType">
@@ -101,7 +101,7 @@
  </insert>
  <!-- 后台管理    查询贷款分类所有信息，不含分页,做贷款商家添加功能时，下拉框取贷款分类的值时使用-->
   <select id="queryAllLoanCla" parameterType="java.lang.String" resultType="com.zhita.model.manage.CreditCardType">
-  	select id,businessClassification,company from credit_card_type where company=#{arg0}  
+  	select id,businessClassification,company from credit_card_type where company=#{arg0} and deleted=0
   </select>
   <!-- 后台管理     根据分类id   查询当前分类的图标 -->
   <select id="queryIconById" parameterType="java.lang.Integer" resultType="java.lang.String">
@@ -113,16 +113,21 @@
 	<foreach collection="company" item="item" open="(" separator="," close=")">  
           #{item}  
     </foreach>  
+    and deleted=0
 </select>
  <!-- 小程序  通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息 -->
  <select id="queryLoanbusinByLoanClass" resultMap="BaseResultMap1">
  	select  
  	<include refid="Base_Column_List1" /> 
- 	from credit_card1 lobus inner join credit_card_type locla on lobus.busClaId=locla.id where locla.businessClassification=#{arg0} and deleted='0' order by isStick desc limit #{arg1},#{arg2}
+ 	from credit_card1 lobus inner join credit_card_type locla on lobus.busClaId=locla.id where lobus.busClaId like concat('%',locla.id,'%') and locla.businessClassification=#{arg0} and lobus.company=#{arg1} and lobus.deleted='0' and lobus.state =1 and locla.deleted=0 order by isStick desc limit #{arg2},#{arg3}
  </select>
  
   <!-- 小程序    用于获取通过贷款分类的名称查询出贷款商家的个数 -->
  <select id="pageCountByBusinessClassification" parameterType="java.lang.String" resultType="java.lang.Integer">
- 	select count(businessName) from credit_card1 lb inner join credit_card_type lc on lb.busClaId=lc.id where lb.busClaId like concat('%',lc.id,'%') and lb.deleted='0' and lb.state='1' and businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
+ 	select count(businessName) from credit_card1 lb inner join credit_card_type lc on lb.busClaId=lc.id where lb.busClaId like concat('%',lc.id,'%') and lb.deleted='0' and lb.state='1' and lc.deleted=0 and lc.businessClassification=#{businessClassification} and lb.company=#{company} and lc.company=#{company}
  </select>
+ <!-- 后台管理     根据信用卡分类id修改假删除状态 -->
+ <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+ 	update credit_card_type set deleted=1 where id=#{arg0}
+ </update>
 </mapper>

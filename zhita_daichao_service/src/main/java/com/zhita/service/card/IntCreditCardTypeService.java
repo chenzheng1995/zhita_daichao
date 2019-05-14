@@ -44,9 +44,12 @@ public interface IntCreditCardTypeService {
     //小程序---查询出所有的信用卡分类
     public List<CreditCardType> queryAll(String[] company);
     
-  //小程序---用于获取通过贷款分类的名称查询出贷款商家的个数
-    int pageCountByBusinessClassification(@Param("businessClassification")String businessClassification,@Param("company") String company);
+    //小程序---用于获取通过贷款分类的名称查询出贷款商家的个数
+    public int pageCountByBusinessClassification(@Param("businessClassification")String businessClassification,@Param("company") String company);
     
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
-    List<CreditCard1> queryLoanbusinByLoanClass(String businessClassification,Integer page,Integer pageSize);
+    public List<CreditCard1> queryLoanbusinByLoanClass(String businessClassification,String company,Integer page,Integer pageSize);
+    
+    //后台管理---根据信用卡分类id修改假删除状态
+    public int deleteByPrimaryKey(Integer id);
 }
