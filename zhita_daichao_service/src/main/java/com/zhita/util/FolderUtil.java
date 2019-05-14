@@ -158,6 +158,9 @@ import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 			   }
 			   
+			   
+
+			   
 
 			    
 /*	================================================================	*/	
@@ -188,4 +191,6 @@ import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 				inStream.close();
 				return outStream.toByteArray(); 
 				}
+				
+
 }

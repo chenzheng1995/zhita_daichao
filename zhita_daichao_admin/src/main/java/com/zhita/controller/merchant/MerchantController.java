@@ -1,5 +1,6 @@
 package com.zhita.controller.merchant;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -296,21 +297,27 @@ public class MerchantController {
 	public int upaState(String state,Integer id) throws IOException {
 		int num=0;
   		String link = intMerchantService.getLink(id);
-	 	String fileName = link.substring(32, link.lastIndexOf("/"));
+	 	String fileName = link.substring(30, link.lastIndexOf("/"));
+	 	
+	 	File file = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName);
+	 	File file2 = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName+"###");
 		if(state.equals("1")) {
 			if(fileName.endsWith("###")) {
 			 	String newLink = link.replace(fileName,fileName.substring(0,fileName.length()-3));
 				intMerchantService.updateLink(newLink,id);
-				FolderUtil folderUtil = new FolderUtil();
-				folderUtil.renameFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName.substring(0,fileName.length()-3));
+//				FolderUtil folderUtil = new FolderUtil();
+//				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName.substring(0,fileName.length()-3));
+				File file3 = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName.substring(0,fileName.length()-3));
+				file.renameTo(file3);
 			}
 			num=intMerchantService.upaStateOpen(id);
 		}else {
 			if(!fileName.endsWith("###")) {
 				String newLink = link.replace("/"+fileName+"/","/"+fileName+"###"+"/");
 				intMerchantService.updateLink(newLink,id);
-				FolderUtil folderUtil = new FolderUtil();
-				folderUtil.renameFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName+"###");
+				file.renameTo(file2);
+//				FolderUtil folderUtil = new FolderUtil();
+//				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName+"###");
 			}
 			num=intMerchantService.upaStateClose(id);
 		}

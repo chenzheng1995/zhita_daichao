@@ -32,13 +32,22 @@ public class SMSUtil {
 		
 		String APIID = "";
 		String APIKEY = "";
+//		if("多米记".equals(company)) {
+//			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
+//			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
+//		}
+//		if("借吧".equals(company)) {
+//			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
+//			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
+//		}
+		
 		if("多米记".equals(company)) {
 			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
 			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
 		}
 		if("借吧".equals(company)) {
-			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
-			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
+			APIID = "C48965934";    // 互亿无线-短信验证码的APIID
+			 APIKEY = "d0ff0876b9539387b27c7ed900c466ff";  // 互亿无线-短信验证码的APIKEY
 		}
 		
 		Map<String,Object> cmap =new HashMap<String, Object>();
