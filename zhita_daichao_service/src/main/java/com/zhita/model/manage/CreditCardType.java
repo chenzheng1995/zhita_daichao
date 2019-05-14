@@ -18,6 +18,8 @@ public class CreditCardType implements Serializable{
     private String company;//公司名
     
     private String icon;//图标
+    
+    private String deleted;//假删除（删除：1，没删除：0）
 
     public CreditCardType(Integer id, String businessClassification, BigDecimal amount,String company, String icon) {
         this.id = id;
@@ -79,11 +81,21 @@ public class CreditCardType implements Serializable{
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
+	
+	
+	public String getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(String deleted) {
+		this.deleted = deleted;
+	}
 
 	@Override
 	public String toString() {
-		return "LoanClassification [id=" + id + ", businessClassification=" + businessClassification + ", amount="
-				+ amount + ", listLoanBusiness=" + listLoanBusiness + ", company=" + company +", icon=" + icon + "]";
+		return "CreditCardType [id=" + id + ", businessClassification=" + businessClassification + ", amount=" + amount
+				+ ", listLoanBusiness=" + listLoanBusiness + ", company=" + company + ", icon=" + icon + ", deleted="
+				+ deleted + "]";
 	}
-    
+
 }

@@ -100,8 +100,14 @@ public class CreditCardTypeServiceImp implements IntCreditCardTypeService{
     }
     
     //小程序---通过贷款分类的名称，查询出当前贷款分类下的所有贷款商家的信息,含分页
-    public List<CreditCard1> queryLoanbusinByLoanClass(String businessClassification,Integer page,Integer pageSize){
-    	List<CreditCard1> list=creditCardTypeMapper.queryLoanbusinByLoanClass(businessClassification, page, pageSize);
+    public List<CreditCard1> queryLoanbusinByLoanClass(String businessClassification,String company,Integer page,Integer pageSize){
+    	List<CreditCard1> list=creditCardTypeMapper.queryLoanbusinByLoanClass(businessClassification,company,page, pageSize);
     	return list;
+    }
+    
+    //后台管理---根据信用卡分类id修改假删除状态
+    public int deleteByPrimaryKey(Integer id){
+    	int sum=creditCardTypeMapper.deleteByPrimaryKey(id);
+    	return sum;
     }
 }

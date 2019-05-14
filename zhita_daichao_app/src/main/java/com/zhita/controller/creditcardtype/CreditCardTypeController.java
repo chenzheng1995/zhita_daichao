@@ -82,7 +82,7 @@ public class CreditCardTypeController {
         		}
         	}
         	int pages=(page-1)*pageUtil.getPageSize();
-        	List<CreditCard1> list=intCreditCardTypeService.queryLoanbusinByLoanClass(businessClassification,pages,pageUtil.getPageSize());
+        	List<CreditCard1> list=intCreditCardTypeService.queryLoanbusinByLoanClass(businessClassification,company,pages,pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
         	 for (CreditCard1 loansBusinesses : list) {
         	        String businessName = loansBusinesses.getBusinessname();

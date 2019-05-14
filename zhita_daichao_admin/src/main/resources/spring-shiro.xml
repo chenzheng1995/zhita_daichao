@@ -51,7 +51,7 @@
 				/registe/insertAllAdmin = perms["贷款商家-添加"]
 				/registe/falsedeleteByPrimaryKey = perms["贷款商家-删除"]
 				/registe/selectByPrimaryKey = perms["贷款商家-编辑"]
-				/registe/upaBaocunByPrimaryKey = perms["贷款商家-更新保存"]
+				/registe/upaBaocunByPrimaryKey = perms["贷款商家-更新保存"] 
 				/registe/upaState = perms["贷款商家-更新状态"]
 				/registe/queryTime = perms["贷款商家-申请统计"]
 				/registe/upaSortByLoanId = perms["贷款商家-修改排序"]
