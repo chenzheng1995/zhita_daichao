@@ -130,6 +130,7 @@
 				<!-- 统计权限拦截 -->
 				/tongji/queryAllPage = perms["统计-查询所有me"]
 				/tongji/queryAllPageBySourceName = perms["统计-模糊查询me"]
+				/tongji/queryAllPageBySource = perms["统计-查询所有me"]
 				<!-- 后台管理用户权限拦截-->
 				/admin_login/queryAllManageLogin = perms["后台管理-查询所有"]
 				/admin_login/queryManageloginByLike = perms["后台管理-模糊查询"]

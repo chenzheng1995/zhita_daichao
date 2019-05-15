@@ -28,7 +28,7 @@ public interface StatisticalMapper {
     int pageCountBySourceName(String company,String sourceName);
     
     //后台管理---查询渠道统计所有信息，含分页
-    List<SourceTongji> queryAllPage(String source,String startTime,String endTime,Integer page,Integer pagesize);
+    List<SourceTongji> queryAllPage(String source,String startTime,String endTime);
     
     //后台管理---查询渠道统计所有信息，不含分页
     List<SourceTongji> queryAllPage1(String company);

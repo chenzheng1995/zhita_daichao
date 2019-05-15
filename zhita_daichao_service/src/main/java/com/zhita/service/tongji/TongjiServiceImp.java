@@ -30,8 +30,8 @@ public class TongjiServiceImp implements IntTongjiService{
     	return count;
     }
     //后台管理---查询渠道统计所有信息，含分页
-    public List<SourceTongji> queryAllPage(String source,String startTime,String endTime,Integer page,Integer pagesize){
-    	List<SourceTongji> list=statisticalMapper.queryAllPage(source,startTime,endTime,page,pagesize);
+    public List<SourceTongji> queryAllPage(String source,String startTime,String endTime){
+    	List<SourceTongji> list=statisticalMapper.queryAllPage(source,startTime,endTime);
     	return list;
     }
     //后台管理---查询渠道统计所有信息，不含分页
