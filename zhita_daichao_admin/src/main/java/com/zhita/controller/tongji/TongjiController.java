@@ -495,8 +495,8 @@ public class TongjiController {
 	// 后台管理---统计详情功能
 	@ResponseBody
 	@RequestMapping("/queryAllPageBySource")
-	public Map<String, Object> queryAllPageBySource(Integer page, String source, String date) throws ParseException {
-		PageUtil pageUtil = null;
+	public Map<String, Object> queryAllPageBySource(String source, String date) throws ParseException {
+		//PageUtil pageUtil = null;
 		List<SourceTongji> listsourceTongji = new ArrayList<>();// 刚开始查询出来的数据
 		List<SourceTongji> listsourceTongjito = new ArrayList<>();// 经过处理后的数据
 
@@ -509,7 +509,7 @@ public class TongjiController {
 		String startTime = Timestamps.dateToStamp(date.replace("/", "-"));// 将传进来的时间转换为时间戳格式
 		String endTime = Timestamps.dateToStamp(nextDate);// 将传进来的时间的后一天转换为时间戳格式
 
-		int totalCount = intTongjiService.pageCount(source, startTime, endTime);// 该方法是查询统计总条数
+		/*int totalCount = intTongjiService.pageCount(source, startTime, endTime);// 该方法是查询统计总条数
 		pageUtil = new PageUtil(page, 10, totalCount);
 		if (page < 1) {
 			page = 1;
@@ -521,11 +521,10 @@ public class TongjiController {
 			}
 		}
 		int pages = (page - 1) * pageUtil.getPageSize();
-		pageUtil.setPage(pages);
+		pageUtil.setPage(pages);*/
 
-		listsourceTongji = intTongjiService.queryAllPage(source, startTime, endTime, pageUtil.getPage(),
-				pageUtil.getPageSize());
-		pageUtil = new PageUtil(page, 10, totalCount);
+		listsourceTongji = intTongjiService.queryAllPage(source, startTime, endTime);
+		//pageUtil = new PageUtil(page, 10, totalCount);
 		for (int i = 0; i < listsourceTongji.size(); i++) {
 			int uv = intTongjiService.queryUV1(listsourceTongji.get(i).getBusinessName(),
 					listsourceTongji.get(i).getSourceName(), startTime, endTime);
@@ -538,7 +537,7 @@ public class TongjiController {
 		}
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("listsourceTongjito", listsourceTongjito);
-		map.put("pageUtil", pageUtil);
+		//map.put("pageUtil", pageUtil);
 		return map;
 	}
 }

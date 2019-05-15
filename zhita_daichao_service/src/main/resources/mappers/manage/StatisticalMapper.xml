@@ -123,7 +123,7 @@
   <!-- 后台管理  联合查询统计所有信息   含分页-->
   <select id="queryAllPage" resultType="com.zhita.model.manage.SourceTongji">
 	select c.id id,c.footprintTime date,c.footprint businessName,c.userId,c.company,s.sourceName sourceName from commodity_footprint c,user u,source s
-    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and s.deleted='0' and s.sourceName=#{arg0} and c.footprintTime>=#{arg1} and c.footprintTime &lt;#{arg2} group by businessName limit #{arg3},#{arg4}
+    where c.userId=u.id and u.sourceId=s.id and c.deleted='0' and s.deleted='0' and s.sourceName=#{arg0} and c.footprintTime>=#{arg1} and c.footprintTime &lt;#{arg2} group by businessName
   </select>
   <!-- 后台管理  联合查询统计所有信息   不含分页-->
   <select id="queryAllPage1" resultType="com.zhita.model.manage.SourceTongji">

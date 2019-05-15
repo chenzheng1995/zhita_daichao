@@ -3,7 +3,6 @@ package com.zhita.service.tongji;
 import java.util.List;
 
 import com.zhita.model.manage.SourceTongji;
-import com.zhita.model.manage.Statistical;
 
 public interface IntTongjiService {
 	
@@ -14,7 +13,7 @@ public interface IntTongjiService {
     //后台管理---通过渠道名称   查询出统计表数据总数量
     public int pageCountBySourceName(String company,String sourceName);
     //后台管理---查询渠道统计所有信息，含分页
-    public List<SourceTongji> queryAllPage(String source,String startTime,String endTime,Integer page,Integer pagesize);
+    public List<SourceTongji> queryAllPage(String source,String startTime,String endTime);
     //后台管理---查询渠道统计所有信息，不含分页
     public List<SourceTongji> queryAllPage1(String company);
     //后台管理---通过渠道名称   查询统计表所有信息，含分页
