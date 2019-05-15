@@ -1,6 +1,7 @@
 package com.zhita.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -152,11 +153,17 @@ public class Test {
 //		String aString = postAndGet.sendGet1("https://wx-dc.oss-cn-zhangjiakou.aliyuncs.com/news/article/标题5.txt");
 //		System.out.println(aString);
 		
-		String aString  = "a"+"\n"+"\r"+"\n"+"\r"+"a";
-		System.out.println(aString);
-		String bString = aString.replaceAll("\r|\n","@newline");
-		System.out.println(bString);
-
+//		String aString  = "a"+"\n"+"\r"+"\n"+"\r"+"a";
+//		System.out.println(aString);
+//		String bString = aString.replaceAll("\r|\n","@newline");
+//		System.out.println(bString);
+ 
 		
+		File file = new File("E://demo");
+	       String[] strArray = file.list();
+	        for(String s : strArray){
+	            System.out.println(s);
+	        }
+
 	}
 }
