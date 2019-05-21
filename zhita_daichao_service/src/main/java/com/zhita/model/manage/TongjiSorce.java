@@ -10,6 +10,7 @@ public class TongjiSorce {
 	private float appNum1;//折扣后的申请数
 	private String cvr;//转化率
 	private Integer sumappnum;//点过甲方  用户的总数量
+	private String company;
 	public Integer getId() {
 		return id;
 	}
@@ -62,10 +63,18 @@ public class TongjiSorce {
 	public void setSumappnum(Integer sumappnum) {
 		this.sumappnum = sumappnum;
 	}
+	
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
 	@Override
 	public String toString() {
-		return "TongjiSorce [id=" + id + ", sourceName=" + sourceName + ", uv=" + uv + ", appNum=" + appNum + ", cvr="
-				+ cvr + ", sumappnum=" + sumappnum + "]";
+		return "TongjiSorce [id=" + id + ", date=" + date + ", sourceName=" + sourceName + ", uv=" + uv + ", appNum="
+				+ appNum + ", appNum1=" + appNum1 + ", cvr=" + cvr + ", sumappnum=" + sumappnum + ", company=" + company
+				+ "]";
 	}
 
 }

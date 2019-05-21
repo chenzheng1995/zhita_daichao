@@ -73,13 +73,13 @@ public class UserServiceImp implements UserService {
 		if((phone==null||"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart==null||"".equals(registrationTimeStart))&&(registrationTimeEnd==null||"".equals(registrationTimeEnd))&&(company!=null)) {
 			System.out.println("第一个if");
 			
-	    	list2=userMapper.queryAllPhoneBySouNameLike(sourceName,company);//通过 渠道名称 ,公司名模糊查询手机号
+	    	//list2=userMapper.queryAllPhoneBySouNameLike(sourceName,company);//通过 渠道名称 ,公司名模糊查询手机号
 	    	
 	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
 			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
 			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
 	    	
-			for (int j = 0; j < company.length; j++) {
+			/*for (int j = 0; j < company.length; j++) {
 				for (int i = 0; i < list2.size(); i++) {
 	    			if(company.length==1) {
 	    				//将用户的当日分发系数字段进行修改
@@ -90,7 +90,7 @@ public class UserServiceImp implements UserService {
 	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
 	    			}
 				}
-			}
+			}*/
 			
 			int totalCount=userMapper.pageCountBySourceName(sourceName,company);//该方法是通过渠道名称模糊查询出用户总数量
 	    	pageUtil=new PageUtil(page,10,totalCount);
@@ -107,6 +107,10 @@ public class UserServiceImp implements UserService {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=userMapper.queryBySourceName(sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	
+	    	for (int i = 0; i < list.size(); i++) {
+	    		list.get(i).setDayfen(userMapper.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),list.get(i).getCompany()));
+			}
 	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		
@@ -114,13 +118,13 @@ public class UserServiceImp implements UserService {
 		else if((phone==null||"".equals(phone))&&(sourceName!=null)&&(registrationTimeStart!=null||!"".equals(registrationTimeStart))&&(registrationTimeEnd!=null||!"".equals(registrationTimeEnd))&&(company!=null)) {
 			System.out.println("第二个if");
 			
-	    	list2=userMapper.queryAllPhoneBySouNameTimeLike(sourceName, registrationTimeStart, registrationTimeEnd, company);//通过渠道名称  注册时间,公司名模糊查询手机号
+	    	//list2=userMapper.queryAllPhoneBySouNameTimeLike(sourceName, registrationTimeStart, registrationTimeEnd, company);//通过渠道名称  注册时间,公司名模糊查询手机号
 	    	
 	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
 			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
 			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
 	    	
-			for (int j = 0; j < company.length; j++) {
+			/*for (int j = 0; j < company.length; j++) {
 				for (int i = 0; i < list2.size(); i++) {
 	    			if(company.length==1) {
 	    				//将用户的当日分发系数字段进行修改
@@ -131,7 +135,7 @@ public class UserServiceImp implements UserService {
 	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
 	    			}
 				}
-			}
+			}*/
 			
 			int totalCount=userMapper.pageCountBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过渠道名称,注册时间,公司名模糊查询出用户总数量
 	    	pageUtil=new PageUtil(page,10,totalCount);
@@ -148,6 +152,10 @@ public class UserServiceImp implements UserService {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=userMapper.queryBySourceNameAndRegistrationtime(sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	
+	    	for (int i = 0; i < list.size(); i++) {
+	    		list.get(i).setDayfen(userMapper.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),list.get(i).getCompany()));
+			}
 	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		//手机号不为空   渠道   时间为空  公司
@@ -157,13 +165,13 @@ public class UserServiceImp implements UserService {
 			PhoneDeal phoneDeal=new PhoneDeal();
 			String phone1=phoneDeal.encryption(phone);//将传进来的手机号进行加密
 			
-	    	list2=userMapper.queryAllPhoneByPhoneSouNameLike(phone1, sourceName, company);//通过手机号，渠道名称，公司名模糊查询手机号
+	    	//list2=userMapper.queryAllPhoneByPhoneSouNameLike(phone1, sourceName, company);//通过手机号，渠道名称，公司名模糊查询手机号
 	    	
 	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
 			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
 			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
 	    	
-			for (int j = 0; j < company.length; j++) {
+			/*for (int j = 0; j < company.length; j++) {
 				for (int i = 0; i < list2.size(); i++) {
 	    			if(company.length==1) {
 	    				//将用户的当日分发系数字段进行修改
@@ -174,8 +182,8 @@ public class UserServiceImp implements UserService {
 	    				userMapper.upaDayFen(userMapper.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
 	    			}
 				}
-			}
-	 		int totalCount=userMapper.pageCountByPhoneAndSourceName(phone1,sourceName,company);//该方法是通过手机号，渠道名称，公司名模糊查询出用户总数量
+			}*/
+			int totalCount=userMapper.pageCountByPhoneAndSourceName(phone1,sourceName,company);//该方法是通过手机号，渠道名称，公司名模糊查询出用户总数量
 	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
 	    		page=1;
@@ -190,6 +198,10 @@ public class UserServiceImp implements UserService {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=userMapper.queryByPhoneAndSourceName(phone1,sourceName,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	
+	    	for (int i = 0; i < list.size(); i++) {
+	    		list.get(i).setDayfen(userMapper.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),list.get(i).getCompany()));
+			}
 	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		//手机号不为空    渠道   时间不为空  公司
@@ -199,13 +211,13 @@ public class UserServiceImp implements UserService {
 			PhoneDeal phoneDeal=new PhoneDeal();
 			String phone1=phoneDeal.encryption(phone);//将传进来的手机号进行加密
 			
-	    	list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone1, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间,公司名模糊查询手机号
+	    	//list2=userMapper.queryAllPhoneByPhoneSouNameTimeLike(phone1, sourceName, registrationTimeStart, registrationTimeEnd, company);//通过电话  渠道名称  注册时间,公司名模糊查询手机号
 	    	
 	    	Timestamps times=new Timestamps();//创建时间戳实体类对象
 			long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
 			long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
 	    	
-			for (int j = 0; j < company.length; j++) {
+	/*		for (int j = 0; j < company.length; j++) {
 				for (int i = 0; i < list2.size(); i++) {
 	    			if(company.length==1) {
 	    				//将用户的当日分发系数字段进行修改
@@ -217,7 +229,7 @@ public class UserServiceImp implements UserService {
 	    			}
 				}
 			}
-			
+			*/
 			int totalCount=userMapper.pageCountByPhoneSourceNameAndRegistrationtime(phone1,sourceName,registrationTimeStart,registrationTimeEnd,company);//该方法是通过电话、渠道名称和注册时间模糊查询出用户总数量
 	    	pageUtil=new PageUtil(page,10,totalCount);
 	    	if(page<1) {
@@ -233,6 +245,10 @@ public class UserServiceImp implements UserService {
 	    	int pages=(page-1)*pageUtil.getPageSize();
 	    	pageUtil.setPage(pages);
 	    	list=userMapper.queryByPhoneSourceNameAndRegistrationtime(phone1,sourceName,registrationTimeStart,registrationTimeEnd,company,pageUtil.getPage(),pageUtil.getPageSize());
+	    	
+	    	for (int i = 0; i < list.size(); i++) {
+	    		list.get(i).setDayfen(userMapper.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),list.get(i).getCompany()));
+			}
 	    	pageUtil=new PageUtil(page,10,totalCount);
 		}
 		TuoMinUtil tuoMinUtil=new TuoMinUtil();//将用户模块的手机号进行脱名
@@ -244,9 +260,9 @@ public class UserServiceImp implements UserService {
     		list.get(i).setRegistrationtime(Timestamps.stampToDate(list.get(i).getRegistrationtime()));
 			list.get(i).setLoginTime(Timestamps.stampToDate(list.get(i).getLoginTime()));
 		}
-		for (int i = 0; i < list2.size(); i++) {
+		/*for (int i = 0; i < list2.size(); i++) {
 			list2.get(i).setPhone(phoneDeal.decryption(list2.get(i).getPhone()));
-		}
+		}*/
 		HashMap<String, Object> map=new HashMap<>();
 		map.put("listSource", list2);
 		map.put("listUser", list);

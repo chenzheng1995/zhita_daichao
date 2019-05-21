@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.StatisticalMapper;
 import com.zhita.model.manage.SourceTongji;
+import com.zhita.model.manage.TongjiSorce;
 
 @Service
 public class TongjiServiceImp implements IntTongjiService{
@@ -82,6 +83,11 @@ public class TongjiServiceImp implements IntTongjiService{
    //后台管理---查询在user表的所有注册时间
    public List<String> queryTimeme1(String company){
 	   List<String> list=statisticalMapper.queryTimeme1(company);
+	   return list;
+   }
+   //后台管理---查询该时间段里    在用户表一共哪些渠道，以及这些渠道的在用户表的注册数量
+   public List<TongjiSorce> queryAllSourceByUser(String[] company,String StartTime,String EndTime){
+	   List<TongjiSorce> list=statisticalMapper.queryAllSourceByUser(company, StartTime, EndTime);
 	   return list;
    }
 }

@@ -66,7 +66,7 @@ public class UserController {
     public Map<String,Object> queryAllUser(Integer page,String string){
 		string = string.replaceAll("\"", "").replace("[","").replace("]","");
 		String [] company= string.split(",");
-   	    List<Source> list1=new ArrayList<>();//存渠道的集合
+   	    //List<Source> list1=new ArrayList<>();//存渠道的集合
 		PageUtil pageUtil=null;
 		List<User> list=new ArrayList<>();
 		List<User> listto=new ArrayList<>();
@@ -78,13 +78,13 @@ public class UserController {
     	if(company.length==1){
 			System.out.println("company.length==1");
 			
-	    	list1=IntMerchantService.queryAll(company[0]);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
-	    	List<User> list2=userService.queryAllPhone(company[0]);//查询出所有用户的手机号
-	    	for (int i = 0; i < list2.size(); i++) {
+	    	//list1=IntMerchantService.queryAll(company[0]);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
+	    	//List<User> list2=userService.queryAllPhone(company[0]);//查询出所有用户的手机号
+	    	/*for (int i = 0; i < list2.size(); i++) {
 				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
 				//将用户的当日分发系数字段进行修改
 				userService.upaDayFen(userService.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[0]), list2.get(i).getPhone(),company[0]);
-			}
+			}*/
 	    	
 	       	int totalCount=userService.pageCount(company[0]);//该方法是查询出用户表总数量
 	    	pageUtil=new PageUtil(page,10,totalCount);
@@ -103,6 +103,10 @@ public class UserController {
 	    	listto=userService.queryAllUser(company[0],pageUtil.getPage(),pageUtil.getPageSize());
 	    	
 	    	for (int i = 0; i < listto.size(); i++) {
+				listto.get(i).setDayfen(userService.queryAmountByUserId(listto.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),listto.get(i).getCompany()));
+			}
+	    	
+	    	for (int i = 0; i < listto.size(); i++) {
 	    		listto.get(i).setRegistrationtime(Timestamps.stampToDate(listto.get(i).getRegistrationtime()));
 	    		listto.get(i).setLoginTime(Timestamps.stampToDate(listto.get(i).getLoginTime()));
 			}
@@ -112,17 +116,17 @@ public class UserController {
     		
     		System.out.println("company.length>1");
     		
-    		List<Source> list1for=null;
+    		//List<Source> list1for=null;
     		List<User> listfor=null;
     		for (int j = 0; j < company.length;j++) {
-    	    	list1for=IntMerchantService.queryAll(company[j]);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
-    	    	list1.addAll(list1for);
-    	    	List<User> list2=userService.queryAllPhone(company[j]);//查询出所有用户的手机号
-    	    	for (int i = 0; i < list2.size(); i++) {
+    	    	//list1for=IntMerchantService.queryAll(company[j]);//查询出所有的渠道信息，将渠道名称渲染到下拉框中
+    	    	//list1.addAll(list1for);
+    	    	//List<User> list2=userService.queryAllPhone(company[j]);//查询出所有用户的手机号
+    	    /*	for (int i = 0; i < list2.size(); i++) {
     				//System.out.println("userid:"+list.get(i).getId()+"dayfen:"+userService.queryAmountByUserId(list.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps)));
     				//将用户的当日分发系数字段进行修改
     				userService.upaDayFen(userService.queryAmountByUserId(list2.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),company[j]), list2.get(i).getPhone(),company[j]);
-    			}
+    			}*/
     	    	listfor=userService.queryAllUser1(company[j]);
             	list.addAll(listfor);
 			}
@@ -140,6 +144,10 @@ public class UserController {
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
+			for (int i = 0; i < listto.size(); i++) {
+				listto.get(i).setDayfen(userService.queryAmountByUserId(listto.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),listto.get(i).getCompany()));
+			}
+			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
 	    	
     	}
@@ -152,7 +160,7 @@ public class UserController {
 			
 		}
     	HashMap<String, Object> map=new HashMap<>();
-    	map.put("listSource", list1);
+    	//map.put("listSource", list1);
     	map.put("listUser",listto);
     	map.put("pageutil",pageUtil);
     	map.put("company", company);

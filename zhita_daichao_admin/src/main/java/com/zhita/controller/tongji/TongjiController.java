@@ -164,8 +164,99 @@ public class TongjiController {
 		tongjiSorce.setCvr(cvr);// 转化率
 		return tongjiSorce;
 	}
+	
+	// 后台管理---我们自己看的统计数据 通过日期查询(某个时间段的)(修改---（页面不再显示所有渠道的一个统计数据信息，只显示在用户表有的渠道的一个统计数据信息）)
+	@ResponseBody
+	@RequestMapping("/queryAllPage")
+	public Map<String, Object> queryAllPage1Upa(Integer page, String string, String dateStart,String dateEnd) throws ParseException {
+		string = string.replaceAll("\"", "").replace("[", "").replace("]", "");
+		String[] company = string.split(",");
 
-		// 后台管理---我们自己看的统计数据 通过日期查询(某个时间段的)
+		PageUtil pageUtil = null;
+		List<TongjiSorce> listto = new ArrayList<>();
+		List<TongjiSorce> listtopage = new ArrayList<>();//经过分页后的数据集合
+
+		String startTime = Timestamps.dateToStamp(dateStart);// 将开始时间转换为时间戳格式
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sdf.parse(dateEnd));
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		Date newDate = calendar.getTime();
+		String nextDate = sdf.format(newDate);// 结束日期的后一天
+		
+		String endTime = Timestamps.dateToStamp(nextDate);// 将结束日期的后一天转换为时间戳格式
+		
+		List<String> listdate=DateListUtil.getDays(dateStart, dateEnd);
+		
+		String companyClient=null;
+		for (int i = 0; i < company.length; i++) {
+			if(company[i].equals("借吧")){
+				companyClient="融51";
+			}
+			
+			listto=intTongjiService.queryAllSourceByUser(company, startTime, endTime);
+			RedisClientUtil redisClientUtil = new RedisClientUtil();
+			for (int j = 0; j < listto.size(); j++) {
+				String source=listto.get(j).getSourceName();//渠道名称
+				float appnum = listto.get(j).getAppNum();//真实的申请数
+				String companyj=listto.get(j).getCompany();//这个渠道的公司名
+				String discount = intTongjiService.queryDiscount(source, companyj);// 得到折扣率
+				int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+				int sumappnum = intTongjiService.queryUV(companyj, source, startTime, endTime);// 得到点过甲方贷款商家总的人数
+				int uv = 0;
+				String cvr = null;
+				for (int k = 0; k <listdate.size(); k++) {
+					int uvi=0;
+					if (redisClientUtil.getSourceClick(companyClient + source + listdate.get(k).replace("-", "/") + "Key") == null) {
+						uvi = 0;
+					} else {
+						uvi = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source + listdate.get(k).replace("-", "/") + "Key"));
+					}
+					uv=uv+uvi;
+				}
+				listto.get(j).setUv(uv);
+				if ((appnum < 0.000001) || (uv == 0)) {
+					cvr = 0 + "%";// 得到转化率
+				} else {
+					cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
+				}
+				if (appnum >= 100) {
+					listto.get(j).setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
+				} else {
+					listto.get(j).setAppNum1(appnum);
+				}
+				listto.get(j).setCvr(cvr);
+				listto.get(j).setSumappnum(sumappnum);
+			}
+		}
+		
+		Integer uvsum=0;
+		Integer registenum=0;
+		for (int i = 0; i < listto.size(); i++) {
+			uvsum=uvsum+listto.get(i).getUv();
+			registenum=(int) (registenum+listto.get(i).getAppNum());
+		}
+		if (listto.size() != 0) {
+			ListPageUtil listPageUtil = new ListPageUtil(listto, page, 10);
+			listtopage.addAll(listPageUtil.getData());
+
+			pageUtil = new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),
+					listPageUtil.getTotalCount());
+
+		}
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("listtopage", listtopage);
+		map.put("pageutil", pageUtil);
+		map.put("company", company);
+		map.put("uvsum", uvsum);
+		map.put("registenum", registenum);
+		return map;
+		
+	}
+	
+
+	/*	// 后台管理---我们自己看的统计数据 通过日期查询(某个时间段的)
 		@ResponseBody
 		@RequestMapping("/queryAllPage")
 		public Map<String, Object> queryAllPage1(Integer page, String string, String dateStart,String dateEnd) throws ParseException {
@@ -201,7 +292,6 @@ public class TongjiController {
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
 				for (int i = 0; i < listsource.size(); i++) {
 					String source = listsource.get(i).getSourcename();
-
 					float appnum = intTongjiService.queryApplicationNumber(company[0], source, startTime, endTime);// 得到申请数
 					String discount = intTongjiService.queryDiscount(source, company[0]);// 得到折扣率
 					int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
@@ -310,7 +400,7 @@ public class TongjiController {
 			map.put("uvsum", uvsum);
 			map.put("registenum", registenum);
 			return map;
-		}
+		}*/
 
 		// 后台管理---我们自己看的统计数据 通过日期查询
 		@ResponseBody

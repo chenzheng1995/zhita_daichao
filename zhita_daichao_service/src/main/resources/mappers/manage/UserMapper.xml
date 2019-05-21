@@ -368,6 +368,7 @@
        <result property="phone" column="phone"/> 
        <result property="dayfen" column="dayFen"/> 
        <result property="registrationtime" column="registrationTime"/> 
+       <result property="company" column="company"/> 
        <!-- ofType指定Source对象-->
        <collection property="source" ofType="com.zhita.model.manage.Source">
        		<result property="sourcename" column="sourceName"/>      
