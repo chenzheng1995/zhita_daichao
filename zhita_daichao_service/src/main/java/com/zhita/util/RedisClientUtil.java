@@ -32,7 +32,13 @@ public class RedisClientUtil {
         jedis.close();
         return set;
     }
-       
+
+    public String set(String key, String value,int seconds) {
+        Jedis jedis = pool.getResource();
+        String set = jedis.setex(key,seconds, value);
+        jedis.close();
+        return set;
+    }
 
     /**
      * 根据key，获取值
@@ -63,8 +69,7 @@ public class RedisClientUtil {
     
     /**
      * 获取全部的key
-     * 
-     * @param key
+     *
      * @return
      */
     public Set<String> getkeyAll() {
