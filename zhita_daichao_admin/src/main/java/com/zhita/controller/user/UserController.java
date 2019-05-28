@@ -177,7 +177,7 @@ public class UserController {
 		
 		String timeStart=null;
 		String timeEnd=null;
-		if((registrationTimeStart!=null&&!"".equals(registrationTimeStart))&&(registrationTimeEnd==null&&"".equals(registrationTimeEnd))){
+		if((registrationTimeStart!=null&&!"".equals(registrationTimeStart))&&(registrationTimeEnd==null&&"".equals(registrationTimeEnd))){ 
 			timeStart=Timestamps.dateToStamp(registrationTimeStart);//将开始时间转换为时间戳
 			Date dateDay=new Date();
 			timeEnd=Timestamps.dateToStamp1(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(dateDay));//将结束时间转换为时间戳
