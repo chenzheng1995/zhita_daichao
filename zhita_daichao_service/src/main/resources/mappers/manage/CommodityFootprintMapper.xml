@@ -164,7 +164,7 @@
 
 	<!-- 查找商品足迹表中的商品名称 -->
 	<select id="getbusinessName" resultType="String" parameterType="map">
-	   select businessName from loans_businesses where businessName NOT in ( select distinct c.footprint from commodity_footprint c,loans_businesses l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime ) and loans_businesses.deleted = 0 and loans_businesses.company = #{company} limit #{startRow},#{pageSize}
+	   select businessName from loans_businesses where businessName NOT in ( select distinct c.footprint from commodity_footprint c,loans_businesses l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime ) and loans_businesses.deleted = 0 and loans_businesses.state = 1 and loans_businesses.company = #{company} limit #{startRow},#{pageSize}
 		 <!-- select distinct c.footprint from commodity_footprint c,loans_businesses l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime desc limit #{startRow},#{pageSize} -->
 	</select>
 	
