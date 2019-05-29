@@ -190,7 +190,7 @@
 	
 		<!-- 查找商品足迹表中的商品名称 -->
 	<select id="getbusinessNameAppCopy" resultType="String" parameterType="map">
-	    select distinct c.footprint from commodity_footprint_copy c,loans_businesses_copy l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.oneSourceName = #{oneSourceName} and c.twoSourceName = #{twoSourceName} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime desc limit #{startRow},#{pageSize}
+	   select businessName from loans_businesses_copy where businessName NOT in ( select distinct c.footprint from commodity_footprint_copy c,loans_businesses_copy l where c.footprint = l.businessName and userId = #{userId} and c.company = #{company} and l.company = #{company} and c.oneSourceName = #{oneSourceName} and c.twoSourceName = #{twoSourceName} and c.deleted = 0 and l.deleted = 0 and l.deleted = 0 and l.state=1 order by footprintTime ) and loans_businesses_copy.deleted = 0 and loans_businesses_copy.company = #{company} limit #{startRow},#{pageSize}
 	</select>
 	
 		<!-- 查询出某个商品的申请人数 -->

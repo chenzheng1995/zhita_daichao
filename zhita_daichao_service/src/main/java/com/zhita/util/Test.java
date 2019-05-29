@@ -1,8 +1,13 @@
 package com.zhita.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -159,11 +164,32 @@ public class Test {
 //		System.out.println(bString);
  
 		
-		File file = new File("E://demo");
-	       String[] strArray = file.list();
-	        for(String s : strArray){
-	            System.out.println(s);
-	        }
+//		File file = new File("E://demo");
+//	       String[] strArray = file.list();
+//	        for(String s : strArray){
+//	            System.out.println(s);
+//	        }
 
+		File file = new File("C:/Users/Administrator/Desktop/io流/袋多多/袋多多.png");
+		File file1 = new File("C:/Users/Administrator/Desktop/io流/袋多多1/袋多多.png");
+		BufferedInputStream iStream = new BufferedInputStream(new FileInputStream(file));
+		BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file1));
+		byte [] b = new byte[1024];
+		int len =0;
+		try {
+			while ((len = iStream.read(b))!=-1) {
+				outputStream.write(b,0, len);	
+			}
+
+		} catch (Exception e) {
+System.out.println("复制图片出错");
+return;
+		}finally {
+			iStream.close();
+			outputStream.close();
+		}
+
+System.out.println(111111);
+		
 	}
 }
