@@ -202,7 +202,10 @@ public class TongjiController {
 				float appnum = listto.get(j).getAppNum();//真实的申请数
 				String companyj=listto.get(j).getCompany();//这个渠道的公司名
 				String discount = intTongjiService.queryDiscount(source, companyj);// 得到折扣率
-				int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+				int discount1 = 0;
+				if(discount!=null&&!"".equals(discount)){
+					discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+				}
 				int sumappnum = intTongjiService.queryUV(companyj, source, startTime, endTime);// 得到点过甲方贷款商家总的人数
 				int uv = 0;
 				String cvr = null;

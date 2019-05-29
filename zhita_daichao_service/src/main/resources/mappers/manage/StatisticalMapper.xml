@@ -173,7 +173,7 @@
    <!-- 后台管理      查询该时间段里    在用户表一共哪些渠道，以及这些渠道的在用户表的注册数量 -->
    <select id="queryAllSourceByUser" resultType="com.zhita.model.manage.TongjiSorce">
    		select t.sourcename,count(*) appnum,t.company from 
-   		(select u.sourceid,s.sourcename,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.deleted=0 and u.company in 
+   		(select u.sourceid,s.sourcename,u.phone,u.registrationTime,u.company from user u left join source s on u.sourceId=s.id where u.company in 
    		<foreach collection="arg0" item="item" open="(" separator="," close=")">  
             #{item}  
        	</foreach> 

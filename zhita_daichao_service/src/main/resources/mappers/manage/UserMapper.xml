@@ -704,4 +704,27 @@
 		set phone = #{newPhone}
 		where id = #{startId1}
 	</update>	
+	
+	<!-- 后台管理       通过传过来的值，进行多种情况的模糊查询，含分页 -->
+	<select id="qeuryAllUserByLike" resultMap="userSource">
+		select s.sourceName,u.id,u.nickname,u.phone,u.dayFen,u.registrationTime,u.company,u.registrationType,u.loginTime from user u left join source s on u.sourceId=s.id 
+		<where>
+			<if test="phone!=null">
+				u.phone=#{phone}
+			</if>		
+			<if test="null!=sourceName and ''!=sourceName">
+				and s.sourceName=#{sourceName}
+			</if>	
+			<if test="registrationTimeStart!=null and registrationTimeEnd!=null">
+				and u.registrationTime between #{registrationTimeStart} and #{registrationTimeEnd}
+			</if>
+			<if test="company!=null">
+				and u.company in
+				<foreach collection="company" item="item" open="(" separator="," close=")">  
+            		#{item}  
+        		</foreach> 
+			</if>	
+			order by u.registrationTime desc
+		</where>
+	</select>
 </mapper>

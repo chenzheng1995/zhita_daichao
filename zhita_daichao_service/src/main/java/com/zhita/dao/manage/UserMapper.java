@@ -159,7 +159,7 @@ public interface UserMapper {
 
 	void updatePhone(@Param("startId1")int startId1,@Param("newPhone") String newPhone);
 
-
-
+	//后台管理       通过传过来的值，进行多种情况的模糊查询，含分页 
+	List<User> qeuryAllUserByLike(@Param("phone") String phone,@Param("sourceName") String sourceName,@Param("registrationTimeStart") String registrationTimeStart,@Param("registrationTimeEnd") String registrationTimeEnd,@Param("company") String[] company,Integer page);
 	
 }
