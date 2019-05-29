@@ -32,16 +32,8 @@ public class SMSUtil {
 		
 		String APIID = "";
 		String APIKEY = "";
-//		if("多米记".equals(company)) {
-//			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
-//			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
-//		}
-//		if("借吧".equals(company)) {
-//			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
-//			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
-//		}
 		
-		if("多米记".equals(company)) {
+		if("融51".equals(company)) {
 			APIID = "C50513591";    // 互亿无线-短信验证码的APIID
 			 APIKEY = "27a9f11b32046fdc16b371d847f7f395";  // 互亿无线-短信验证码的APIKEY
 		}

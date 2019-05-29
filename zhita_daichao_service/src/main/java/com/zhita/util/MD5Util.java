@@ -8,7 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 
 public class MD5Util {
 	
-	public String EncoderByMd5(String str) {
+	public static String EncoderByMd5(String str) {
 		if (str == null) {
 			return null;
 		}

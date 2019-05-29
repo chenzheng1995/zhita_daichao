@@ -21,7 +21,7 @@ public class RedisClientUtil {
 
     /**
      * Redis存储简单类型
-     * 
+     *
      * @param key
      * @param value
      * @return
@@ -32,25 +32,31 @@ public class RedisClientUtil {
         jedis.close();
         return set;
     }
-       
+
+    public String set(String key, String value, int seconds) {
+        Jedis jedis = pool.getResource();
+        String set = jedis.setex(key, seconds, value);
+        jedis.close();
+        return set;
+    }
 
     /**
      * 根据key，获取值
-     * 
+     *
      * @param key
      * @return
      */
     public String get(String key) {
         Jedis jedis = pool.getResource();
         String value = jedis.get(key);
-        jedis.expire(key,180);        //过期时间设置单位为秒
+        jedis.expire(key, 180);        //过期时间设置单位为秒
         jedis.close();
         return value;
     }
-    
+
     /**
      * 根据key，获取值
-     * 
+     *
      * @param key
      * @return
      */
@@ -60,10 +66,10 @@ public class RedisClientUtil {
         jedis.close();
         return value;
     }
-    
+
     /**
      * 获取全部的key
-     * 
+     *
      * @param key
      * @return
      */
@@ -73,10 +79,10 @@ public class RedisClientUtil {
         jedis.close();
         return value;
     }
-    
+
     /**
      * 删除指定的key
-     * 
+     *
      * @param key
      * @return
      */
@@ -89,7 +95,7 @@ public class RedisClientUtil {
 
     /**
      * ProtostuffIOUtil序列化对象并使用Redis存储
-     * 
+     *
      * @param key
      * @param value
      * @param type
@@ -111,7 +117,7 @@ public class RedisClientUtil {
 
     /**
      * ProtostuffIOUtil反序列对象并返回Redis中的对象
-     * 
+     *
      * @param key
      * @param type
      * @return
