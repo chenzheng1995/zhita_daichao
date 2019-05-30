@@ -221,6 +221,27 @@ public class MerchantController {
     	map.put("pageutil", pageUtil);
     	return map;
     }
+//	//后台管理---添加渠道
+//	@Transactional
+//	@ResponseBody
+//	@RequestMapping("/AddAll")
+//    public int AddAll(Source source,String templateName) throws IOException{
+//		Integer templateId = sourceTemplateService.getid(templateName);
+//		source.setTemplateId(templateId);
+//		FolderUtil FolderUtil = new FolderUtil();
+//		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
+//		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");
+//		int num=intMerchantService.addAll(source);//添加渠道表信息		
+//		ManageLogin manageLogin=new ManageLogin();
+//		manageLogin.setCompany(source.getCompany());
+//		manageLogin.setSourcename(source.getSourcename());
+//		manageLogin.setPhone(source.getAccount());
+//		manageLogin.setPwd(source.getAccount());
+//	  	loginService.addManageLogin1(manageLogin);//添加完一条渠道信息   往后台管理登陆表添加一条信息
+//		return num;
+//	}
+	
+	
 	//后台管理---添加渠道
 	@Transactional
 	@ResponseBody
@@ -228,9 +249,7 @@ public class MerchantController {
     public int AddAll(Source source,String templateName) throws IOException{
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
-		FolderUtil FolderUtil = new FolderUtil();
-		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
-		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");
+		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());
 		int num=intMerchantService.addAll(source);//添加渠道表信息		
 		ManageLogin manageLogin=new ManageLogin();
 		manageLogin.setCompany(source.getCompany());
@@ -240,6 +259,7 @@ public class MerchantController {
 	  	loginService.addManageLogin1(manageLogin);//添加完一条渠道信息   往后台管理登陆表添加一条信息
 		return num;
 	}
+	
     //后台管理---通过主键id查询出渠道信息
 	@ResponseBody
 	@RequestMapping("/selectByPrimaryKey")
@@ -252,33 +272,58 @@ public class MerchantController {
     	map.put("templateName",templateName);
     	return map;
     }
+//	//后台管理---通过传过来的渠道对象，对当前对象进行修改保存
+//	@Transactional
+//	@ResponseBody
+//	@RequestMapping("/updateSource")
+//    public int updateSource(Source source,String oldSourceName,String templateName) throws IOException{
+//		FolderUtil FolderUtil = new FolderUtil();
+//		if(!source.getSourcename().equals(oldSourceName)) {		
+//		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
+//		FolderUtil.deleteDirectory("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName);//把旧的文件夹删掉
+//		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");
+//		System.out.println(source);
+//		}
+//		Integer oldTemplateId = intMerchantService.getTemplateId(source.getId());
+//		String oldTemplateName = sourceTemplateService.getTemplateName(oldTemplateId);
+//		Integer templateId = sourceTemplateService.getid(templateName);
+//		source.setTemplateId(templateId);
+//		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");	
+//		if(!oldTemplateName.equals(templateName)) {
+//			FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());			
+//		}
+//	
+//		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
+//		int num=intMerchantService.updateSource(source);
+//		intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
+//		return num;
+//	}
+	
 	//后台管理---通过传过来的渠道对象，对当前对象进行修改保存
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateSource")
     public int updateSource(Source source,String oldSourceName,String templateName) throws IOException{
-		FolderUtil FolderUtil = new FolderUtil();
-		if(!source.getSourcename().equals(oldSourceName)) {		
-		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
-		FolderUtil.deleteDirectory("D:\\nginx-1.14.2\\html\\dist\\promote\\"+oldSourceName);//把旧的文件夹删掉
-		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");
-		System.out.println(source);
-		}
-		Integer oldTemplateId = intMerchantService.getTemplateId(source.getId());
-		String oldTemplateName = sourceTemplateService.getTemplateName(oldTemplateId);
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
-		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");	
-		if(!oldTemplateName.equals(templateName)) {
-			FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());			
-		}
-	
+		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());	
 		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
 		int num=intMerchantService.updateSource(source);
 		intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
 		return num;
 	}
 	
+//	//后台管理---通过主键id修改其当前对象的假删除状态
+//	@Transactional
+//	@ResponseBody
+//	@RequestMapping("/upaFalseDelById")
+//    public int upaFalseDelById(Integer id,String account,String SourceName) {
+//    	int num=intMerchantService.upaFalseDel(id);//通过渠道id更新当前渠道表的假删除状态
+//    	loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
+//    	FolderUtil folderUtil = new FolderUtil();
+//    	folderUtil.DeleteFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+SourceName);//删除文件夹
+//    	return num;
+//    }
 	//后台管理---通过主键id修改其当前对象的假删除状态
 	@Transactional
 	@ResponseBody
@@ -286,43 +331,56 @@ public class MerchantController {
     public int upaFalseDelById(Integer id,String account,String SourceName) {
     	int num=intMerchantService.upaFalseDel(id);//通过渠道id更新当前渠道表的假删除状态
     	loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
-    	FolderUtil folderUtil = new FolderUtil();
-    	folderUtil.DeleteFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+SourceName);//删除文件夹
     	return num;
     }
+//    //后台管理---修改渠道状态
+//	@Transactional
+//	@ResponseBody
+//	@RequestMapping("/upaState")
+//	public int upaState(String state,Integer id) throws IOException {
+//		int num=0;
+//  		String link = intMerchantService.getLink(id);
+//	 	String fileName = link.substring(30, link.lastIndexOf("/"));
+//	 	
+//	 	File file = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName);
+//	 	File file2 = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName+"###");
+//		if(state.equals("1")) {
+//			if(fileName.endsWith("###")) {
+//			 	String newLink = link.replace(fileName,fileName.substring(0,fileName.length()-3));
+//				intMerchantService.updateLink(newLink,id);
+////				FolderUtil folderUtil = new FolderUtil();
+////				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName.substring(0,fileName.length()-3));
+//				File file3 = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName.substring(0,fileName.length()-3));
+//				file.renameTo(file3);
+//			}
+//			num=intMerchantService.upaStateOpen(id);
+//		}else {
+//			if(!fileName.endsWith("###")) {
+//				String newLink = link.replace("/"+fileName+"/","/"+fileName+"###"+"/");
+//				intMerchantService.updateLink(newLink,id);
+//				file.renameTo(file2);
+////				FolderUtil folderUtil = new FolderUtil();
+////				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName+"###");
+//			}
+//			num=intMerchantService.upaStateClose(id);
+//		}
+//		return num;
+//	}
+	
     //后台管理---修改渠道状态
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/upaState")
 	public int upaState(String state,Integer id) throws IOException {
 		int num=0;
-  		String link = intMerchantService.getLink(id);
-	 	String fileName = link.substring(30, link.lastIndexOf("/"));
-	 	
-	 	File file = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName);
-	 	File file2 = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName+"###");
 		if(state.equals("1")) {
-			if(fileName.endsWith("###")) {
-			 	String newLink = link.replace(fileName,fileName.substring(0,fileName.length()-3));
-				intMerchantService.updateLink(newLink,id);
-//				FolderUtil folderUtil = new FolderUtil();
-//				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName.substring(0,fileName.length()-3));
-				File file3 = new File("D:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName.substring(0,fileName.length()-3));
-				file.renameTo(file3);
-			}
 			num=intMerchantService.upaStateOpen(id);
 		}else {
-			if(!fileName.endsWith("###")) {
-				String newLink = link.replace("/"+fileName+"/","/"+fileName+"###"+"/");
-				intMerchantService.updateLink(newLink,id);
-				file.renameTo(file2);
-//				FolderUtil folderUtil = new FolderUtil();
-//				folderUtil.renameFolder("E:\\nginx-1.14.2\\html\\dist\\promote\\"+fileName,fileName+"###");
-			}
 			num=intMerchantService.upaStateClose(id);
 		}
 		return num;
 	}
+	
     //后台管理---查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间   含分页
 	@ResponseBody
 	@RequestMapping("/queryAllUserBySourceId")
