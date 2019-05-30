@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
@@ -251,12 +250,12 @@ public class MerchantController {
 		source.setTemplateId(templateId);
 		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());
 		int num=intMerchantService.addAll(source);//添加渠道表信息		
-		ManageLogin manageLogin=new ManageLogin();
+	/*	ManageLogin manageLogin=new ManageLogin();
 		manageLogin.setCompany(source.getCompany());
 		manageLogin.setSourcename(source.getSourcename());
 		manageLogin.setPhone(source.getAccount());
 		manageLogin.setPwd(source.getAccount());
-	  	loginService.addManageLogin1(manageLogin);//添加完一条渠道信息   往后台管理登陆表添加一条信息
+	  	loginService.addManageLogin1(manageLogin);*///添加完一条渠道信息   往后台管理登陆表添加一条信息
 		return num;
 	}
 	
@@ -306,10 +305,10 @@ public class MerchantController {
     public int updateSource(Source source,String oldSourceName,String templateName) throws IOException{
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
+
 		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());	
-		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
 		int num=intMerchantService.updateSource(source);
-		intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
+		//intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
 		return num;
 	}
 	
