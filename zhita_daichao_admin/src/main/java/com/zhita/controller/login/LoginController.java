@@ -149,7 +149,7 @@ public class LoginController {
 					 map.put("sourceName", sourcename);
 					 map.put("company", company);
 				 }else{
-					 map.put("msg2", "密码错误");
+					 map.put("msg", "密码错误");
 				 }
 			 }
 		}
