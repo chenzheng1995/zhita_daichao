@@ -1,6 +1,5 @@
 package com.zhita.controller.merchant;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +20,6 @@ import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.service.sourcetemplate.SourceTemplateService;
-import com.zhita.util.FolderUtil;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
 import com.zhita.util.Timestamps;
@@ -329,7 +327,7 @@ public class MerchantController {
 	@RequestMapping("/upaFalseDelById")
     public int upaFalseDelById(Integer id,String account,String SourceName) {
     	int num=intMerchantService.upaFalseDel(id);//通过渠道id更新当前渠道表的假删除状态
-    	loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
+    	//loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
     	return num;
     }
 //    //后台管理---修改渠道状态
