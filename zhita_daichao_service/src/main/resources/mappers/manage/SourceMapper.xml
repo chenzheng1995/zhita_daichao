@@ -253,4 +253,16 @@
  <select id="getTemplateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
  	select templateId from source where id =#{id}
  </select>
-</mapper>
+
+
+ <!-- 根据渠道名获取state-->
+<select id="getstateAndDeleted" parameterType="java.lang.String" resultType="java.lang.String">
+		select state from source where company=#{company} and sourcename = #{sourceName}
+	</select>
+	
+	
+	     <!-- 根据渠道名获取deleted -->
+ <select id="getDeleted" parameterType="java.util.Map" resultType="java.lang.String">
+  select deleted from source where company=#{company} and sourcename = #{sourceName}
+ </select>
+	</mapper>

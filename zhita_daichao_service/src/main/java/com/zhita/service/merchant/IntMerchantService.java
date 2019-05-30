@@ -70,4 +70,8 @@ public interface IntMerchantService {
 
 	public Integer getTemplateId(Integer id);
 
+	public List<String> getstateAndDeleted(String company, String sourceName);
+
+	public List<String> getDeleted(String company, String sourceName);
+
 }

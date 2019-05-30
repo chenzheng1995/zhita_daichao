@@ -1,6 +1,7 @@
 package com.zhita.dao.manage;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -95,4 +96,8 @@ public interface SourceMapper {
 	void updateLink(@Param("link")String link,@Param("id") Integer id);
 
 	Integer getTemplateId(Integer id);
+
+	List<String> getstateAndDeleted(@Param("company")String company,@Param("sourceName") String sourceName);
+
+	List<String> getDeleted(@Param("company")String company,@Param("sourceName") String sourceName);
 }

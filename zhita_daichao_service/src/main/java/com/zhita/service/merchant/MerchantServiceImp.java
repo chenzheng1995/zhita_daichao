@@ -246,4 +246,14 @@ public class MerchantServiceImp implements IntMerchantService{
 		Integer oldTemplateId = sourceMapper.getTemplateId(id);
 		return oldTemplateId;
 	}
+	@Override
+	public List<String> getstateAndDeleted(String company, String sourceName) {
+		List<String> list = sourceMapper.getstateAndDeleted(company,sourceName);
+		return list;
+	}
+	@Override
+	public List<String> getDeleted(String company, String sourceName) {
+		List<String> list1 = sourceMapper.getDeleted(company,sourceName);
+		return list1;
+	}
 }
