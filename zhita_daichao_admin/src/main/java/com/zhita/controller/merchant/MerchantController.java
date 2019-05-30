@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
@@ -232,12 +231,12 @@ public class MerchantController {
 		FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());
 		source.setLink("http://tg.mis8888.com/promote/"+source.getSourcename()+"/index.html");
 		int num=intMerchantService.addAll(source);//添加渠道表信息		
-		ManageLogin manageLogin=new ManageLogin();
+	/*	ManageLogin manageLogin=new ManageLogin();
 		manageLogin.setCompany(source.getCompany());
 		manageLogin.setSourcename(source.getSourcename());
 		manageLogin.setPhone(source.getAccount());
 		manageLogin.setPwd(source.getAccount());
-	  	loginService.addManageLogin1(manageLogin);//添加完一条渠道信息   往后台管理登陆表添加一条信息
+	  	loginService.addManageLogin1(manageLogin);*///添加完一条渠道信息   往后台管理登陆表添加一条信息
 		return num;
 	}
     //后台管理---通过主键id查询出渠道信息
@@ -273,9 +272,9 @@ public class MerchantController {
 			FolderUtil.copyDir("D:\\nginx-1.14.2\\html\\dist\\promote\\"+templateName,"D:\\nginx-1.14.2\\html\\dist\\promote\\"+source.getSourcename());			
 		}
 	
-		Source source1=intMerchantService.selectByPrimaryKey(source.getId());
+		//Source source1=intMerchantService.selectByPrimaryKey(source.getId());
 		int num=intMerchantService.updateSource(source);
-		intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
+		//intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
 		return num;
 	}
 	
@@ -285,7 +284,7 @@ public class MerchantController {
 	@RequestMapping("/upaFalseDelById")
     public int upaFalseDelById(Integer id,String account,String SourceName) {
     	int num=intMerchantService.upaFalseDel(id);//通过渠道id更新当前渠道表的假删除状态
-    	loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
+    	//loginService.upaMFalseDelByPhone(account);//通过渠道账号   去后台登陆表修改假删除状态
     	FolderUtil folderUtil = new FolderUtil();
     	folderUtil.DeleteFolder("D:\\nginx-1.14.2\\html\\dist\\promote\\"+SourceName);//删除文件夹
     	return num;
