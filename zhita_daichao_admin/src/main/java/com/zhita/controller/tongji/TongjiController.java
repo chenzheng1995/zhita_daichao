@@ -74,6 +74,7 @@ public class TongjiController {
 			int uv = 0;
 			String cvr = null;
 			String companyClient=null;
+			TongjiSorce tongjiSorce = new TongjiSorce();
 			if(company.equals("借吧")){
 				companyClient="融51";
 			}
@@ -82,22 +83,23 @@ public class TongjiController {
 			} else {
 				uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + sourceName + list1.get(i) + "Key"));
 			}
-			if ((appnum < 0.000001) || (uv == 0)) {
-				cvr = 0 + "%";// 得到转化率
-			} else {
-				cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
-			}
 			
-			TongjiSorce tongjiSorce = new TongjiSorce();
-			tongjiSorce.setDate(list1.get(i));// 日期
-			tongjiSorce.setSourceName(sourceName);// 渠道名称
-			tongjiSorce.setUv(uv);// uv
 			if (appnum >= 50) {
 				int overtop=(int)appnum-50;//overtop是当前申请数超过50的那部分数量
 				tongjiSorce.setAppNum((int)Math.ceil((overtop * discount1 *1.0/ 100+50)));// 申请数
 			} else {
 				tongjiSorce.setAppNum(appnum);// 申请数
 			}
+			
+			if ((appnum < 0.000001) || (uv == 0)) {
+				cvr = 0 + "%";// 得到转化率
+			} else {
+				cvr = (new DecimalFormat("#.00").format(tongjiSorce.getAppNum() / uv * 100)) + "%";// 得到转化率
+			}
+			
+			tongjiSorce.setDate(list1.get(i));// 日期
+			tongjiSorce.setSourceName(sourceName);// 渠道名称
+			tongjiSorce.setUv(uv);// uv
 			tongjiSorce.setCvr(cvr);// 转化率
 			listsource.add(tongjiSorce);
 		}		
@@ -136,6 +138,7 @@ public class TongjiController {
 		int uv = 0;
 		String cvr = null;
 		String companyClient=null;
+		TongjiSorce tongjiSorce = new TongjiSorce();
 		if(company.equals("借吧")){
 			companyClient="融51";
 		}
@@ -145,22 +148,25 @@ public class TongjiController {
 			uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source + date + "Key"));
 
 		}
-		if ((appnum < 0.000001) || (uv == 0)) {
-			cvr = 0 + "%";// 得到转化率
-		} else {
-			cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
-		}
-
-		TongjiSorce tongjiSorce = new TongjiSorce();
-		tongjiSorce.setDate(date);// 日期
-		tongjiSorce.setSourceName(source);// 渠道名称
-		tongjiSorce.setUv(uv);// uv
+		
 		if (appnum >= 50) {
 			int overtop=(int)appnum-50;//overtop是当前申请数超过50的那部分数量
 			tongjiSorce.setAppNum((int)Math.ceil((overtop * discount1 *1.0/ 100+50)));// 申请数
 		} else {
 			tongjiSorce.setAppNum(appnum);// 申请数
 		}
+		
+		if ((appnum < 0.000001) || (uv == 0)) {
+			cvr = 0 + "%";// 得到转化率
+		} else {
+			cvr = (new DecimalFormat("#.00").format(tongjiSorce.getAppNum() / uv * 100)) + "%";// 得到转化率
+		}
+
+		
+		tongjiSorce.setDate(date);// 日期
+		tongjiSorce.setSourceName(source);// 渠道名称
+		tongjiSorce.setUv(uv);// uv
+		
 		tongjiSorce.setCvr(cvr);// 转化率
 		return tongjiSorce;
 	}
