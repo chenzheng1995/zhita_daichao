@@ -1,5 +1,6 @@
 package com.zhita.controller;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -127,7 +128,18 @@ public class Test {
 		String endTime = Timestamps.dateToStamp(nextDate);// 将结束时间转换为时间戳格式
 		System.out.println(startTime+"start"+endTime+"end");*/
 		//System.out.println(DateListUtil.getDays(dateStart, dateEnd));;
-		PhoneDeal phoneDeal=new PhoneDeal();//手机号解密实体类
-		System.out.println(phoneDeal.encryption("18871552653"));
+	/*	PhoneDeal phoneDeal=new PhoneDeal();//手机号解密实体类
+		System.out.println(phoneDeal.encryption("18871552653"));*/
+		/*String discount="80%";
+		int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+		System.out.println(discount1+"------------");*/
+		
+		//System.out.println(8 * 120 / 100);
+		  
+		System.out.println((int)Math.ceil(6 * 120 *1.0/ 100));
+		//System.out.println((int)Math.ceil(Float.parseFloat((8 * 120 / 100)+"."+(8 * 120 % 100))));
+		//System.out.println((int)Math.ceil(9.6));*/
+		//System.out.println((int)Math.ceil((3 * 80 *1.0/ 100)));
+		//System.out.println((int)Math.ceil(2.4*1.0));
 	}
 }

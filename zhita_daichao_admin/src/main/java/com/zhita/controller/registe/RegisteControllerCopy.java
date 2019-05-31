@@ -68,9 +68,6 @@ public class RegisteControllerCopy {
         	
         	listto=intRegisteCopyService.queryAllAdmainCopy(company[0],pageUtil.getPage(),pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
-        	for (int i = 0; i < list.size(); i++) {
-    			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
-    		}
     	}
     	else if(company.length>1){
     		
@@ -87,11 +84,6 @@ public class RegisteControllerCopy {
             	list.addAll(listfor);
 			}
     		
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
-			
-			
 			System.out.println("传进工具类的page"+page);
 			
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
@@ -232,10 +224,6 @@ public class RegisteControllerCopy {
             	list.addAll(listfor);
 			}
     		
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
-			
 			System.out.println("传进工具类的page"+page);
 			
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
@@ -269,9 +257,6 @@ public class RegisteControllerCopy {
         	
         	listto=intRegisteCopyService.queryAllAdmainCopy(company[0],pageUtil.getPage(),pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
-        	for (int i = 0; i < list.size(); i++) {
-    			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
-    		}
     	
     	}
 		//商家名称不为空并且公司名不为空   公司名选择的是全部项
@@ -290,10 +275,6 @@ public class RegisteControllerCopy {
             	list.addAll(listfor);
 			}
     		
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
-			
 			System.out.println("传进工具类的page"+page);
 			
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
@@ -328,9 +309,6 @@ public class RegisteControllerCopy {
         	
         	listto=intRegisteCopyService.queryByNameLikeCopy(businessName,company[0],pageUtil.getPage(),pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
-        	for (int i = 0; i < listto.size(); i++) {
-    			System.out.println(listto.get(i).getBusinessname()+"***"+listto.get(i).getApplicationnumber());
-    		}
     		
         }
     	HashMap<String, Object> map=new HashMap<>();

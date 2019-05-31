@@ -279,10 +279,6 @@ public class UserController {
         list1.clear();   
         list1.addAll(h);   
     	
-    	for (int i = 0; i < list1.size(); i++) {
-    		System.out.println("输出data类型的时间："+list1.get(i));//list1里面存的是传进来这个时间段里有的日期
-		}
-    	
     	List<String> list2=DateListUtil.getDiffrent2(daysList, list1);//list2里面存的是传进来这个时间段里没有的日期，要将数量设为0
     	
     	List<JiaFangTongji> listjia=new ArrayList<>();
@@ -313,9 +309,6 @@ public class UserController {
     	    listjia.add(jia);
 		}
     	DateListUtil.ListSort(listjia);//将集合按照日期进行排序
-    	for (int i = 0; i < listjia.size(); i++) {
-			System.out.println("date:::"+listjia.get(i).getDate()+"count:::"+listjia.get(i).getAmount());
-		}
     	return listjia;
     }
 }
