@@ -58,9 +58,9 @@ public class TongjiController {
 		HashSet h = new HashSet(list1);
 		list1.clear();
 		list1.addAll(h);
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
-		}
+//		for (int i = 0; i < list.size(); i++) {
+//			System.out.println(list.get(i));
+//		}
 		for (int i = 0; i < list1.size(); i++) {			
 //			String startTime = list1.get(i) + " " + "00:00:00";
 			String startTime = list1.get(i);
