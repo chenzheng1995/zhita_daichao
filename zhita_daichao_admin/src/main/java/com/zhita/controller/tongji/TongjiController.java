@@ -84,9 +84,9 @@ public class TongjiController {
 				uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + sourceName + list1.get(i) + "Key"));
 			}
 			
-			if (appnum >= 50) {
-				int overtop=(int)appnum-50;//overtop是当前申请数超过50的那部分数量
-				tongjiSorce.setAppNum((int)Math.ceil((overtop * discount1 *1.0/ 100+50)));// 申请数
+			if (appnum >= 10) {
+				int overtop=(int)appnum-10;//overtop是当前申请数超过50的那部分数量
+				tongjiSorce.setAppNum((int)Math.ceil((overtop * discount1 *1.0/ 100+10)));// 申请数
 			} else {
 				tongjiSorce.setAppNum(appnum);// 申请数
 			}
