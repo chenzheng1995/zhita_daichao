@@ -1,14 +1,9 @@
 package com.zhita.controller;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import com.zhita.util.DateListUtil;
-import com.zhita.util.PhoneDeal;
-import com.zhita.util.Timestamps;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Test {
 	public static void main(String[] args) throws ParseException {
@@ -136,10 +131,51 @@ public class Test {
 		
 		//System.out.println(8 * 120 / 100);
 		  
-		System.out.println((int)Math.ceil(6 * 120 *1.0/ 100));
+		//System.out.println((int)Math.ceil(6 * 120 *1.0/ 100));
 		//System.out.println((int)Math.ceil(Float.parseFloat((8 * 120 / 100)+"."+(8 * 120 % 100))));
 		//System.out.println((int)Math.ceil(9.6));*/
 		//System.out.println((int)Math.ceil((3 * 80 *1.0/ 100)));
 		//System.out.println((int)Math.ceil(2.4*1.0));
+		/*Date d=new Date();
+		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+		String date=sf.format(d);
+		System.out.println(date);*/
+		/*List<String> list=new ArrayList<>();
+		list.add("2019-06-01");
+		list.add("2019-06-02");
+		list.add("2019-06-03");
+		
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+		}
+		
+		
+		System.out.println("---------------------");
+		
+		Date d=new Date();
+		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+		String date=sf.format(d);//date为当天时间
+		
+		list.remove("2019-06-04");
+		
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+		}*/
+		
+		
+		  List<String> list1=new ArrayList<>();
+	        list1.add("2019-6-01");
+	        list1.add("2019-6-02");
+	        list1.add("2019-6-03");
+
+	        List<String> list2=new ArrayList<>();
+System.out.println(list2);
+	        System.out.println("====求差集===");
+	        List<String> list=list1.stream().filter(t-> !list2.contains(t)).collect(Collectors.toList());
+	        for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i));
+			}
+
+
 	}
 }
