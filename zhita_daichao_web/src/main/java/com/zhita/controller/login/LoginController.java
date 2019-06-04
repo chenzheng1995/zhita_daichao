@@ -51,7 +51,7 @@ public class LoginController {
     }
 
     // 发送验证码
-    @RequestMapping("/sendSMS")
+   /* @RequestMapping("/sendSMS")
     @ResponseBody
     public Map<String, String> sendSMS(String phone, String company,HttpServletRequest request) {
         String currentIp = getIpAddress(request);
@@ -69,7 +69,7 @@ public class LoginController {
             map.put("msg", "发送失败");
             return map;
         }
-    }
+    }*/
 
     // 发送验证码
     @RequestMapping("/sendH5ShortMessage")
