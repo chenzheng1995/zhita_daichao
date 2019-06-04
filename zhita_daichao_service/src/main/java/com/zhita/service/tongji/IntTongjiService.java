@@ -2,6 +2,7 @@ package com.zhita.service.tongji;
 
 import java.util.List;
 
+import com.zhita.model.manage.SourceDiscountHistory;
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.TongjiSorce;
 
@@ -50,4 +51,16 @@ public interface IntTongjiService {
     
     //后台管理---查询该时间段里    在用户表一共哪些渠道，以及这些渠道的在用户表的注册数量
     List<TongjiSorce> queryAllSourceByUser(String[] company,String StartTime,String EndTime);
+    
+    //后台管理---往渠道申请数（折扣量）历史表插入数据
+    public int insertAll(TongjiSorce sourceDiscountHistory);
+    
+    //后台管理---通过渠道名称查询历史表信息
+    public List<TongjiSorce> queryAllBySourceName(String sourcename);
+    
+    //后台管理---通过渠道查询历史表当前渠道的所有日期
+    public List<String> queryDate(String sourcename);
+    
+    //后台管理---通过渠道和日期查询是否有数据
+    public TongjiSorce queryBySourcenameAndDate(String sourcename,String date);
 }

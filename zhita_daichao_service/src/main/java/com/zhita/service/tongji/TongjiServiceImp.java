@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zhita.dao.manage.SourceDiscountHistoryMapper;
 import com.zhita.dao.manage.StatisticalMapper;
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.TongjiSorce;
@@ -13,6 +14,8 @@ import com.zhita.model.manage.TongjiSorce;
 public class TongjiServiceImp implements IntTongjiService{
 	@Autowired
 	private StatisticalMapper statisticalMapper;
+	@Autowired
+	private SourceDiscountHistoryMapper sourceDiscountHistoryMapper;
 	
 	
     //后台管理---通过渠道名称  查询出统计表所有的商家名称
@@ -89,5 +92,29 @@ public class TongjiServiceImp implements IntTongjiService{
    public List<TongjiSorce> queryAllSourceByUser(String[] company,String StartTime,String EndTime){
 	   List<TongjiSorce> list=statisticalMapper.queryAllSourceByUser(company, StartTime, EndTime);
 	   return list;
+   }
+   
+   //后台管理---往渠道申请数（折扣量）历史表插入数据
+   public int insertAll(TongjiSorce sourceDiscountHistory){
+	   int num=sourceDiscountHistoryMapper.insert(sourceDiscountHistory);
+	   return num;
+   }
+   
+   //后台管理---通过渠道名称查询历史表信息
+   public List<TongjiSorce> queryAllBySourceName(String sourcename){
+	   List<TongjiSorce> list = sourceDiscountHistoryMapper.queryAllBySourceName(sourcename);
+	   return list;
+   }
+   
+   //后台管理---通过渠道查询历史表当前渠道的所有日期
+   public List<String> queryDate(String sourcename){
+	   List<String> list=sourceDiscountHistoryMapper.queryDate(sourcename);
+	   return list;
+   }
+   
+ //后台管理---通过渠道和日期查询是否有数据
+   public TongjiSorce queryBySourcenameAndDate(String sourcename,String date){
+	   TongjiSorce tongjiSorce = sourceDiscountHistoryMapper.queryBySourcenameAndDate(sourcename, date);
+	   return tongjiSorce;
    }
 }
