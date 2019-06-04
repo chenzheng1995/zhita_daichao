@@ -48,7 +48,7 @@ public class OssUtil {
 	 * @param key
 	 * @return
 	 */
-	public String uploadFile(InputStream is, String key) throws Exception {
+	public static String uploadFile(InputStream is, String key) throws Exception {
 		OSSClient client = null;
 		try {
 			client = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
@@ -56,6 +56,24 @@ public class OssUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		} finally {
+			client.shutdown();
+			try {
+				is.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return URL + key;
+	}
+
+	public static String uploadFile_copy(InputStream is, String key) {
+			OSSClient client = null;
+		try {
+			client = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+			client.putObject(BUCKET_NAME, key, is);
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			client.shutdown();
 			try {
