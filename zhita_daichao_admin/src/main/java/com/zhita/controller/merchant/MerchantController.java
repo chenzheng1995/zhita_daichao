@@ -247,14 +247,27 @@ public class MerchantController {
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
 		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());
-		int num=intMerchantService.addAll(source);//添加渠道表信息		
+		
+		int count=intMerchantService.queryIsExist(source.getSourcename());
+		int num=0;
+		int num1=0;
+		if(count==0){
+			num=intMerchantService.addAll(source);//添加渠道表信息	
+			return num;
+		}else{
+			num1=intMerchantService.updateAll(source);
+			return num1;
+		}
+		
+		//sourcename,account,pwd,link,company,discount,templateId
+		
 	/*	ManageLogin manageLogin=new ManageLogin();
 		manageLogin.setCompany(source.getCompany());
 		manageLogin.setSourcename(source.getSourcename());
 		manageLogin.setPhone(source.getAccount());
 		manageLogin.setPwd(source.getAccount());
 	  	loginService.addManageLogin1(manageLogin);*///添加完一条渠道信息   往后台管理登陆表添加一条信息
-		return num;
+		
 	}
 	
     //后台管理---通过主键id查询出渠道信息

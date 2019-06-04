@@ -77,6 +77,18 @@ public class MerchantServiceImp implements IntMerchantService{
     	return list;
     }
     
+  //后台管理---查询当前渠道是否在渠道表有数据
+    public int queryIsExist(String source){
+    	int count=sourceMapper.queryIsExist(source);
+    	return count;
+    }
+    
+  //后台管理---修改渠道数据
+    public int updateAll(Source source){
+    	int num=sourceMapper.updateAll(source);
+    	return num;
+    }
+    
     //后台管理---添加渠道信息
     public int addAll(Source source) {
     	int num=sourceMapper.addAll(source);

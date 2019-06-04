@@ -168,8 +168,14 @@ public class Test {
 	        list1.add("2019-6-02");
 	        list1.add("2019-6-03");
 
+
 	        List<String> list2=new ArrayList<>();
-System.out.println(list2);
+	        list2.add("2019-6-01");
+	        list2.add("2019-6-02");
+	        list2.add("2019-6-03");
+	        
+	        
+	        
 	        System.out.println("====求差集===");
 	        List<String> list=list1.stream().filter(t-> !list2.contains(t)).collect(Collectors.toList());
 	        for (int i = 0; i < list.size(); i++) {
