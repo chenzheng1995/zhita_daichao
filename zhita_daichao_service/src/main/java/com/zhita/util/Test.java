@@ -199,40 +199,49 @@ public class Test {
 //		file.renameTo(new File("E:\\nginx-1.14.2\\html\\dist\\promote\\模板1\\index.txt"));
 		
 		
-		        String path="E:\\nginx-1.14.2\\html\\dist\\promote\\模板1\\index.txt";
-
-		        //待替换字符
-		        String aStr="shoplevel.html";
-		        //替换字符
-		        String bStr="../模板1/shoplevel.html";
-
-		        //读取文件
-		        File file=new File(path);
-
-		        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-
-		        //内存流
-		        CharArrayWriter caw=new CharArrayWriter();
-
-		        //替换
-		        String line=null;
-
-		        //以行为单位进行遍历
-		        while((line=br.readLine())!=null){
-		            //替换每一行中符合被替换字符条件的字符串
-		            line=line.replaceAll(aStr, bStr);
-		            //将该行写入内存
-		            caw.write(line);
-		            //添加换行符，并进入下次循环
-		            caw.append(System.getProperty("line.separator"));
-		        }
-		        //关闭输入流
-		        br.close();
-
-		        //将内存中的流写入源文件
-		        FileWriter fw=new FileWriter(file);
-		        caw.writeTo(fw);
-		        fw.close();
+//		        String path="E:\\nginx-1.14.2\\html\\dist\\promote\\模板1\\index.txt";
+//
+//		        //待替换字符
+//		        String aStr="shoplevel.html";
+//		        //替换字符
+//		        String bStr="../模板1/shoplevel.html";
+//
+//		        //读取文件
+//		        File file=new File(path);
+//
+//		        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+//
+//		        //内存流
+//		        CharArrayWriter caw=new CharArrayWriter();
+//
+//		        //替换
+//		        String line=null;
+//
+//		        //以行为单位进行遍历
+//		        while((line=br.readLine())!=null){
+//		            //替换每一行中符合被替换字符条件的字符串
+//		            line=line.replaceAll(aStr, bStr);
+//		            //将该行写入内存
+//		            caw.write(line);
+//		            //添加换行符，并进入下次循环
+//		            caw.append(System.getProperty("line.separator"));
+//		        }
+//		        //关闭输入流
+//		        br.close();
+//
+//		        //将内存中的流写入源文件
+//		        FileWriter fw=new FileWriter(file);
+//		        caw.writeTo(fw);
+//		        fw.close();
+		
+		int i =0;
+		try {
+        String a = null;
+        a.length();
+		} catch (Exception e) {
+         i = 1;
+		}
+		System.out.println(i);
 		    }
 
 

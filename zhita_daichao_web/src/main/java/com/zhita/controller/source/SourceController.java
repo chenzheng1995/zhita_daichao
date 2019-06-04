@@ -41,17 +41,18 @@ public class SourceController {
 			 return map;
 		 }
 		}
-	    
+		 map.put("msg","渠道被删除");
+		 map.put("code","300");
 	    List<String> list1 = intMerchantService.getDeleted(company,sourceName);
 	    for (String string : list1) {
 		     String	deleted = string;
-			 if("1".equals(deleted)) {
-				 map.put("msg","渠道被删除");
-				 map.put("code","300");
+			 if("0".equals(deleted)) {  
+				 map.put("msg","成功");
+				 map.put("code","200");
 				 return map;
 			 }
 			}
-	    
+
 		return map;
 		
 	}
