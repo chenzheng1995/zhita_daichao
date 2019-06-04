@@ -152,6 +152,7 @@ public class TongjiController {
 			if (appnum >= 30) {
 				int overtop=(int)appnum-30;//overtop是当前申请数超过50的那部分数量
 				tongjiSorce.setAppNum((int)Math.ceil((overtop * discount1 *1.0/ 100+30)));// 申请数
+
 			} else {
 				tongjiSorce.setAppNum(appnum);// 申请数
 			}
