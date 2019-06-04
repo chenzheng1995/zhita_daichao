@@ -33,7 +33,7 @@ public class RedisClientUtil {
         return set;
     }
 
-    public String set(String key, String value, int seconds) {
+    public static String set(String key, String value, int seconds) {
         Jedis jedis = pool.getResource();
         String set = jedis.setex(key, seconds, value);
         jedis.close();
