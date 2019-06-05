@@ -80,9 +80,14 @@ public class LoginController {
     public Map<String, String> sendShortMessage(String phone, String company, String appNumber, String code) {
         Map<String, String> map = new HashMap<>();
         DateFormat format = new SimpleDateFormat("yyyy/M/d");
-        if (MD5Utils.getMD5(phone + appNumber + format.format(new Date()) + "rong51@dai").equals(code)) {
+        String result = MD5Utils.getMD5(phone + appNumber + format.format(new Date()) + "rong51@dai");
+        if (result.length() == 31) {
+            result = 0 + MD5Utils.getMD5(phone + appNumber + format.format(new Date()) + "rong51@dai");
+        }
+        if (result.equals(code)) {
             SMSUtil smsUtil = new SMSUtil();
-            String state = smsUtil.sendSMS(phone, "json", company);
+            String sign = appNumber.equals("25") ? "嗨钱" : "借吧";
+            String state = smsUtil.sendSMS1(phone, "json", company,sign);
             map.put("msg", state);
             return map;
         } else {
