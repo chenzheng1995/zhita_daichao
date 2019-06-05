@@ -22,6 +22,12 @@ public interface SourceMapper {
 
     int updateByPrimaryKey(Source record);
     
+    //后台管理---查询当前渠道是否在渠道表有数据
+    int queryIsExist(String source);
+    
+    //后台管理---修改渠道数据
+    int updateAll(Source source);
+    
     //后台管理---查询出所有渠道表信息，不含分页
     List<Source> queryAll(String company);
     

@@ -261,8 +261,26 @@
 	</select>
 	
 	
-	     <!-- 根据渠道名获取deleted -->
+	    <!-- 根据渠道名获取deleted -->
  <select id="getDeleted" parameterType="java.util.Map" resultType="java.lang.String">
   select deleted from source where company=#{company} and sourcename = #{sourceName}
  </select>
+  <!-- 后台管理      查询当前渠道是否在渠道表有数据 -->
+   <select id="queryIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+   		select count(*) from source where sourcename=#{arg0}
+   </select>
+   
+   <!-- 后台管理       修改渠道数据 -->
+   <update id="updateAll" parameterType="com.zhita.model.manage.Source">
+   	update source
+    set sourcename = #{sourcename,jdbcType=VARCHAR},
+        account = #{account,jdbcType=VARCHAR},
+        pwd = #{account,jdbcType=VARCHAR},
+        link = #{link,jdbcType=VARCHAR},
+        discount = #{discount,jdbcType=VARCHAR},
+        deleted = 0,
+        company=#{company,jdbcType=VARCHAR},
+        templateId = #{templateId,jdbcType=INTEGER}
+    where sourcename = #{sourcename,jdbcType=VARCHAR}
+   </update>
 	</mapper>

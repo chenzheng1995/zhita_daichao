@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhita.dao.manage.SourceDiscountHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.zhita.model.manage.SourceDiscountHistory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sourceName" property="sourcename" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="appnum" property="appnum" jdbcType="REAL" />
+    <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sourceName, date, uv,appnum, cvr,deleted
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from source_discount_history
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from source_discount_history
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <!-- 后台管理          往渠道申请数（折扣量）历史表插入数据 -->
+  <insert id="insert" parameterType="com.zhita.model.manage.TongjiSorce" >
+    insert into source_discount_history (sourceName, date,uv,
+      appnum,cvr)
+    values (#{sourceName,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, #{uv,jdbcType=INTEGER},
+      #{appNum,jdbcType=REAL},#{cvr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhita.model.manage.SourceDiscountHistory" >
+    insert into source_discount_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sourcename != null" >
+        sourceName,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="appnum != null" >
+        appnum,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sourcename != null" >
+        #{sourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="appnum != null" >
+        #{appnum,jdbcType=REAL},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.SourceDiscountHistory" >
+    update source_discount_history
+    <set >
+      <if test="sourcename != null" >
+        sourceName = #{sourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="appnum != null" >
+        appnum = #{appnum,jdbcType=REAL},
+      </if>
+      <if test="deleted != null" >
+        deleted = #{deleted,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.SourceDiscountHistory" >
+    update source_discount_history
+    set sourceName = #{sourcename,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      appnum = #{appnum,jdbcType=REAL},
+      deleted = #{deleted,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--  后台管理     通过渠道名称查询历史表信息 -->
+  <select id="queryAllBySourceName" parameterType="java.lang.String" resultType="com.zhita.model.manage.TongjiSorce">
+  	 select 
+    <include refid="Base_Column_List" />
+    from source_discount_history
+    where sourcename = #{arg0}
+  </select>
+  <!-- 后台管理       通过渠道查询历史表当前渠道的所有日期 -->
+  <select id="queryDate" parameterType="java.lang.String" resultType="java.lang.String">
+  	select date from source_discount_history where sourcename=#{arg0}
+  </select>
+  <!-- 后台管理       通过渠道和日期查询是否有数据 -->
+  <select id="queryBySourcenameAndDate" parameterType="java.lang.String" resultType="com.zhita.model.manage.TongjiSorce">
+  	select 
+    <include refid="Base_Column_List" />
+    from source_discount_history
+    where sourcename = #{arg0} and date=#{arg1}
+  </select>
+</mapper>

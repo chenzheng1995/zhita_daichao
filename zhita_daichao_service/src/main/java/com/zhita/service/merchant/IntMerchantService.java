@@ -37,6 +37,12 @@ public interface IntMerchantService {
     //后台管理---模糊查询渠道信息,并且没有分页功能
     public List<Source> queryByLike1(String sourceName,String company);
     
+    //后台管理---查询当前渠道是否在渠道表有数据
+    public int queryIsExist(String source);
+    
+   //后台管理---修改渠道数据
+    public int updateAll(Source source);
+    
     //后台管理---添加渠道信息
     public int addAll(Source source);
     
