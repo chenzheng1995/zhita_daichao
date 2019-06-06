@@ -25,6 +25,9 @@ public interface SourceMapper {
     //后台管理---查询当前渠道是否在渠道表有数据
     int queryIsExist(String source);
     
+    //后台管理---通过渠道id查询出当前渠道的折扣率
+    String  queryDiscount(Integer id);
+    
     //后台管理---修改渠道数据
     int updateAll(Source source);
     

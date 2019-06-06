@@ -17,8 +17,9 @@ public interface SourceDiscountHistoryMapper {
     SourceDiscountHistory selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(SourceDiscountHistory record);
-
-    int updateByPrimaryKey(SourceDiscountHistory record);
+    
+    //后台管理---根据渠道和日期更新历史表数据
+    int updateByPrimaryKey(TongjiSorce record);
     
     //后台管理---通过渠道名称查询历史表信息
     List<TongjiSorce> queryAllBySourceName(String sourcename);
@@ -27,5 +28,11 @@ public interface SourceDiscountHistoryMapper {
     List<String> queryDate(String sourcename);
     
     //后台管理---通过渠道和日期查询是否有数据
-    TongjiSorce queryBySourcenameAndDate(String sourcename,String date);
+    TongjiSorce queryBySourcenameAndDate(String sourcename,String startdate,String enddate);
+    
+    //test   查询source_discount_history表所有的对象
+    List<TongjiSorce> queryTest();
+    
+    //test   将source_discount_history表的date  改为时间戳格式
+    int updateTest(String dateTimstamp,Integer id);
 }

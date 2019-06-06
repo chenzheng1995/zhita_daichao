@@ -83,6 +83,12 @@ public class MerchantServiceImp implements IntMerchantService{
     	return count;
     }
     
+    //后台管理---通过渠道id查询出当前渠道的折扣率
+    public String  queryDiscount(Integer id){
+    	String discount=sourceMapper.queryDiscount(id);
+    	return discount;
+    }
+    
   //后台管理---修改渠道数据
     public int updateAll(Source source){
     	int num=sourceMapper.updateAll(source);

@@ -1,9 +1,11 @@
 package com.zhita.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import com.zhita.util.Timestamps;
 
 public class Test {
 	public static void main(String[] args) throws ParseException {
@@ -163,25 +165,63 @@ public class Test {
 		}*/
 		
 		
-		  List<String> list1=new ArrayList<>();
+		/*  	List<String> list1=new ArrayList<>();//user表去除今天的数据
 	        list1.add("2019-6-01");
 	        list1.add("2019-6-02");
 	        list1.add("2019-6-03");
+	        list1.add("2019-6-04");
 
 
-	        List<String> list2=new ArrayList<>();
+	        List<String> list2=new ArrayList<>();//历史数据
 	        list2.add("2019-6-01");
 	        list2.add("2019-6-02");
 	        list2.add("2019-6-03");
-	        
+	        list2.add("2019-6-04");
+	        list2.add("2019-6-05");
 	        
 	        
 	        System.out.println("====求差集===");
 	        List<String> list=list1.stream().filter(t-> !list2.contains(t)).collect(Collectors.toList());
 	        for (int i = 0; i < list.size(); i++) {
 				System.out.println(list.get(i));
-			}
+			}*/
 
+		/*Date d=new Date();
+		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date=sf.format(d);//date为当天时间
+		System.out.println(date);
+		
+		String endTime = date;
+		String endTimestamps = (Long.parseLong(Timestamps.dateToStamp1(endTime))+86400000)+"";
+		System.out.println(endTimestamps);*/
+		
+		
+	/*	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar c = Calendar.getInstance();
+		System.out.println("当前日期:"+sf.format(c.getTime()));
+		c.add(Calendar.DAY_OF_MONTH, 1);
+		System.out.println("增加一天后日期:"+sf.format(c.getTime()));*/
 
+		
+	/*	SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, 1);
+		System.out.println("增加一天后日期:"+sf1.format(c.getTime()));*/
+		String date="2019-06-02";
+		
+		String startTime1 = date;
+		String startTimestamps1 = Timestamps.dateToStamp(startTime1);
+		String endTime1 = date;
+		String endTimestamps1 = (Long.parseLong(Timestamps.dateToStamp(endTime1))+86400000)+"";
+		System.out.println(startTimestamps1+"****"+endTimestamps1);
+		
+		//获取前一天的日期
+		/*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = new Date();
+		String datetoday=df.format(today);
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, -1);
+		String dateyes = df.format(calendar.getTime());
+		System.out.println(datetoday+dateyes);*/
 	}
 }

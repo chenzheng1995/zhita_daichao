@@ -136,6 +136,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
+    <!-- 后台管理       通过渠道id查询出当前渠道的折扣率 -->
+    <select id="queryDiscount" parameterType="java.lang.Integer" resultType="java.lang.String">
+    	select discount from source where id=#{arg0}
+    </select>
+    
   <!--   后台管理    通过传过来的数据对管理登陆表进行修改 -->
   <update id="updateManageLogin" parameterType="java.lang.String">
   	update manage_login set phone=#{arg0},sourcename=#{arg1} where phone=#{arg2}
