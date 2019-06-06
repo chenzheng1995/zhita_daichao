@@ -62,5 +62,14 @@ public interface IntTongjiService {
     public List<String> queryDate(String sourcename);
     
     //后台管理---通过渠道和日期查询是否有数据
-    public TongjiSorce queryBySourcenameAndDate(String sourcename,String date);
+    public TongjiSorce queryBySourcenameAndDate(String sourcename,String startdate,String enddate);
+    
+    //后台管理---根据渠道和日期更新历史表数据
+    public int updateByPrimaryKey(TongjiSorce record);
+    
+    //test   查询source_discount_history表所有的对象
+    public List<TongjiSorce> queryTest();
+    
+    //test   将source_discount_history表的date  改为时间戳格式
+    public int updateTest(String dateTimstamp,Integer id);
 }

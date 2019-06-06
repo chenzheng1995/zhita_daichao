@@ -83,13 +83,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.SourceDiscountHistory" >
+  <!-- 后台管理         根据渠道和日期更新历史表数据 -->
+  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.TongjiSorce" >
     update source_discount_history
-    set sourceName = #{sourcename,jdbcType=VARCHAR},
-      date = #{date,jdbcType=VARCHAR},
-      appnum = #{appnum,jdbcType=REAL},
-      deleted = #{deleted,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    set uv = #{uv,jdbcType=INTEGER},
+        appnum = #{appNum,jdbcType=REAL},
+        cvr = #{cvr,jdbcType=VARCHAR},
+        date=#{date,jdbcType=VARCHAR}
+    where sourcename = #{sourceName,jdbcType=VARCHAR} and date=#{date1,jdbcType=VARCHAR}
   </update>
   <!--  后台管理     通过渠道名称查询历史表信息 -->
   <select id="queryAllBySourceName" parameterType="java.lang.String" resultType="com.zhita.model.manage.TongjiSorce">
@@ -107,6 +108,17 @@
   	select 
     <include refid="Base_Column_List" />
     from source_discount_history
-    where sourcename = #{arg0} and date=#{arg1}
+    where sourcename = #{arg0} and date>=#{arg1} and date &lt;#{arg2}
   </select>
+  
+  <!-- test   查询source_discount_history表所有的对象 -->
+  <select id="queryTest" resultType="com.zhita.model.manage.TongjiSorce">
+  	select 
+    <include refid="Base_Column_List" />
+    from source_discount_history
+  </select>
+  <!-- test   将source_discount_history表的date  改为时间戳格式 -->
+  <update id="updateTest">
+  	update source_discount_history set date=#{arg0} where id=#{arg1}
+  </update>
 </mapper>

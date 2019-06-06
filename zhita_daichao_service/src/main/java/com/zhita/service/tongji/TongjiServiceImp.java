@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zhita.dao.manage.SourceDiscountHistoryMapper;
 import com.zhita.dao.manage.StatisticalMapper;
+import com.zhita.model.manage.SourceDiscountHistory;
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.TongjiSorce;
 
@@ -112,9 +113,27 @@ public class TongjiServiceImp implements IntTongjiService{
 	   return list;
    }
    
- //后台管理---通过渠道和日期查询是否有数据
-   public TongjiSorce queryBySourcenameAndDate(String sourcename,String date){
-	   TongjiSorce tongjiSorce = sourceDiscountHistoryMapper.queryBySourcenameAndDate(sourcename, date);
+  //后台管理---通过渠道和日期查询是否有数据
+   public TongjiSorce queryBySourcenameAndDate(String sourcename,String startdate,String enddate){
+	   TongjiSorce tongjiSorce = sourceDiscountHistoryMapper.queryBySourcenameAndDate(sourcename, startdate,enddate);
 	   return tongjiSorce;
+   }
+   
+   //后台管理---根据渠道和日期更新历史表数据
+   public int updateByPrimaryKey(TongjiSorce record){
+	   int num=sourceDiscountHistoryMapper.updateByPrimaryKey(record);
+	   return num;
+   }
+   
+   //test   查询source_discount_history表所有的对象
+   public List<TongjiSorce> queryTest(){
+	   List<TongjiSorce> list=sourceDiscountHistoryMapper.queryTest();
+	   return list;
+   }
+   
+ //test   将source_discount_history表的date  改为时间戳格式
+   public int updateTest(String dateTimstamp,Integer id){
+	   int num=sourceDiscountHistoryMapper.updateTest(dateTimstamp, id);
+	   return num;
    }
 }

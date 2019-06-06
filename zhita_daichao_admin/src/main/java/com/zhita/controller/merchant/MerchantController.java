@@ -1,6 +1,7 @@
 package com.zhita.controller.merchant;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.Source;
+import com.zhita.model.manage.TongjiSorce;
 import com.zhita.model.manage.User;
 import com.zhita.service.login.IntLoginService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.service.sourcetemplate.SourceTemplateService;
+import com.zhita.service.tongji.IntTongjiService;
 import com.zhita.util.ListPageUtil;
 import com.zhita.util.PageUtil;
+import com.zhita.util.RedisClientUtil;
 import com.zhita.util.Timestamps;
 import com.zhita.util.TuoMinUtil;
 
@@ -35,6 +39,9 @@ public class MerchantController {
 	
 	@Autowired
 	SourceTemplateService sourceTemplateService;
+	
+	@Autowired
+	private IntTongjiService intTongjiService;
 	
 	
 	//后台管理---查询渠道表所有信息，含分页
@@ -313,11 +320,117 @@ public class MerchantController {
 	@Transactional
 	@ResponseBody
 	@RequestMapping("/updateSource")
-    public int updateSource(Source source,String oldSourceName,String templateName) throws IOException{
+    public int updateSource(Source source,String oldSourceName,String templateName) throws IOException, ParseException{
+		String company=source.getCompany();
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
 
-		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());	
+		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());
+		
+		String discount=intMerchantService.queryDiscount(source.getId());// 得到修改之前的那个折扣率  （比如取到字符串  "80%"）
+		RedisClientUtil redisClientUtil = new RedisClientUtil();
+		Timestamps timestamps = new Timestamps();
+		
+		if((discount.equals(source.getDiscount())==false)){//等于false  说明折扣率被修改了
+			Date d=new Date();
+			SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date=sf.format(d);//date为当天时间(年月日)
+			String dates=sf1.format(d);//dates为当天时间(年月日时分秒)
+			
+			String startTime1 = date;
+			String startTimestamps1 = timestamps.dateToStamp(startTime1);
+			String endTime1 = date;
+			String endTimestamps1 = (Long.parseLong(timestamps.dateToStamp(endTime1))+86400000)+"";
+			
+			TongjiSorce tongjisourceyes=intTongjiService.queryBySourcenameAndDate(source.getSourcename(),startTimestamps1,endTimestamps1);
+			
+			if(tongjisourceyes==null){//证明当前渠道当天在历史表没有数据
+				float appnum = intTongjiService.queryApplicationNumber(company, source.getSourcename(), startTimestamps1, endTimestamps1);// 得到申请数(该渠道当天在user表的注册数)
+				int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));//这里取到的折扣率就是80
+				int uv = 0;//uv
+				String cvr = null;//转化率
+				float disAppnum=0;//折扣申请数
+				String companyClient=null;
+				
+				if(company.equals("借吧")){
+					companyClient="融51";
+				}
+				if (redisClientUtil.getSourceClick(companyClient + source.getSourcename() + date + "Key") == null) {
+					uv = 0;
+				} else {
+					uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source.getSourcename() + date + "Key"));
+				}
+				
+				if (appnum >= 30) {
+					int overtop=(int)appnum-30;//overtop是当前申请数超过30的那部分数量
+					disAppnum=(int)Math.ceil((overtop * discount1 *1.0/ 100+30));// 申请数
+				} else {
+					disAppnum=appnum;// 申请数
+				}
+				
+				if ((appnum < 0.000001) || (uv == 0)) {
+					cvr = 0 + "%";// 得到转化率
+				} else {
+					cvr = (new DecimalFormat("#.00").format(disAppnum/ uv * 100)) + "%";// 得到转化率
+				}
+				
+				
+				TongjiSorce tongjiSorce=new TongjiSorce();
+				tongjiSorce.setSourceName(source.getSourcename());
+				tongjiSorce.setDate(Timestamps.dateToStamp1(dates));
+				tongjiSorce.setUv(uv);
+				tongjiSorce.setAppNum(disAppnum);
+				tongjiSorce.setCvr(cvr);
+				intTongjiService.insertAll(tongjiSorce);
+			
+			}else{//证明当前渠道当天在历史表有数据
+				//String startTime = date;
+				String startTimestamps = tongjisourceyes.getDate();//该时间为时间戳格式
+				String endTime = date;
+				String endTimestamps = (Long.parseLong(timestamps.dateToStamp(endTime))+86400000)+"";
+				
+				float appnum = intTongjiService.queryApplicationNumber(company, source.getSourcename(), startTimestamps, endTimestamps);// 得到申请数(该渠道当天在user表的注册数)
+				int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));//这里取到的折扣率就是80
+				int uv = 0;//uv
+				String cvr = null;//转化率
+				float disAppnum=0;//折扣申请数
+				String companyClient=null;
+				
+				if(company.equals("借吧")){
+					companyClient="融51";
+				}
+				if (redisClientUtil.getSourceClick(companyClient + source.getSourcename() + date + "Key") == null) {
+					uv = 0;
+				} else {
+					uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source.getSourcename() + date + "Key"));
+				}
+				
+				if (appnum >= 30) {
+					int overtop=(int)appnum-30;//overtop是当前申请数超过30的那部分数量
+					disAppnum=(int)Math.ceil((overtop * discount1 *1.0/ 100+30))+tongjisourceyes.getAppNum();// 申请数
+				} else {
+					disAppnum=appnum+tongjisourceyes.getAppNum();// 申请数
+				}
+				
+				if ((appnum < 0.000001) || (uv == 0)) {
+					cvr = 0 + "%";// 得到转化率
+				} else {
+					cvr = (new DecimalFormat("#.00").format(disAppnum/ uv * 100)) + "%";// 得到转化率
+				}
+				
+				
+				TongjiSorce tongjiSorce=new TongjiSorce();
+				tongjiSorce.setSourceName(source.getSourcename());
+				tongjiSorce.setDate(Timestamps.dateToStamp1(dates));
+				tongjiSorce.setDate1(tongjisourceyes.getDate());
+				tongjiSorce.setUv(uv);
+				tongjiSorce.setAppNum(disAppnum);
+				tongjiSorce.setCvr(cvr);
+				intTongjiService.updateByPrimaryKey(tongjiSorce);
+			}
+		}
+		
 		int num=intMerchantService.updateSource(source);
 		//intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
 		return num;
