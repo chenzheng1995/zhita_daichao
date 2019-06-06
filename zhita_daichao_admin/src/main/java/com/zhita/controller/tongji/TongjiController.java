@@ -359,6 +359,7 @@ public class TongjiController {
 	@ResponseBody
 	@RequestMapping("/queryAllTongjiByDate")
 	public Object queryAllTongjiByDate(String company, String source, String date) throws ParseException {
+		date=date.replace("/", "-");
 		TongjiSorce tongjiSorce = new TongjiSorce();
 		
 		Date d=new Date();
