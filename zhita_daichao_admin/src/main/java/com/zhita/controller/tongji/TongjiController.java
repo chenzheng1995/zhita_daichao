@@ -434,6 +434,7 @@ public class TongjiController {
 			TongjiSorce tongjiSorcelist=intTongjiService.queryBySourcenameAndDate(source, startTimestamps1,endTimestamps1);
 			if(tongjiSorcelist!=null){
 				tongjiSorce=tongjiSorcelist;
+				tongjiSorce.setDate(Timestamps.stampToDate1(tongjiSorce.getDate()));
 			}else{
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
