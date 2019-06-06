@@ -207,13 +207,24 @@ public class Test {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_MONTH, 1);
 		System.out.println("增加一天后日期:"+sf1.format(c.getTime()));*/
-		String date="2019-06-02";
+	/*	String date="2019-06-02";
 		
 		String startTime1 = date;
-		String startTimestamps1 = Timestamps.dateToStamp(startTime1);
+		String startTimestamps1 = ;
 		String endTime1 = date;
 		String endTimestamps1 = (Long.parseLong(Timestamps.dateToStamp(endTime1))+86400000)+"";
-		System.out.println(startTimestamps1+"****"+endTimestamps1);
+		System.out.println(startTimestamps1+"****"+endTimestamps1);*/
+		//System.out.println(Timestamps.dateToStamp("2019-06-06"));
+		float appnum=40;
+		float disAppnum=0;
+		int discount1=80;
+		if (appnum >= 30) {
+			int overtop=(int)appnum-30;//overtop是当前申请数超过30的那部分数量
+			disAppnum=(int)Math.ceil((overtop * discount1 *1.0/ 100+30));// 申请数
+		} else {
+			disAppnum=appnum;// 申请数
+		}
+		System.out.println(disAppnum);
 		
 		//获取前一天的日期
 		/*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

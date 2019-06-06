@@ -98,7 +98,7 @@ public class TongjiController {
 			list2.clear();
 			list2.addAll(h1);
 			
-			//获取前一天的日期
+			/*//获取前一天的日期
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			//Date today = new Date();
 			//String datetoday=df.format(today);//今天日期
@@ -160,7 +160,7 @@ public class TongjiController {
 					tongjiSorce.setCvr(cvr);// 转化率
 					intTongjiService.updateByPrimaryKey(tongjiSorce);//说明修改成功
 				}
-			}
+			}*/
 			
 			List<String> intersectionlist=list1.stream().filter(t-> !list2.contains(t)).collect(Collectors.toList());//差集
 			intersectionlist.stream().forEach(System.out::println);
@@ -220,12 +220,12 @@ public class TongjiController {
 			}
 			listsource.addAll(listHistory);
 			
-			String startTime1 = date;
+			/*String startTime1 = date;
 			String startTimestamps1 = timestamps.dateToStamp(startTime1);
 			String endTime1 = date;
-			String endTimestamps1 = (Long.parseLong(timestamps.dateToStamp(endTime1))+86400000)+"";
+			String endTimestamps1 = (Long.parseLong(timestamps.dateToStamp(endTime1))+86400000)+"";*/
 			
-			TongjiSorce tongjisourceToday=intTongjiService.queryBySourcenameAndDate(sourceName, startTimestamps1,endTimestamps1);//查询今天是否在历史表存在数据
+/*			TongjiSorce tongjisourceToday=intTongjiService.queryBySourcenameAndDate(sourceName, startTimestamps1,endTimestamps1);//查询今天是否在历史表存在数据
 			if(tongjisourceToday!=null){//证明今天在历史表存在数据
 				//String startTime = date;
 				String startTimestamps = tongjisourceToday.getDate();
@@ -287,7 +287,7 @@ public class TongjiController {
 				intTongjiService.updateByPrimaryKey(tongjiSorce2);
 				
 			}else{//证明今天在历史表不存在数据
-				String startTime = date;
+*/				String startTime = date;
 				String startTimestamps = timestamps.dateToStamp(startTime);
 				String endTime = date;
 				String endTimestamps = (Long.parseLong(timestamps.dateToStamp(endTime))+86400000)+"";
@@ -329,8 +329,9 @@ public class TongjiController {
 				tongjiSorce.setSourceName(sourceName);// 渠道名称
 				tongjiSorce.setUv(uv);// uv
 				tongjiSorce.setCvr(cvr);// 转化率
+				tongjiSorce.setAppNum(disAppnum);
 				listsource.add(tongjiSorce);
-				System.out.println("-----else------"+tongjiSorce);
+	/*			System.out.println("-----else------"+tongjiSorce);
 				
 				TongjiSorce tongjiSorce2=new TongjiSorce();
 				tongjiSorce2.setSourceName(sourceName);
@@ -339,7 +340,7 @@ public class TongjiController {
 				tongjiSorce2.setAppNum(disAppnum);
 				tongjiSorce2.setCvr(cvr);
 				intTongjiService.insertAll(tongjiSorce2);
-			}
+			}*/
 			
 			
 			DateListUtil.ListSort1(listsource);//将集合按照日期进行倒排序
@@ -359,8 +360,8 @@ public class TongjiController {
 	@ResponseBody
 	@RequestMapping("/queryAllTongjiByDate")
 	public Object queryAllTongjiByDate(String company, String source, String date) throws ParseException {
-		date=date.replace("/", "-");
 		TongjiSorce tongjiSorce = new TongjiSorce();
+	/*	date=date.replace("/", "-");
 		
 		Date d=new Date();
 		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
@@ -376,9 +377,9 @@ public class TongjiController {
 		String startTime1 = date;//date为传进来的日期
 		String startTimestamps1 = Timestamps.dateToStamp(startTime1);
 		String endTime1 = date;
-		String endTimestamps1 = (Long.parseLong(Timestamps.dateToStamp(endTime1))+86400000)+"";
+		String endTimestamps1 = (Long.parseLong(Timestamps.dateToStamp(endTime1))+86400000)+"";*/
 		
-		if((date.equals(dateToDay))==true){//代表传进来的日期是今天
+/*		if((date.equals(dateToDay))==true){//代表传进来的日期是今天
 			TongjiSorce tongjiSorcelist=intTongjiService.queryBySourcenameAndDate(source, startTimestamps,endTimestamps);
 			RedisClientUtil redisClientUtil = new RedisClientUtil();
 			
@@ -431,11 +432,11 @@ public class TongjiController {
 			tongjiSorce2.setCvr(cvr);
 			intTongjiService.updateByPrimaryKey(tongjiSorce2);
 		}else{//代表传进来的日期不是今天
-			TongjiSorce tongjiSorcelist=intTongjiService.queryBySourcenameAndDate(source, startTimestamps1,endTimestamps1);
+*/	/*		TongjiSorce tongjiSorcelist=intTongjiService.queryBySourcenameAndDate(source, startTimestamps1,endTimestamps1);
 			if(tongjiSorcelist!=null){
 				tongjiSorce=tongjiSorcelist;
 				tongjiSorce.setDate(Timestamps.stampToDate1(tongjiSorce.getDate()));
-			}else{
+			}else{*/
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar calendar = Calendar.getInstance();
@@ -480,8 +481,8 @@ public class TongjiController {
 				tongjiSorce.setSourceName(source);// 渠道名称
 				tongjiSorce.setUv(uv);// uv
 				tongjiSorce.setCvr(cvr);// 转化率
-			}
-		}
+		/*	}
+		}*/
 		return tongjiSorce;
 	}
 	

@@ -321,13 +321,13 @@ public class MerchantController {
 	@ResponseBody
 	@RequestMapping("/updateSource")
     public int updateSource(Source source,String oldSourceName,String templateName) throws IOException, ParseException{
-		String company=source.getCompany();
+		//String company=source.getCompany();
 		Integer templateId = sourceTemplateService.getid(templateName);
 		source.setTemplateId(templateId);
 
 		source.setLink("http://tg.mis8888.com/promote/"+templateName+"/index.html?code="+source.getSourcename());
 		
-		String discount=intMerchantService.queryDiscount(source.getId());// 得到修改之前的那个折扣率  （比如取到字符串  "80%"）
+/*		String discount=intMerchantService.queryDiscount(source.getId());// 得到修改之前的那个折扣率  （比如取到字符串  "80%"）
 		RedisClientUtil redisClientUtil = new RedisClientUtil();
 		Timestamps timestamps = new Timestamps();
 		
@@ -429,7 +429,7 @@ public class MerchantController {
 				tongjiSorce.setCvr(cvr);
 				intTongjiService.updateByPrimaryKey(tongjiSorce);
 			}
-		}
+		}*/
 		
 		int num=intMerchantService.updateSource(source);
 		//intMerchantService.updateManageLogin(source.getAccount(),source.getSourcename(), source1.getAccount());
