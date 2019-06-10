@@ -372,12 +372,12 @@ public class TongjiController {
 		String startTime = dateToDay;//dateToDay为当天时间(年月日)
 		String startTimestamps = Timestamps.dateToStamp(startTime);//时间戳格式--今天的开始时间
 		String endTime = dateToDay;//dateToDay为当天时间(年月日)
-		String endTimestamps = (Long.parseLong(Timestamps.dateToStamp(endTime))+86400000)+"";//时间戳格式--今天的结束时间
+		String endTimestamps = (Long.parseLong(Timestamps.dateToStamp(endTime))+86400000)+"";//时间戳格式--今天的结束时间*/
 		
 		String startTime1 = date;//date为传进来的日期
 		String startTimestamps1 = Timestamps.dateToStamp(startTime1);
 		String endTime1 = date;
-		String endTimestamps1 = (Long.parseLong(Timestamps.dateToStamp(endTime1))+86400000)+"";*/
+		String endTimestamps1 = (Long.parseLong(Timestamps.dateToStamp(endTime1))+86400000)+"";
 		
 /*		if((date.equals(dateToDay))==true){//代表传进来的日期是今天
 			TongjiSorce tongjiSorcelist=intTongjiService.queryBySourcenameAndDate(source, startTimestamps,endTimestamps);
@@ -432,11 +432,11 @@ public class TongjiController {
 			tongjiSorce2.setCvr(cvr);
 			intTongjiService.updateByPrimaryKey(tongjiSorce2);
 		}else{//代表传进来的日期不是今天
-*/	/*		TongjiSorce tongjiSorcelist=intTongjiService.queryBySourcenameAndDate(source, startTimestamps1,endTimestamps1);
+*/			TongjiSorce tongjiSorcelist=intTongjiService.queryBySourcenameAndDate(source, startTimestamps1,endTimestamps1);
 			if(tongjiSorcelist!=null){
 				tongjiSorce=tongjiSorcelist;
 				tongjiSorce.setDate(Timestamps.stampToDate1(tongjiSorce.getDate()));
-			}else{*/
+			}else{
 				RedisClientUtil redisClientUtil = new RedisClientUtil();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar calendar = Calendar.getInstance();
@@ -475,15 +475,13 @@ public class TongjiController {
 				} else {
 					cvr = (new DecimalFormat("#.00").format(tongjiSorce.getAppNum() / uv * 100)) + "%";// 得到转化率
 				}
-
 				
 				tongjiSorce.setDate(date);// 日期
 				tongjiSorce.setSourceName(source);// 渠道名称
 				tongjiSorce.setUv(uv);// uv
 				tongjiSorce.setCvr(cvr);// 转化率
-		/*	}
-		}*/
-		return tongjiSorce;
+			}
+			return tongjiSorce;
 	}
 	
 	// 后台管理---我们自己看的统计数据 通过日期查询(某个时间段的)(修改---（页面不再显示所有渠道的一个统计数据信息，只显示在用户表有的渠道的一个统计数据信息）)
