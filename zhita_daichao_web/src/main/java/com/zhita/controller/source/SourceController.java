@@ -90,7 +90,9 @@ public class SourceController {
 	@ResponseBody
 	public Map<String, String> searchCurrentUrl (String company,String date) {
 		Map<String, String> resultMap = new HashMap<>();
-		intMerchantService.searchCurrentUrl(new CustomerUrlResult(company,date));
+        CustomerUrlResult searchResult = intMerchantService.searchCurrentUrl(new CustomerUrlResult(company,date));
+		resultMap.put("state",String.valueOf(searchResult.getState()));
+		resultMap.put("customerUrl",searchResult.getCustomerUrl());
 		return resultMap;
 	}
 }
