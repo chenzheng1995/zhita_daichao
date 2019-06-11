@@ -3,6 +3,7 @@ package com.zhita.service.merchant;
 import java.util.List;
 import java.util.Map;
 
+import com.zhita.model.manage.CustomerUrlResult;
 import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 
@@ -82,5 +83,7 @@ public interface IntMerchantService {
 	public List<String> getstateAndDeleted(String company, String sourceName);
 
 	public List<String> getDeleted(String company, String sourceName);
+
+	CustomerUrlResult searchCurrentUrl(CustomerUrlResult param);
 
 }

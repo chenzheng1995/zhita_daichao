@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zhita.model.manage.CustomerUrlResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -273,5 +274,10 @@ public class MerchantServiceImp implements IntMerchantService{
 	public List<String> getDeleted(String company, String sourceName) {
 		List<String> list1 = sourceMapper.getDeleted(company,sourceName);
 		return list1;
+	}
+
+	@Override
+	public CustomerUrlResult searchCurrentUrl(CustomerUrlResult param){
+		return  sourceMapper.searchCurrentUrl(param);
 	}
 }

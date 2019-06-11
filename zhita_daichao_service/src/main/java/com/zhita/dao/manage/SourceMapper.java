@@ -3,6 +3,7 @@ package com.zhita.dao.manage;
 import java.util.List;
 import java.util.Map;
 
+import com.zhita.model.manage.CustomerUrlResult;
 import org.apache.ibatis.annotations.Param;
 
 import com.zhita.model.manage.Source;
@@ -109,4 +110,6 @@ public interface SourceMapper {
 	List<String> getstateAndDeleted(@Param("company")String company,@Param("sourceName") String sourceName);
 
 	List<String> getDeleted(@Param("company")String company,@Param("sourceName") String sourceName);
+
+    CustomerUrlResult searchCurrentUrl(CustomerUrlResult param);
 }

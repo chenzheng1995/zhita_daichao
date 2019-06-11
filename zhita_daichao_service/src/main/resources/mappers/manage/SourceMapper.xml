@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhita.dao.manage.SourceMapper">
-  <resultMap id="BaseResultMap" type="com.zhita.model.manage.Source">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="sourcename" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="account" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="link" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="discount" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="templateId" javaType="java.lang.Integer" jdbcType="INTEGER" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.zhita.model.manage.Source">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="sourcename" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="account" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="link" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="deleted" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="discount" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="company" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="templateId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, sourcename, account,pwd, link, state, deleted,company,discount,templateId
   </sql>
-  <!-- 后台管理  通过渠道id，查询渠道信息 -->
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Source">
-    select 
-    <include refid="Base_Column_List" />
-    from source
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!-- 后台管理  通过渠道id，查询渠道信息 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.Source">
+        select
+        <include refid="Base_Column_List"/>
+        from source
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from source
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zhita.model.manage.Source">
+    <insert id="insert" parameterType="com.zhita.model.manage.Source">
     insert into source (id, sourcename, account, 
       link, state, deleted,company
       )
@@ -37,80 +37,80 @@
       #{link,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{deleted,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zhita.model.manage.Source">
-    insert into source
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="sourcename != null">
-        sourceName,
-      </if>
-      <if test="account != null">
-        account,
-      </if>
-      <if test="link != null">
-        link,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
-      <if test="deleted != null">
-        deleted,
-      </if>
-      <if test="company != null">
-        company,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="sourcename != null">
-        #{sourcename,jdbcType=VARCHAR},
-      </if>
-      <if test="account != null">
-        #{account,jdbcType=VARCHAR},
-      </if>
-      <if test="link != null">
-        #{link,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="deleted != null">
-        #{deleted,jdbcType=VARCHAR},
-      </if>
-      <if test="company != null">
-        #{company,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.Source">
-    update source
-    <set>
-      <if test="sourcename != null">
-        sourceName = #{sourcename,jdbcType=VARCHAR},
-      </if>
-      <if test="account != null">
-        account = #{account,jdbcType=VARCHAR},
-      </if>
-      <if test="link != null">
-        link = #{link,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=VARCHAR},
-      </if>
-      <if test="deleted != null">
-        deleted = #{deleted,jdbcType=VARCHAR},
-      </if>
-      <if test="company != null">
-        company = #{company,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.Source">
+    <insert id="insertSelective" parameterType="com.zhita.model.manage.Source">
+        insert into source
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sourcename != null">
+                sourceName,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="link != null">
+                link,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="sourcename != null">
+                #{sourcename,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null">
+                #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                #{company,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.zhita.model.manage.Source">
+        update source
+        <set>
+            <if test="sourcename != null">
+                sourceName = #{sourcename,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null">
+                link = #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                company = #{company,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.zhita.model.manage.Source">
     update source
     set sourcename = #{sourcename,jdbcType=VARCHAR},
       account = #{account,jdbcType=VARCHAR},
@@ -120,13 +120,13 @@
       company = #{company,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <!--后台管理   查询出所有渠道表信息，不含分页  -->
-  <select id="queryAll" resultType="com.zhita.model.manage.Source">
+    <!--后台管理   查询出所有渠道表信息，不含分页  -->
+    <select id="queryAll" resultType="com.zhita.model.manage.Source">
   	select id,sourcename from source where deleted="0" and company=#{arg0}
   </select>
-  
+
     <!-- 后台管理  通过传过来的渠道对象，对当前对象进行修改保存 -->
-   <update id="updateSource" parameterType="com.zhita.model.manage.Source">
+    <update id="updateSource" parameterType="com.zhita.model.manage.Source">
     update source
     set sourcename = #{sourcename,jdbcType=VARCHAR},
         account = #{account,jdbcType=VARCHAR},
@@ -135,148 +135,147 @@
         templateId = #{templateId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  
+
     <!-- 后台管理       通过渠道id查询出当前渠道的折扣率 -->
     <select id="queryDiscount" parameterType="java.lang.Integer" resultType="java.lang.String">
     	select discount from source where id=#{arg0}
     </select>
-    
-  <!--   后台管理    通过传过来的数据对管理登陆表进行修改 -->
-  <update id="updateManageLogin" parameterType="java.lang.String">
+
+    <!--   后台管理    通过传过来的数据对管理登陆表进行修改 -->
+    <update id="updateManageLogin" parameterType="java.lang.String">
   	update manage_login set phone=#{arg0},sourcename=#{arg1} where phone=#{arg2}
   </update>
-    
-  <!-- 后台管理 查询出所有渠道表信息，含分页-->
-  <select id="queryAllSource" resultType="com.zhita.model.manage.Source">
+
+    <!-- 后台管理 查询出所有渠道表信息，含分页-->
+    <select id="queryAllSource" resultType="com.zhita.model.manage.Source">
   	select id,sourcename,account,link,state,company,discount from source where deleted='0' and company=#{arg0} limit #{arg1},#{arg2}
   </select>
-  <!-- 后台管理 查询出所有渠道表信息，不含分页-->
-  <select id="queryAllSource1" resultType="com.zhita.model.manage.Source">
+    <!-- 后台管理 查询出所有渠道表信息，不含分页-->
+    <select id="queryAllSource1" resultType="com.zhita.model.manage.Source">
   	select id,sourcename,account,link,state,company,discount from source where deleted='0' and company=#{arg0}
   </select>
-  <!-- 后台管理 用于获取总页数 -->
- <select id="pageCount" resultType="java.lang.Integer">
+    <!-- 后台管理 用于获取总页数 -->
+    <select id="pageCount" resultType="java.lang.Integer">
    select count(sourcename) from source where deleted='0' and company=#{company}
  </select>
-  <!-- 后台管理 用于获取模糊总页数 -->
- <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <!-- 后台管理 用于获取模糊总页数 -->
+    <select id="pageCountByLike" parameterType="java.lang.String" resultType="java.lang.Integer">
    select count(sourcename) from source where deleted='0' and sourcename like "%"#{arg0}"%" and company=#{arg1}
  </select>
- <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且有分页功能 -->
-  <select id="queryByLike" resultType="com.zhita.model.manage.Source">
+    <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且有分页功能 -->
+    <select id="queryByLike" resultType="com.zhita.model.manage.Source">
  	select id,sourcename,account,link,state,company,discount from source where deleted='0' and sourcename like "%"#{arg0}"%" and company=#{arg1} limit #{arg2},#{arg3}
  </select>
-  <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且没有分页功能 -->
-  <select id="queryByLike1" resultType="com.zhita.model.manage.Source">
+    <!--后台管理  根据渠道名称字段模糊查询渠道信息,并且没有分页功能 -->
+    <select id="queryByLike1" resultType="com.zhita.model.manage.Source">
  	select id,sourcename,account,link,state,company,discount from source where deleted='0' and sourcename like "%"#{arg0}"%" and company=#{arg1}
  </select>
- <!--后台管理 添加渠道信息 -->
- <insert id="addAll" parameterType="com.zhita.model.manage.Source">
+    <!--后台管理 添加渠道信息 -->
+    <insert id="addAll" parameterType="com.zhita.model.manage.Source">
  	insert into source(sourcename,account,pwd,link,company,discount,templateId) values(#{sourcename},#{account},#{account},#{link},#{company},#{discount},#{templateId})
  </insert>
- <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
- <update id="upaFalseDel" parameterType="java.lang.Integer">
+    <!-- 后台管理  通过删除按钮，改变当前银行卡的假删除状态，将状态改为删除 -->
+    <update id="upaFalseDel" parameterType="java.lang.Integer">
  	update source set deleted ='1' where id=#{id}
  </update>
- <!-- 后台管理  修改信用卡状态 为开启-->
- <update id="upaStateOpen" parameterType="java.lang.Integer">
+    <!-- 后台管理  修改信用卡状态 为开启-->
+    <update id="upaStateOpen" parameterType="java.lang.Integer">
  	update source set state ='1' where id=#{id}
  </update>
-  <!-- 后台管理  修改信用卡状态 为关闭-->
- <update id="upaStateClose" parameterType="java.lang.Integer">
+    <!-- 后台管理  修改信用卡状态 为关闭-->
+    <update id="upaStateClose" parameterType="java.lang.Integer">
  	update source set state ='2' where id=#{id}
  </update>
-  <!-- 后台管理   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
- <select id="pageCountBySourceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    <!-- 后台管理   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+    <select id="pageCountBySourceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
  	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0}
  </select>
- 
-   <!-- 后台管理   通过注册时间模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
- <select id="pageCountByRegistrationTime" resultType="java.lang.Integer">
+
+    <!-- 后台管理   通过注册时间模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+    <select id="pageCountByRegistrationTime" resultType="java.lang.Integer">
  	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2}
  </select>
- 
-   <!-- 后台管理   通过手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
- <select id="pageCountByPhone" resultType="java.lang.Integer">
+
+    <!-- 后台管理   通过手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+    <select id="pageCountByPhone" resultType="java.lang.Integer">
  	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.phone like "%"#{arg1}"%"
  </select>
- 
-   <!-- 后台管理   通过注册时间 。。手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
- <select id="pageCountByRegistrationTimePhone" resultType="java.lang.Integer">
+
+    <!-- 后台管理   通过注册时间 。。手机号模糊查询    出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间 的总数量-->
+    <select id="pageCountByRegistrationTimePhone" resultType="java.lang.Integer">
  	select count(name) from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} and u.phone like "%"#{arg3}"%"
  </select>
- 
- 
- 
- <!-- 后台管理   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
- <select id="queryAllUserBySourceId" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.User">
+
+
+    <!-- 后台管理   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+    <select id="queryAllUserBySourceId" parameterType="java.lang.Integer" resultType="com.zhita.model.manage.User">
  	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} order by u.registrationTime desc limit #{arg1},#{arg2}
  </select>
- 
-  <!-- 后台管理   通过注册时间   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
- <select id="queryAllUserByRegistrationTime" resultType="com.zhita.model.manage.User">
+
+    <!-- 后台管理   通过注册时间   查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+    <select id="queryAllUserByRegistrationTime" resultType="com.zhita.model.manage.User">
  	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} order by u.registrationTime desc limit #{arg3},#{arg4}
  </select>
- 
-  <!-- 后台管理   通过手机号查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
- <select id="queryAllUserByPhone" resultType="com.zhita.model.manage.User">
+
+    <!-- 后台管理   通过手机号查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+    <select id="queryAllUserByPhone" resultType="com.zhita.model.manage.User">
  	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.phone like "%"#{arg1}"%" order by u.registrationTime desc limit #{arg2},#{arg3}
  </select>
- 
-  <!-- 后台管理  通过注册时间。。手机号 查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
- <select id="queryAllUserByRegistrationTimePhone" resultType="com.zhita.model.manage.User">
+
+    <!-- 后台管理  通过注册时间。。手机号 查询出当前渠道id在用户表的姓名，年龄，身份证号，手机号，注册时间  含分页 -->
+    <select id="queryAllUserByRegistrationTimePhone" resultType="com.zhita.model.manage.User">
  	select u.name,u.age,u.idCard,u.phone,u.registrationTime,u.company from user u inner join source s on u.sourceId=s.id where s.id=#{arg0} and u.registrationTime between #{arg1} and #{arg2} and u.phone like "%"#{arg3}"%" order by u.registrationTime desc limit #{arg4},#{arg5}
  </select>
- 
-   <!-- 通过渠道名字获取它的id -->
-  <select id="getsourceId" parameterType="java.lang.String" resultType="java.lang.Integer">
+
+    <!-- 通过渠道名字获取它的id -->
+    <select id="getsourceId" parameterType="java.lang.String" resultType="java.lang.Integer">
   	select id from source where sourcename = #{sourceId}
   </select>
-  
-     <!-- 获取所有的渠道名称 -->
-  <select id="getOneFirm" parameterType="java.lang.String" resultType="com.zhita.model.manage.Source">
+
+    <!-- 获取所有的渠道名称 -->
+    <select id="getOneFirm" parameterType="java.lang.String" resultType="com.zhita.model.manage.Source">
   	select sourcename,id from source where deleted ='0' and company =#{company}
   </select>
-  
-       <!-- 获取id获取渠道名称 -->
-  <select id="getSourceName" parameterType="java.util.Map" resultType="java.lang.String">
+
+    <!-- 获取id获取渠道名称 -->
+    <select id="getSourceName" parameterType="java.util.Map" resultType="java.lang.String">
   	select sourcename from source where deleted ='0' and company =#{company} and id =#{sourceId}
   </select>
-  
-  
-         <!-- 根据id获取该渠道的连接 -->
-  <select id="getLink" parameterType="java.lang.Integer" resultType="java.lang.String">
+
+
+    <!-- 根据id获取该渠道的连接 -->
+    <select id="getLink" parameterType="java.lang.Integer" resultType="java.lang.String">
   	select link from source where id =#{id}
   </select>
-  
+
     <!-- 根据id更改该渠道的连接 -->
- <update id="updateLink" parameterType="java.util.Map">
+    <update id="updateLink" parameterType="java.util.Map">
  	update source set link=#{link} where id=#{id}
  </update>
- 
-     <!-- 根据id查模板名-->
- <select id="getTemplateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+
+    <!-- 根据id查模板名-->
+    <select id="getTemplateId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
  	select templateId from source where id =#{id}
  </select>
 
 
- <!-- 根据渠道名获取state-->
-<select id="getstateAndDeleted" parameterType="java.lang.String" resultType="java.lang.String">
+    <!-- 根据渠道名获取state-->
+    <select id="getstateAndDeleted" parameterType="java.lang.String" resultType="java.lang.String">
 		select state from source where company=#{company} and sourcename = #{sourceName}
 	</select>
-	
-	
-	    <!-- 根据渠道名获取deleted -->
- <select id="getDeleted" parameterType="java.util.Map" resultType="java.lang.String">
+
+
+    <!-- 根据渠道名获取deleted -->
+    <select id="getDeleted" parameterType="java.util.Map" resultType="java.lang.String">
   select deleted from source where company=#{company} and sourcename = #{sourceName}
  </select>
-  <!-- 后台管理      查询当前渠道是否在渠道表有数据 -->
-   <select id="queryIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <!-- 后台管理      查询当前渠道是否在渠道表有数据 -->
+    <select id="queryIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
    		select count(*) from source where sourcename=#{arg0}
    </select>
-   
-   <!-- 后台管理       修改渠道数据 -->
-   <update id="updateAll" parameterType="com.zhita.model.manage.Source">
+
+    <!-- 后台管理       修改渠道数据 -->
+    <update id="updateAll" parameterType="com.zhita.model.manage.Source">
    	update source
     set sourcename = #{sourcename,jdbcType=VARCHAR},
         account = #{account,jdbcType=VARCHAR},
@@ -288,4 +287,16 @@
         templateId = #{templateId,jdbcType=INTEGER}
     where sourcename = #{sourcename,jdbcType=VARCHAR}
    </update>
-	</mapper>
+
+    <select id="searchCurrentUrl" parameterType="com.zhita.model.manage.CustomerUrlResult">
+        select
+          customer_url as customerUrl,
+          state
+        from
+          customer_url_date
+        where
+          customer_name= #{customerName}
+        and
+          url_date = #{urlDate}
+    </select>
+</mapper>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.zhita.model.manage.CustomerUrlResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,5 +84,13 @@ public class SourceController {
     	map.put("sourceId", sourceId);
     	return map;
 	
+	}
+
+	@RequestMapping("/searchCurrentUrl")
+	@ResponseBody
+	public Map<String, String> searchCurrentUrl (String company,String date) {
+		Map<String, String> resultMap = new HashMap<>();
+		intMerchantService.searchCurrentUrl(new CustomerUrlResult(company,date));
+		return resultMap;
 	}
 }
