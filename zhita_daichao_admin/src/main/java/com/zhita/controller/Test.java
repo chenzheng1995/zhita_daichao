@@ -78,7 +78,7 @@ public class Test {
 		System.out.println(startTimestamps+"---------------"+endTimestamps);
 		
 		
-		float appnum=28;
+	/*	float appnum=28;
 		int discount1=80;
 		float disAppnum=0;
 		if (appnum >= 30) {
@@ -88,6 +88,6 @@ public class Test {
 		} else {
 			disAppnum=appnum;// 申请数
 		}
-		System.out.println(disAppnum);
+		System.out.println(disAppnum);*/
 	}
 }
