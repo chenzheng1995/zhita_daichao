@@ -288,7 +288,7 @@
     where sourcename = #{sourcename,jdbcType=VARCHAR}
    </update>
 
-    <select id="searchCurrentUrl" parameterType="com.zhita.model.manage.CustomerUrlResult">
+    <select id="searchCurrentUrl" parameterType="com.zhita.model.manage.CustomerUrlResult" resultType="com.zhita.model.manage.CustomerUrlResult">
         select
           customer_url as customerUrl,
           state

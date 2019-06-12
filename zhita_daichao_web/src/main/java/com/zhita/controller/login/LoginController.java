@@ -474,14 +474,14 @@ public class LoginController {
         gd.setColor(Color.BLACK);
         gd.drawRect(0, 0, width - 1, height - 1);
         // 随机产生40条干扰线，使图象中的认证码不易被其它程序探测到。
-        gd.setColor(Color.BLACK);
+       /* gd.setColor(Color.BLACK);
         for (int i = 0; i < 30; i++) {
             int x = random.nextInt(width);
             int y = random.nextInt(height);
             int xl = random.nextInt(12);
             int yl = random.nextInt(12);
             gd.drawLine(x, y, x + xl, y + yl);
-        }
+        }*/
         // randomCode用于保存随机产生的验证码，以便用户登录后进行验证。
         StringBuffer randomCode = new StringBuffer();
         int red = 0, green = 0, blue = 0;
