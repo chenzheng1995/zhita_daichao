@@ -6,8 +6,8 @@ public class TongjiSorce {
 	private String date;//日期
 	private String sourceName;//渠道名称
 	private Integer uv;//uv
-	private float appNum;//真实的申请数
-	private float appNum1;//折扣后的申请数
+	private float appNum;//折扣后的申请数
+	private float appNum1;//真实的申请数
 	private String cvr;//转化率
 	private Integer sumappnum;//点过甲方  用户的总数量
 	private String company;

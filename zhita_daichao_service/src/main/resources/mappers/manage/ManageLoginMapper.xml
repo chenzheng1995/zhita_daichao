@@ -263,6 +263,12 @@
 	<select id="queryByPhone" parameterType="java.lang.String" resultType="com.zhita.model.manage.ManageLogin">
 		select m.id,m.userName,m.phone,m.pwd,m.loginStatus,m.loginTime,m.deleted from manage_login m where phone=#{arg0} and deleted='0'
 	</select>
+	
+	<!-- 后台管理   通过账号查询渠道信息 -->
+	<select id="queryByAcount" parameterType="java.lang.String" resultType="com.zhita.model.manage.Source">
+		select id,sourcename,account,pwd,link,state,deleted,company,discount,templateId from source where account=#{arg0} and deleted=0 and state=1
+	</select>
+	
 	<!-- 后后台理  通过手机号更新用户的登录状态和登录时间 -->
 	<update id="upaStateTime" parameterType="com.zhita.model.manage.ManageLogin">
 	    update manage_login 

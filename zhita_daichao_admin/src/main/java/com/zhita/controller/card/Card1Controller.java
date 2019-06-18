@@ -78,9 +78,6 @@ public class Card1Controller {
         	
         	listto=intCard1Service.queryAllAdmain(company[0],pageUtil.getPage(),pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
-        	for (int i = 0; i < list.size(); i++) {
-    			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
-    		}
     	}
     	else if(company.length>1){
     		
@@ -97,11 +94,6 @@ public class Card1Controller {
             	list.addAll(listfor);
 			}
     		
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
-			
-			
 			System.out.println("传进工具类的page"+page);
 			
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
@@ -229,9 +221,6 @@ public class Card1Controller {
             	list.addAll(listfor);
 			}
     		
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
 			
 			System.out.println("传进工具类的page"+page);
 			
@@ -266,9 +255,6 @@ public class Card1Controller {
         	
         	listto=intCard1Service.queryAllAdmain(company[0],pageUtil.getPage(),pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
-        	for (int i = 0; i < list.size(); i++) {
-    			System.out.println(list.get(i).getBusinessname()+"***"+list.get(i).getApplicationnumber());
-    		}
     	
     	}
 		//商家名称不为空并且公司名不为空   公司名选择的是全部项
@@ -287,9 +273,6 @@ public class Card1Controller {
             	list.addAll(listfor);
 			}
     		
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
 			
 			System.out.println("传进工具类的page"+page);
 			
@@ -325,9 +308,6 @@ public class Card1Controller {
         	
         	listto=intCard1Service.queryByNameLike(businessName,company[0],pageUtil.getPage(),pageUtil.getPageSize());
         	pageUtil=new PageUtil(page,10,totalCount);
-        	for (int i = 0; i < listto.size(); i++) {
-    			System.out.println(listto.get(i).getBusinessname()+"***"+listto.get(i).getApplicationnumber());
-    		}
     		
         }
     	HashMap<String, Object> map=new HashMap<>();
@@ -457,10 +437,6 @@ public class Card1Controller {
         list1.clear();   
         list1.addAll(h);   
     	
-    	for (int i = 0; i < list1.size(); i++) {
-    		System.out.println("输出data类型的时间："+list1.get(i));//list1里面存的是传进来这个时间段里有的日期
-		}
-    	
        	List<String> list2=DateListUtil.getDiffrent2(daysList, list1);//list2里面存的是传进来这个时间段里没有的日期，要将数量设为0
     	
     	List<JiaFangTongji> listjia=new ArrayList<>();
@@ -487,9 +463,6 @@ public class Card1Controller {
     	    listjia.add(jia);
 		}
     	DateListUtil.ListSort(listjia);//将集合按照日期进行排序
-    	for (int i = 0; i < listjia.size(); i++) {
-			System.out.println("date:::"+listjia.get(i).getDate()+"count:::"+listjia.get(i).getAmount());
-		}
     	return listjia;
     }
 	//后台管理---根据id  修改商家的排序字段

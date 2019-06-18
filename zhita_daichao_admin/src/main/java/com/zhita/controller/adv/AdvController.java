@@ -66,10 +66,6 @@ public class AdvController {
             	list.addAll(listfor);
 			}
 			
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
-			
 			System.out.println("传进工具类的page"+page);
 			
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
@@ -102,10 +98,6 @@ public class AdvController {
 	   		for (int i = 0; i < company.length; i++) {
 		    	listfor=intAdvService.queryAll1(company[i]);
             	list.addAll(listfor);
-			}
-			
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
 			}
 			
 			System.out.println("传进工具类的page"+page);
@@ -148,9 +140,6 @@ public class AdvController {
             	list.addAll(listfor);
 			}
 			
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
 			
 			System.out.println("传进工具类的page"+page);
 			

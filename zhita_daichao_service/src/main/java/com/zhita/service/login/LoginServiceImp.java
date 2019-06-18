@@ -4,11 +4,9 @@ package com.zhita.service.login;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.zhita.dao.manage.ManageLoginMapper;
 import com.zhita.dao.manage.ManageloginRoleMapper;
@@ -16,6 +14,7 @@ import com.zhita.dao.manage.RoleMapper;
 import com.zhita.dao.manage.UserMapper;
 import com.zhita.model.manage.ManageLogin;
 import com.zhita.model.manage.Role;
+import com.zhita.model.manage.Source;
 import com.zhita.model.manage.User;
 import com.zhita.util.PageUtil;
 
@@ -349,6 +348,13 @@ public class LoginServiceImp implements IntLoginService{
 		ManageLogin manageLogin=manageLoginMapper.queryByPhone(phone);
 		return manageLogin;
 	}
+	
+	//后台管理---通过账号查询渠道信息
+	public Source queryByAcount(String acount) {
+		Source source=manageLoginMapper.queryByAcount(acount);
+		return source;
+	}
+	
 	//后台管理---通过手机号更新用户的登录状态和登录时间
 	public int  upaStateTime(ManageLogin manageLogin) {
 		int sum=manageLoginMapper.upaStateTime(manageLogin);

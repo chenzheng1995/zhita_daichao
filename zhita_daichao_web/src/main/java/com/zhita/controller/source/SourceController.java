@@ -22,6 +22,39 @@ public class SourceController {
 	
 	@Autowired
 	IntMerchantService intMerchantService;
+	
+	
+	//判断这个渠道有没有删除或禁用，如果删除或禁用了就不让用户显示推广页
+	@RequestMapping("/isPromotion")
+	@ResponseBody
+	@Transactional
+	public Map<String, Object> ispromotion (String company,String sourceName) {
+		Map<String, Object> map = new HashMap<>();
+		 map.put("msg","成功");
+		 map.put("code","200");
+		List<String> list = intMerchantService.getstateAndDeleted(company,sourceName);
+	    for (String string : list) {
+	     String	state = string;
+		 if("2".equals(state)) {
+			 map.put("msg","渠道被禁用");
+			 map.put("code","300");
+			 return map;
+		 }
+		}
+	    
+	    List<String> list1 = intMerchantService.getDeleted(company,sourceName);
+	    for (String string : list1) {
+		     String	deleted = string;
+			 if("1".equals(deleted)) {
+				 map.put("msg","渠道被删除");
+				 map.put("code","300");
+				 return map;
+			 }
+			}
+	    
+		return map;
+		
+	}
 
 	@RequestMapping("/getSourceClick")
 	@ResponseBody

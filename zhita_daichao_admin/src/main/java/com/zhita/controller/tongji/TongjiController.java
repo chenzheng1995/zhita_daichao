@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhita.model.manage.Source;
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.TongjiSorce;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
@@ -69,12 +68,13 @@ public class TongjiController {
 //			String endTime = list1.get(i) + " " + "23:59:59";
 			String endTime = list1.get(i);
 			String endTimestamps = (Long.parseLong(timestamps.dateToStamp(endTime))+86400000)+"";
-			float appnum = intTongjiService.queryApplicationNumber(company, sourceName, startTimestamps, endTimestamps);// 得到申请数  
-			String discount = intTongjiService.queryDiscount(sourceName, company);// 得到折扣率
-			int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+			float appnum = intTongjiService.queryApplicationNumber(company, sourceName, startTimestamps, endTimestamps);// 得到申请数(该渠道当天在user表的注册数)
+			String discount = intTongjiService.queryDiscount(sourceName, company);// 得到折扣率  （比如取到字符串  "80%"）
+			int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));//这里取到的折扣率就是80
 			int uv = 0;
 			String cvr = null;
 			String companyClient=null;
+			TongjiSorce tongjiSorce = new TongjiSorce();
 			if(company.equals("借吧")){
 				companyClient="融51";
 			}
@@ -82,23 +82,24 @@ public class TongjiController {
 				uv = 0;
 			} else {
 				uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + sourceName + list1.get(i) + "Key"));
-
-			}
-			if ((appnum < 0.000001) || (uv == 0)) {
-				cvr = 0 + "%";// 得到转化率
-			} else {
-				cvr = (appnum / uv) + "%";// 得到转化率
 			}
 			
-			TongjiSorce tongjiSorce = new TongjiSorce();
-			tongjiSorce.setDate(list1.get(i));// 日期
-			tongjiSorce.setSourceName(sourceName);// 渠道名称
-			tongjiSorce.setUv(uv);// uv
-			if (appnum >= 100) {
-				tongjiSorce.setAppNum((int)(appnum * discount1 / 100));// 申请数
+			if (appnum >= 50) {
+				int overtop=(int)appnum-50;//overtop是当前申请数超过50的那部分数量
+				tongjiSorce.setAppNum((int)Math.ceil((overtop * discount1 *1.0/ 100+50)));// 申请数
 			} else {
 				tongjiSorce.setAppNum(appnum);// 申请数
 			}
+			
+			if ((appnum < 0.000001) || (uv == 0)) {
+				cvr = 0 + "%";// 得到转化率
+			} else {
+				cvr = (new DecimalFormat("#.00").format(tongjiSorce.getAppNum() / uv * 100)) + "%";// 得到转化率
+			}
+			
+			tongjiSorce.setDate(list1.get(i));// 日期
+			tongjiSorce.setSourceName(sourceName);// 渠道名称
+			tongjiSorce.setUv(uv);// uv
 			tongjiSorce.setCvr(cvr);// 转化率
 			listsource.add(tongjiSorce);
 		}		
@@ -137,6 +138,7 @@ public class TongjiController {
 		int uv = 0;
 		String cvr = null;
 		String companyClient=null;
+		TongjiSorce tongjiSorce = new TongjiSorce();
 		if(company.equals("借吧")){
 			companyClient="融51";
 		}
@@ -146,21 +148,25 @@ public class TongjiController {
 			uv = Integer.parseInt(redisClientUtil.getSourceClick(companyClient + source + date + "Key"));
 
 		}
-		if ((appnum < 0.000001) || (uv == 0)) {
-			cvr = 0 + "%";// 得到转化率
-		} else {
-			cvr = (appnum / uv) + "%";// 得到转化率
-		}
-
-		TongjiSorce tongjiSorce = new TongjiSorce();
-		tongjiSorce.setDate(date);// 日期
-		tongjiSorce.setSourceName(source);// 渠道名称
-		tongjiSorce.setUv(uv);// uv
-		if (appnum >= 100) {
-			tongjiSorce.setAppNum(appnum * discount1 / 100);// 申请数
+		
+		if (appnum >= 50) {
+			int overtop=(int)appnum-50;//overtop是当前申请数超过50的那部分数量
+			tongjiSorce.setAppNum((int)Math.ceil((overtop * discount1 *1.0/ 100+50)));// 申请数
 		} else {
 			tongjiSorce.setAppNum(appnum);// 申请数
 		}
+		
+		if ((appnum < 0.000001) || (uv == 0)) {
+			cvr = 0 + "%";// 得到转化率
+		} else {
+			cvr = (new DecimalFormat("#.00").format(tongjiSorce.getAppNum() / uv * 100)) + "%";// 得到转化率
+		}
+
+		
+		tongjiSorce.setDate(date);// 日期
+		tongjiSorce.setSourceName(source);// 渠道名称
+		tongjiSorce.setUv(uv);// uv
+		
 		tongjiSorce.setCvr(cvr);// 转化率
 		return tongjiSorce;
 	}
@@ -202,7 +208,10 @@ public class TongjiController {
 				float appnum = listto.get(j).getAppNum();//真实的申请数
 				String companyj=listto.get(j).getCompany();//这个渠道的公司名
 				String discount = intTongjiService.queryDiscount(source, companyj);// 得到折扣率
-				int discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+				int discount1 = 0;
+				if(discount!=null&&!"".equals(discount)){
+					discount1 = Integer.parseInt(discount.substring(0, discount.length() - 1));
+				}
 				int sumappnum = intTongjiService.queryUV(companyj, source, startTime, endTime);// 得到点过甲方贷款商家总的人数
 				int uv = 0;
 				String cvr = null;
@@ -221,11 +230,12 @@ public class TongjiController {
 				} else {
 					cvr = (new DecimalFormat("#.00").format(appnum / uv * 100)) + "%";// 得到转化率
 				}
-				if (appnum >= 100) {
+				/*if (appnum >= 100) {
 					listto.get(j).setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
 				} else {
 					listto.get(j).setAppNum1(appnum);
-				}
+				}*/
+				listto.get(i).setAppNum1(appnum);
 				listto.get(j).setCvr(cvr);
 				listto.get(j).setSumappnum(sumappnum);
 			}
@@ -446,11 +456,12 @@ public class TongjiController {
 					tongjiSorce.setSourceName(sourcename);// 渠道名称
 					tongjiSorce.setUv(uv);// uv
 					tongjiSorce.setAppNum(appnum);// 真实的申请数
-					if (appnum >= 100) {
+					/*if (appnum >= 100) {
 						tongjiSorce.setAppNum1(appnum * discount1 / 100);// 折扣后的申请数
 					} else {
 						tongjiSorce.setAppNum1(appnum);
-					}
+					}*/
+					tongjiSorce.setAppNum1(appnum);
 					tongjiSorce.setCvr(cvr);// 转化率
 					tongjiSorce.setSumappnum(sumappnum);// 点过甲方总的人数
 					listto.add(tongjiSorce);

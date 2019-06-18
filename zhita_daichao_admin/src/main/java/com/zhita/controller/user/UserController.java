@@ -130,22 +130,17 @@ public class UserController {
     	    	listfor=userService.queryAllUser1(company[j]);
             	list.addAll(listfor);
 			}
-	    	for (int i = 0; i < list.size(); i++) {
-	    		list.get(i).setRegistrationtime(Timestamps.stampToDate(list.get(i).getRegistrationtime()));
-				list.get(i).setLoginTime(Timestamps.stampToDate(list.get(i).getLoginTime()));
-			}
-	    	
-			for (int i = 0; i < list.size(); i++) {
-				System.out.println(list.get(i)+"整合后的集合");
-			}
-			
-			System.out.println("传进工具类的page"+page);
 			
 			ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
 			listto.addAll(listPageUtil.getData());
 			
 			for (int i = 0; i < listto.size(); i++) {
 				listto.get(i).setDayfen(userService.queryAmountByUserId(listto.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),listto.get(i).getCompany()));
+			}
+			
+			for (int i = 0; i < listto.size(); i++) {
+	    		listto.get(i).setRegistrationtime(Timestamps.stampToDate(listto.get(i).getRegistrationtime()));
+				listto.get(i).setLoginTime(Timestamps.stampToDate(listto.get(i).getLoginTime()));
 			}
 			
 			pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
@@ -170,10 +165,17 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/queryByLike")
     public Map<String,Object> queryByLike(String phone,String sourceName,String registrationTimeStart,String registrationTimeEnd,String company,Integer page) throws ParseException{
-    	sourceName = sourceName.replaceAll("\"", "").replace("[","").replace("]","");
-    	String [] sourceNamein= sourceName.split(",");
+    	PhoneDeal phoneDeal=new PhoneDeal();
+    	String phone1=null;
+    	if((phone!=null&&!"".equals(phone))){
+    		phone1=phoneDeal.encryption(phone);//将传进来的手机号进行加密
+    	}
 		company = company.replaceAll("\"", "").replace("[","").replace("]","");
 		String [] companyin= company.split(",");
+		
+		Timestamps times=new Timestamps();//创建时间戳实体类对象
+		long todayZeroTimestamps = times.getTodayZeroTimestamps(); //今天0点的时间戳
+		long tomorrowZeroTimestamps = todayZeroTimestamps+86400000; //明天0点的时间戳
 		
 		String timeStart=null;
 		String timeEnd=null;
@@ -189,8 +191,36 @@ public class UserController {
 	    	timeEnd=Timestamps.dateToStamp1(LikeTime2add);//将开始时间转换为时间戳
 		}
 		
-    	Map<String,Object> map=userService.ByLikeQuery(phone,sourceNamein,timeStart,timeEnd,companyin,page);
-    	return map;
+		List<User> listto=new ArrayList<>();
+		PageUtil pageUtil=null;
+    	List<User> list=userService.ByLikeQuery(phone1,sourceName,timeStart,timeEnd,companyin,page);
+    	if(list!=null && !list.isEmpty()){
+    		ListPageUtil listPageUtil=new ListPageUtil(list,page,10);
+    		listto.addAll(listPageUtil.getData());
+    		
+    		pageUtil=new PageUtil(listPageUtil.getCurrentPage(), listPageUtil.getPageSize(),listPageUtil.getTotalCount());
+    	}
+    	
+    	for (int i = 0; i < listto.size(); i++) {
+    		listto.get(i).setDayfen(userService.queryAmountByUserId(listto.get(i).getId(),String.valueOf(todayZeroTimestamps),String.valueOf(tomorrowZeroTimestamps),listto.get(i).getCompany()));
+		}
+    	
+    	TuoMinUtil tuoMinUtil=new TuoMinUtil();//将用户模块的手机号进行脱名
+		for (int i = 0; i < listto.size(); i++) {
+			listto.get(i).setPhone(phoneDeal.decryption(listto.get(i).getPhone()));//手机号解密
+			String tuomingphone=tuoMinUtil.mobileEncrypt(listto.get(i).getPhone());
+			listto.get(i).setPhone(tuomingphone);//手机号脱名
+			if(listto.get(i).getRegistrationtime()!=null&&!"".equals(listto.get(i).getRegistrationtime())){
+				listto.get(i).setRegistrationtime(Timestamps.stampToDate(listto.get(i).getRegistrationtime()));
+			}
+			if(listto.get(i).getLoginTime()!=null&&!"".equals(listto.get(i).getLoginTime())){
+				listto.get(i).setLoginTime(Timestamps.stampToDate(listto.get(i).getLoginTime()));
+			}
+		}
+		HashMap<String, Object> map=new HashMap<>();
+		map.put("listUser", listto);
+		map.put("pageutil", pageUtil);
+		return map;
     }
 	//后台管理---根据用户id查询出按钮足迹  商品足迹和贷款分类足迹    并按足迹时间倒排序，含分页（申请记录）
     @ResponseBody
@@ -249,10 +279,6 @@ public class UserController {
         list1.clear();   
         list1.addAll(h);   
     	
-    	for (int i = 0; i < list1.size(); i++) {
-    		System.out.println("输出data类型的时间："+list1.get(i));//list1里面存的是传进来这个时间段里有的日期
-		}
-    	
     	List<String> list2=DateListUtil.getDiffrent2(daysList, list1);//list2里面存的是传进来这个时间段里没有的日期，要将数量设为0
     	
     	List<JiaFangTongji> listjia=new ArrayList<>();
@@ -283,9 +309,6 @@ public class UserController {
     	    listjia.add(jia);
 		}
     	DateListUtil.ListSort(listjia);//将集合按照日期进行排序
-    	for (int i = 0; i < listjia.size(); i++) {
-			System.out.println("date:::"+listjia.get(i).getDate()+"count:::"+listjia.get(i).getAmount());
-		}
     	return listjia;
     }
 }
