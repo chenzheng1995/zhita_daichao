@@ -79,7 +79,7 @@ public class LoginController {
     @ResponseBody
     public Map<String, String> sendShortMessage(String phone, String company, String appNumber, String code) {
         Map<String, String> map = new HashMap<>();
-        DateFormat format = new SimpleDateFormat("yyyy/M/dd");
+        DateFormat format = new SimpleDateFormat("yyyy/M/d");
         if (MD5Utils.getMD5(phone + appNumber + format.format(new Date()) + "rong51@dai").equals(code)) {
             SMSUtil smsUtil = new SMSUtil();
             String state = smsUtil.sendSMS(phone, "json", company);
