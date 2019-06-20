@@ -53,6 +53,12 @@ public class RegisteController {
     	if(oneSourceName==null&&twoSourceName==null) {
     		totalCount=intRegisteService.pageCount2(company);//该方法是查询贷款商家总条数
         	pageUtil=new PageUtil(page,10,totalCount);
+    		int totalPageCount = pageUtil.getTotalPageCount();
+    		
+    		int newTotalCount = totalCount*6;
+    		pageUtil=new PageUtil(page,10,newTotalCount);
+    		int newTotalPageCount = pageUtil.getTotalPageCount();
+    		
         	if(page<1) {
         		page=1;
         	}
@@ -65,8 +71,20 @@ public class RegisteController {
         	}
         	pages=(page-1)*pageUtil.getPageSize();
         	pageUtil.setPage(pages); 	
-        	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
-        	pageUtil=new PageUtil(page,10,totalCount);
+        	if(totalPageCount==newTotalPageCount) {
+            	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);	
+        	}else {
+				if(page<=totalPageCount) {
+					list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
+				}
+				if (page>totalPageCount&&page<=newTotalPageCount) {
+					list = intRegisteService.randQueryAllAdmainpro(company);
+				}
+			}
+
+        	pageUtil=new PageUtil(page,10,newTotalCount);
+
+    		
         	if(list!=null) {
             for (LoansBusinesses loansBusinesses : list) {
     	        String businessName = loansBusinesses.getBusinessname();
@@ -87,6 +105,11 @@ public class RegisteController {
     	if(tableType.equals("1")) {        	
         	totalCount=intRegisteService.pageCount2(company);//该方法是查询贷款商家总条数
         	pageUtil=new PageUtil(page,10,totalCount);
+    		int totalPageCount = pageUtil.getTotalPageCount();
+    		
+    		int newTotalCount = totalCount*6;
+    		pageUtil=new PageUtil(page,10,newTotalCount);
+    		int newTotalPageCount = pageUtil.getTotalPageCount();
         	if(page<1) {
         		page=1;
         	}
@@ -98,9 +121,19 @@ public class RegisteController {
         		}
         	}
         	pages=(page-1)*pageUtil.getPageSize();
-        	pageUtil.setPage(pages); 	
-        	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
-        	pageUtil=new PageUtil(page,10,totalCount);
+        	pageUtil.setPage(pages); 
+        	if(totalPageCount==newTotalPageCount) {
+            	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);	
+        	}else {
+				if(page<=totalPageCount) {
+					list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
+				}
+				if (page>totalPageCount&&page<=newTotalPageCount) {
+					list = intRegisteService.randQueryAllAdmainpro(company);
+				}
+			}
+        	
+        	pageUtil=new PageUtil(page,10,newTotalCount);
         	if(list!=null) {
             for (LoansBusinesses loansBusinesses : list) {
     	        String businessName = loansBusinesses.getBusinessname();
@@ -120,6 +153,12 @@ public class RegisteController {
         	if(tableType.equals("2")) {
             	totalCount=intRegisteCopyService.pageCountAppCopy(company,oneSourceName,twoSourceName);//该方法是查询贷款商家总条数
             	pageUtil=new PageUtil(page,10,totalCount);
+            	pageUtil=new PageUtil(page,10,totalCount);
+        		int totalPageCount = pageUtil.getTotalPageCount();
+        		
+        		int newTotalCount = totalCount*6;
+        		pageUtil=new PageUtil(page,10,newTotalCount);
+        		int newTotalPageCount = pageUtil.getTotalPageCount();
             	if(page<1) {
             		page=1;
             	}
@@ -133,7 +172,17 @@ public class RegisteController {
             	pages=(page-1)*pageUtil.getPageSize();
             	pageUtil.setPage(pages); 	
             	list=intRegisteCopyService.queryAllAdmainproAppCopy(pageUtil.getPage(),pageUtil.getPageSize(),company,oneSourceName,twoSourceName);
-            	pageUtil=new PageUtil(page,10,totalCount);
+            	if(totalPageCount==newTotalPageCount) {
+                	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);	
+            	}else {
+    				if(page<=totalPageCount) {
+    					list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
+    				}
+    				if (page>totalPageCount&&page<=newTotalPageCount) {
+    					list = intRegisteService.randQueryAllAdmainpro(company);
+    				}
+    			}
+            	pageUtil=new PageUtil(page,10,newTotalCount);
             	if(list!=null) {
                     for (LoansBusinesses loansBusinesses : list) {
             	        int fakeApplications = loansBusinesses.getApplications(); //假的申请人数
@@ -151,6 +200,8 @@ public class RegisteController {
     	}
     	}
 
+
+    	
     	return map;
     }
     

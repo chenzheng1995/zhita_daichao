@@ -98,4 +98,6 @@ public interface LoansBusinessesMapper {
 
 	String getBusinessesName(@Param("businessesId")int businessesId,@Param("company")String company);
 
+	List<LoansBusinesses> randQueryAllAdmainpro(String company);
+
 }

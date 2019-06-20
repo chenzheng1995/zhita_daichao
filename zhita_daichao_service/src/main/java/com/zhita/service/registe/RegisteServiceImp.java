@@ -179,4 +179,10 @@ public class RegisteServiceImp implements IntRegisteService{
 		return firm;
 	}
 
+	@Override
+	public List<LoansBusinesses> randQueryAllAdmainpro(String company) {
+		List<LoansBusinesses> list = loansBusinessesMapper.randQueryAllAdmainpro(company);
+		return list;
+	}
+
 }

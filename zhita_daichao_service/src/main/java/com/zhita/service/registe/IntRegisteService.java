@@ -60,6 +60,7 @@ public interface IntRegisteService{
 	public List<Object> getTwoFirm(String company);
 	public int pageCount2(String company);
 	public String getBusinessesName(int businessesId, String company);
+	public List<LoansBusinesses> randQueryAllAdmainpro(String company);
 
 
 

@@ -351,6 +351,12 @@
   <select id="queryAllAdmainpro" parameterType="map" resultType="com.zhita.model.manage.LoansBusinesses">
   	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,applications,state from loans_businesses where deleted='0' and company = #{company} and state = 1 order by isStick desc,sort asc limit #{page},#{pageSize}
   </select>
+  
+    <!-- 小程序  随机查询贷款商家部分字段信息 -->
+  <select id="randQueryAllAdmainpro" parameterType="map" resultType="com.zhita.model.manage.LoansBusinesses">
+  	select id,businessname,busClaId,cycle,interestRate,trademark,intro,registerLink,loanlimitsmall,loanlimitbig,isstick,sort,applicationnumber,applications,state from loans_businesses where deleted='0' and company = #{company} and state = 1 order by rand() limit 10
+  </select>
+  
   <!-- 后台管理  查询贷款商家部分字段信息，含分页 -->
   <select id="queryAllAdmain" resultType="com.zhita.model.manage.LoansBusinesses">
   	select id,businessName,trademark,intro,loanlimitsmall,loanlimitbig,isstick,sort,applicationNumber,state,company from loans_businesses where deleted='0' and company=#{arg0} order by state asc,isstick desc,sort asc limit #{arg1},#{arg2}
