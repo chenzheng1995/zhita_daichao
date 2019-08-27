@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.TongjiSorce;
+import com.zhita.model.manage.User;
 import com.zhita.service.commodityfootprint.CommodityFootprintService;
 import com.zhita.service.merchant.IntMerchantService;
 import com.zhita.service.registe.IntRegisteService;
@@ -48,7 +49,6 @@ public class TongjiController {
 		List<TongjiSorce> list=intTongjiService.queryTest();
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setDate(Timestamps.dateToStamp(list.get(i).getDate()));
-			
 			intTongjiService.updateTest(list.get(i).getDate(), list.get(i).getId());
 		}
 		Map<String,Object> map=new HashMap<>();
@@ -202,7 +202,13 @@ public class TongjiController {
 					} else {
 						cvr = (new DecimalFormat("#.00").format(disAppnum/ uv * 100)) + "%";// 得到转化率
 					}
-					
+					int activatenum=0;//激活人数
+					 List<User> listact=intTongjiService.queryactivatenum(company, sourceName, startTimestamps, endTimestamps);
+					 for (int j = 0; j < listact.size(); j++) {
+						if(!listact.get(j).getRegistrationtime().equals(listact.get(j).getLoginTime())){
+							activatenum++;
+						}
+					}
 					
 					TongjiSorce tongjiSorce=new TongjiSorce();
 					tongjiSorce.setSourceName(sourceName);
@@ -210,6 +216,7 @@ public class TongjiController {
 					tongjiSorce.setUv(uv);
 					tongjiSorce.setAppNum(disAppnum);
 					tongjiSorce.setCvr(cvr);
+					tongjiSorce.setActivatenum(activatenum);
 					intTongjiService.insertAll(tongjiSorce);
 				}
 			}
@@ -324,12 +331,20 @@ public class TongjiController {
 					cvr = (new DecimalFormat("#.00").format(disAppnum / uv * 100)) + "%";// 得到转化率
 				}
 				
+				int activatenum=0;//激活人数
+				 List<User> listact=intTongjiService.queryactivatenum(company, sourceName, startTimestamps, endTimestamps);
+				 for (int j = 0; j < listact.size(); j++) {
+					if(!listact.get(j).getRegistrationtime().equals(listact.get(j).getLoginTime())){
+						activatenum++;
+					}
+				}
 				
 				tongjiSorce.setDate(date);// 日期
 				tongjiSorce.setSourceName(sourceName);// 渠道名称
 				tongjiSorce.setUv(uv);// uv
 				tongjiSorce.setCvr(cvr);// 转化率
 				tongjiSorce.setAppNum(disAppnum);
+				tongjiSorce.setActivatenum(activatenum);//激活人数
 				listsource.add(tongjiSorce);
 	/*			System.out.println("-----else------"+tongjiSorce);
 				
@@ -476,10 +491,19 @@ public class TongjiController {
 					cvr = (new DecimalFormat("#.00").format(tongjiSorce.getAppNum() / uv * 100)) + "%";// 得到转化率
 				}
 				
+				
+				int activatenum=0;//激活人数
+				 List<User> listact=intTongjiService.queryactivatenum(company, source, startTimes, endTimes);
+				 for (int j = 0; j < listact.size(); j++) {
+					if(!listact.get(j).getRegistrationtime().equals(listact.get(j).getLoginTime())){
+						activatenum++;
+					}
+				}
 				tongjiSorce.setDate(date);// 日期
 				tongjiSorce.setSourceName(source);// 渠道名称
 				tongjiSorce.setUv(uv);// uv
 				tongjiSorce.setCvr(cvr);// 转化率
+				tongjiSorce.setActivatenum(activatenum);//激活人数
 			}
 			return tongjiSorce;
 	}

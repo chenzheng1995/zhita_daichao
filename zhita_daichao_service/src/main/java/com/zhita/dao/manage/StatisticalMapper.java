@@ -5,6 +5,7 @@ import java.util.List;
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.Statistical;
 import com.zhita.model.manage.TongjiSorce;
+import com.zhita.model.manage.User;
 
 public interface StatisticalMapper {
     int deleteByPrimaryKey(Integer id);
@@ -57,6 +58,9 @@ public interface StatisticalMapper {
     
     //后台管理---查询当前渠道在user表的所有注册时间
     List<String> queryTime(String company,String sourceName);
+    
+    //后台管理---激活人数
+    List<User> queryactivatenum(String company,String sourceName,String startTime,String endTime);
     
     //后台管理---查询在user表的所有注册时间
     List<String> queryTimeme1(String company);

@@ -9,7 +9,7 @@
     <result column="deleted" property="deleted" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sourceName, date, uv,appnum, cvr,deleted
+    id, sourceName, date, uv,appnum, cvr,activatenum,deleted
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,9 +24,9 @@
   <!-- 后台管理          往渠道申请数（折扣量）历史表插入数据 -->
   <insert id="insert" parameterType="com.zhita.model.manage.TongjiSorce" >
     insert into source_discount_history (sourceName, date,uv,
-      appnum,cvr)
+      appnum,cvr,activatenum)
     values (#{sourceName,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, #{uv,jdbcType=INTEGER},
-      #{appNum,jdbcType=REAL},#{cvr,jdbcType=VARCHAR})
+      #{appNum,jdbcType=REAL},#{cvr,jdbcType=VARCHAR},#{activatenum,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zhita.model.manage.SourceDiscountHistory" >
     insert into source_discount_history

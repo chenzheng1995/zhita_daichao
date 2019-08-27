@@ -5,6 +5,7 @@ import java.util.List;
 import com.zhita.model.manage.SourceDiscountHistory;
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.TongjiSorce;
+import com.zhita.model.manage.User;
 
 public interface IntTongjiService {
     //后台管理---通过渠道名称  查询出统计表所有的商家名称
@@ -72,4 +73,7 @@ public interface IntTongjiService {
     
     //test   将source_discount_history表的date  改为时间戳格式
     public int updateTest(String dateTimstamp,Integer id);
+    
+    //后台管理---激活人数
+    public List<User> queryactivatenum(String company,String sourceName,String startTime,String endTime);
 }

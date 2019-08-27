@@ -12,6 +12,7 @@ public class TongjiSorce {
 	private String cvr;//转化率
 	private Integer sumappnum;//点过甲方  用户的总数量
 	private String company;
+	private Integer activatenum;//激活人数
 	public Integer getId() {
 		return id;
 	}
@@ -72,11 +73,12 @@ public class TongjiSorce {
 	public void setCompany(String company) {
 		this.company = company;
 	}
-	@Override
-	public String toString() {
-		return "TongjiSorce [id=" + id + ", date=" + date + ", date1=" + date1 + ", sourceName=" + sourceName + ", uv="
-				+ uv + ", appNum=" + appNum + ", appNum1=" + appNum1 + ", cvr=" + cvr + ", sumappnum=" + sumappnum
-				+ ", company=" + company + "]";
+	
+	public Integer getActivatenum() {
+		return activatenum;
+	}
+	public void setActivatenum(Integer activatenum) {
+		this.activatenum = activatenum;
 	}
 
 }

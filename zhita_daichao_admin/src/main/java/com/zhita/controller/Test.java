@@ -2,9 +2,12 @@ package com.zhita.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import com.zhita.model.manage.User;
 import com.zhita.util.Timestamps;
 
 public class Test {
@@ -89,5 +92,24 @@ public class Test {
 			disAppnum=appnum;// 申请数
 		}
 		System.out.println(disAppnum);*/
+		
+		 User user1=new User();
+		 user1.setRegistrationtime("1566921599000");
+		 user1.setLoginTime("1567180799000");
+		 
+		 User user2=new User();
+		 user2.setRegistrationtime("1566921599000");
+		 user2.setLoginTime("1567180799000");
+		 
+		 int activatenum=0;//激活人数
+		 List<User> listact=new ArrayList<User>();
+		 listact.add(user1);
+		 listact.add(user2);
+		 for (int j = 0; j < listact.size(); j++) {
+			if(!listact.get(j).getRegistrationtime().equals(listact.get(j).getLoginTime())){
+				activatenum++;
+			}
+		}
+		 System.out.println(activatenum+"////////////");
 	}
 }

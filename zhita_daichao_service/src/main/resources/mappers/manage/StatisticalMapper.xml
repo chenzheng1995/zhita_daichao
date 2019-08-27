@@ -180,4 +180,8 @@
    		 and u.registrationTime>=#{arg1} and u.registrationTime &lt;#{arg2}) t 
    		group by t.sourcename 
    </select>
+   <!-- 后台管理           激活人数 -->
+   <select id="queryactivatenum" parameterType="java.lang.String" resultType="com.zhita.model.manage.User">
+   		select u.registrationtime,u.logintime from user u inner join source s on u.sourceid=s.id where u.company=#{arg0} and s.sourcename=#{arg1} and u.logintime>=#{arg2} and u.logintime &lt;#{arg3} 
+   </select>
 </mapper>

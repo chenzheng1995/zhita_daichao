@@ -10,6 +10,7 @@ import com.zhita.dao.manage.StatisticalMapper;
 import com.zhita.model.manage.SourceDiscountHistory;
 import com.zhita.model.manage.SourceTongji;
 import com.zhita.model.manage.TongjiSorce;
+import com.zhita.model.manage.User;
 
 @Service
 public class TongjiServiceImp implements IntTongjiService{
@@ -135,5 +136,11 @@ public class TongjiServiceImp implements IntTongjiService{
    public int updateTest(String dateTimstamp,Integer id){
 	   int num=sourceDiscountHistoryMapper.updateTest(dateTimstamp, id);
 	   return num;
+   }
+   
+   //后台管理---激活人数
+   public  List<User> queryactivatenum(String company,String sourceName,String startTime,String endTime){
+	   List<User> list=statisticalMapper.queryactivatenum(company, sourceName, startTime, endTime);
+	   return list;
    }
 }
