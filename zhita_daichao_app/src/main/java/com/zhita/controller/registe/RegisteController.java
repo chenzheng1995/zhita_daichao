@@ -172,16 +172,16 @@ public class RegisteController {
             	pages=(page-1)*pageUtil.getPageSize();
             	pageUtil.setPage(pages); 	
             	list=intRegisteCopyService.queryAllAdmainproAppCopy(pageUtil.getPage(),pageUtil.getPageSize(),company,oneSourceName,twoSourceName);
-            	if(totalPageCount==newTotalPageCount) {
-                	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);	
-            	}else {
-    				if(page<=totalPageCount) {
-    					list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
-    				}
-    				if (page>totalPageCount&&page<=newTotalPageCount) {
-    					list = intRegisteService.randQueryAllAdmainpro(company);
-    				}
-    			}
+//            	if(totalPageCount==newTotalPageCount) {
+//                	list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);	
+//            	}else {
+//    				if(page<=totalPageCount) {
+//    					list=intRegisteService.queryAllAdmainpro(pageUtil.getPage(),pageUtil.getPageSize(),company);
+//    				}
+//    				if (page>totalPageCount&&page<=newTotalPageCount) {
+//    					list = intRegisteService.randQueryAllAdmainpro(company);
+//    				}
+//    			}
             	pageUtil=new PageUtil(page,10,newTotalCount);
             	if(list!=null) {
                     for (LoansBusinesses loansBusinesses : list) {

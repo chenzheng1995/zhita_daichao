@@ -727,4 +727,21 @@
 			order by u.registrationTime desc
 		</where>
 	</select>
+	
+	
+	
+	
+			  	<!--APP 插入用户信息 -->
+	<insert id="setAPPUser2" parameterType="java.util.Map">
+		insert into user (phone,
+		sourceId,registrationTime,loginStatus,registrationType,company,loginTime,sonSourceName)
+		values (#{phone},
+		#{merchantId},
+		#{registrationTime},
+		#{loginStatus},
+		#{registrationType},
+		#{company},
+		#{registrationTime},
+		#{sonSourceName})
+	</insert>
 </mapper>

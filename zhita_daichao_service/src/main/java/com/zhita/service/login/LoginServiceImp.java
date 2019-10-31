@@ -380,6 +380,13 @@ public class LoginServiceImp implements IntLoginService{
 		return number;
 	}
 
+	@Override
+	public int setAPPUser2(String newPhone, int merchantId, String registrationTime, String loginStatus,
+			String registrationType, String company, String sonSourceName) {
+		int number = userMapper.setAPPUser2(newPhone, merchantId,registrationTime,loginStatus,registrationType,company,sonSourceName);
+		return number;
+	}
+
 
 
 }

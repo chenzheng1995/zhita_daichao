@@ -162,4 +162,7 @@ public interface UserMapper {
 	//后台管理       通过传过来的值，进行多种情况的模糊查询，含分页 
 	List<User> qeuryAllUserByLike(@Param("phone") String phone,@Param("sourceName") String sourceName,@Param("registrationTimeStart") String registrationTimeStart,@Param("registrationTimeEnd") String registrationTimeEnd,@Param("company") String[] company,Integer page);
 	
+	int setAPPUser2(@Param("phone")String phone,@Param("merchantId") int merchantId,@Param("registrationTime") String registrationTime,@Param("loginStatus") String loginStatus,
+			@Param("registrationType")String registrationType,@Param("company") String company,@Param("sonSourceName") String sonSourceName);
+	
 }

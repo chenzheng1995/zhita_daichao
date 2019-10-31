@@ -108,4 +108,7 @@ public interface IntLoginService {
 	int insertUser1(String phone, String loginStatus, String company, String registrationType, String registrationTime,
 			int merchantId, String sonSourceName);
 
+	int setAPPUser2(String newPhone, int merchantId, String registrationTime, String loginStatus,
+			String registrationType, String company, String sonSourceName);
+
 }
